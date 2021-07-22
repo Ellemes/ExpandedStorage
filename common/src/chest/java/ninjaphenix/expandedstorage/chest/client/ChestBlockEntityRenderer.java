@@ -27,6 +27,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.DoubleBlockCombiner;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraftforge.fmlclient.registry.RenderingRegistry;
 import ninjaphenix.expandedstorage.base.internal_api.Utils;
 import ninjaphenix.expandedstorage.base.internal_api.block.AbstractChestBlock;
 import ninjaphenix.expandedstorage.base.internal_api.block.misc.CursedChestType;
@@ -156,24 +157,24 @@ public final class ChestBlockEntityRenderer implements BlockEntityRenderer<Chest
         return LayerDefinition.create(meshDefinition, 48, 48);
     }
 
-    public static void registerModelLayers() {
-        ModelLayers.ALL_MODELS.add(ChestBlockEntityRenderer.SINGLE_LAYER);
-        ModelLayers.ALL_MODELS.add(ChestBlockEntityRenderer.VANILLA_LEFT_LAYER);
-        ModelLayers.ALL_MODELS.add(ChestBlockEntityRenderer.VANILLA_RIGHT_LAYER);
-        ModelLayers.ALL_MODELS.add(ChestBlockEntityRenderer.TALL_TOP_LAYER);
-        ModelLayers.ALL_MODELS.add(ChestBlockEntityRenderer.TALL_BOTTOM_LAYER);
-        ModelLayers.ALL_MODELS.add(ChestBlockEntityRenderer.LONG_FRONT_LAYER);
-        ModelLayers.ALL_MODELS.add(ChestBlockEntityRenderer.LONG_BACK_LAYER);
-    }
+    //public static void registerModelLayers() {
+    //    ModelLayers.ALL_MODELS.add(ChestBlockEntityRenderer.SINGLE_LAYER);
+    //    ModelLayers.ALL_MODELS.add(ChestBlockEntityRenderer.VANILLA_LEFT_LAYER);
+    //    ModelLayers.ALL_MODELS.add(ChestBlockEntityRenderer.VANILLA_RIGHT_LAYER);
+    //    ModelLayers.ALL_MODELS.add(ChestBlockEntityRenderer.TALL_TOP_LAYER);
+    //    ModelLayers.ALL_MODELS.add(ChestBlockEntityRenderer.TALL_BOTTOM_LAYER);
+    //    ModelLayers.ALL_MODELS.add(ChestBlockEntityRenderer.LONG_FRONT_LAYER);
+    //    ModelLayers.ALL_MODELS.add(ChestBlockEntityRenderer.LONG_BACK_LAYER);
+    //}
 
-    public static void registerModelLayersDefinitions(ImmutableMap.Builder<ModelLayerLocation, LayerDefinition> builder) {
-        builder.put(ChestBlockEntityRenderer.SINGLE_LAYER, createSingleBodyLayer());
-        builder.put(ChestBlockEntityRenderer.VANILLA_LEFT_LAYER, createVanillaLeftBodyLayer());
-        builder.put(ChestBlockEntityRenderer.VANILLA_RIGHT_LAYER, createVanillaRightBodyLayer());
-        builder.put(ChestBlockEntityRenderer.TALL_TOP_LAYER, createTallTopBodyLayer());
-        builder.put(ChestBlockEntityRenderer.TALL_BOTTOM_LAYER, createTallBottomBodyLayer());
-        builder.put(ChestBlockEntityRenderer.LONG_FRONT_LAYER, createLongFrontBodyLayer());
-        builder.put(ChestBlockEntityRenderer.LONG_BACK_LAYER, createLongBackBodyLayer());
+    public static void registerModelLayersDefinitions() {
+        RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.SINGLE_LAYER, ChestBlockEntityRenderer::createSingleBodyLayer);
+        RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.VANILLA_LEFT_LAYER, ChestBlockEntityRenderer::createVanillaLeftBodyLayer);
+        RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.VANILLA_RIGHT_LAYER, ChestBlockEntityRenderer::createVanillaRightBodyLayer);
+        RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.TALL_TOP_LAYER, ChestBlockEntityRenderer::createTallTopBodyLayer);
+        RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.TALL_BOTTOM_LAYER, ChestBlockEntityRenderer::createTallBottomBodyLayer);
+        RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.LONG_FRONT_LAYER, ChestBlockEntityRenderer::createLongFrontBodyLayer);
+        RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.LONG_BACK_LAYER, ChestBlockEntityRenderer::createLongBackBodyLayer);
     }
 
     @Override

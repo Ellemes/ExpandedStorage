@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "expandedstorage:diamond_barrel"
-            ]
+            "item": "expandedstorage:diamond_barrel"
           }
         ]
       }

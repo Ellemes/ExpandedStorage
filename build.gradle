@@ -1,0 +1,140 @@
+buildscript {
+    repositories {
+        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
+        maven { url = 'https://maven.minecraftforge.net' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+    }
+}
+apply plugin: 'net.minecraftforge.gradle'
+// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+
+version = "${mod_version}"
+group = "${maven_group}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "${archives_base_name}"
+
+// Mojang ships Java 16 to end users in 1.17+ instead of Java 8 in 1.16 or lower, so your mod should target Java 16.
+java.toolchain.languageVersion = JavaLanguageVersion.of(16)
+
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+
+sourceSets {
+    main {
+        java {
+            srcDirs([
+                    "src/barrel/java",
+                    "src/base/java",
+                    "src/chest/java",
+                    "src/old_chest/java",
+                    rootDir.toPath().resolve("common/forgeSrc/barrel/java"),
+                    rootDir.toPath().resolve("common/forgeSrc/base/java"),
+                    rootDir.toPath().resolve("common/forgeSrc/chest/java"),
+                    rootDir.toPath().resolve("common/forgeSrc/old_chest/java")
+            ])
+        }
+        resources {
+            srcDirs([
+                    "src/barrel/resources",
+                    "src/base/resources",
+                    "src/chest/resources",
+                    "src/old_chest/resources",
+                    "src/common/resources",
+                    rootDir.toPath().resolve("common/forgeSrc/barrel/resources"),
+                    rootDir.toPath().resolve("common/forgeSrc/base/resources"),
+                    rootDir.toPath().resolve("common/forgeSrc/chest/resources"),
+                    rootDir.toPath().resolve("common/forgeSrc/old_chest/resources"),
+                    rootDir.toPath().resolve("common/forgeSrc/common/resources"),
+                    rootDir.toPath().resolve("common/forgeSrc/chest_compat/resources")
+            ])
+        }
+    }
+}
+
+minecraft {
+    // The mappings can be changed at any time and must be in the following format.
+    // Channel:   Version:
+    // snapshot   YYYYMMDD   Snapshot are built nightly.
+    // stable     #          Stables are built at the discretion of the MCP team.
+    // official   MCVersion  Official field/method names from Mojang mapping files
+    //
+    // You must be aware of the Mojang license when using the 'official' mappings.
+    // See more information here: https://github.com/MinecraftForge/MCPConfig/blob/master/Mojang.md
+    //
+    // Use non-default mappings at your own risk. They may not always work.
+    // Simply re-run your setup task after changing the mappings to update your workspace.
+    mappings channel: 'official', version: '1.17.1'
+
+    accessTransformer = file('src/common/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
+
+    // Default run configurations.
+    // These can be tweaked, removed, or duplicated as needed.
+    runs {
+        client {
+            workingDirectory rootProject.file('run')
+
+            // Recommended logging data for a userdev environment
+            // The markers can be added/remove as needed separated by commas.
+            // "SCAN": For mods scan.
+            // "REGISTRIES": For firing of registry events.
+            // "REGISTRYDUMP": For getting the contents of all registries.
+            //property 'forge.logging.markers', 'REGISTRIES'
+
+            // Recommended logging level for the console
+            // You can set various levels here.
+            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
+            //property 'forge.logging.console.level', 'debug'
+
+            mods {
+                expandedstorage {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory rootProject.file('run')
+
+            // Recommended logging data for a userdev environment
+            // The markers can be added/remove as needed separated by commas.
+            // "SCAN": For mods scan.
+            // "REGISTRIES": For firing of registry events.
+            // "REGISTRYDUMP": For getting the contents of all registries.
+            property 'forge.logging.markers', 'REGISTRIES'
+
+            // Recommended logging level for the console
+            // You can set various levels here.
+            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                expandedstorage {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+repositories {
+    maven {
+        // JEI maven
+        name = "Progwml6 maven"
+        url = uri("https://dvs1.progwml6.com/files/maven/")
+    }
+    maven {
+        // JEI maven - fallback
+        name = "ModMaven"
+        url = uri("https://modmaven.k-4u.nl")
+    }
+    mavenCentral()
+}
+
+dependencies {
+    minecraft("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
+    //compileOnly fg.deobf("mezz.jei:jei-1.16.5:${jei_version}:api")
+    implementation "org.jetbrains:annotations:21.0.1"
+}
+
+jar.finalizedBy('reobfJar')

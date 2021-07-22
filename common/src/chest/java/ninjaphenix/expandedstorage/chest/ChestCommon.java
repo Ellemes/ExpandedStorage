@@ -34,6 +34,7 @@ import ninjaphenix.expandedstorage.base.internal_api.block.misc.CursedChestType;
 import ninjaphenix.expandedstorage.base.internal_api.tier.OpenableTier;
 import ninjaphenix.expandedstorage.base.wrappers.PlatformUtils;
 import ninjaphenix.expandedstorage.chest.block.ChestBlock;
+import ninjaphenix.expandedstorage.chest.block.ChestBlockItem;
 import ninjaphenix.expandedstorage.chest.block.misc.ChestBlockEntity;
 import ninjaphenix.expandedstorage.chest.internal_api.ChestApi;
 
@@ -141,7 +142,7 @@ public final class ChestCommon {
     }
 
     private static BlockItem chestItem(OpenableTier tier, ChestBlock block) {
-        return new BlockItem(block, tier.itemProperties().apply(new Item.Properties().tab(Utils.TAB)));
+        return new ChestBlockItem(block, tier.itemProperties().apply(new Item.Properties().tab(Utils.TAB)));
     }
 
     static Set<ResourceLocation> getChestTextures(Set<ChestBlock> blocks) {
