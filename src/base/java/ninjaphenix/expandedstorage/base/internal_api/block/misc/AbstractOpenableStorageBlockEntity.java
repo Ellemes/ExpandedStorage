@@ -127,8 +127,8 @@ public abstract class AbstractOpenableStorageBlockEntity extends AbstractStorage
             }
 
             @Override
-            protected void openerCountChanged(Level level, BlockPos pos, BlockState state, int i, int j) {
-                AbstractOpenableStorageBlockEntity.this.openerCountChanged(level, pos, state, i, j);
+            protected void openerCountChanged(Level level, BlockPos pos, BlockState state, int oldCount, int newCount) {
+                AbstractOpenableStorageBlockEntity.this.openerCountChanged(level, pos, state, oldCount, newCount);
             }
 
             @Override

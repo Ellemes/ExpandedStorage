@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.CompoundContainer;
 import net.minecraft.world.Container;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DoubleBlockCombiner;
@@ -55,15 +56,13 @@ public final class ChestBlockEntity extends AbstractOpenableStorageBlockEntity {
     }
 
     @Override
-    protected void openerCountChanged(Level level, BlockPos pos, BlockState state, int i, int j) {
-        level.blockEvent(pos, state.getBlock(), 1, j);
+    protected void openerCountChanged(Level level, BlockPos pos, BlockState state, int oldCount, int newCount) {
+        level.blockEvent(pos, state.getBlock(), ChestBlock.SET_OPEN_COUNT_EVENT, newCount);
     }
 
     @Override
     protected boolean isOwnContainer(Container container) {
-        // todo: rewrite, we don't use double containers on forge...
-        //return container == this || container instanceof CompoundWorldlyContainer compoundContainer && compoundContainer.consistsPartlyOf(this);
-        return super.isOwnContainer(container);
+        return super.isOwnContainer(container) || container instanceof CompoundContainer compoundContainer && compoundContainer.contains(this.getContainerWrapper());
     }
 
     @Override
