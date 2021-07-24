@@ -20,8 +20,14 @@ public class ModelLayersMixin {
     @Inject(method = "createRoots()Ljava/util/Map;",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/geom/builders/LayerDefinition;create(Lnet/minecraft/client/model/geom/builders/MeshDefinition;II)Lnet/minecraft/client/model/geom/builders/LayerDefinition;", ordinal = 0),
             locals = LocalCapture.CAPTURE_FAILHARD)
-    private static void addLayerDefinitions(final CallbackInfoReturnable<Map<ModelLayerLocation, ModelPart>> CIR,
-                                            final ImmutableMap.Builder<ModelLayerLocation, LayerDefinition> BUILDER) {
-        ChestBlockEntityRenderer.registerModelLayersDefinitions(BUILDER);
+    private static void addLayerDefinitions(CallbackInfoReturnable<Map<ModelLayerLocation, ModelPart>> cir,
+                                            ImmutableMap.Builder<ModelLayerLocation, LayerDefinition> builder) {
+        builder.put(ChestBlockEntityRenderer.SINGLE_LAYER, ChestBlockEntityRenderer.createSingleBodyLayer());
+        builder.put(ChestBlockEntityRenderer.VANILLA_LEFT_LAYER, ChestBlockEntityRenderer.createVanillaLeftBodyLayer());
+        builder.put(ChestBlockEntityRenderer.VANILLA_RIGHT_LAYER, ChestBlockEntityRenderer.createVanillaRightBodyLayer());
+        builder.put(ChestBlockEntityRenderer.TALL_TOP_LAYER, ChestBlockEntityRenderer.createTallTopBodyLayer());
+        builder.put(ChestBlockEntityRenderer.TALL_BOTTOM_LAYER, ChestBlockEntityRenderer.createTallBottomBodyLayer());
+        builder.put(ChestBlockEntityRenderer.LONG_FRONT_LAYER, ChestBlockEntityRenderer.createLongFrontBodyLayer());
+        builder.put(ChestBlockEntityRenderer.LONG_BACK_LAYER, ChestBlockEntityRenderer.createLongBackBodyLayer());
     }
 }

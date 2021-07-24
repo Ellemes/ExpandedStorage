@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
@@ -41,7 +42,7 @@ public final class Main implements ModuleInitializer {
                 Client.registerItemRenderers(i.get());
             }
         };
-        ChestCommon.registerContent(registerBlocks, registerItems, registerBlockEntityType, TagRegistry.block(new ResourceLocation("c", "wooden_chests")));
+        ChestCommon.registerContent(registerBlocks, registerItems, registerBlockEntityType, TagRegistry.block(new ResourceLocation("c", "wooden_chests")), BlockItem::new);
     }
 
     private static class Client {
@@ -58,7 +59,13 @@ public final class Main implements ModuleInitializer {
                 BuiltinItemRendererRegistry.INSTANCE.register(item, (itemStack, transform, stack, source, light, overlay) ->
                         Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(renderEntity, stack, source, light, overlay));
             });
-            ChestBlockEntityRenderer.registerModelLayers();
+            ModelLayers.ALL_MODELS.add(ChestBlockEntityRenderer.SINGLE_LAYER);
+            ModelLayers.ALL_MODELS.add(ChestBlockEntityRenderer.VANILLA_LEFT_LAYER);
+            ModelLayers.ALL_MODELS.add(ChestBlockEntityRenderer.VANILLA_RIGHT_LAYER);
+            ModelLayers.ALL_MODELS.add(ChestBlockEntityRenderer.TALL_TOP_LAYER);
+            ModelLayers.ALL_MODELS.add(ChestBlockEntityRenderer.TALL_BOTTOM_LAYER);
+            ModelLayers.ALL_MODELS.add(ChestBlockEntityRenderer.LONG_FRONT_LAYER);
+            ModelLayers.ALL_MODELS.add(ChestBlockEntityRenderer.LONG_BACK_LAYER);
         }
     }
 }

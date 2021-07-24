@@ -13,9 +13,11 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fmlclient.registry.RenderingRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 import ninjaphenix.expandedstorage.base.wrappers.PlatformUtils;
 import ninjaphenix.expandedstorage.chest.block.ChestBlock;
+import ninjaphenix.expandedstorage.chest.block.ChestBlockItem;
 import ninjaphenix.expandedstorage.chest.block.misc.ChestBlockEntity;
 import ninjaphenix.expandedstorage.chest.client.ChestBlockEntityRenderer;
 
@@ -56,10 +58,18 @@ public class Main {
             if (PlatformUtils.getInstance().isClient()) {
                 Client.registerBER(blockEntityType);
             }
-        }, BlockTags.createOptional(new ResourceLocation("forge", "chests/wooden")));
+        }, BlockTags.createOptional(new ResourceLocation("forge", "chests/wooden")), ChestBlockItem::new);
 
+        // todo: this doesn't crash? Test on proper dedicated server
         modEventBus.addListener((FMLClientSetupEvent event) -> {
-            ChestBlockEntityRenderer.registerModelLayersDefinitions();
+            RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.SINGLE_LAYER, ChestBlockEntityRenderer::createSingleBodyLayer);
+            RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.VANILLA_LEFT_LAYER, ChestBlockEntityRenderer::createVanillaLeftBodyLayer);
+            RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.VANILLA_RIGHT_LAYER, ChestBlockEntityRenderer::createVanillaRightBodyLayer);
+            RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.TALL_TOP_LAYER, ChestBlockEntityRenderer::createTallTopBodyLayer);
+            RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.TALL_BOTTOM_LAYER, ChestBlockEntityRenderer::createTallBottomBodyLayer);
+            RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.LONG_FRONT_LAYER, ChestBlockEntityRenderer::createLongFrontBodyLayer);
+            RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.LONG_BACK_LAYER, ChestBlockEntityRenderer::createLongBackBodyLayer);
+
         });
     }
 
