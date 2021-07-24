@@ -141,6 +141,7 @@ public final class ChestCommon {
         return block;
     }
 
+    // todo: take a bifunction for ChestBlockItem / BlockItem
     private static BlockItem chestItem(OpenableTier tier, ChestBlock block) {
         return new ChestBlockItem(block, tier.itemProperties().apply(new Item.Properties().tab(Utils.TAB)));
     }

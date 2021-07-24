@@ -1,12 +1,10 @@
 package ninjaphenix.expandedstorage.chest.client;
 
-import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import it.unimi.dsi.fastutil.floats.Float2FloatFunction;
 import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -157,6 +155,7 @@ public final class ChestBlockEntityRenderer implements BlockEntityRenderer<Chest
         return LayerDefinition.create(meshDefinition, 48, 48);
     }
 
+    // todo: split into fabric
     //public static void registerModelLayers() {
     //    ModelLayers.ALL_MODELS.add(ChestBlockEntityRenderer.SINGLE_LAYER);
     //    ModelLayers.ALL_MODELS.add(ChestBlockEntityRenderer.VANILLA_LEFT_LAYER);
@@ -167,6 +166,7 @@ public final class ChestBlockEntityRenderer implements BlockEntityRenderer<Chest
     //    ModelLayers.ALL_MODELS.add(ChestBlockEntityRenderer.LONG_BACK_LAYER);
     //}
 
+    // todo: split into forge
     public static void registerModelLayersDefinitions() {
         RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.SINGLE_LAYER, ChestBlockEntityRenderer::createSingleBodyLayer);
         RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.VANILLA_LEFT_LAYER, ChestBlockEntityRenderer::createVanillaLeftBodyLayer);

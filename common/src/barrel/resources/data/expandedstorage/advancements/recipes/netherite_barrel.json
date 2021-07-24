@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "expandedstorage:obsidian_barrel"
+            "items": [
+              "expandedstorage:obsidian_barrel"
+            ]
           }
         ]
       }
