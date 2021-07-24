@@ -51,13 +51,13 @@ public final class ChestBlockEntity extends AbstractOpenableStorageBlockEntity {
     }
 
     @Override
-    protected void openerCountChanged(Level level, BlockPos pos, BlockState state, int i, int j) {
-        level.blockEvent(pos, state.getBlock(), 1, j);
+    protected void openerCountChanged(Level level, BlockPos pos, BlockState state, int oldCount, int newCount) {
+        level.blockEvent(pos, state.getBlock(), ChestBlock.SET_OPEN_COUNT_EVENT, newCount);
     }
 
     @Override
     protected boolean isOwnContainer(Container container) {
-        return container == this || container instanceof CompoundWorldlyContainer compoundContainer && compoundContainer.consistsPartlyOf(this);
+        return super.isOwnContainer(container) || container instanceof CompoundWorldlyContainer compoundContainer && compoundContainer.consistsPartlyOf(this);
     }
 
     @Override

@@ -166,6 +166,17 @@ public final class ChestBlockEntityRenderer implements BlockEntityRenderer<Chest
     //    ModelLayers.ALL_MODELS.add(ChestBlockEntityRenderer.LONG_BACK_LAYER);
     //}
 
+    // todo: split into fabric
+    //public static void registerModelLayersDefinitions(ImmutableMap.Builder<ModelLayerLocation, LayerDefinition> builder) {
+    //    builder.put(ChestBlockEntityRenderer.SINGLE_LAYER, createSingleBodyLayer());
+    //    builder.put(ChestBlockEntityRenderer.VANILLA_LEFT_LAYER, createVanillaLeftBodyLayer());
+    //    builder.put(ChestBlockEntityRenderer.VANILLA_RIGHT_LAYER, createVanillaRightBodyLayer());
+    //    builder.put(ChestBlockEntityRenderer.TALL_TOP_LAYER, createTallTopBodyLayer());
+    //    builder.put(ChestBlockEntityRenderer.TALL_BOTTOM_LAYER, createTallBottomBodyLayer());
+    //    builder.put(ChestBlockEntityRenderer.LONG_FRONT_LAYER, createLongFrontBodyLayer());
+    //    builder.put(ChestBlockEntityRenderer.LONG_BACK_LAYER, createLongBackBodyLayer());
+    //}
+
     // todo: split into forge
     public static void registerModelLayersDefinitions() {
         RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.SINGLE_LAYER, ChestBlockEntityRenderer::createSingleBodyLayer);
