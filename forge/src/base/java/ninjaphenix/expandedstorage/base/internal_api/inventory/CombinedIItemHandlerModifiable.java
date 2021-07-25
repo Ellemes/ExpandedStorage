@@ -1,17 +1,17 @@
 package ninjaphenix.expandedstorage.base.internal_api.inventory;
 
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.NotNull;
 
-public final class CombinedIItemHandler implements IItemHandler {
+public final class CombinedIItemHandlerModifiable implements IItemHandlerModifiable {
 
-    private final IItemHandler first;
-    private final IItemHandler second;
+    private final IItemHandlerModifiable first;
+    private final IItemHandlerModifiable second;
     private final int firstSize;
     private final int totalSize;
 
-    public CombinedIItemHandler(IItemHandler first, IItemHandler second) {
+    public CombinedIItemHandlerModifiable(IItemHandlerModifiable first, IItemHandlerModifiable second) {
         this.first = first;
         this.second = second;
         this.firstSize = first.getSlots();
@@ -64,5 +64,14 @@ public final class CombinedIItemHandler implements IItemHandler {
             return second.isItemValid(slot - firstSize, stack);
         }
         return first.isItemValid(slot, stack);
+    }
+
+    @Override
+    public void setStackInSlot(int slot, @NotNull ItemStack stack) {
+        if (slot >= firstSize) {
+            second.setStackInSlot(slot - firstSize, stack);
+        } else {
+            first.setStackInSlot(slot, stack);
+        }
     }
 }
