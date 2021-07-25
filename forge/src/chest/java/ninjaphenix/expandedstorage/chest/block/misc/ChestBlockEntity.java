@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.TickableBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import ninjaphenix.expandedstorage.base.internal_api.block.AbstractChestBlock;
 import ninjaphenix.expandedstorage.base.internal_api.block.misc.AbstractOpenableStorageBlockEntity;
 import ninjaphenix.expandedstorage.chest.block.ChestBlock;
@@ -114,7 +114,7 @@ public final class ChestBlockEntity extends AbstractOpenableStorageBlockEntity i
 
     @NotNull
     @Override
-    protected IItemHandler createItemHandler(Level level, BlockState state, BlockPos pos, @Nullable Direction side) {
+    protected IItemHandlerModifiable createItemHandler(Level level, BlockState state, BlockPos pos, @Nullable Direction side) {
         return AbstractChestBlock.createItemHandler(level, state, pos).orElse(AbstractOpenableStorageBlockEntity.createGenericItemHandler(this));
     }
 }

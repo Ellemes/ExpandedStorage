@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import ninjaphenix.expandedstorage.base.internal_api.block.AbstractChestBlock;
 import ninjaphenix.expandedstorage.base.internal_api.block.misc.AbstractOpenableStorageBlockEntity;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +19,7 @@ public final class OldChestBlockEntity extends AbstractOpenableStorageBlockEntit
 
     @NotNull
     @Override
-    protected IItemHandler createItemHandler(Level level, BlockState state, BlockPos pos, @Nullable Direction side) {
+    protected IItemHandlerModifiable createItemHandler(Level level, BlockState state, BlockPos pos, @Nullable Direction side) {
         return AbstractChestBlock.createItemHandler(level, state, pos).orElse(AbstractOpenableStorageBlockEntity.createGenericItemHandler(this));
     }
 }

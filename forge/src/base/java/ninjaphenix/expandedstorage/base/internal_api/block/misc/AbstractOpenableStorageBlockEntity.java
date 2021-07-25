@@ -21,7 +21,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import ninjaphenix.expandedstorage.base.internal_api.block.AbstractOpenableStorageBlock;
@@ -40,7 +40,7 @@ public abstract class AbstractOpenableStorageBlockEntity extends AbstractStorage
     protected Component containerName;
     private int slots;
     private NonNullList<ItemStack> inventory;
-    private LazyOptional<IItemHandler> itemHandler;
+    private LazyOptional<IItemHandlerModifiable> itemHandler;
     private final Supplier<Container> container = Suppliers.memoize(() -> new Container() {
         @Override
         public int getContainerSize() {
@@ -152,13 +152,34 @@ public abstract class AbstractOpenableStorageBlockEntity extends AbstractStorage
         return super.getCapability(capability, side);
     }
 
+    @Override
+    public void clearCache() {
+        super.clearCache();
+        this.itemHandler = null;
+    }
+
+    @Override
+    public void setChanged() {
+        super.setChanged();
+        this.itemHandler = null;
+    }
+
     @NotNull
-    protected IItemHandler createItemHandler(Level level, BlockState state, BlockPos pos, @Nullable Direction side) {
+    protected IItemHandlerModifiable createItemHandler(Level level, BlockState state, BlockPos pos, @Nullable Direction side) {
         return AbstractOpenableStorageBlockEntity.createGenericItemHandler(this);
     }
 
-    public static IItemHandler createGenericItemHandler(AbstractOpenableStorageBlockEntity entity) {
-        return new IItemHandler() {
+    public static IItemHandlerModifiable createGenericItemHandler(AbstractOpenableStorageBlockEntity entity) {
+        return new IItemHandlerModifiable() {
+            @Override
+            public void setStackInSlot(int slot, @NotNull ItemStack stack) {
+                entity.inventory.set(slot, stack);
+                if (stack.getCount() > this.getSlotLimit(slot)) {
+                    stack.setCount(this.getSlotLimit(slot));
+                }
+                entity.setChanged();
+            }
+
             @Override
             public int getSlots() {
                 return entity.slots;

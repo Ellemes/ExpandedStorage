@@ -4,7 +4,7 @@ plugins {
 
 loom {
     silentMojangMappingsLicense()
-    useFabricMixin = true
+    useFabricMixin = false
     runs {
         named("client") {
             vmArgs("-XX:+IgnoreUnrecognizedVMOptions")
