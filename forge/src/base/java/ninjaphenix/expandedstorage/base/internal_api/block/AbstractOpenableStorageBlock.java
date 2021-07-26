@@ -88,6 +88,7 @@ public abstract class AbstractOpenableStorageBlock extends AbstractStorageBlock 
         }
     }
 
+    @Nullable
     protected ContainerMenuFactory createContainerFactory(BlockState state, LevelAccessor level, BlockPos pos) {
         if (!(level.getBlockEntity(pos) instanceof AbstractOpenableStorageBlockEntity container)) {
             return null;
@@ -112,6 +113,7 @@ public abstract class AbstractOpenableStorageBlock extends AbstractStorageBlock 
                 return false;
             }
 
+            @Nullable
             @Override
             public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, Player player) {
                 if (container.canPlayerInteractWith(player) && container.canContinueUse(player)) {

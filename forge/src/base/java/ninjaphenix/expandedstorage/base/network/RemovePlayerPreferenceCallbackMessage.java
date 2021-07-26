@@ -7,13 +7,14 @@ import ninjaphenix.expandedstorage.base.wrappers.NetworkWrapper;
 
 import java.util.function.Supplier;
 
-public class RemovePlayerPreferenceCallbackMessage {
+public final class RemovePlayerPreferenceCallbackMessage {
     public static void encode(RemovePlayerPreferenceCallbackMessage message, FriendlyByteBuf buffer) {
 
     }
 
     public static RemovePlayerPreferenceCallbackMessage decode(FriendlyByteBuf buffer) {
-        return null;
+        //noinspection InstantiationOfUtilityClass
+        return new RemovePlayerPreferenceCallbackMessage();
     }
 
     public static void handle(RemovePlayerPreferenceCallbackMessage message, Supplier<NetworkEvent.Context> wrappedContext) {

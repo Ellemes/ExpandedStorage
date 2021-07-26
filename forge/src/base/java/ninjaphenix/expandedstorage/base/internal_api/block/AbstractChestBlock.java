@@ -33,7 +33,7 @@ import ninjaphenix.expandedstorage.base.internal_api.inventory.ContainerMenuFact
 import ninjaphenix.expandedstorage.base.wrappers.NetworkWrapper;
 import org.jetbrains.annotations.ApiStatus.Experimental;
 import org.jetbrains.annotations.ApiStatus.Internal;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.function.BiPredicate;
@@ -84,6 +84,7 @@ public abstract class AbstractChestBlock<T extends AbstractOpenableStorageBlockE
                     return false;
                 }
 
+                @Nullable
                 @Override
                 public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, Player player) {
                     if (first.canContinueUse(player) && second.canContinueUse(player)) {
@@ -117,6 +118,7 @@ public abstract class AbstractChestBlock<T extends AbstractOpenableStorageBlockE
                     return false;
                 }
 
+                @Nullable
                 @Override
                 public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, Player player) {
                     if (single.canContinueUse(player)) {
@@ -196,7 +198,6 @@ public abstract class AbstractChestBlock<T extends AbstractOpenableStorageBlockE
         appendAdditionalStateDefinitions(builder);
     }
 
-    @NotNull
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         Level level = context.getLevel();
@@ -296,6 +297,7 @@ public abstract class AbstractChestBlock<T extends AbstractOpenableStorageBlockE
         return false;
     }
 
+    @Nullable
     @Override
     protected ContainerMenuFactory createContainerFactory(BlockState state, LevelAccessor level, BlockPos pos) {
         return this.combine(state, level, pos, false).apply(menuGetter).orElse(null);

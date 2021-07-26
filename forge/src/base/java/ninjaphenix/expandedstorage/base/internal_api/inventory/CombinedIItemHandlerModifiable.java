@@ -2,10 +2,8 @@ package ninjaphenix.expandedstorage.base.internal_api.inventory;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
-import org.jetbrains.annotations.NotNull;
 
 public final class CombinedIItemHandlerModifiable implements IItemHandlerModifiable {
-
     private final IItemHandlerModifiable first;
     private final IItemHandlerModifiable second;
     private final int firstSize;
@@ -23,7 +21,6 @@ public final class CombinedIItemHandlerModifiable implements IItemHandlerModifia
         return totalSize;
     }
 
-    @NotNull
     @Override
     public ItemStack getStackInSlot(int slot) {
         if (slot >= firstSize) {
@@ -32,16 +29,14 @@ public final class CombinedIItemHandlerModifiable implements IItemHandlerModifia
         return first.getStackInSlot(slot);
     }
 
-    @NotNull
     @Override
-    public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+    public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
         if (slot >= firstSize) {
             return second.insertItem(slot - firstSize, stack, simulate);
         }
         return first.insertItem(slot, stack, simulate);
     }
 
-    @NotNull
     @Override
     public ItemStack extractItem(int slot, int amount, boolean simulate) {
         if (slot >= firstSize) {
@@ -59,7 +54,7 @@ public final class CombinedIItemHandlerModifiable implements IItemHandlerModifia
     }
 
     @Override
-    public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+    public boolean isItemValid(int slot, ItemStack stack) {
         if (slot >= firstSize) {
             return second.isItemValid(slot - firstSize, stack);
         }
@@ -67,7 +62,7 @@ public final class CombinedIItemHandlerModifiable implements IItemHandlerModifia
     }
 
     @Override
-    public void setStackInSlot(int slot, @NotNull ItemStack stack) {
+    public void setStackInSlot(int slot, ItemStack stack) {
         if (slot >= firstSize) {
             second.setStackInSlot(slot - firstSize, stack);
         } else {

@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 @SuppressWarnings("ClassCanBeRecord")
-public class OpenSelectScreenMessage {
+public final class OpenSelectScreenMessage {
     private final Set<ResourceLocation> containerTypeOptions;
 
     public OpenSelectScreenMessage(Set<ResourceLocation> containerTypeOptions) {
@@ -40,7 +40,7 @@ public class OpenSelectScreenMessage {
         context.setPacketHandled(true);
     }
 
-    @OnlyIn(Dist.CLIENT) // Required otherwise PickScreen will be classloaded always, even when wrapped in DistExecutor
+    @OnlyIn(Dist.CLIENT)
     private void openScreen(NetworkEvent.Context context) {
         context.enqueueWork(() -> Minecraft.getInstance().setScreen(new PickScreen(containerTypeOptions, null)));
     }

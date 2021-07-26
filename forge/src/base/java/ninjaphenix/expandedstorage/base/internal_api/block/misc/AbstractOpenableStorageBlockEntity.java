@@ -27,7 +27,6 @@ import ninjaphenix.expandedstorage.base.internal_api.block.AbstractOpenableStora
 import ninjaphenix.expandedstorage.base.internal_api.inventory.AbstractContainerMenu_;
 import org.jetbrains.annotations.ApiStatus.Experimental;
 import org.jetbrains.annotations.ApiStatus.Internal;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
@@ -57,13 +56,11 @@ public abstract class AbstractOpenableStorageBlockEntity extends AbstractStorage
             return true;
         }
 
-        @NotNull
         @Override
         public ItemStack getItem(int slot) {
             return inventory.get(slot);
         }
 
-        @NotNull
         @Override
         public ItemStack removeItem(int slot, int amount) {
             ItemStack stack = ContainerHelper.removeItem(inventory, slot, amount);
@@ -73,14 +70,13 @@ public abstract class AbstractOpenableStorageBlockEntity extends AbstractStorage
             return stack;
         }
 
-        @NotNull
         @Override
         public ItemStack removeItemNoUpdate(int slot) {
             return ContainerHelper.takeItem(inventory, slot);
         }
 
         @Override
-        public void setItem(int slot, @NotNull ItemStack stack) {
+        public void setItem(int slot, ItemStack stack) {
             inventory.set(slot, stack);
             if (stack.getCount() > this.getMaxStackSize()) {
                 stack.setCount(this.getMaxStackSize());
@@ -94,7 +90,7 @@ public abstract class AbstractOpenableStorageBlockEntity extends AbstractStorage
         }
 
         @Override
-        public boolean stillValid(@NotNull Player player) {
+        public boolean stillValid(Player player) {
             return AbstractOpenableStorageBlockEntity.this.canContinueUse(player);
         }
 
@@ -104,12 +100,12 @@ public abstract class AbstractOpenableStorageBlockEntity extends AbstractStorage
         }
 
         @Override
-        public void startOpen(@NotNull Player player) {
+        public void startOpen(Player player) {
             AbstractOpenableStorageBlockEntity.this.startOpen(player);
         }
 
         @Override
-        public void stopOpen(@NotNull Player player) {
+        public void stopOpen(Player player) {
             AbstractOpenableStorageBlockEntity.this.stopOpen(player);
         }
     });
@@ -118,22 +114,22 @@ public abstract class AbstractOpenableStorageBlockEntity extends AbstractStorage
         super(blockEntityType, pos, state);
         this.openersCounter = new ContainerOpenersCounter() {
             @Override
-            protected void onOpen(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state) {
+            protected void onOpen(Level level, BlockPos pos, BlockState state) {
                 AbstractOpenableStorageBlockEntity.this.onOpen(level, pos, state);
             }
 
             @Override
-            protected void onClose(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state) {
+            protected void onClose(Level level, BlockPos pos, BlockState state) {
                 AbstractOpenableStorageBlockEntity.this.onClose(level, pos, state);
             }
 
             @Override
-            protected void openerCountChanged(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, int oldCount, int newCount) {
+            protected void openerCountChanged(Level level, BlockPos pos, BlockState state, int oldCount, int newCount) {
                 AbstractOpenableStorageBlockEntity.this.openerCountChanged(level, pos, state, oldCount, newCount);
             }
 
             @Override
-            protected boolean isOwnContainer(@NotNull Player player) {
+            protected boolean isOwnContainer(Player player) {
                 if (player.containerMenu instanceof AbstractContainerMenu_<?>) {
                     return AbstractOpenableStorageBlockEntity.this.isOwnContainer(((AbstractContainerMenu_<?>) player.containerMenu).getContainer());
                 } else {
@@ -142,19 +138,19 @@ public abstract class AbstractOpenableStorageBlockEntity extends AbstractStorage
             }
         };
         this.blockId = blockId;
-        if (blockId != null) {
-            this.initialise(blockId);
-        }
+        this.initialise(blockId);
     }
 
     private void startOpen(Player player) {
         if (!player.isSpectator()) {
+            //noinspection ConstantConditions
             openersCounter.incrementOpeners(player, this.getLevel(), this.getBlockPos(), this.getBlockState());
         }
     }
 
     private void stopOpen(Player player) {
         if (!player.isSpectator()) {
+            //noinspection ConstantConditions
             openersCounter.decrementOpeners(player, this.getLevel(), this.getBlockPos(), this.getBlockState());
         }
     }
@@ -176,6 +172,7 @@ public abstract class AbstractOpenableStorageBlockEntity extends AbstractStorage
     }
 
     public final void recheckOpen() {
+        //noinspection ConstantConditions
         openersCounter.recheckOpeners(this.getLevel(), this.getBlockPos(), this.getBlockState());
     }
 
@@ -183,9 +180,9 @@ public abstract class AbstractOpenableStorageBlockEntity extends AbstractStorage
         return container.get();
     }
 
-    @NotNull
+
     @Override
-    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction side) {
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction side) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             if (itemHandler == null) {
                 itemHandler = LazyOptional.of(() -> this.createItemHandler(this.getLevel(), this.getBlockState(), this.getBlockPos(), side));
@@ -197,7 +194,7 @@ public abstract class AbstractOpenableStorageBlockEntity extends AbstractStorage
 
     @Override
     @SuppressWarnings("deprecation")
-    public void setBlockState(@NotNull BlockState state) {
+    public void setBlockState(BlockState state) {
         super.setBlockState(state);
         this.itemHandler = null;
     }
@@ -208,7 +205,6 @@ public abstract class AbstractOpenableStorageBlockEntity extends AbstractStorage
         this.itemHandler = null;
     }
 
-    @NotNull
     protected IItemHandlerModifiable createItemHandler(Level level, BlockState state, BlockPos pos, @Nullable Direction side) {
         return AbstractOpenableStorageBlockEntity.createGenericItemHandler(this);
     }
@@ -216,7 +212,7 @@ public abstract class AbstractOpenableStorageBlockEntity extends AbstractStorage
     public static IItemHandlerModifiable createGenericItemHandler(AbstractOpenableStorageBlockEntity entity) {
         return new IItemHandlerModifiable() {
             @Override
-            public void setStackInSlot(int slot, @NotNull ItemStack stack) {
+            public void setStackInSlot(int slot, ItemStack stack) {
                 entity.inventory.set(slot, stack);
                 if (stack.getCount() > this.getSlotLimit(slot)) {
                     stack.setCount(this.getSlotLimit(slot));
@@ -229,15 +225,13 @@ public abstract class AbstractOpenableStorageBlockEntity extends AbstractStorage
                 return entity.slots;
             }
 
-            @NotNull
             @Override
             public ItemStack getStackInSlot(int slot) {
                 return entity.inventory.get(slot);
             }
 
-            @NotNull
             @Override
-            public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+            public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
                 if (stack.isEmpty()) {
                     return ItemStack.EMPTY;
                 }
@@ -272,7 +266,7 @@ public abstract class AbstractOpenableStorageBlockEntity extends AbstractStorage
                 return ItemStack.EMPTY;
             }
 
-            @NotNull
+
             @Override
             public ItemStack extractItem(int slot, int amount, boolean simulate) {
                 var stackInSlot = entity.inventory.get(slot);
@@ -295,7 +289,7 @@ public abstract class AbstractOpenableStorageBlockEntity extends AbstractStorage
             }
 
             @Override
-            public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+            public boolean isItemValid(int slot, ItemStack stack) {
                 return true;
             }
         };

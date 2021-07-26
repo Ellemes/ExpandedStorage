@@ -122,11 +122,11 @@ final class NetworkWrapperImpl implements NetworkWrapper {
                 }
             }, buffer -> menuFactory.writeClientData(player, buffer));
         } else {
-            s2c_openSelectScreen(player, (type) -> s2c_openMenu(player, menuFactory));
+            this.s2c_openSelectScreen(player, (type) -> this.s2c_openMenu(player, menuFactory));
         }
     }
 
-    public void s2c_openSelectScreen(ServerPlayer player, Consumer<ResourceLocation> playerPreferenceCallback) {
+    public void s2c_openSelectScreen(ServerPlayer player, @Nullable Consumer<ResourceLocation> playerPreferenceCallback) {
         if (playerPreferenceCallback != null) {
             preferenceCallbacks.put(player.getUUID(), playerPreferenceCallback);
         }

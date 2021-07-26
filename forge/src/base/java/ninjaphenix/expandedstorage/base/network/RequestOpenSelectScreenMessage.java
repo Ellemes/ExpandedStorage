@@ -19,8 +19,8 @@ public final class RequestOpenSelectScreenMessage {
 
     }
 
-    @SuppressWarnings("InstantiationOfUtilityClass")
     public static RequestOpenSelectScreenMessage decode(FriendlyByteBuf buffer) {
+        //noinspection InstantiationOfUtilityClass
         return new RequestOpenSelectScreenMessage();
     }
 

@@ -3,6 +3,7 @@ package ninjaphenix.expandedstorage.base.config;
 import com.electronwill.nightconfig.core.Config;
 import net.minecraft.resources.ResourceLocation;
 import ninjaphenix.expandedstorage.base.internal_api.Utils;
+import org.jetbrains.annotations.Nullable;
 
 public final class LegacyFactory implements Converter<Config, ConfigV0> {
     public static final LegacyFactory INSTANCE = new LegacyFactory();
@@ -11,8 +12,9 @@ public final class LegacyFactory implements Converter<Config, ConfigV0> {
 
     }
 
+    @Nullable
     @Override
-    public ConfigV0 fromSource(Config source) {
+    public ConfigV0 fromSource(@Nullable Config source) {
         if (source != null) {
             if (source.get("client.preferred_container_type") instanceof String containerType &&
                     source.get("client.restrictive_scrolling") instanceof Boolean restrictiveScrolling) {

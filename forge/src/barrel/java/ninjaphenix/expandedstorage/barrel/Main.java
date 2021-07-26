@@ -14,38 +14,49 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.IForgeRegistry;
 import ninjaphenix.expandedstorage.barrel.block.BarrelBlock;
+import ninjaphenix.expandedstorage.barrel.block.misc.BarrelBlockEntity;
 import ninjaphenix.expandedstorage.base.wrappers.PlatformUtils;
+
+import java.util.Set;
 
 public final class Main {
     public Main() {
+        BarrelCommon.registerContent(this::registerBlocks, this::registerItems, this::registerBET,
+                BlockTags.createOptional(new ResourceLocation("forge", "barrels/wooden")));
+    }
+
+    private void registerBET(BlockEntityType<BarrelBlockEntity> blockEntityType) {
+        blockEntityType.setRegistryName(BarrelCommon.BLOCK_TYPE);
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        BarrelCommon.registerContent(blocks -> {
-            for (BarrelBlock block : blocks) {
-                block.setRegistryName(block.blockId());
-            }
-            modEventBus.addGenericListener(Block.class, (RegistryEvent.Register<Block> event) -> {
-                IForgeRegistry<Block> registry = event.getRegistry();
-                blocks.forEach(registry::register);
+        modEventBus.addGenericListener(BlockEntityType.class, (RegistryEvent.Register<BlockEntityType<?>> event) -> {
+            event.getRegistry().register(blockEntityType);
+        });
+    }
+
+    private void registerItems(Set<BlockItem> items) {
+        for (BlockItem item : items) {
+            item.setRegistryName(((BarrelBlock) item.getBlock()).blockId());
+        }
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modEventBus.addGenericListener(Item.class, (RegistryEvent.Register<Item> event) -> {
+            IForgeRegistry<Item> registry = event.getRegistry();
+            items.forEach(registry::register);
+        });
+    }
+
+    private void registerBlocks(Set<BarrelBlock> blocks) {
+        for (BarrelBlock block : blocks) {
+            block.setRegistryName(block.blockId());
+        }
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modEventBus.addGenericListener(Block.class, (RegistryEvent.Register<Block> event) -> {
+            IForgeRegistry<Block> registry = event.getRegistry();
+            blocks.forEach(registry::register);
+        });
+        if (PlatformUtils.getInstance().isClient()) {
+            modEventBus.addListener((FMLClientSetupEvent event) -> {
+                blocks.forEach(block -> ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutoutMipped()));
             });
-            // Do client side stuff
-            if (PlatformUtils.getInstance().isClient()) {
-                modEventBus.addListener((FMLClientSetupEvent event) -> {
-                    blocks.forEach(block -> ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutoutMipped()));
-                });
-            }
-        }, items -> {
-            for (BlockItem item : items) {
-                item.setRegistryName(((BarrelBlock) item.getBlock()).blockId());
-            }
-            modEventBus.addGenericListener(Item.class, (RegistryEvent.Register<Item> event) -> {
-                IForgeRegistry<Item> registry = event.getRegistry();
-                items.forEach(registry::register);
-            });
-        }, blockEntityType -> {
-            blockEntityType.setRegistryName(BarrelCommon.BLOCK_TYPE);
-            modEventBus.addGenericListener(BlockEntityType.class, (RegistryEvent.Register<BlockEntityType<?>> event) -> {
-                event.getRegistry().register(blockEntityType);
-            });
-        }, BlockTags.createOptional(new ResourceLocation("forge", "barrels/wooden")));
+        }
     }
 }

@@ -8,6 +8,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import ninjaphenix.expandedstorage.base.internal_api.inventory.ContainerMenuFactory;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
@@ -26,7 +27,7 @@ public interface NetworkWrapper {
 
     void s2c_openMenu(ServerPlayer player, ContainerMenuFactory menuFactory);
 
-    void s2c_openSelectScreen(ServerPlayer player, Consumer<ResourceLocation> playerPreferenceCallback);
+    void s2c_openSelectScreen(ServerPlayer player, @Nullable Consumer<ResourceLocation> playerPreferenceCallback);
 
     AbstractContainerMenu createMenu(int windowId, BlockPos blockPos, Container container, Inventory playerInventory, Component containerName);
 
