@@ -8,9 +8,11 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fmlclient.registry.RenderingRegistry;
@@ -60,22 +62,26 @@ public class Main {
             }
         }, BlockTags.createOptional(new ResourceLocation("forge", "chests/wooden")), ChestBlockItem::new);
 
-        // todo: this doesn't crash? Test on proper dedicated server
-        modEventBus.addListener((FMLClientSetupEvent event) -> {
-            RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.SINGLE_LAYER, ChestBlockEntityRenderer::createSingleBodyLayer);
-            RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.VANILLA_LEFT_LAYER, ChestBlockEntityRenderer::createVanillaLeftBodyLayer);
-            RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.VANILLA_RIGHT_LAYER, ChestBlockEntityRenderer::createVanillaRightBodyLayer);
-            RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.TALL_TOP_LAYER, ChestBlockEntityRenderer::createTallTopBodyLayer);
-            RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.TALL_BOTTOM_LAYER, ChestBlockEntityRenderer::createTallBottomBodyLayer);
-            RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.LONG_FRONT_LAYER, ChestBlockEntityRenderer::createLongFrontBodyLayer);
-            RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.LONG_BACK_LAYER, ChestBlockEntityRenderer::createLongBackBodyLayer);
-
-        });
+        if (PlatformUtils.getInstance().isClient()) {
+            Client.registerModelLayers(modEventBus);
+        }
     }
 
     private static class Client {
         private static void registerBER(BlockEntityType<ChestBlockEntity> type) {
             BlockEntityRenderers.register(type, ChestBlockEntityRenderer::new);
+        }
+
+        public static void registerModelLayers(IEventBus modEventBus) {
+            modEventBus.addListener((FMLClientSetupEvent event) -> {
+                RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.SINGLE_LAYER, ChestBlockEntityRenderer::createSingleBodyLayer);
+                RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.VANILLA_LEFT_LAYER, ChestBlockEntityRenderer::createVanillaLeftBodyLayer);
+                RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.VANILLA_RIGHT_LAYER, ChestBlockEntityRenderer::createVanillaRightBodyLayer);
+                RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.TALL_TOP_LAYER, ChestBlockEntityRenderer::createTallTopBodyLayer);
+                RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.TALL_BOTTOM_LAYER, ChestBlockEntityRenderer::createTallBottomBodyLayer);
+                RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.LONG_FRONT_LAYER, ChestBlockEntityRenderer::createLongFrontBodyLayer);
+                RenderingRegistry.registerLayerDefinition(ChestBlockEntityRenderer.LONG_BACK_LAYER, ChestBlockEntityRenderer::createLongBackBodyLayer);
+            });
         }
     }
 }
