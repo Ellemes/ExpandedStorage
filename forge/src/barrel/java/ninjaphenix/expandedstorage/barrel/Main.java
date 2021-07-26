@@ -51,11 +51,15 @@ public final class Main {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addGenericListener(Block.class, (RegistryEvent.Register<Block> event) -> {
             IForgeRegistry<Block> registry = event.getRegistry();
-            blocks.forEach(registry::register);
+            for (BarrelBlock block : blocks) {
+                registry.register(block);
+            }
         });
         if (PlatformUtils.getInstance().isClient()) {
             modEventBus.addListener((FMLClientSetupEvent event) -> {
-                blocks.forEach(block -> ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutoutMipped()));
+                for (BarrelBlock block : blocks) {
+                    ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutoutMipped());
+                }
             });
         }
     }

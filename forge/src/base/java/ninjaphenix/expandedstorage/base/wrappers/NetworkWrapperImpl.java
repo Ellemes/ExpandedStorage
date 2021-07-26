@@ -131,6 +131,7 @@ final class NetworkWrapperImpl implements NetworkWrapper {
             preferenceCallbacks.put(player.getUUID(), playerPreferenceCallback);
         }
         ServerGamePacketListenerImpl listener = player.connection;
+        // todo: is listener always non-null?
         if (listener != null && channel.isRemotePresent(listener.getConnection())) {
             channel.send(PacketDistributor.PLAYER.with(() -> player), new OpenSelectScreenMessage(containerFactories.keySet()));
         }

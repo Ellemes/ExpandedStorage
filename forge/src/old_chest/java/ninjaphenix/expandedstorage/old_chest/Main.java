@@ -25,7 +25,9 @@ public final class Main {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addGenericListener(Block.class, (RegistryEvent.Register<Block> event) -> {
             IForgeRegistry<Block> registry = event.getRegistry();
-            blocks.forEach(registry::register);
+            for (OldChestBlock block : blocks) {
+                registry.register(block);
+            }
         });
     }
 
@@ -36,7 +38,9 @@ public final class Main {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addGenericListener(Item.class, (RegistryEvent.Register<Item> event) -> {
             IForgeRegistry<Item> registry = event.getRegistry();
-            items.forEach(registry::register);
+            for (BlockItem item : items) {
+                registry.register(item);
+            }
         });
     }
 

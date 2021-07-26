@@ -79,7 +79,7 @@ public abstract class AbstractContainerMenu_<T extends ScreenMeta> extends Abstr
     public ItemStack quickMoveStack(Player player, int index) {
         ItemStack originalStack = ItemStack.EMPTY;
         Slot slot = slots.get(index);
-        if (slot != null && slot.hasItem()) {
+        if (slot.hasItem()) {
             ItemStack newStack = slot.getItem();
             originalStack = newStack.copy();
             if (index < screenMeta.totalSlots) {

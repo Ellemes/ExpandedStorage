@@ -42,7 +42,7 @@ public final class ChestBlockEntityRenderer implements BlockEntityRenderer<Chest
     public static final ModelLayerLocation LONG_FRONT_LAYER = new ModelLayerLocation(Utils.resloc("long_front_chest"), "main");
     public static final ModelLayerLocation LONG_BACK_LAYER = new ModelLayerLocation(Utils.resloc("long_back_chest"), "main");
     private static final BlockState DEFAULT_STATE = Registry.BLOCK.get(Utils.resloc("wood_chest")).defaultBlockState();
-    private static final DoubleBlockCombiner.Combiner<ChestBlockEntity, Float2FloatFunction> LID_OPENNESS_FUNCTION_GETTER = new DoubleBlockCombiner.Combiner<ChestBlockEntity, Float2FloatFunction>() {
+    private static final DoubleBlockCombiner.Combiner<ChestBlockEntity, Float2FloatFunction> LID_OPENNESS_FUNCTION_GETTER = new DoubleBlockCombiner.Combiner<>() {
         @Override
         public Float2FloatFunction acceptDouble(ChestBlockEntity first, ChestBlockEntity second) {
             return (delta) -> Math.max(first.getLidOpenness(delta), second.getLidOpenness(delta));

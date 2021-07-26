@@ -127,6 +127,7 @@ public final class BarrelCommon {
         var containerSize = !isExpandedStorageBarrel ? Utils.WOOD_STACK_COUNT : ((BarrelBlock) BaseApi.getInstance().getTieredBlock(BarrelCommon.BLOCK_TYPE, ((BarrelBlock) block).blockTier())).getSlotCount();
         if (isExpandedStorageBarrel && ((BarrelBlock) block).blockTier() == from || !isExpandedStorageBarrel && from == Utils.WOOD_TIER.key()) {
             var blockEntity = level.getBlockEntity(pos);
+            //noinspection ConstantConditions
             var tag = blockEntity.save(new CompoundTag());
             boolean verifiedSize = blockEntity instanceof Container container && container.getContainerSize() == containerSize;
             if (!verifiedSize) { // Cannot verify container size, we'll let it upgrade if it has or has less than 27 items
@@ -146,6 +147,7 @@ public final class BarrelCommon {
                 var newState = toBlock.defaultBlockState().setValue(BlockStateProperties.FACING, state.getValue(BlockStateProperties.FACING));
                 if (level.setBlockAndUpdate(pos, newState)) {
                     var newEntity = (AbstractOpenableStorageBlockEntity) level.getBlockEntity(pos);
+                    //noinspection ConstantConditions
                     var newTag = newEntity.save(new CompoundTag());
                     ContainerHelper.saveAllItems(newTag, inventory);
                     code.addToTag(newTag);

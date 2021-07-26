@@ -3,7 +3,6 @@ package ninjaphenix.expandedstorage.base.client.menu;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
@@ -98,9 +97,6 @@ public final class PagedScreen extends AbstractScreen<PagedContainerMenu, PagedS
 
     @Override
     public void render(PoseStack stack, int mouseX, int mouseY, float delta) {
-        if (stack == null) {
-            return;
-        } // Not sure why this can be null, but don't render in case it is.
         super.render(stack, mouseX, mouseY, delta);
         if (this.hasPages()) {
             leftPageButton.renderTooltip(stack, mouseX, mouseY);

@@ -148,6 +148,7 @@ public final class OldChestCommon {
         if (((OldChestBlock) state.getBlock()).blockTier() == from) {
             var toBlock = (AbstractOpenableStorageBlock) BaseApi.getInstance().getTieredBlock(OldChestCommon.BLOCK_TYPE, to);
             var inventory = NonNullList.withSize(toBlock.getSlotCount(), ItemStack.EMPTY);
+            //noinspection ConstantConditions
             var tag = level.getBlockEntity(pos).save(new CompoundTag());
             var code = LockCode.fromTag(tag);
             ContainerHelper.loadAllItems(tag, inventory);
@@ -155,6 +156,7 @@ public final class OldChestCommon {
             var newState = toBlock.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, state.getValue(BlockStateProperties.HORIZONTAL_FACING)).setValue(OldChestBlock.CURSED_CHEST_TYPE, state.getValue(OldChestBlock.CURSED_CHEST_TYPE));
             if (level.setBlockAndUpdate(pos, newState)) {
                 var newEntity = (AbstractOpenableStorageBlockEntity) level.getBlockEntity(pos);
+                //noinspection ConstantConditions
                 var newTag = newEntity.save(new CompoundTag());
                 ContainerHelper.saveAllItems(newTag, inventory);
                 code.addToTag(newTag);

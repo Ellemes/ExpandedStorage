@@ -41,6 +41,7 @@ public class BarrelBlockEntity extends AbstractOpenableStorageBlockEntity {
     }
 
     private void updateBlockState(BlockState state, boolean open) {
+        //noinspection ConstantConditions
         level.setBlock(this.getBlockPos(), state.setValue(BlockStateProperties.OPEN, open), Block.UPDATE_ALL);
     }
 }

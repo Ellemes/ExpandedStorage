@@ -39,11 +39,13 @@ public final class PickScreen extends Screen {
 
     @Override
     public void onClose() {
+        //noinspection ConstantConditions
         minecraft.setScreen(parent);
     }
 
     @Override
     public boolean isPauseScreen() {
+        //noinspection ConstantConditions
         return minecraft.level == null;
     }
 

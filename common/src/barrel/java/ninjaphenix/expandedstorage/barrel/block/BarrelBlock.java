@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import ninjaphenix.expandedstorage.barrel.BarrelCommon;
 import ninjaphenix.expandedstorage.barrel.block.misc.BarrelBlockEntity;
 import ninjaphenix.expandedstorage.base.internal_api.block.AbstractOpenableStorageBlock;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
@@ -30,7 +29,6 @@ public final class BarrelBlock extends AbstractOpenableStorageBlock {
         builder.add(BlockStateProperties.OPEN);
     }
 
-    @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         return this.defaultBlockState().setValue(BlockStateProperties.FACING, context.getNearestLookingDirection().getOpposite());
