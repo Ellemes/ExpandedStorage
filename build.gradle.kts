@@ -1,19 +1,9 @@
-import com.gitlab.ninjaphenix.gradle.api.task.MinifyJsonTask
-import com.gitlab.ninjaphenix.gradle.api.task.ParamLocalObfuscatorTask
-import org.gradle.jvm.tasks.Jar
-
 plugins {
     java
-    id("dev.architectury.loom").version("0.8.0-SNAPSHOT").apply(false)
-    id("com.gitlab.ninjaphenix.gradle-utils").version("0.1.0-beta.2")
 }
 
 subprojects {
     apply(plugin = "java")
-    val isFabricProject = project.name == "fabric"
-    if (isFabricProject) {
-        apply(plugin = "dev.architectury.loom")
-    }
 
     group = properties["maven_group"] as String
     version = properties["mod_version"] as String
@@ -23,6 +13,14 @@ subprojects {
     java {
         sourceCompatibility = JavaVersion.toVersion(properties["mod_java_version"] as String)
         targetCompatibility = JavaVersion.toVersion(properties["mod_java_version"] as String)
+    }
+
+    repositories {
+        flatDir { // Cannot use exclusive content as forge does not change the artifact group like fabric does.
+            name = "Local Dependencies"
+            dir(rootDir.resolve("local_dependencies"))
+        }
+
     }
 
     sourceSets {
@@ -59,33 +57,6 @@ subprojects {
 
     tasks.withType<JavaCompile>().configureEach {
         options.encoding = "UTF-8"
-    }
-
-    if (isFabricProject) {
-        val remapJarTask : Jar = tasks.getByName<Jar>("remapJar") {
-            archiveFileName.set("${properties["archivesBaseName"]}-${properties["mod_version"]}+${properties["minecraft_version"]}-fat.jar")
-        }
-
-        tasks.getByName<Jar>("jar") {
-            archiveFileName.set("${properties["archivesBaseName"]}-${properties["mod_version"]}+${properties["minecraft_version"]}-dev.jar")
-            from(rootDir.resolve("LICENSE"))
-        }
-
-        val minifyJarTask = tasks.register<MinifyJsonTask>("minJar") {
-            input.set(remapJarTask.outputs.files.singleFile)
-            archiveFileName.set("${properties["archivesBaseName"]}-${properties["mod_version"]}+${properties["minecraft_version"]}-min.jar")
-            dependsOn(remapJarTask)
-        }
-
-        val releaseJarTask = tasks.register<ParamLocalObfuscatorTask>("releaseJar") {
-            input.set(minifyJarTask.get().outputs.files.singleFile)
-            archiveFileName.set("${properties["archivesBaseName"]}-${properties["mod_version"]}+${properties["minecraft_version"]}.jar")
-            dependsOn(minifyJarTask)
-        }
-
-        tasks.getByName("build") {
-            dependsOn(releaseJarTask)
-        }
     }
 }
 

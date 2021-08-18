@@ -1,10 +1,13 @@
+import com.gitlab.ninjaphenix.gradle.api.task.MinifyJsonTask
+import com.gitlab.ninjaphenix.gradle.api.task.ParamLocalObfuscatorTask
+import net.fabricmc.loom.task.RemapJarTask
+
 plugins {
-    id("dev.architectury.loom")
+    alias(libs.plugins.gradleUtils)
+    alias(libs.plugins.fabricLoom)
 }
 
 loom {
-    silentMojangMappingsLicense()
-    useFabricMixin = true
     runs {
         named("client") {
             ideConfigGenerated(false)
@@ -14,12 +17,7 @@ loom {
         }
     }
 
-    accessWidener = file("src/common/resources/expandedstorage.accessWidener")
-}
-
-dependencies {
-    minecraft("com.mojang:minecraft:${properties["minecraft_version"]}")
-    mappings(loom.officialMojangMappings())
+    accessWidenerPath.set(file("src/common/resources/expandedstorage.accessWidener"))
 }
 
 repositories {
@@ -38,27 +36,20 @@ repositories {
             includeGroup("com.terraformersmc")
         }
     }
-    maven {
-        name = "JitPack"
-        url = uri("https://jitpack.io/")
-        content {
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "JitPack"
+                url = uri("https://jitpack.io/")
+            }
+        }
+        filter {
             includeGroup("com.github.Virtuoel")
         }
     }
     maven {
         name = "Siphalor's Maven"
         url = uri("https://maven.siphalor.de/")
-    }
-    exclusiveContent {
-        forRepository {
-            flatDir {
-                name = "Local Dependencies"
-                dir(rootDir.resolve("deps"))
-            }
-        }
-        filter {
-            includeGroup("local")
-        }
     }
 }
 
@@ -67,22 +58,25 @@ val excludeFabric: (ExternalModuleDependency) -> Unit = {
 }
 
 dependencies {
-    modImplementation("net.fabricmc:fabric-loader:${properties["fabric_loader_version"]}")
-    modApi("net.fabricmc.fabric-api:fabric-api:${properties["fabric_api_version"]}")
+    minecraft(libs.minecraft.fabric)
+    mappings(loom.layered(nputils::applySilentMojangMappings))
+
+    modImplementation(libs.fabric.loader)
+    modApi(libs.fabric.api)
 
     // For chest module
-    modCompileOnly("com.github.Virtuoel:Statement:31a2c3f", excludeFabric)
-    modCompileOnly("com.github.Virtuoel:Towelette:e5e39eb", excludeFabric)
-    modCompileOnly("local:htm:1.1.3")
+    modCompileOnly(libs.statement, excludeFabric)
+    modCompileOnly(libs.towelette, excludeFabric)
+    modCompileOnly(libs.heyThatsMine)
 
     // For base module
-    modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${properties["rei_version"]}", excludeFabric)
-    modRuntime("me.shedaniel:RoughlyEnoughItems-fabric:${properties["rei_version"]}")
+    modCompileOnly(libs.rei.api, excludeFabric)
+    modRuntime(libs.rei)
 
-    modCompileOnly("com.terraformersmc:modmenu:${properties["modmenu_version"]}", excludeFabric)
-    modRuntime("com.terraformersmc:modmenu:${properties["modmenu_version"]}")
+    modCompileOnly(libs.modmenu, excludeFabric)
+    modRuntime(libs.modmenu)
 
-    modCompileOnly("de.siphalor:amecsapi-1.17:1.1+")
+    modCompileOnly(libs.amecs.api)
 }
 
 tasks.withType<ProcessResources>() {
@@ -91,4 +85,29 @@ tasks.withType<ProcessResources>() {
     filesMatching("fabric.mod.json") {
         expand(props)
     }
+}
+
+val remapJarTask : RemapJarTask = tasks.getByName<RemapJarTask>("remapJar") {
+    archiveFileName.set("${properties["archivesBaseName"]}-${properties["mod_version"]}+${properties["minecraft_version"]}-fat.jar")
+}
+
+tasks.getByName<Jar>("jar") {
+    archiveFileName.set("${properties["archivesBaseName"]}-${properties["mod_version"]}+${properties["minecraft_version"]}-dev.jar")
+}
+
+val minifyJarTask = tasks.register<MinifyJsonTask>("minJar") {
+    input.set(remapJarTask.outputs.files.singleFile)
+    archiveFileName.set("${properties["archivesBaseName"]}-${properties["mod_version"]}+${properties["minecraft_version"]}-min.jar")
+    dependsOn(remapJarTask)
+}
+
+val releaseJarTask = tasks.register<ParamLocalObfuscatorTask>("releaseJar") {
+    input.set(minifyJarTask.get().outputs.files.singleFile)
+    archiveFileName.set("${properties["archivesBaseName"]}-${properties["mod_version"]}+${properties["minecraft_version"]}.jar")
+    from(rootDir.resolve("LICENSE"))
+    dependsOn(minifyJarTask)
+}
+
+tasks.getByName("build") {
+    dependsOn(releaseJarTask)
 }

@@ -1,9 +1,5 @@
-.architectury-transformer/
 .gradle/
 .idea/
 .vscode/
 build/
 run/
-deps/
-# Personal folder
-local/
