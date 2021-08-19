@@ -159,7 +159,9 @@ public abstract class AbstractOpenableStorageBlockEntity extends AbstractStorage
                     var limit = this.getSlotLimit(slot);
                     if (stack.getCount() > limit) {
                         if (!simulate) {
-                            stackInSlot.setCount(limit);
+                            var newStack = stack.copy();
+                            newStack.setCount(limit);
+                            entity.inventory.set(slot, newStack);
                             entity.setChanged();
                         }
                         return simulate ? stack.copy().split(stack.getCount() - limit) : stack.split(stack.getCount() - limit);
