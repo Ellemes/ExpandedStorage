@@ -15,8 +15,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestLidController;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import ninjaphenix.expandedstorage.base.internal_api.block.AbstractChestBlock;
 import ninjaphenix.expandedstorage.base.internal_api.block.misc.AbstractOpenableStorageBlockEntity;
+import ninjaphenix.expandedstorage.base.internal_api.block.misc.FabricChestProperties;
 import ninjaphenix.expandedstorage.chest.block.ChestBlock;
 import org.jetbrains.annotations.Nullable;
 
@@ -81,6 +81,6 @@ public final class ChestBlockEntity extends AbstractOpenableStorageBlockEntity {
 
     @Override
     protected Storage<ItemVariant> createItemStorage(Level level, BlockState state, BlockPos pos, @Nullable Direction side) {
-        return AbstractChestBlock.createItemStorage(level, state, pos).orElse(AbstractOpenableStorageBlockEntity.createGenericItemStorage(this));
+        return FabricChestProperties.createItemStorage(level, state, pos).orElse(AbstractOpenableStorageBlockEntity.createGenericItemStorage(this));
     }
 }

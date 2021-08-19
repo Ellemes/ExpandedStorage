@@ -22,16 +22,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraftforge.items.IItemHandlerModifiable;
 import ninjaphenix.expandedstorage.base.internal_api.Utils;
 import ninjaphenix.expandedstorage.base.internal_api.block.misc.AbstractOpenableStorageBlockEntity;
 import ninjaphenix.expandedstorage.base.internal_api.block.misc.AbstractStorageBlockEntity;
 import ninjaphenix.expandedstorage.base.internal_api.block.misc.CursedChestType;
-import ninjaphenix.expandedstorage.base.internal_api.inventory.CombinedIItemHandlerModifiable;
 import ninjaphenix.expandedstorage.base.internal_api.inventory.SyncedMenuFactory;
 import ninjaphenix.expandedstorage.base.wrappers.NetworkWrapper;
 import org.jetbrains.annotations.ApiStatus.Experimental;
 import org.jetbrains.annotations.ApiStatus.Internal;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -41,26 +40,6 @@ import java.util.function.BiPredicate;
 @Experimental
 public abstract class AbstractChestBlock<T extends AbstractOpenableStorageBlockEntity> extends AbstractOpenableStorageBlock {
     public static final EnumProperty<CursedChestType> CURSED_CHEST_TYPE = EnumProperty.create("type", CursedChestType.class);
-
-    private static final DoubleBlockCombiner.Combiner<AbstractOpenableStorageBlockEntity, Optional<IItemHandlerModifiable>> inventoryGetter = new DoubleBlockCombiner.Combiner<>() {
-        @Override
-        public Optional<IItemHandlerModifiable> acceptDouble(AbstractOpenableStorageBlockEntity first, AbstractOpenableStorageBlockEntity second) {
-            return Optional.of(new CombinedIItemHandlerModifiable(
-                    AbstractOpenableStorageBlockEntity.createGenericItemHandler(first),
-                    AbstractOpenableStorageBlockEntity.createGenericItemHandler(second)
-            ));
-        }
-
-        @Override
-        public Optional<IItemHandlerModifiable> acceptSingle(AbstractOpenableStorageBlockEntity single) {
-            return Optional.of(AbstractOpenableStorageBlockEntity.createGenericItemHandler(single));
-        }
-
-        @Override
-        public Optional<IItemHandlerModifiable> acceptNone() {
-            return Optional.empty();
-        }
-    };
 
     private final DoubleBlockCombiner.Combiner<T, Optional<SyncedMenuFactory>> menuGetter = new DoubleBlockCombiner.Combiner<>() {
         @Override
@@ -192,13 +171,6 @@ public abstract class AbstractChestBlock<T extends AbstractOpenableStorageBlockE
         return CursedChestType.SINGLE;
     }
 
-    public static Optional<IItemHandlerModifiable> createItemHandler(Level level, BlockState state, BlockPos pos) {
-        if (state.getBlock() instanceof AbstractChestBlock<?> block) {
-            return block.createCombinedPropertyGetter(state, level, pos, false).apply(AbstractChestBlock.inventoryGetter);
-        }
-        return Optional.empty();
-    }
-
     @Override
     protected final void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(AbstractChestBlock.CURSED_CHEST_TYPE);
@@ -206,6 +178,7 @@ public abstract class AbstractChestBlock<T extends AbstractOpenableStorageBlockE
         appendAdditionalStateDefinitions(builder);
     }
 
+    @NotNull
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         Level level = context.getLevel();

@@ -136,9 +136,7 @@ public abstract class AbstractOpenableStorageBlockEntity extends AbstractStorage
             }
         };
         this.blockId = blockId;
-        if (blockId != null) {
-            this.initialise(blockId);
-        }
+        this.initialise(blockId);
     }
 
     public static Storage<ItemVariant> createGenericItemStorage(AbstractOpenableStorageBlockEntity entity) {
@@ -147,14 +145,12 @@ public abstract class AbstractOpenableStorageBlockEntity extends AbstractStorage
 
     private void playerStartUsing(Player player) {
         if (!player.isSpectator()) {
-            //noinspection ConstantConditions
             observerCounter.incrementOpeners(player, this.getLevel(), this.getBlockPos(), this.getBlockState());
         }
     }
 
     private void playerStopUsing(Player player) {
         if (!player.isSpectator()) {
-            //noinspection ConstantConditions
             observerCounter.decrementOpeners(player, this.getLevel(), this.getBlockPos(), this.getBlockState());
         }
     }
@@ -176,7 +172,6 @@ public abstract class AbstractOpenableStorageBlockEntity extends AbstractStorage
     }
 
     public final void recountObservers() {
-        //noinspection ConstantConditions
         observerCounter.recheckOpeners(this.getLevel(), this.getBlockPos(), this.getBlockState());
     }
 
