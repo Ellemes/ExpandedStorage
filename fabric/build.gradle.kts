@@ -38,6 +38,7 @@ repositories {
         }
         filter {
             includeGroup("com.terraformersmc")
+            includeGroup("io.github.prospector")
         }
     }
     maven {
