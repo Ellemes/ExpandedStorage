@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.entity.ChestLidController;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.items.IItemHandlerModifiable;
-import ninjaphenix.expandedstorage.base.internal_api.block.AbstractChestBlock;
 import ninjaphenix.expandedstorage.base.internal_api.block.misc.AbstractOpenableStorageBlockEntity;
 import ninjaphenix.expandedstorage.base.internal_api.block.misc.ForgeChestProperties;
 import ninjaphenix.expandedstorage.chest.block.ChestBlock;

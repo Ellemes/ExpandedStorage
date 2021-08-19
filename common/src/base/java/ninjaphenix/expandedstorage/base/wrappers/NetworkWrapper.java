@@ -8,7 +8,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import ninjaphenix.expandedstorage.base.internal_api.inventory.SyncedMenuFactory;
-import ninjaphenix.expandedstorage.base.internal_api.inventory.SyncedMenuFactory;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;

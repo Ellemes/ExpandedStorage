@@ -143,6 +143,18 @@ public abstract class AbstractOpenableStorageBlockEntity extends AbstractStorage
         return InventoryStorage.of(entity.getContainerWrapper(), null);
     }
 
+    public static Storage<ItemVariant> getItemStorage(Level level, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, Direction direction) {
+        if (blockEntity != null) {
+            var entity = (AbstractOpenableStorageBlockEntity) blockEntity;
+            if (entity.itemStorage == null) {
+                entity.itemStorage = Suppliers.memoize(() -> entity.createItemStorage(level, state, pos, direction));
+            }
+            return entity.itemStorage.get();
+        }
+        return null;
+
+    }
+
     private void playerStartUsing(Player player) {
         if (!player.isSpectator()) {
             observerCounter.incrementOpeners(player, this.getLevel(), this.getBlockPos(), this.getBlockState());
@@ -177,18 +189,6 @@ public abstract class AbstractOpenableStorageBlockEntity extends AbstractStorage
 
     public Container getContainerWrapper() {
         return container.get();
-    }
-
-    public static Storage<ItemVariant> getItemStorage(Level level, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, Direction direction) {
-        if (blockEntity != null) {
-            var entity = (AbstractOpenableStorageBlockEntity) blockEntity;
-            if (entity.itemStorage == null) {
-                entity.itemStorage = Suppliers.memoize(() -> entity.createItemStorage(level, state, pos, direction));
-            }
-            return entity.itemStorage.get();
-        }
-        return null;
-
     }
 
     @Override
