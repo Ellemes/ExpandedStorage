@@ -169,12 +169,21 @@ public abstract class AbstractOpenableStorageBlockEntity extends AbstractStorage
                 }
                 var stackInSlot = entity.inventory.get(slot);
                 if (stackInSlot.isEmpty()) {
-                    if (!simulate) {
-                        entity.inventory.set(slot, stack);
-                        entity.setChanged();
+                    var limit = this.getSlotLimit(slot);
+                    if (stack.getCount() > limit) {
+                        if (!simulate) {
+                            stackInSlot.setCount(limit);
+                            entity.setChanged();
+                        }
+                        return simulate ? stack.copy().split(stack.getCount() - limit) : stack.split(stack.getCount() - limit);
+                    } else {
+                        if (!simulate) {
+                            entity.inventory.set(slot, stack.copy());
+                            entity.setChanged();
+                        }
                     }
                 } else if (ItemHandlerHelper.canItemStacksStack(stackInSlot, stack)) {
-                    var limit = Math.min(stackInSlot.getMaxStackSize(), 64);
+                    var limit = Math.min(stackInSlot.getMaxStackSize(), this.getSlotLimit(slot));
                     var diff = limit - stackInSlot.getCount();
                     if (diff != 0) {
                         if (stack.getCount() > diff) {
