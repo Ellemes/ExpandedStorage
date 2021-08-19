@@ -68,12 +68,12 @@ repositories {
 
 dependencies {
     minecraft(libs.minecraft.forge)
-    val jei = (libs.jei.api as Provider<MinimalExternalModuleDependency>).get();
+    val jei = (libs.jei.api as Provider<MinimalExternalModuleDependency>).get()
     compileOnly(fg.deobf("${jei.module.group}:${jei.module.name}:${jei.versionConstraint.displayName}"))
     implementation(libs.jetbrainAnnotations)
 }
 
-tasks.withType<ProcessResources>() {
+tasks.withType<ProcessResources> {
     val props = mutableMapOf("version" to properties["mod_version"]) // Needs to be mutable
     inputs.properties(props)
     filesMatching("META-INF/mods.toml") {
