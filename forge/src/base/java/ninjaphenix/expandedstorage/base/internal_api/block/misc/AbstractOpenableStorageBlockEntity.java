@@ -207,7 +207,6 @@ public abstract class AbstractOpenableStorageBlockEntity extends AbstractStorage
                 return ItemStack.EMPTY;
             }
 
-
             @Override
             public ItemStack extractItem(int slot, int amount, boolean simulate) {
                 var stackInSlot = entity.inventory.get(slot);
