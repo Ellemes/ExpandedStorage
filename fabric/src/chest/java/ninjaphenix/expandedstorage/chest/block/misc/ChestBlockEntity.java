@@ -1,9 +1,13 @@
 package ninjaphenix.expandedstorage.chest.block.misc;
 
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.CompoundContainer;
 import net.minecraft.world.Container;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DoubleBlockCombiner;
@@ -11,9 +15,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestLidController;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import ninjaphenix.expandedstorage.base.internal_api.block.AbstractChestBlock;
 import ninjaphenix.expandedstorage.base.internal_api.block.misc.AbstractOpenableStorageBlockEntity;
-import ninjaphenix.expandedstorage.base.internal_api.inventory.CombinedContainer;
 import ninjaphenix.expandedstorage.chest.block.ChestBlock;
+import org.jetbrains.annotations.Nullable;
 
 public final class ChestBlockEntity extends AbstractOpenableStorageBlockEntity {
     private final ChestLidController lidController;
@@ -57,7 +62,7 @@ public final class ChestBlockEntity extends AbstractOpenableStorageBlockEntity {
 
     @Override
     protected boolean isThis(Container container) {
-        return super.isThis(container) || container instanceof CombinedContainer compoundContainer && compoundContainer.consistsPartlyOf(this);
+        return super.isThis(container) || container instanceof CompoundContainer compoundContainer && compoundContainer.contains(this.getContainerWrapper());
     }
 
     @Override
@@ -72,5 +77,10 @@ public final class ChestBlockEntity extends AbstractOpenableStorageBlockEntity {
     // Client only
     public float getLidOpenness(float f) {
         return lidController.getOpenness(f);
+    }
+
+    @Override
+    protected Storage<ItemVariant> createItemStorage(Level level, BlockState state, BlockPos pos, @Nullable Direction side) {
+        return AbstractChestBlock.createItemStorage(level, state, pos).orElse(AbstractOpenableStorageBlockEntity.createGenericItemStorage(this));
     }
 }

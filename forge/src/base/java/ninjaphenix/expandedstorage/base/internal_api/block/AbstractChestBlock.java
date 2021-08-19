@@ -61,6 +61,7 @@ public abstract class AbstractChestBlock<T extends AbstractOpenableStorageBlockE
             return Optional.empty();
         }
     };
+
     private final DoubleBlockCombiner.Combiner<T, Optional<SyncedMenuFactory>> menuGetter = new DoubleBlockCombiner.Combiner<>() {
         @Override
         public Optional<SyncedMenuFactory> acceptDouble(T first, T second) {
