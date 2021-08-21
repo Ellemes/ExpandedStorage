@@ -41,9 +41,9 @@ import java.util.function.BiPredicate;
 public abstract class AbstractChestBlock<T extends AbstractOpenableStorageBlockEntity> extends AbstractOpenableStorageBlock {
     public static final EnumProperty<CursedChestType> CURSED_CHEST_TYPE = EnumProperty.create("type", CursedChestType.class);
 
-    private final DoubleBlockCombiner.Combiner<T, Optional<SyncedMenuFactory>> menuGetter = new DoubleBlockCombiner.Combiner<>() {
+    private static final DoubleBlockCombiner.Combiner<AbstractOpenableStorageBlockEntity, Optional<SyncedMenuFactory>> MENU_GETTER = new DoubleBlockCombiner.Combiner<>() {
         @Override
-        public Optional<SyncedMenuFactory> acceptDouble(T first, T second) {
+        public Optional<SyncedMenuFactory> acceptDouble(AbstractOpenableStorageBlockEntity first, AbstractOpenableStorageBlockEntity second) {
             return Optional.of(new SyncedMenuFactory() {
                 @Override
                 public void writeClientData(ServerPlayer player, FriendlyByteBuf buffer) {
@@ -77,7 +77,7 @@ public abstract class AbstractChestBlock<T extends AbstractOpenableStorageBlockE
         }
 
         @Override
-        public Optional<SyncedMenuFactory> acceptSingle(T single) {
+        public Optional<SyncedMenuFactory> acceptSingle(AbstractOpenableStorageBlockEntity single) {
             return Optional.of(new SyncedMenuFactory() {
                 @Override
                 public void writeClientData(ServerPlayer player, FriendlyByteBuf buffer) {
@@ -281,6 +281,6 @@ public abstract class AbstractChestBlock<T extends AbstractOpenableStorageBlockE
     @Nullable
     @Override
     protected SyncedMenuFactory createMenuFactory(BlockState state, LevelAccessor level, BlockPos pos) {
-        return this.createCombinedPropertyGetter(state, level, pos, false).apply(menuGetter).orElse(null);
+        return this.createCombinedPropertyGetter(state, level, pos, false).apply(MENU_GETTER).orElse(null);
     }
 }
