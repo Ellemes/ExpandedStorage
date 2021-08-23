@@ -66,8 +66,12 @@ final class NetworkWrapperImpl implements NetworkWrapper {
 
     private void s_handleOpenInventory(MinecraftServer server, ServerPlayer player, ServerGamePacketListenerImpl listener, FriendlyByteBuf buffer, PacketSender sender) {
         var pos = buffer.readBlockPos();
+        var preference = buffer.readUtf();
         var level = player.getLevel();
         server.execute(() -> {
+            if (!preference.isEmpty()) {
+                playerPreferences.put(player.getUUID(), new ResourceLocation(preference));
+            }
             var state = level.getBlockState(pos);
             if (state.getBlock() instanceof AbstractOpenableStorageBlock block) {
                 if (player.containerMenu == null || player.containerMenu == player.inventoryMenu) {
@@ -160,11 +164,10 @@ final class NetworkWrapperImpl implements NetworkWrapper {
     public void c_openInventoryAt(BlockPos pos) {
         if (ConfigWrapper.getInstance().getPreferredScreenType() == Utils.UNSET_SCREEN_TYPE) {
             Minecraft.getInstance().setScreen(new PickScreen(menuFactories.keySet(), null, (preference) -> {
-                this.c2s_setSendTypePreference(preference);
-                Client.openInventoryAt(pos);
+                Client.openInventoryAt(pos, preference);
             }));
         } else {
-            Client.openInventoryAt(pos);
+            Client.openInventoryAt(pos, null);
         }
     }
 
@@ -173,10 +176,15 @@ final class NetworkWrapperImpl implements NetworkWrapper {
             ClientPlayConnectionEvents.JOIN.register((listener_play, sender, client) -> sender.sendPacket(NetworkWrapperImpl.UPDATE_PLAYER_PREFERENCE, new FriendlyByteBuf(Unpooled.buffer()).writeResourceLocation(ConfigWrapper.getInstance().getPreferredScreenType())));
         }
 
-        public static void openInventoryAt(BlockPos pos) {
+        public static void openInventoryAt(BlockPos pos, @Nullable ResourceLocation preference) {
             if (ClientPlayNetworking.canSend(NetworkWrapperImpl.OPEN_INVENTORY)) {
                 var buffer = new FriendlyByteBuf(Unpooled.buffer());
                 buffer.writeBlockPos(pos);
+                if (preference != null) {
+                    buffer.writeResourceLocation(preference);
+                } else {
+                    buffer.writeUtf("");
+                }
                 ClientPlayNetworking.send(NetworkWrapperImpl.OPEN_INVENTORY, buffer);
             }
         }
