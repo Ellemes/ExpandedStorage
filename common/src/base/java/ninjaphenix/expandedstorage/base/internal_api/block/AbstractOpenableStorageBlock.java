@@ -49,7 +49,7 @@ public abstract class AbstractOpenableStorageBlock extends AbstractStorageBlock 
     @SuppressWarnings("deprecation")
     public final InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (level.isClientSide()) {
-            NetworkWrapper.getInstance().openInventoryAt(level, pos);
+            NetworkWrapper.getInstance().c_openInventoryAt(pos);
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.CONSUME;

@@ -25,5 +25,5 @@ public interface NetworkWrapper {
 
     void s_setPlayerScreenType(ServerPlayer player, ResourceLocation selection);
 
-    void openInventoryAt(Level level, BlockPos pos);
+    void c_openInventoryAt(BlockPos pos);
 }
