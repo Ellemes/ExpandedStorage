@@ -164,6 +164,7 @@ final class NetworkWrapperImpl implements NetworkWrapper {
     public void c_openInventoryAt(BlockPos pos) {
         if (ConfigWrapper.getInstance().getPreferredScreenType() == Utils.UNSET_SCREEN_TYPE) {
             Minecraft.getInstance().setScreen(new PickScreen(menuFactories.keySet(), null, (preference) -> {
+                ConfigWrapper.getInstance().setPreferredScreenType(preference);
                 Client.openInventoryAt(pos, preference);
             }));
         } else {
