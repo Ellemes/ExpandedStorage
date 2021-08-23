@@ -1,6 +1,8 @@
 package ninjaphenix.expandedstorage.base.wrappers;
 
 import io.netty.buffer.Unpooled;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
@@ -184,12 +186,9 @@ final class NetworkWrapperImpl implements NetworkWrapper {
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public void c_openInventoryAt(BlockPos pos) {
-        if (ConfigWrapper.getInstance().getPreferredScreenType().equals(Utils.UNSET_SCREEN_TYPE)) {
-            Minecraft.getInstance().setScreen(new PickScreen(NetworkWrapper.getInstance().getScreenOptions(), null, (preference) -> Client.openInventoryAt(pos, preference)));
-        } else {
-            Client.openInventoryAt(pos, null);
-        }
+        Client.openInventoryAt(pos);
     }
 
     @Override
@@ -230,6 +229,14 @@ final class NetworkWrapperImpl implements NetworkWrapper {
             client.submit(() -> {
                 this.screenOptions = Set.copyOf(serverOptions);
             });
+        }
+
+        private static void openInventoryAt(BlockPos pos) {
+            if (ConfigWrapper.getInstance().getPreferredScreenType().equals(Utils.UNSET_SCREEN_TYPE)) {
+                Minecraft.getInstance().setScreen(new PickScreen(NetworkWrapper.getInstance().getScreenOptions(), null, (preference) -> Client.openInventoryAt(pos, preference)));
+            } else {
+                Client.openInventoryAt(pos, null);
+            }
         }
 
         private static void openInventoryAt(BlockPos pos, @Nullable ResourceLocation preference) {
