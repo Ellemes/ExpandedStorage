@@ -11,10 +11,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.CompoundContainer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -24,6 +27,7 @@ import ninjaphenix.expandedstorage.base.client.menu.PickScreen;
 import ninjaphenix.expandedstorage.base.internal_api.Utils;
 import ninjaphenix.expandedstorage.base.internal_api.block.AbstractOpenableStorageBlock;
 import ninjaphenix.expandedstorage.base.internal_api.block.misc.AbstractOpenableStorageBlockEntity;
+import ninjaphenix.expandedstorage.base.internal_api.block.misc.AbstractStorageBlockEntity;
 import ninjaphenix.expandedstorage.base.internal_api.inventory.ServerMenuFactory;
 import ninjaphenix.expandedstorage.base.inventory.PagedMenu;
 import ninjaphenix.expandedstorage.base.inventory.ScrollableMenu;
@@ -31,6 +35,7 @@ import ninjaphenix.expandedstorage.base.inventory.SingleMenu;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -73,17 +78,22 @@ final class NetworkWrapperImpl implements NetworkWrapper {
             if (!preference.isEmpty()) {
                 playerPreferences.put(player.getUUID(), new ResourceLocation(preference));
             }
-            var state = level.getBlockState(pos);
-            if (state.getBlock() instanceof AbstractOpenableStorageBlock block) {
-                if (player.containerMenu == null || player.containerMenu == player.inventoryMenu) {
-                    // todo: check if locked
-                    block.awardOpeningStat(player);
-                }
-                var inventories = block.getInventoryParts(level, state, pos);
-                UUID uuid = player.getUUID();
-                ResourceLocation playerPreference;
-                if (playerPreferences.containsKey(uuid) && menuFactories.containsKey(playerPreference = playerPreferences.get(uuid))) {
+            UUID uuid = player.getUUID();
+            ResourceLocation playerPreference;
+            if (playerPreferences.containsKey(uuid) && menuFactories.containsKey(playerPreference = playerPreferences.get(uuid))) {
+                var state = level.getBlockState(pos);
+                if (state.getBlock() instanceof AbstractOpenableStorageBlock block) {
+                    var inventories = block.getInventoryParts(level, state, pos);
                     if (inventories.size() == 1 || inventories.size() == 2) {
+                        var displayName = NetworkWrapperImpl.getDisplayName(inventories);
+                        if (player.containerMenu == null || player.containerMenu == player.inventoryMenu) {
+                            if (inventories.stream().allMatch(entity -> entity.canPlayerInteractWith(player))) {
+                                block.awardOpeningStat(player);
+                            } else {
+                                player.displayClientMessage(new TranslatableComponent("container.isLocked", displayName), true);
+                                player.playNotifySound(SoundEvents.CHEST_LOCKED, SoundSource.BLOCKS, 1.0F, 1.0F);
+                            }
+                        }
                         player.openMenu(new ExtendedScreenHandlerFactory() {
                             @Override
                             public void writeScreenOpeningData(ServerPlayer player, FriendlyByteBuf buf) {
@@ -92,17 +102,7 @@ final class NetworkWrapperImpl implements NetworkWrapper {
 
                             @Override
                             public Component getDisplayName() {
-                                for (AbstractOpenableStorageBlockEntity inventory : inventories) {
-                                    if (inventory.hasCustomName()) {
-                                        return inventory.getName();
-                                    }
-                                }
-                                if (inventories.size() == 1) {
-                                    return inventories.get(0).getName();
-                                } else if (inventories.size() == 2) {
-                                    return Utils.translation("container.expandedstorage.generic_double", inventories.get(0).getName());
-                                }
-                                throw new IllegalStateException("inventories size is > 2");
+                                return displayName;
                             }
 
                             @Nullable
@@ -127,6 +127,20 @@ final class NetworkWrapperImpl implements NetworkWrapper {
                 }
             }
         });
+    }
+
+    private static Component getDisplayName(List<AbstractOpenableStorageBlockEntity> inventories) {
+        for (AbstractOpenableStorageBlockEntity inventory : inventories) {
+            if (inventory.hasCustomName()) {
+                return inventory.getName();
+            }
+        }
+        if (inventories.size() == 1) {
+            return inventories.get(0).getName();
+        } else if (inventories.size() == 2) {
+            return Utils.translation("container.expandedstorage.generic_double", inventories.get(0).getName());
+        }
+        throw new IllegalStateException("inventories size is > 2");
     }
 
     @Override

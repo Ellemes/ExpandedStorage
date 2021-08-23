@@ -29,11 +29,6 @@ public abstract class AbstractStorageBlockEntity extends BlockEntity implements 
         lockKey = LockCode.NO_LOCK;
     }
 
-    public static void notifyBlockLocked(Player player, Component displayName) {
-        player.displayClientMessage(new TranslatableComponent("container.isLocked", displayName), true);
-        player.playNotifySound(SoundEvents.CHEST_LOCKED, SoundSource.BLOCKS, 1.0F, 1.0F);
-    }
-
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
