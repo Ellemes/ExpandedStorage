@@ -10,6 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import ninjaphenix.expandedstorage.base.internal_api.inventory.AbstractMenu;
 import ninjaphenix.expandedstorage.base.inventory.screen.ScreenMeta;
+import ninjaphenix.expandedstorage.base.wrappers.ConfigWrapper;
 import ninjaphenix.expandedstorage.base.wrappers.NetworkWrapper;
 import ninjaphenix.expandedstorage.base.wrappers.PlatformUtils;
 import org.lwjgl.glfw.GLFW;
@@ -51,9 +52,7 @@ public abstract class AbstractScreen<T extends AbstractMenu<R>, R extends Screen
     @SuppressWarnings("ConstantConditions")
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (PlatformUtils.getInstance().isConfigKeyPressed(keyCode, scanCode, modifiers)) {
-            //NetworkWrapper.getInstance().c2s_openTypeSelectScreen();
-            // todo: rework, should open screen which has a close callback to re-open the inventory
-
+            minecraft.setScreen(new PickScreen(NetworkWrapper.getInstance().getScreenOptions(), null, (selection) -> NetworkWrapper.getInstance().c_openInventoryAt(menu.pos, selection)));
             return true;
         } else if (keyCode == GLFW.GLFW_KEY_ESCAPE || minecraft.options.keyInventory.matches(keyCode, scanCode)) {
             minecraft.player.closeContainer();

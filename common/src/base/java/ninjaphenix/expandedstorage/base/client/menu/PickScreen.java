@@ -10,6 +10,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
 import ninjaphenix.expandedstorage.base.client.menu.widget.ScreenPickButton;
 import ninjaphenix.expandedstorage.base.internal_api.Utils;
+import ninjaphenix.expandedstorage.base.wrappers.ConfigWrapper;
 import ninjaphenix.expandedstorage.base.wrappers.NetworkWrapper;
 import org.lwjgl.glfw.GLFW;
 
@@ -76,6 +77,7 @@ public final class PickScreen extends Screen {
     }
 
     private void updatePlayerPreference(ResourceLocation selection) {
+        ConfigWrapper.getInstance().setPreferredScreenType(selection);
         onOptionPicked.accept(selection);
         this.onClose();
     }

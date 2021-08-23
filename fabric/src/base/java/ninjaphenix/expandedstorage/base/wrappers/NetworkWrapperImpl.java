@@ -32,6 +32,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 final class NetworkWrapperImpl implements NetworkWrapper {
@@ -75,6 +76,7 @@ final class NetworkWrapperImpl implements NetworkWrapper {
             var state = level.getBlockState(pos);
             if (state.getBlock() instanceof AbstractOpenableStorageBlock block) {
                 if (player.containerMenu == null || player.containerMenu == player.inventoryMenu) {
+                    // todo: check if locked
                     block.awardOpeningStat(player);
                 }
                 var inventories = block.getInventoryParts(level, state, pos);
@@ -157,13 +159,21 @@ final class NetworkWrapperImpl implements NetworkWrapper {
     @Override
     public void c_openInventoryAt(BlockPos pos) {
         if (ConfigWrapper.getInstance().getPreferredScreenType().equals(Utils.UNSET_SCREEN_TYPE)) {
-            Minecraft.getInstance().setScreen(new PickScreen(menuFactories.keySet(), null, (preference) -> {
-                ConfigWrapper.getInstance().setPreferredScreenType(preference);
-                Client.openInventoryAt(pos, preference);
-            }));
+            Minecraft.getInstance().setScreen(new PickScreen(NetworkWrapper.getInstance().getScreenOptions(), null, (preference) -> Client.openInventoryAt(pos, preference)));
         } else {
             Client.openInventoryAt(pos, null);
         }
+    }
+
+    @Override
+    public void c_openInventoryAt(BlockPos pos, ResourceLocation selection) {
+        Client.openInventoryAt(pos, selection);
+    }
+
+    @Override
+    public Set<ResourceLocation> getScreenOptions() {
+        // todo: get from server & produce common set.
+        return menuFactories.keySet();
     }
 
     private static class Client {
