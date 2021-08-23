@@ -17,8 +17,6 @@ public interface NetworkWrapper {
 
     void initialise();
 
-    void c2s_setSendTypePreference(ResourceLocation selection);
-
     boolean isValidScreenType(ResourceLocation screenType);
 
     void c2s_sendTypePreference(ResourceLocation selection);

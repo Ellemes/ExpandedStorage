@@ -21,7 +21,7 @@ public class ModMenuCompat implements ModMenuApi {
             values.add(Utils.SCROLLABLE_SCREEN_TYPE);
             return new PickScreen(values, returnToScreen, (selection) -> {
                 ConfigWrapper.getInstance().setPreferredScreenType(selection);
-                NetworkWrapper.getInstance().c2s_setSendTypePreference(selection);
+                NetworkWrapper.getInstance().c2s_sendTypePreference(selection);
             });
         };
     }

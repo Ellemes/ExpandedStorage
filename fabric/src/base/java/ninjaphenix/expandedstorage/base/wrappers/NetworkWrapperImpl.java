@@ -54,7 +54,7 @@ final class NetworkWrapperImpl implements NetworkWrapper {
 
     public void initialise() {
         if (PlatformUtils.getInstance().isClient()) {
-            new Client().initialise();
+            Client.initialise();
         }
         // Register Server Receivers
         ServerPlayConnectionEvents.INIT.register((listener_init, server_unused) -> {
@@ -127,12 +127,6 @@ final class NetworkWrapperImpl implements NetworkWrapper {
         });
     }
 
-    public void c2s_setSendTypePreference(ResourceLocation selection) {
-        if (ConfigWrapper.getInstance().setPreferredScreenType(selection)) {
-            this.c2s_sendTypePreference(selection);
-        }
-    }
-
     @Override
     public void s_setPlayerScreenType(ServerPlayer player, ResourceLocation screenType) {
         UUID uuid = player.getUUID();
@@ -162,7 +156,7 @@ final class NetworkWrapperImpl implements NetworkWrapper {
 
     @Override
     public void c_openInventoryAt(BlockPos pos) {
-        if (ConfigWrapper.getInstance().getPreferredScreenType() == Utils.UNSET_SCREEN_TYPE) {
+        if (ConfigWrapper.getInstance().getPreferredScreenType().equals(Utils.UNSET_SCREEN_TYPE)) {
             Minecraft.getInstance().setScreen(new PickScreen(menuFactories.keySet(), null, (preference) -> {
                 ConfigWrapper.getInstance().setPreferredScreenType(preference);
                 Client.openInventoryAt(pos, preference);
@@ -173,11 +167,11 @@ final class NetworkWrapperImpl implements NetworkWrapper {
     }
 
     private static class Client {
-        public void initialise() {
+        private static void initialise() {
             ClientPlayConnectionEvents.JOIN.register((listener_play, sender, client) -> sender.sendPacket(NetworkWrapperImpl.UPDATE_PLAYER_PREFERENCE, new FriendlyByteBuf(Unpooled.buffer()).writeResourceLocation(ConfigWrapper.getInstance().getPreferredScreenType())));
         }
 
-        public static void openInventoryAt(BlockPos pos, @Nullable ResourceLocation preference) {
+        private static void openInventoryAt(BlockPos pos, @Nullable ResourceLocation preference) {
             if (ClientPlayNetworking.canSend(NetworkWrapperImpl.OPEN_INVENTORY)) {
                 var buffer = new FriendlyByteBuf(Unpooled.buffer());
                 buffer.writeBlockPos(pos);
