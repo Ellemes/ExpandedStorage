@@ -125,7 +125,7 @@ final class NetworkWrapperImpl implements NetworkWrapper {
                                     Container container = inventories.get(0).getContainerWrapper();
                                     return menuFactories.get(playerPreference).create(windowId, inventories.get(0).getBlockPos(), container, playerInventory, this.getDisplayName());
                                 } else if (inventories.size() == 2) {
-                                    CompoundContainer container = new CompoundContainer(inventories.get(0).getContainerWrapper(), inventories.get(1).getContainerWrapper());
+                                    var container = new CompoundContainer(inventories.get(0).getContainerWrapper(), inventories.get(1).getContainerWrapper());
                                     return menuFactories.get(playerPreference).create(windowId, inventories.get(0).getBlockPos(), container, playerInventory, this.getDisplayName());
                                 }
                                 throw new IllegalStateException("inventories size is > 2");

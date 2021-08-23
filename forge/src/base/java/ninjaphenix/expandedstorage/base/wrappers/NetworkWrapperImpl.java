@@ -22,7 +22,6 @@ import ninjaphenix.expandedstorage.base.network.NotifyServerOptionsMessage;
 import ninjaphenix.expandedstorage.base.network.ScreenTypeUpdateMessage;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -84,11 +83,6 @@ public final class NetworkWrapperImpl implements NetworkWrapper {
     }
 
     @Override
-    public boolean isValidScreenType(ResourceLocation screenType) {
-        return screenType != null && menuFactories.containsKey(screenType);
-    }
-
-    @Override
     public void c2s_sendTypePreference(ResourceLocation selection) {
         ClientPacketListener listener = Minecraft.getInstance().getConnection();
         if (listener != null && channel.isRemotePresent(listener.getConnection())) {
@@ -122,12 +116,13 @@ public final class NetworkWrapperImpl implements NetworkWrapper {
     }
 
     public void c_setServerOptions(Set<ResourceLocation> options) {
-        var newOptions = new HashSet<ResourceLocation>();
-        for (ResourceLocation option : options) {
-            if (this.isValidScreenType(option)) {
-                newOptions.add(option);
-            }
+        options.removeIf(option -> !menuFactories.containsKey(option));
+        screenOptions = Set.copyOf(options);
+        ResourceLocation option = ConfigWrapper.getInstance().getPreferredScreenType();
+        if (screenOptions.contains(option)) {
+            channel.sendToServer(new ScreenTypeUpdateMessage(option));
+        } else {
+            ConfigWrapper.getInstance().setPreferredScreenType(Utils.UNSET_SCREEN_TYPE);
         }
-        this.screenOptions = newOptions;
     }
 }

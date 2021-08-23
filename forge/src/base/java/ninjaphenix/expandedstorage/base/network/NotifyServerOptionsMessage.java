@@ -2,7 +2,6 @@ package ninjaphenix.expandedstorage.base.network;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fmllegacy.network.NetworkDirection;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import ninjaphenix.expandedstorage.base.wrappers.NetworkWrapper;
 import ninjaphenix.expandedstorage.base.wrappers.NetworkWrapperImpl;
@@ -31,14 +30,12 @@ public class NotifyServerOptionsMessage {
         for (int i = 0; i < count; i++) {
             options.add(buffer.readResourceLocation());
         }
-        return new NotifyServerOptionsMessage(Set.copyOf(options));
+        return new NotifyServerOptionsMessage(options);
     }
 
     public static void handle(NotifyServerOptionsMessage message, Supplier<NetworkEvent.Context> wrappedContext) {
         NetworkEvent.Context context = wrappedContext.get();
-        if (context.getDirection() == NetworkDirection.LOGIN_TO_CLIENT) {
-            context.enqueueWork(() -> ((NetworkWrapperImpl) NetworkWrapper.getInstance()).c_setServerOptions(message.options));
-            context.setPacketHandled(true);
-        }
+        context.enqueueWork(() -> ((NetworkWrapperImpl) NetworkWrapper.getInstance()).c_setServerOptions(message.options));
+        context.setPacketHandled(true);
     }
 }
