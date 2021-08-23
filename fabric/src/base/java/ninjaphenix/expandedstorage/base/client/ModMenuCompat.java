@@ -5,6 +5,8 @@ import com.terraformersmc.modmenu.api.ModMenuApi;
 import net.minecraft.resources.ResourceLocation;
 import ninjaphenix.expandedstorage.base.client.menu.PickScreen;
 import ninjaphenix.expandedstorage.base.internal_api.Utils;
+import ninjaphenix.expandedstorage.base.wrappers.ConfigWrapper;
+import ninjaphenix.expandedstorage.base.wrappers.NetworkWrapper;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +19,10 @@ public class ModMenuCompat implements ModMenuApi {
             values.add(Utils.SINGLE_SCREEN_TYPE);
             values.add(Utils.PAGED_SCREEN_TYPE);
             values.add(Utils.SCROLLABLE_SCREEN_TYPE);
-            return new PickScreen(values, returnToScreen);
+            return new PickScreen(values, returnToScreen, (selection) -> {
+                ConfigWrapper.getInstance().setPreferredScreenType(selection);
+                NetworkWrapper.getInstance().c2s_setSendTypePreference(selection);
+            });
         };
     }
 }

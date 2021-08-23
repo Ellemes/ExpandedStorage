@@ -2,13 +2,7 @@ package ninjaphenix.expandedstorage.base.internal_api.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.CompoundContainer;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -22,98 +16,19 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import ninjaphenix.expandedstorage.base.internal_api.Utils;
 import ninjaphenix.expandedstorage.base.internal_api.block.misc.AbstractOpenableStorageBlockEntity;
-import ninjaphenix.expandedstorage.base.internal_api.block.misc.AbstractStorageBlockEntity;
 import ninjaphenix.expandedstorage.base.internal_api.block.misc.CursedChestType;
-import ninjaphenix.expandedstorage.base.internal_api.inventory.SyncedMenuFactory;
-import ninjaphenix.expandedstorage.base.wrappers.NetworkWrapper;
 import org.jetbrains.annotations.ApiStatus.Experimental;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.function.BiPredicate;
 
 @Internal
 @Experimental
 public abstract class AbstractChestBlock<T extends AbstractOpenableStorageBlockEntity> extends AbstractOpenableStorageBlock {
     public static final EnumProperty<CursedChestType> CURSED_CHEST_TYPE = EnumProperty.create("type", CursedChestType.class);
-
-    private static final DoubleBlockCombiner.Combiner<AbstractOpenableStorageBlockEntity, Optional<SyncedMenuFactory>> MENU_GETTER = new DoubleBlockCombiner.Combiner<>() {
-        @Override
-        public Optional<SyncedMenuFactory> acceptDouble(AbstractOpenableStorageBlockEntity first, AbstractOpenableStorageBlockEntity second) {
-            return Optional.of(new SyncedMenuFactory() {
-                @Override
-                public void writeClientData(ServerPlayer player, FriendlyByteBuf buffer) {
-                    buffer.writeBlockPos(first.getBlockPos()).writeInt(first.getSlotCount() + second.getSlotCount());
-                }
-
-                @Override
-                public Component getMenuTitle() {
-                    return first.hasCustomName() ? first.getName() : second.hasCustomName() ? second.getName() : Utils.translation("container.expandedstorage.generic_double", first.getName());
-                }
-
-                @Override
-                public boolean canPlayerOpen(ServerPlayer player) {
-                    if (first.canPlayerInteractWith(player) && second.canPlayerInteractWith(player)) {
-                        return true;
-                    }
-                    AbstractStorageBlockEntity.notifyBlockLocked(player, this.getMenuTitle());
-                    return false;
-                }
-
-                @Nullable
-                @Override
-                public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, ServerPlayer player) {
-                    if (first.canContinueUse(player) && second.canContinueUse(player)) {
-                        CompoundContainer container = new CompoundContainer(first.getContainerWrapper(), second.getContainerWrapper());
-                        return NetworkWrapper.getInstance().createMenu(windowId, first.getBlockPos(), container, playerInventory, this.getMenuTitle());
-                    }
-                    return null;
-                }
-            });
-        }
-
-        @Override
-        public Optional<SyncedMenuFactory> acceptSingle(AbstractOpenableStorageBlockEntity single) {
-            return Optional.of(new SyncedMenuFactory() {
-                @Override
-                public void writeClientData(ServerPlayer player, FriendlyByteBuf buffer) {
-                    buffer.writeBlockPos(single.getBlockPos()).writeInt(single.getSlotCount());
-                }
-
-                @Override
-                public Component getMenuTitle() {
-                    return single.getName();
-                }
-
-                @Override
-                public boolean canPlayerOpen(ServerPlayer player) {
-                    if (single.canPlayerInteractWith(player)) {
-                        return true;
-                    }
-                    AbstractStorageBlockEntity.notifyBlockLocked(player, this.getMenuTitle());
-                    return false;
-                }
-
-                @Nullable
-                @Override
-                public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, ServerPlayer player) {
-                    if (single.canContinueUse(player)) {
-                        return NetworkWrapper.getInstance().createMenu(windowId, single.getBlockPos(), single.getContainerWrapper(), playerInventory, this.getMenuTitle());
-                    }
-                    return null;
-                }
-            });
-        }
-
-        @Override
-        public Optional<SyncedMenuFactory> acceptNone() {
-            return Optional.empty();
-        }
-    };
 
     public AbstractChestBlock(Properties properties, ResourceLocation blockId, ResourceLocation blockTier,
                               ResourceLocation openingStat, int slots) {
@@ -278,9 +193,23 @@ public abstract class AbstractChestBlock<T extends AbstractOpenableStorageBlockE
         return false;
     }
 
-    @Nullable
     @Override
-    protected SyncedMenuFactory createMenuFactory(BlockState state, LevelAccessor level, BlockPos pos) {
-        return this.createCombinedPropertyGetter(state, level, pos, false).apply(MENU_GETTER).orElse(null);
+    public List<AbstractOpenableStorageBlockEntity> getInventoryParts(Level level, BlockState state, BlockPos pos) {
+        return this.createCombinedPropertyGetter(state, level, pos, false).apply(new DoubleBlockCombiner.Combiner<T, List<AbstractOpenableStorageBlockEntity>>() {
+            @Override
+            public List<AbstractOpenableStorageBlockEntity> acceptDouble(T first, T second) {
+                return List.of(first, second);
+            }
+
+            @Override
+            public List<AbstractOpenableStorageBlockEntity> acceptSingle(T single) {
+                return List.of(single);
+            }
+
+            @Override
+            public List<AbstractOpenableStorageBlockEntity> acceptNone() {
+                return List.of();
+            }
+        });
     }
 }

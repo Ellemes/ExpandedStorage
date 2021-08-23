@@ -51,7 +51,9 @@ public abstract class AbstractScreen<T extends AbstractMenu<R>, R extends Screen
     @SuppressWarnings("ConstantConditions")
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (PlatformUtils.getInstance().isConfigKeyPressed(keyCode, scanCode, modifiers)) {
-            NetworkWrapper.getInstance().c2s_openTypeSelectScreen();
+            //NetworkWrapper.getInstance().c2s_openTypeSelectScreen();
+            // todo: rework, should open screen which has a close callback to re-open the inventory
+
             return true;
         } else if (keyCode == GLFW.GLFW_KEY_ESCAPE || minecraft.options.keyInventory.matches(keyCode, scanCode)) {
             minecraft.player.closeContainer();
