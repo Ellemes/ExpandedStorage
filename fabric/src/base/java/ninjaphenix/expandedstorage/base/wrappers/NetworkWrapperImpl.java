@@ -213,9 +213,10 @@ final class NetworkWrapperImpl implements NetworkWrapper {
         }
 
         private void sendPlayerPreference(ClientPacketListener listener, PacketSender sender, Minecraft client) {
-            if (ClientPlayNetworking.canSend(NetworkWrapperImpl.UPDATE_PLAYER_PREFERENCE)) {
+            // Cannot check can send during join, great api :tiny_potato:
+            //if (ClientPlayNetworking.canSend(NetworkWrapperImpl.UPDATE_PLAYER_PREFERENCE)) {
                 sender.sendPacket(NetworkWrapperImpl.UPDATE_PLAYER_PREFERENCE, new FriendlyByteBuf(Unpooled.buffer()).writeResourceLocation(ConfigWrapper.getInstance().getPreferredScreenType()));
-            }
+            //}
         }
 
         private void handleServerMenuTypes(Minecraft client, ClientPacketListener handler, FriendlyByteBuf buffer, PacketSender sender) {
