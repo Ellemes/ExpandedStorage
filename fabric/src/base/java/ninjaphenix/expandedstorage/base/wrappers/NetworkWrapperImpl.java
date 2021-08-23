@@ -36,12 +36,7 @@ import ninjaphenix.expandedstorage.base.inventory.ScrollableMenu;
 import ninjaphenix.expandedstorage.base.inventory.SingleMenu;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 final class NetworkWrapperImpl implements NetworkWrapper {
     private static final ResourceLocation UPDATE_PLAYER_PREFERENCE = Utils.resloc("update_player_preference");
@@ -76,20 +71,18 @@ final class NetworkWrapperImpl implements NetworkWrapper {
     }
 
     private void sendServerOptions(ServerGamePacketListenerImpl listener, PacketSender sender, MinecraftServer server) {
-        if (ServerPlayNetworking.canSend(listener, NetworkWrapperImpl.NOTIFY_SERVER_MENU_TYPES)) {
-            var buffer = new FriendlyByteBuf(Unpooled.buffer());
-            buffer.writeInt(menuFactories.size());
-            menuFactories.keySet().forEach(buffer::writeResourceLocation);
-            sender.sendPacket(NetworkWrapperImpl.NOTIFY_SERVER_MENU_TYPES, buffer);
-        }
+        var buffer = new FriendlyByteBuf(Unpooled.buffer());
+        buffer.writeInt(menuFactories.size());
+        menuFactories.keySet().forEach(buffer::writeResourceLocation);
+        sender.sendPacket(NetworkWrapperImpl.NOTIFY_SERVER_MENU_TYPES, buffer);
     }
 
     private void s_handleOpenInventory(MinecraftServer server, ServerPlayer player, ServerGamePacketListenerImpl listener, FriendlyByteBuf buffer, PacketSender sender) {
         var pos = buffer.readBlockPos();
-        var preference = buffer.readUtf();
+        var preference = buffer.readableBytes() > 0 ? buffer.readUtf() : null;
         var level = player.getLevel();
         server.execute(() -> {
-            if (!preference.isEmpty()) {
+            if (preference != null) {
                 playerPreferences.put(player.getUUID(), new ResourceLocation(preference));
             }
             UUID uuid = player.getUUID();
@@ -174,10 +167,6 @@ final class NetworkWrapperImpl implements NetworkWrapper {
         server.submit(() -> this.s_setPlayerScreenType(player, screenType));
     }
 
-    public boolean isValidScreenType(ResourceLocation screenType) {
-        return screenType != null && menuFactories.containsKey(screenType);
-    }
-
     @Override
     public void c2s_sendTypePreference(ResourceLocation selection) {
         if (ClientPlayNetworking.canSend(NetworkWrapperImpl.UPDATE_PLAYER_PREFERENCE)) {
@@ -206,17 +195,9 @@ final class NetworkWrapperImpl implements NetworkWrapper {
         private Set<ResourceLocation> screenOptions = Set.copyOf(NetworkWrapperImpl.this.menuFactories.keySet());
 
         private void initialise() {
-            ClientPlayConnectionEvents.JOIN.register(this::sendPlayerPreference);
             ClientPlayConnectionEvents.INIT.register((listener_init, client) -> ClientPlayNetworking.registerReceiver(NetworkWrapperImpl.NOTIFY_SERVER_MENU_TYPES, this::handleServerMenuTypes));
             ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> screenOptions = Set.copyOf(NetworkWrapperImpl.this.menuFactories.keySet()));
             INSTANCE = this;
-        }
-
-        private void sendPlayerPreference(ClientPacketListener listener, PacketSender sender, Minecraft client) {
-            // Cannot check can send during join, great api :tiny_potato:
-            //if (ClientPlayNetworking.canSend(NetworkWrapperImpl.UPDATE_PLAYER_PREFERENCE)) {
-                sender.sendPacket(NetworkWrapperImpl.UPDATE_PLAYER_PREFERENCE, new FriendlyByteBuf(Unpooled.buffer()).writeResourceLocation(ConfigWrapper.getInstance().getPreferredScreenType()));
-            //}
         }
 
         private void handleServerMenuTypes(Minecraft client, ClientPacketListener handler, FriendlyByteBuf buffer, PacketSender sender) {
@@ -225,9 +206,15 @@ final class NetworkWrapperImpl implements NetworkWrapper {
             for (int i = 0; i < options; i++) {
                 serverOptions.add(buffer.readResourceLocation());
             }
-            serverOptions.removeIf(option -> !NetworkWrapper.getInstance().isValidScreenType(option));
+            serverOptions.removeIf(option -> !NetworkWrapperImpl.this.menuFactories.containsKey(option));
             client.submit(() -> {
-                this.screenOptions = Set.copyOf(serverOptions);
+                screenOptions = Set.copyOf(serverOptions);
+                var option = ConfigWrapper.getInstance().getPreferredScreenType();
+                if (screenOptions.contains(option)) {
+                    sender.sendPacket(NetworkWrapperImpl.UPDATE_PLAYER_PREFERENCE, new FriendlyByteBuf(Unpooled.buffer()).writeResourceLocation(option));
+                } else {
+                    ConfigWrapper.getInstance().setPreferredScreenType(Utils.UNSET_SCREEN_TYPE);
+                }
             });
         }
 
@@ -245,8 +232,6 @@ final class NetworkWrapperImpl implements NetworkWrapper {
                 buffer.writeBlockPos(pos);
                 if (preference != null) {
                     buffer.writeResourceLocation(preference);
-                } else {
-                    buffer.writeUtf("");
                 }
                 ClientPlayNetworking.send(NetworkWrapperImpl.OPEN_INVENTORY, buffer);
             }

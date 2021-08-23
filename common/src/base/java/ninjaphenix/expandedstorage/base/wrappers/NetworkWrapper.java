@@ -13,8 +13,6 @@ public interface NetworkWrapper {
 
     void initialise();
 
-    boolean isValidScreenType(ResourceLocation screenType);
-
     void c2s_sendTypePreference(ResourceLocation selection);
 
     void s_setPlayerScreenType(ServerPlayer player, ResourceLocation selection);
