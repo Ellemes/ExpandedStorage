@@ -104,6 +104,7 @@ final class NetworkWrapperImpl implements NetworkWrapper {
                             } else {
                                 player.displayClientMessage(new TranslatableComponent("container.isLocked", displayName), true);
                                 player.playNotifySound(SoundEvents.CHEST_LOCKED, SoundSource.BLOCKS, 1.0F, 1.0F);
+                                return;
                             }
                         }
                         player.openMenu(new ExtendedScreenHandlerFactory() {
