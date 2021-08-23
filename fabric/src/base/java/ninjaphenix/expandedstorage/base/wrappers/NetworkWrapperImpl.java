@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -27,7 +28,6 @@ import ninjaphenix.expandedstorage.base.client.menu.PickScreen;
 import ninjaphenix.expandedstorage.base.internal_api.Utils;
 import ninjaphenix.expandedstorage.base.internal_api.block.AbstractOpenableStorageBlock;
 import ninjaphenix.expandedstorage.base.internal_api.block.misc.AbstractOpenableStorageBlockEntity;
-import ninjaphenix.expandedstorage.base.internal_api.block.misc.AbstractStorageBlockEntity;
 import ninjaphenix.expandedstorage.base.internal_api.inventory.ServerMenuFactory;
 import ninjaphenix.expandedstorage.base.inventory.PagedMenu;
 import ninjaphenix.expandedstorage.base.inventory.ScrollableMenu;
@@ -35,6 +35,7 @@ import ninjaphenix.expandedstorage.base.inventory.SingleMenu;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -43,6 +44,7 @@ import java.util.UUID;
 final class NetworkWrapperImpl implements NetworkWrapper {
     private static final ResourceLocation UPDATE_PLAYER_PREFERENCE = Utils.resloc("update_player_preference");
     private static final ResourceLocation OPEN_INVENTORY = Utils.resloc("open_inventory");
+    private static final ResourceLocation NOTIFY_SERVER_MENU_TYPES = Utils.resloc("server_menu_types");
     private static NetworkWrapperImpl INSTANCE;
     private final Map<UUID, ResourceLocation> playerPreferences = new HashMap<>();
     private final Map<ResourceLocation, ServerMenuFactory> menuFactories = Utils.unmodifiableMap(map -> {
@@ -60,14 +62,24 @@ final class NetworkWrapperImpl implements NetworkWrapper {
 
     public void initialise() {
         if (PlatformUtils.getInstance().isClient()) {
-            Client.initialise();
+            new Client().initialise();
         }
         // Register Server Receivers
         ServerPlayConnectionEvents.INIT.register((listener_init, server_unused) -> {
             ServerPlayNetworking.registerReceiver(listener_init, NetworkWrapperImpl.UPDATE_PLAYER_PREFERENCE, this::s_handleUpdatePlayerPreference);
             ServerPlayNetworking.registerReceiver(listener_init, NetworkWrapperImpl.OPEN_INVENTORY, this::s_handleOpenInventory);
         });
+        ServerPlayConnectionEvents.JOIN.register(this::sendServerOptions);
         ServerPlayConnectionEvents.DISCONNECT.register((listener, server) -> this.s_setPlayerScreenType(listener.player, Utils.UNSET_SCREEN_TYPE));
+    }
+
+    private void sendServerOptions(ServerGamePacketListenerImpl listener, PacketSender sender, MinecraftServer server) {
+        if (ServerPlayNetworking.canSend(listener, NetworkWrapperImpl.NOTIFY_SERVER_MENU_TYPES)) {
+            var buffer = new FriendlyByteBuf(Unpooled.buffer());
+            buffer.writeInt(menuFactories.size());
+            menuFactories.keySet().forEach(buffer::writeResourceLocation);
+            sender.sendPacket(NetworkWrapperImpl.NOTIFY_SERVER_MENU_TYPES, buffer);
+        }
     }
 
     private void s_handleOpenInventory(MinecraftServer server, ServerPlayer player, ServerGamePacketListenerImpl listener, FriendlyByteBuf buffer, PacketSender sender) {
@@ -186,13 +198,36 @@ final class NetworkWrapperImpl implements NetworkWrapper {
 
     @Override
     public Set<ResourceLocation> getScreenOptions() {
-        // todo: get from server & produce common set.
-        return menuFactories.keySet();
+        return Client.INSTANCE.screenOptions;
     }
 
-    private static class Client {
-        private static void initialise() {
-            ClientPlayConnectionEvents.JOIN.register((listener_play, sender, client) -> sender.sendPacket(NetworkWrapperImpl.UPDATE_PLAYER_PREFERENCE, new FriendlyByteBuf(Unpooled.buffer()).writeResourceLocation(ConfigWrapper.getInstance().getPreferredScreenType())));
+    private class Client {
+        private static Client INSTANCE;
+        private Set<ResourceLocation> screenOptions = Set.copyOf(NetworkWrapperImpl.this.menuFactories.keySet());
+
+        private void initialise() {
+            ClientPlayConnectionEvents.JOIN.register(this::sendPlayerPreference);
+            ClientPlayConnectionEvents.INIT.register((listener_init, client) -> ClientPlayNetworking.registerReceiver(NetworkWrapperImpl.NOTIFY_SERVER_MENU_TYPES, this::handleServerMenuTypes));
+            ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> screenOptions = Set.copyOf(NetworkWrapperImpl.this.menuFactories.keySet()));
+            INSTANCE = this;
+        }
+
+        private void sendPlayerPreference(ClientPacketListener listener, PacketSender sender, Minecraft client) {
+            if (ClientPlayNetworking.canSend(NetworkWrapperImpl.UPDATE_PLAYER_PREFERENCE)) {
+                sender.sendPacket(NetworkWrapperImpl.UPDATE_PLAYER_PREFERENCE, new FriendlyByteBuf(Unpooled.buffer()).writeResourceLocation(ConfigWrapper.getInstance().getPreferredScreenType()));
+            }
+        }
+
+        private void handleServerMenuTypes(Minecraft client, ClientPacketListener handler, FriendlyByteBuf buffer, PacketSender sender) {
+            int options = buffer.readInt();
+            var serverOptions = new HashSet<ResourceLocation>();
+            for (int i = 0; i < options; i++) {
+                serverOptions.add(buffer.readResourceLocation());
+            }
+            serverOptions.removeIf(option -> !NetworkWrapper.getInstance().isValidScreenType(option));
+            client.submit(() -> {
+                this.screenOptions = Set.copyOf(serverOptions);
+            });
         }
 
         private static void openInventoryAt(BlockPos pos, @Nullable ResourceLocation preference) {
