@@ -10,7 +10,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Supplier;
 
-public class NotifyServerOptionsMessage {
+@SuppressWarnings("ClassCanBeRecord")
+public final class NotifyServerOptionsMessage {
     private final Set<ResourceLocation> options;
 
     public NotifyServerOptionsMessage(Set<ResourceLocation> options) {

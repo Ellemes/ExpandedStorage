@@ -1,8 +1,6 @@
 package ninjaphenix.expandedstorage.base.wrappers;
 
 import io.netty.buffer.Unpooled;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
@@ -30,6 +28,7 @@ import ninjaphenix.expandedstorage.base.client.menu.PickScreen;
 import ninjaphenix.expandedstorage.base.internal_api.Utils;
 import ninjaphenix.expandedstorage.base.internal_api.block.AbstractOpenableStorageBlock;
 import ninjaphenix.expandedstorage.base.internal_api.block.misc.AbstractOpenableStorageBlockEntity;
+import ninjaphenix.expandedstorage.base.internal_api.block.misc.AbstractStorageBlockEntity;
 import ninjaphenix.expandedstorage.base.internal_api.inventory.ServerMenuFactory;
 import ninjaphenix.expandedstorage.base.inventory.PagedMenu;
 import ninjaphenix.expandedstorage.base.inventory.ScrollableMenu;
@@ -79,11 +78,11 @@ final class NetworkWrapperImpl implements NetworkWrapper {
 
     private void s_handleOpenInventory(MinecraftServer server, ServerPlayer player, ServerGamePacketListenerImpl listener, FriendlyByteBuf buffer, PacketSender sender) {
         var pos = buffer.readBlockPos();
-        var preference = buffer.readableBytes() > 0 ? buffer.readUtf() : null;
+        var preference = buffer.readableBytes() > 0 ? buffer.readResourceLocation() : null;
         var level = player.getLevel();
         server.execute(() -> {
             if (preference != null) {
-                playerPreferences.put(player.getUUID(), new ResourceLocation(preference));
+                playerPreferences.put(player.getUUID(), preference);
             }
             UUID uuid = player.getUUID();
             ResourceLocation playerPreference;
@@ -92,7 +91,7 @@ final class NetworkWrapperImpl implements NetworkWrapper {
                 if (state.getBlock() instanceof AbstractOpenableStorageBlock block) {
                     var inventories = block.getInventoryParts(level, state, pos);
                     if (inventories.size() == 1 || inventories.size() == 2) {
-                        var displayName = NetworkWrapperImpl.getDisplayName(inventories);
+                        var displayName = AbstractStorageBlockEntity.getDisplayName(inventories);
                         if (player.containerMenu == null || player.containerMenu == player.inventoryMenu) {
                             if (inventories.stream().allMatch(entity -> entity.canPlayerInteractWith(player))) {
                                 block.awardOpeningStat(player);
@@ -137,20 +136,6 @@ final class NetworkWrapperImpl implements NetworkWrapper {
         });
     }
 
-    private static Component getDisplayName(List<AbstractOpenableStorageBlockEntity> inventories) {
-        for (AbstractOpenableStorageBlockEntity inventory : inventories) {
-            if (inventory.hasCustomName()) {
-                return inventory.getName();
-            }
-        }
-        if (inventories.size() == 1) {
-            return inventories.get(0).getName();
-        } else if (inventories.size() == 2) {
-            return Utils.translation("container.expandedstorage.generic_double", inventories.get(0).getName());
-        }
-        throw new IllegalStateException("inventories size is > 2");
-    }
-
     @Override
     public void s_setPlayerScreenType(ServerPlayer player, ResourceLocation screenType) {
         UUID uuid = player.getUUID();
@@ -175,7 +160,6 @@ final class NetworkWrapperImpl implements NetworkWrapper {
     }
 
     @Override
-    @Environment(EnvType.CLIENT)
     public void c_openInventoryAt(BlockPos pos) {
         Client.openInventoryAt(pos);
     }
