@@ -10,7 +10,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import ninjaphenix.expandedstorage.base.internal_api.inventory.AbstractMenu;
 import ninjaphenix.expandedstorage.base.inventory.screen.ScreenMeta;
-import ninjaphenix.expandedstorage.base.wrappers.ConfigWrapper;
 import ninjaphenix.expandedstorage.base.wrappers.NetworkWrapper;
 import ninjaphenix.expandedstorage.base.wrappers.PlatformUtils;
 import org.lwjgl.glfw.GLFW;

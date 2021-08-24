@@ -12,42 +12,27 @@ import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.CompoundContainer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import ninjaphenix.expandedstorage.base.client.menu.PickScreen;
 import ninjaphenix.expandedstorage.base.internal_api.Utils;
-import ninjaphenix.expandedstorage.base.internal_api.block.AbstractOpenableStorageBlock;
-import ninjaphenix.expandedstorage.base.internal_api.block.misc.AbstractOpenableStorageBlockEntity;
-import ninjaphenix.expandedstorage.base.internal_api.block.misc.AbstractStorageBlockEntity;
 import ninjaphenix.expandedstorage.base.internal_api.inventory.ServerMenuFactory;
-import ninjaphenix.expandedstorage.base.inventory.PagedMenu;
-import ninjaphenix.expandedstorage.base.inventory.ScrollableMenu;
-import ninjaphenix.expandedstorage.base.inventory.SingleMenu;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
-final class NetworkWrapperImpl implements NetworkWrapper {
+final class NetworkWrapperImpl extends NetworkWrapper {
     private static final ResourceLocation UPDATE_PLAYER_PREFERENCE = Utils.resloc("update_player_preference");
     private static final ResourceLocation OPEN_INVENTORY = Utils.resloc("open_inventory");
     private static final ResourceLocation NOTIFY_SERVER_MENU_TYPES = Utils.resloc("server_menu_types");
     private static NetworkWrapperImpl INSTANCE;
-    private final Map<UUID, ResourceLocation> playerPreferences = new HashMap<>();
-    private final Map<ResourceLocation, ServerMenuFactory> menuFactories = Utils.unmodifiableMap(map -> {
-        map.put(Utils.SINGLE_SCREEN_TYPE, SingleMenu::new);
-        map.put(Utils.SCROLLABLE_SCREEN_TYPE, ScrollableMenu::new);
-        map.put(Utils.PAGED_SCREEN_TYPE, PagedMenu::new);
-    });
 
     public static NetworkWrapper getInstance() {
         if (INSTANCE == null) {
@@ -79,71 +64,12 @@ final class NetworkWrapperImpl implements NetworkWrapper {
     private void s_handleOpenInventory(MinecraftServer server, ServerPlayer player, ServerGamePacketListenerImpl listener, FriendlyByteBuf buffer, PacketSender sender) {
         var pos = buffer.readBlockPos();
         var preference = buffer.readableBytes() > 0 ? buffer.readResourceLocation() : null;
-        var level = player.getLevel();
         server.execute(() -> {
             if (preference != null) {
                 playerPreferences.put(player.getUUID(), preference);
             }
-            UUID uuid = player.getUUID();
-            ResourceLocation playerPreference;
-            if (playerPreferences.containsKey(uuid) && menuFactories.containsKey(playerPreference = playerPreferences.get(uuid))) {
-                var state = level.getBlockState(pos);
-                if (state.getBlock() instanceof AbstractOpenableStorageBlock block) {
-                    var inventories = block.getInventoryParts(level, state, pos);
-                    if (inventories.size() == 1 || inventories.size() == 2) {
-                        var displayName = AbstractStorageBlockEntity.getDisplayName(inventories);
-                        if (player.containerMenu == null || player.containerMenu == player.inventoryMenu) {
-                            if (inventories.stream().allMatch(entity -> entity.canPlayerInteractWith(player))) {
-                                block.awardOpeningStat(player);
-                            } else {
-                                player.displayClientMessage(new TranslatableComponent("container.isLocked", displayName), true);
-                                player.playNotifySound(SoundEvents.CHEST_LOCKED, SoundSource.BLOCKS, 1.0F, 1.0F);
-                                return;
-                            }
-                        }
-                        player.openMenu(new ExtendedScreenHandlerFactory() {
-                            @Override
-                            public void writeScreenOpeningData(ServerPlayer player, FriendlyByteBuf buf) {
-                                buf.writeBlockPos(pos).writeInt(inventories.stream().mapToInt(AbstractOpenableStorageBlockEntity::getSlotCount).sum());
-                            }
-
-                            @Override
-                            public Component getDisplayName() {
-                                return displayName;
-                            }
-
-                            @Nullable
-                            @Override
-                            public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, Player player) {
-                                for (AbstractOpenableStorageBlockEntity entity : inventories) {
-                                    if (!entity.canContinueUse(player)) {
-                                        return null;
-                                    }
-                                }
-                                if (inventories.size() == 1) {
-                                    Container container = inventories.get(0).getContainerWrapper();
-                                    return menuFactories.get(playerPreference).create(windowId, inventories.get(0).getBlockPos(), container, playerInventory, this.getDisplayName());
-                                } else if (inventories.size() == 2) {
-                                    var container = new CompoundContainer(inventories.get(0).getContainerWrapper(), inventories.get(1).getContainerWrapper());
-                                    return menuFactories.get(playerPreference).create(windowId, inventories.get(0).getBlockPos(), container, playerInventory, this.getDisplayName());
-                                }
-                                throw new IllegalStateException("inventories size is > 2");
-                            }
-                        });
-                    }
-                }
-            }
+            this.openMenuIfAllowed(pos, player);
         });
-    }
-
-    @Override
-    public void s_setPlayerScreenType(ServerPlayer player, ResourceLocation screenType) {
-        UUID uuid = player.getUUID();
-        if (menuFactories.containsKey(screenType)) {
-            playerPreferences.put(uuid, screenType);
-        } else {
-            playerPreferences.remove(uuid);
-        }
     }
 
     private void s_handleUpdatePlayerPreference(MinecraftServer server, ServerPlayer player, ServerGamePacketListenerImpl listener,
@@ -167,6 +93,27 @@ final class NetworkWrapperImpl implements NetworkWrapper {
     @Override
     public void c_openInventoryAt(BlockPos pos, ResourceLocation selection) {
         Client.openInventoryAt(pos, selection);
+    }
+
+    @Override
+    protected void openMenu(ServerPlayer player, BlockPos pos, Container container, ServerMenuFactory factory, Component displayName) {
+        player.openMenu(new ExtendedScreenHandlerFactory() {
+            @Override
+            public void writeScreenOpeningData(ServerPlayer player, FriendlyByteBuf buf) {
+                buf.writeBlockPos(pos).writeInt(container.getContainerSize());
+            }
+
+            @Override
+            public Component getDisplayName() {
+                return displayName;
+            }
+
+            @Nullable
+            @Override
+            public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, Player player) {
+                return factory.create(windowId, pos, container, playerInventory, displayName);
+            }
+        });
     }
 
     @Override
