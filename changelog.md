@@ -9,5 +9,8 @@
 - Fixed weirdness with comparators on double chests, specifically when formed / broken.
 - Each half of a double chest now return the same inventory and transfer api storage object.
 - Recipes now use even more common tags, specifically iron, gold, diamond, and netherite.
+- Probably some other minor tweaks, but most if not all should be listed above.
 
 Big thanks to the AOF maintainers and community (mainly official eu server) for being so kind and genuinely making me happy.
+A part of this update serves as an easter egg as a form of thank you, since no one reads changelogs anyways, rename a 
+  Storage mutator to Sunrise or Sparrow and use the new theme mode on the new mini chest blocks.
