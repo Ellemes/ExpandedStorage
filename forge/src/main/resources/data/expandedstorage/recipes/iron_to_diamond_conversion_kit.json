@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GGG",
+    "DKD",
+    "GGG"
+  ],
+  "key": {
+    "K": {
+      "item": "expandedstorage:iron_to_gold_conversion_kit"
+    },
+    "D": {
+      "tag": "forge:gems/diamond"
+    },
+    "G": {
+      "tag": "forge:glass"
+    }
+  },
+  "result": {
+    "item": "expandedstorage:iron_to_diamond_conversion_kit"
+  }
+}
