@@ -57,6 +57,16 @@ minecraft {
 
 repositories {
     mavenCentral()
+    maven {
+        // JEI maven
+        name = "Progwml6 maven"
+        url = uri("https://dvs1.progwml6.com/files/maven/")
+    }
+    maven {
+        // JEI maven - fallback
+        name = "ModMaven"
+        url = uri("https://modmaven.k-4u.nl")
+    }
     mavenLocal()
 }
 
@@ -66,6 +76,8 @@ dependencies {
     annotationProcessor(group = "org.spongepowered", name = "mixin", version = properties["mixin_version"] as String, classifier = "processor")
     implementation(fg.deobf("ninjaphenix:container_library:${properties["container_library_version"]}+${properties["minecraft_version"]}:forge"))
     implementation(group = "org.jetbrains", name = "annotations", version = properties["jetbrains_annotations_version"] as String)
+
+    //implementation(fg.deobf("mezz.jei:jei-${properties["minecraft_version"]}:${properties["jei_version"]}"))
 }
 
 tasks.withType<ProcessResources> {

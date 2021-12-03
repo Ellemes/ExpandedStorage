@@ -3,7 +3,7 @@
   "pattern": ["OOO", "ODO", "OOO"],
   "key": {
     "D": {
-      "tag": "forge:gems/diamonds"
+      "tag": "forge:gems/diamond"
     },
     "O": {
       "tag": "forge:obsidian"
