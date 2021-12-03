@@ -5,10 +5,10 @@ pluginManagement {
         eachPlugin {
             if (requested.id.toString() == "net.minecraftforge.gradle") {
                 useModule("net.minecraftforge.gradle:ForgeGradle:${requested.version}")
-            } else if (requested.id.toString() == "ninjaphenix.gradle-utils") {
-                useModule("com.gitlab.NinjaPhenix.gradle-utils:gradle-utils:${requested.version}")
             } else if (requested.id.toString() == "org.spongepowered.mixin") {
                 useModule("org.spongepowered:mixingradle:${requested.version}")
+            } else if (requested.id.toString() == "ninjaphenix.gradle-utils") {
+                useModule("com.gitlab.NinjaPhenix.gradle-utils:gradle-utils:${requested.version}")
             }
         }
     }
@@ -45,3 +45,4 @@ pluginManagement {
 rootProject.name = "expandedstorage"
 
 include("fabric")
+include("forge")
