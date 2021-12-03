@@ -92,7 +92,7 @@ public final class Main {
                 this::chestRegistration, BlockTags.createOptional(new ResourceLocation("forge", "chests/wooden")), ChestBlockItem::new, ChestItemAccess::new,
                 this::oldChestRegistration,
                 this::barrelRegistration, BlockTags.createOptional(new ResourceLocation("forge", "barrels/wooden")),
-                this::miniChestRegistration, screenHandlerType,
+                this::miniChestRegistration, MiniChestBlockItem::new, screenHandlerType,
                 chestCycle, miniChestCycle, miniChestSecretCycle, miniChestSecretCycle2
         );
         modBus.addGenericListener(MenuType.class, (RegistryEvent.Register<MenuType<?>> event) -> {

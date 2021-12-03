@@ -85,7 +85,7 @@ public final class Main implements ModInitializer {
                 Main::chestRegistration, TagFactory.BLOCK.create(new Identifier("c", "wooden_chests")), BlockItem::new, ChestItemAccess::new,
                 Main::oldChestRegistration,
                 Main::barrelRegistration, TagFactory.BLOCK.create(new Identifier("c", "wooden_barrels")),
-                Main::miniChestRegistration, ScreenHandlerRegistry.registerSimple(Utils.id("minichest_handler"), MiniChestScreenHandler::createClientMenu),
+                Main::miniChestRegistration, BlockItem::new, ScreenHandlerRegistry.registerSimple(Utils.id("minichest_handler"), MiniChestScreenHandler::createClientMenu),
                 TagFactory.BLOCK.create(Utils.id("chest_cycle")), TagFactory.BLOCK.create(Utils.id("mini_chest_cycle")), TagFactory.BLOCK.create(Utils.id("mini_chest_secret_cycle")), TagFactory.BLOCK.create(Utils.id("mini_chest_secret_cycle_2")));
 
         if (isClient) ScreenRegistry.register(Common.getMiniChestScreenHandlerType(), MiniChestScreen::new);
@@ -106,7 +106,7 @@ public final class Main implements ModInitializer {
     }
 
     @SuppressWarnings({"UnstableApiUsage"})
-    private static Storage<ItemVariant> getItemAccess(World world, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, Direction context) {
+    private static Storage<ItemVariant> getItemAccess(World world, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, @SuppressWarnings("unused") Direction context) {
         if (blockEntity instanceof OldChestBlockEntity entity) {
             DoubleItemAccess access = entity.getItemAccess();
             if (access.hasCachedAccess() || state.get(AbstractChestBlock.CURSED_CHEST_TYPE) == CursedChestType.SINGLE) {

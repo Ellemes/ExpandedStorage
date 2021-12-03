@@ -15,6 +15,39 @@
  */
 package ninjaphenix.expandedstorage;
 
+import ninjaphenix.expandedstorage.block.AbstractChestBlock;
+import ninjaphenix.expandedstorage.block.BarrelBlock;
+import ninjaphenix.expandedstorage.block.ChestBlock;
+import ninjaphenix.expandedstorage.block.MiniChestBlock;
+import ninjaphenix.expandedstorage.block.OpenableBlock;
+import ninjaphenix.expandedstorage.block.entity.BarrelBlockEntity;
+import ninjaphenix.expandedstorage.block.entity.ChestBlockEntity;
+import ninjaphenix.expandedstorage.block.entity.MiniChestBlockEntity;
+import ninjaphenix.expandedstorage.block.entity.OldChestBlockEntity;
+import ninjaphenix.expandedstorage.block.entity.extendable.OpenableBlockEntity;
+import ninjaphenix.expandedstorage.block.misc.CursedChestType;
+import ninjaphenix.expandedstorage.block.strategies.ItemAccess;
+import ninjaphenix.expandedstorage.block.strategies.Lockable;
+import ninjaphenix.expandedstorage.client.TextureCollection;
+import ninjaphenix.expandedstorage.item.BlockUpgradeBehaviour;
+import ninjaphenix.expandedstorage.item.MutationMode;
+import ninjaphenix.expandedstorage.item.MutatorBehaviour;
+import ninjaphenix.expandedstorage.item.StorageConversionKit;
+import ninjaphenix.expandedstorage.item.StorageMutator;
+import ninjaphenix.expandedstorage.registration.BlockItemCollection;
+import ninjaphenix.expandedstorage.registration.BlockItemPair;
+import ninjaphenix.expandedstorage.registration.RegistrationConsumer;
+import ninjaphenix.expandedstorage.tier.Tier;
+import org.apache.commons.codec.digest.DigestUtils;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -50,39 +83,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-import ninjaphenix.expandedstorage.block.AbstractChestBlock;
-import ninjaphenix.expandedstorage.block.BarrelBlock;
-import ninjaphenix.expandedstorage.block.ChestBlock;
-import ninjaphenix.expandedstorage.block.MiniChestBlock;
-import ninjaphenix.expandedstorage.block.OpenableBlock;
-import ninjaphenix.expandedstorage.block.entity.BarrelBlockEntity;
-import ninjaphenix.expandedstorage.block.entity.ChestBlockEntity;
-import ninjaphenix.expandedstorage.block.entity.MiniChestBlockEntity;
-import ninjaphenix.expandedstorage.block.entity.OldChestBlockEntity;
-import ninjaphenix.expandedstorage.block.entity.extendable.OpenableBlockEntity;
-import ninjaphenix.expandedstorage.block.misc.CursedChestType;
-import ninjaphenix.expandedstorage.block.strategies.ItemAccess;
-import ninjaphenix.expandedstorage.block.strategies.Lockable;
-import ninjaphenix.expandedstorage.client.TextureCollection;
-import ninjaphenix.expandedstorage.item.BlockUpgradeBehaviour;
-import ninjaphenix.expandedstorage.item.MutationMode;
-import ninjaphenix.expandedstorage.item.MutatorBehaviour;
-import ninjaphenix.expandedstorage.item.StorageConversionKit;
-import ninjaphenix.expandedstorage.item.StorageMutator;
-import ninjaphenix.expandedstorage.registration.BlockItemCollection;
-import ninjaphenix.expandedstorage.registration.BlockItemPair;
-import ninjaphenix.expandedstorage.registration.RegistrationConsumer;
-import ninjaphenix.expandedstorage.tier.Tier;
-import org.apache.commons.codec.digest.DigestUtils;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.UnaryOperator;
 
 public final class Common {
     public static final ResourceLocation BARREL_BLOCK_TYPE = Utils.id("barrel");
@@ -148,11 +148,11 @@ public final class Common {
     }
 
     private static BlockItemPair<MiniChestBlock, BlockItem> miniChestBlock(
-            ResourceLocation blockId, ResourceLocation stat, Tier tier, Properties settings, CreativeModeTab group
+            ResourceLocation blockId, ResourceLocation stat, Tier tier, Properties settings, BiFunction<MiniChestBlock, Item.Properties, BlockItem> blockItemMaker, CreativeModeTab group
     ) {
         MiniChestBlock block = new MiniChestBlock(tier.getBlockSettings().apply(settings), blockId, stat);
         Common.registerTieredBlock(block);
-        BlockItem item = new BlockItem(block, tier.getItemSettings().apply(new Item.Properties().tab(group)));
+        BlockItem item = blockItemMaker.apply(block, tier.getItemSettings().apply(new Item.Properties().tab(group)));
         return new BlockItemPair<>(block, item);
     }
 
@@ -250,9 +250,9 @@ public final class Common {
 
     public static ResourceLocation stat(String stat) {
         ResourceLocation statId = Utils.id(stat);
-        ResourceLocation returnValue = Registry.register(Registry.CUSTOM_STAT, statId, statId);
+        Registry.register(Registry.CUSTOM_STAT, statId, statId); // Forge doesn't provide custom registries for stats;
         Stats.CUSTOM.get(statId);
-        return returnValue;
+        return statId;
     }
 
     private static void defineTierUpgradePath(Pair<ResourceLocation, Item>[] items, boolean wrapTooltipManually, CreativeModeTab group, Tier... tiers) {
@@ -327,7 +327,7 @@ public final class Common {
                                        RegistrationConsumer<ChestBlock, BlockItem, ChestBlockEntity> chestRegistration, net.minecraft.tags.Tag.Named<Block> chestTag, BiFunction<ChestBlock, Item.Properties, BlockItem> chestItemMaker, Function<OpenableBlockEntity, ItemAccess> chestAccessMaker,
                                        RegistrationConsumer<AbstractChestBlock, BlockItem, OldChestBlockEntity> oldChestRegistration,
                                        RegistrationConsumer<BarrelBlock, BlockItem, BarrelBlockEntity> barrelRegistration, net.minecraft.tags.Tag.Named<Block> barrelTag,
-                                       RegistrationConsumer<MiniChestBlock, BlockItem, MiniChestBlockEntity> miniChestRegistration, MenuType<MiniChestScreenHandler> miniChestScreenHandlerType,
+                                       RegistrationConsumer<MiniChestBlock, BlockItem, MiniChestBlockEntity> miniChestRegistration, BiFunction<MiniChestBlock, Item.Properties, BlockItem> miniChestItemMaker, MenuType<MiniChestScreenHandler> miniChestScreenHandlerType,
                                        net.minecraft.tags.Tag.Named<Block> chestCycle, net.minecraft.tags.Tag.Named<Block> miniChestCycle, net.minecraft.tags.Tag.Named<Block> miniChestSecretCycle, net.minecraft.tags.Tag.Named<Block> miniChestSecretCycle2) {
         final Tier woodTier = new Tier(Utils.WOOD_TIER_ID, Utils.WOOD_STACK_COUNT, UnaryOperator.identity(), UnaryOperator.identity());
         final Tier ironTier = new Tier(Utils.id("iron"), 54, Properties::requiresCorrectToolForDrops, UnaryOperator.identity());
@@ -529,24 +529,24 @@ public final class Common {
         Properties pinkAmethystPresentSettings = Properties.of(Material.WOOD, MaterialColor.COLOR_PURPLE).strength(2.5f).sound(SoundType.WOOD);
         // Init content
         BlockItemCollection<MiniChestBlock, BlockItem> miniChestContent = BlockItemCollection.of(MiniChestBlock[]::new, BlockItem[]::new,
-                Common.miniChestBlock(Utils.id("vanilla_wood_mini_chest"), woodStat, woodTier, woodSettings, group),
-                Common.miniChestBlock(Utils.id("wood_mini_chest"), woodStat, woodTier, woodSettings, group),
-                Common.miniChestBlock(Utils.id("pumpkin_mini_chest"), pumpkinStat, woodTier, pumpkinSettings, group),
-                Common.miniChestBlock(Utils.id("red_mini_present"), redPresentStat, woodTier, redPresentSettings, group),
-                Common.miniChestBlock(Utils.id("white_mini_present"), whitePresentStat, woodTier, whitePresentSettings, group),
-                Common.miniChestBlock(Utils.id("candy_cane_mini_present"), candyCanePresentStat, woodTier, candyCanePresentSettings, group),
-                Common.miniChestBlock(Utils.id("green_mini_present"), greenPresentStat, woodTier, greenPresentSettings, group),
-                Common.miniChestBlock(Utils.id("lavender_mini_present"), lavenderPresentStat, woodTier, lavenderPresentSettings, group),
-                Common.miniChestBlock(Utils.id("pink_amethyst_mini_present"), pinkAmethystPresentStat, woodTier, pinkAmethystPresentSettings, group),
-                Common.miniChestBlock(Utils.id("vanilla_wood_mini_chest_with_sparrow"), woodStat, woodTier, woodSettings, group),
-                Common.miniChestBlock(Utils.id("wood_mini_chest_with_sparrow"),woodStat, woodTier, woodSettings, group),
-                Common.miniChestBlock(Utils.id("pumpkin_mini_chest_with_sparrow"), pumpkinStat, woodTier, pumpkinSettings, group),
-                Common.miniChestBlock(Utils.id("red_mini_present_with_sparrow"), redPresentStat, woodTier, redPresentSettings, group),
-                Common.miniChestBlock(Utils.id("white_mini_present_with_sparrow"), whitePresentStat, woodTier, whitePresentSettings, group),
-                Common.miniChestBlock(Utils.id("candy_cane_mini_present_with_sparrow"), candyCanePresentStat, woodTier, candyCanePresentSettings, group),
-                Common.miniChestBlock(Utils.id("green_mini_present_with_sparrow"), greenPresentStat, woodTier, greenPresentSettings, group),
-                Common.miniChestBlock(Utils.id("lavender_mini_present_with_sparrow"), lavenderPresentStat, woodTier, lavenderPresentSettings, group),
-                Common.miniChestBlock(Utils.id("pink_amethyst_mini_present_with_sparrow"), pinkAmethystPresentStat, woodTier, pinkAmethystPresentSettings, group)
+                Common.miniChestBlock(Utils.id("vanilla_wood_mini_chest"), woodStat, woodTier, woodSettings, miniChestItemMaker, group),
+                Common.miniChestBlock(Utils.id("wood_mini_chest"), woodStat, woodTier, woodSettings, miniChestItemMaker, group),
+                Common.miniChestBlock(Utils.id("pumpkin_mini_chest"), pumpkinStat, woodTier, pumpkinSettings, miniChestItemMaker, group),
+                Common.miniChestBlock(Utils.id("red_mini_present"), redPresentStat, woodTier, redPresentSettings, miniChestItemMaker, group),
+                Common.miniChestBlock(Utils.id("white_mini_present"), whitePresentStat, woodTier, whitePresentSettings, miniChestItemMaker, group),
+                Common.miniChestBlock(Utils.id("candy_cane_mini_present"), candyCanePresentStat, woodTier, candyCanePresentSettings, miniChestItemMaker, group),
+                Common.miniChestBlock(Utils.id("green_mini_present"), greenPresentStat, woodTier, greenPresentSettings, miniChestItemMaker, group),
+                Common.miniChestBlock(Utils.id("lavender_mini_present"), lavenderPresentStat, woodTier, lavenderPresentSettings, miniChestItemMaker, group),
+                Common.miniChestBlock(Utils.id("pink_amethyst_mini_present"), pinkAmethystPresentStat, woodTier, pinkAmethystPresentSettings, miniChestItemMaker, group),
+                Common.miniChestBlock(Utils.id("vanilla_wood_mini_chest_with_sparrow"), woodStat, woodTier, woodSettings, miniChestItemMaker, group),
+                Common.miniChestBlock(Utils.id("wood_mini_chest_with_sparrow"),woodStat, woodTier, woodSettings, miniChestItemMaker, group),
+                Common.miniChestBlock(Utils.id("pumpkin_mini_chest_with_sparrow"), pumpkinStat, woodTier, pumpkinSettings, miniChestItemMaker, group),
+                Common.miniChestBlock(Utils.id("red_mini_present_with_sparrow"), redPresentStat, woodTier, redPresentSettings, miniChestItemMaker, group),
+                Common.miniChestBlock(Utils.id("white_mini_present_with_sparrow"), whitePresentStat, woodTier, whitePresentSettings, miniChestItemMaker, group),
+                Common.miniChestBlock(Utils.id("candy_cane_mini_present_with_sparrow"), candyCanePresentStat, woodTier, candyCanePresentSettings, miniChestItemMaker, group),
+                Common.miniChestBlock(Utils.id("green_mini_present_with_sparrow"), greenPresentStat, woodTier, greenPresentSettings, miniChestItemMaker, group),
+                Common.miniChestBlock(Utils.id("lavender_mini_present_with_sparrow"), lavenderPresentStat, woodTier, lavenderPresentSettings, miniChestItemMaker, group),
+                Common.miniChestBlock(Utils.id("pink_amethyst_mini_present_with_sparrow"), pinkAmethystPresentStat, woodTier, pinkAmethystPresentSettings, miniChestItemMaker, group)
         );
         // Init block entity type
         Common.miniChestBlockEntityType = BlockEntityType.Builder.of((pos, state) -> new MiniChestBlockEntity(Common.getMiniChestBlockEntityType(), pos, state, ((MiniChestBlock) state.getBlock()).getBlockId(), Common.itemAccess, Common.lockable), miniChestContent.getBlocks()).build(null);
