@@ -39,10 +39,12 @@ import ninjaphenix.container_library.api.v2.OpenableBlockEntityV2;
 import ninjaphenix.container_library.api.v2.helpers.OpenableBlockEntitiesV2;
 import ninjaphenix.expandedstorage.Common;
 import ninjaphenix.expandedstorage.Utils;
+import ninjaphenix.expandedstorage.api.ExpandedStorageAccessors;
 import ninjaphenix.expandedstorage.block.entity.OldChestBlockEntity;
 import ninjaphenix.expandedstorage.block.misc.CursedChestType;
 import ninjaphenix.expandedstorage.block.misc.Property;
 import ninjaphenix.expandedstorage.block.misc.PropertyRetriever;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,11 +52,17 @@ import java.util.function.BiPredicate;
 
 /**
  * Note to self, do not rename, used by chest tracker.
+ * @deprecated Use {@link ExpandedStorageAccessors} instead.
  */
+@Deprecated
+@ApiStatus.Internal
 public class AbstractChestBlock extends OpenableBlock implements InventoryProvider {
     /**
      * Note to self, do not rename, used by chest tracker.
+     * @deprecated Use {@link ExpandedStorageAccessors} instead.
      */
+    @Deprecated
+    @ApiStatus.Internal
     public static final EnumProperty<CursedChestType> CURSED_CHEST_TYPE = EnumProperty.of("type", CursedChestType.class);
     private static final Property<OldChestBlockEntity, SidedInventory> INVENTORY_GETTER = new Property<>() {
         @Override
@@ -102,7 +110,10 @@ public class AbstractChestBlock extends OpenableBlock implements InventoryProvid
 
     /**
      * Note to self, do not rename, used by chest tracker.
+     * @deprecated Use {@link ExpandedStorageAccessors} instead.
      */
+    @Deprecated
+    @ApiStatus.Internal
     public static Direction getDirectionToAttached(BlockState state) {
         CursedChestType value = state.get(AbstractChestBlock.CURSED_CHEST_TYPE);
         if (value == CursedChestType.TOP) {

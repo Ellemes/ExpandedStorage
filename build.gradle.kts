@@ -74,7 +74,6 @@ var modrinthFabricTask : TaskProvider<com.modrinth.minotaur.TaskModrinthUpload>?
 var curseforgeForgeTask : TaskProvider<com.matthewprenger.cursegradle.CurseUploadTask>? = null
 var curseforgeFabricTask : TaskProvider<com.matthewprenger.cursegradle.CurseUploadTask>? = null
 
-
 val realChangelog = rootDir.resolve("changelog.md").readText(Charsets.UTF_8)
 val modrinthToken: String? = System.getenv("MODRINTH_TOKEN")
 val curseforgeToken: String? = System.getenv("CURSEFORGE_TOKEN")

@@ -110,11 +110,6 @@ public final class StorageMutator extends Item {
     }
 
     @Override
-    protected String getOrCreateTranslationKey() {
-        return "item.expandedstorage.storage_mutator";
-    }
-
-    @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> list, TooltipContext context) {
         MutationMode mode = StorageMutator.getMode(stack);
         list.add(new TranslatableText("tooltip.expandedstorage.storage_mutator.tool_mode", new TranslatableText("tooltip.expandedstorage.storage_mutator." + mode)).formatted(Formatting.GRAY));

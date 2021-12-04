@@ -190,7 +190,7 @@ public final class Common {
         if (isExpandedStorageChest && ((ChestBlock) block).getBlockTier() == from || !isExpandedStorageChest && from == Utils.WOOD_TIER_ID) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             //noinspection ConstantConditions
-            NbtCompound tag = blockEntity.writeNbt(new NbtCompound());
+            NbtCompound tag = blockEntity.createNbt();
             boolean verifiedSize = blockEntity instanceof Inventory inventory && inventory.size() == inventorySize;
             if (!verifiedSize) { // Cannot verify inventory size, we'll let it upgrade if it has or has less than 27 items
                 if (tag.contains("Items", NbtElement.LIST_TYPE)) {
@@ -219,7 +219,7 @@ public final class Common {
                 if (world.setBlockState(pos, newState)) {
                     BlockEntity newEntity = world.getBlockEntity(pos);
                     //noinspection ConstantConditions
-                    NbtCompound newTag = newEntity.writeNbt(new NbtCompound());
+                    NbtCompound newTag = newEntity.createNbt();
                     Inventories.writeNbt(newTag, inventory);
                     code.writeNbt(newTag);
                     newEntity.readNbt(newTag);
@@ -233,7 +233,7 @@ public final class Common {
             AbstractChestBlock toBlock = (AbstractChestBlock) Common.getTieredBlock(Common.OLD_CHEST_BLOCK_TYPE, to);
             DefaultedList<ItemStack> inventory = DefaultedList.ofSize(toBlock.getSlotCount(), ItemStack.EMPTY);
             //noinspection ConstantConditions
-            NbtCompound tag = world.getBlockEntity(pos).writeNbt(new NbtCompound());
+            NbtCompound tag = world.getBlockEntity(pos).createNbt();
             ContainerLock code = ContainerLock.fromNbt(tag);
             Inventories.readNbt(tag, inventory);
             world.removeBlockEntity(pos);
@@ -241,7 +241,7 @@ public final class Common {
             if (world.setBlockState(pos, newState)) {
                 BlockEntity newEntity = world.getBlockEntity(pos);
                 //noinspection ConstantConditions
-                NbtCompound newTag = newEntity.writeNbt(new NbtCompound());
+                NbtCompound newTag = newEntity.createNbt();
                 Inventories.writeNbt(newTag, inventory);
                 code.writeNbt(newTag);
                 newEntity.readNbt(newTag);
@@ -340,7 +340,7 @@ public final class Common {
         //<editor-fold desc="-- Base Content">
         //noinspection unchecked
         Pair<Identifier, Item>[] baseContent = new Pair[16];
-        baseContent[0] = new Pair<>(Utils.id("chest_mutator"), new StorageMutator(new Item.Settings().maxCount(1).group(group)));
+        baseContent[0] = new Pair<>(Utils.id("storage_mutator"), new StorageMutator(new Item.Settings().maxCount(1).group(group)));
         Common.defineTierUpgradePath(baseContent, manuallyWrapTooltips, group, woodTier, ironTier, goldTier, diamondTier, obsidianTier, netheriteTier);
         baseRegistration.accept(baseContent);
         //</editor-fold>
@@ -363,7 +363,7 @@ public final class Common {
         BlockItemCollection<ChestBlock, BlockItem> chestContent = BlockItemCollection.of(ChestBlock[]::new, BlockItem[]::new,
                 Common.chestBlock(Utils.id("wood_chest"), Common.stat("open_wood_chest"), woodTier, woodSettings, chestItemMaker, group),
                 Common.chestBlock(Utils.id("pumpkin_chest"), Common.stat("open_pumpkin_chest"), woodTier, pumpkinSettings, chestItemMaker, group),
-                Common.chestBlock(Utils.id("christmas_chest"), Common.stat("open_christmas_chest"), woodTier, christmasSettings, chestItemMaker, group),
+                Common.chestBlock(Utils.id("present"), Common.stat("open_present"), woodTier, christmasSettings, chestItemMaker, group),
                 Common.chestBlock(Utils.id("iron_chest"), Common.stat("open_iron_chest"), ironTier, ironSettings, chestItemMaker, group),
                 Common.chestBlock(Utils.id("gold_chest"), Common.stat("open_gold_chest"), goldTier, goldSettings, chestItemMaker, group),
                 Common.chestBlock(Utils.id("diamond_chest"), Common.stat("open_diamond_chest"), diamondTier, diamondSettings, chestItemMaker, group),
@@ -479,7 +479,7 @@ public final class Common {
             if (isExpandedStorageBarrel && ((BarrelBlock) block).getBlockTier() == from || !isExpandedStorageBarrel && from == Utils.WOOD_TIER_ID) {
                 BlockEntity blockEntity = world.getBlockEntity(pos);
                 //noinspection ConstantConditions
-                NbtCompound tag = blockEntity.writeNbt(new NbtCompound());
+                NbtCompound tag = blockEntity.createNbt();
                 boolean verifiedSize = blockEntity instanceof Inventory inventory && inventory.size() == inventorySize;
                 if (!verifiedSize) { // Cannot verify inventory size, we'll let it upgrade if it has or has less than 27 items
                     if (tag.contains("Items", NbtElement.LIST_TYPE)) {
@@ -499,7 +499,7 @@ public final class Common {
                     if (world.setBlockState(pos, newState)) {
                         BlockEntity newEntity = world.getBlockEntity(pos);
                         //noinspection ConstantConditions
-                        NbtCompound newTag = newEntity.writeNbt(new NbtCompound());
+                        NbtCompound newTag = newEntity.createNbt();
                         Inventories.writeNbt(newTag, inventory);
                         code.writeNbt(newTag);
                         newEntity.readNbt(newTag);

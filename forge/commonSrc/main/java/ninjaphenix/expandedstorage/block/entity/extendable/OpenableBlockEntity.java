@@ -69,13 +69,12 @@ public abstract class OpenableBlockEntity extends BlockEntity implements Openabl
     }
 
     @Override
-    public CompoundTag save(CompoundTag tag) {
-        super.save(tag);
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
         lockable.writeLock(tag);
         if (this.hasCustomName()) {
             tag.putString("CustomName", Component.Serializer.toJson(customName));
         }
-        return tag;
     }
 
     public final ResourceLocation getBlockId() {

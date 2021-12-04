@@ -142,10 +142,9 @@ public abstract class InventoryBlockEntity extends OpenableBlockEntity {
     }
 
     @Override
-    public CompoundTag save(CompoundTag tag) {
-        super.save(tag);
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
         ContainerHelper.saveAllItems(tag, items);
-        return tag;
     }
 
     protected void setObservable(Observable observable) {

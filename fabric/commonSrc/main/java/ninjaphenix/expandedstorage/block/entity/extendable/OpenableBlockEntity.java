@@ -69,13 +69,12 @@ public abstract class OpenableBlockEntity extends BlockEntity implements Openabl
     }
 
     @Override
-    public NbtCompound writeNbt(NbtCompound tag) {
+    public void writeNbt(NbtCompound tag) {
         super.writeNbt(tag);
         lockable.writeLock(tag);
         if (this.hasCustomName()) {
             tag.putString("CustomName", Text.Serializer.toJson(customName));
         }
-        return tag;
     }
 
     public final Identifier getBlockId() {

@@ -142,10 +142,9 @@ public abstract class InventoryBlockEntity extends OpenableBlockEntity {
     }
 
     @Override
-    public NbtCompound writeNbt(NbtCompound tag) {
+    public void writeNbt(NbtCompound tag) {
         super.writeNbt(tag);
         Inventories.writeNbt(tag, items);
-        return tag;
     }
 
     protected void setObservable(Observable observable) {

@@ -2,10 +2,10 @@
   "schemaVersion": 1,
   "accessWidener": "expandedstorage.accessWidener",
   "depends": {
-    "fabric": ">=0.42.1",
-    "fabricloader": ">=0.11.7",
-    "minecraft": "~1.17.1",
-    "ninjaphenix_container_lib": ">=1.2.5"
+    "fabric": ">=0.44.0",
+    "fabricloader": ">=0.12.5",
+    "minecraft": "~1.18",
+    "ninjaphenix_container_lib": ">=1.2.6"
   },
   "entrypoints": {
     "main": ["ninjaphenix.expandedstorage.Main"]

@@ -97,7 +97,7 @@ public final class ChestBlock extends AbstractChestBlock implements Waterloggabl
     @Override
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState otherState, WorldAccess world, BlockPos pos, BlockPos otherPos) {
         if (state.get(Properties.WATERLOGGED)) {
-            world.getFluidTickScheduler().schedule(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+            world.createAndScheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
         }
         return super.getStateForNeighborUpdate(state, direction, otherState, world, pos, otherPos);
     }

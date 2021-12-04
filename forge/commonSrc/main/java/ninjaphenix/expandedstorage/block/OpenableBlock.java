@@ -78,7 +78,7 @@ public abstract class OpenableBlock extends Block implements OpenableBlockEntity
             super.onRemove(state, world, pos, newState, bl);
         } else {
             if (state.getBlock() != newState.getBlock() && world.getBlockEntity(pos) instanceof OpenableBlockEntity entity) {
-                CompoundTag tag = entity.save(new CompoundTag());
+                CompoundTag tag = entity.saveWithoutMetadata();
                 world.removeBlockEntity(pos);
                 if (world.getBlockEntity(pos) instanceof OpenableBlockEntity newEntity) {
                     newEntity.load(tag);

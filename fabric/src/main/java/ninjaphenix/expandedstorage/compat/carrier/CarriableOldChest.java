@@ -66,7 +66,7 @@ public class CarriableOldChest implements Carriable<Block> {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (blockEntity instanceof OldChestBlockEntity && !blockEntity.isRemoved()) {
             NbtCompound tag = new NbtCompound();
-            tag.put("blockEntity", blockEntity.writeNbt(new NbtCompound()));
+            tag.put("blockEntity", blockEntity.createNbt());
             CarryingData carrying = new CarryingData(id, tag);
             component.setCarryingData(carrying);
             world.removeBlockEntity(pos);

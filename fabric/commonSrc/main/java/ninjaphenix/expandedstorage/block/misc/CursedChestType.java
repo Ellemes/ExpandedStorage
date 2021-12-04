@@ -16,12 +16,18 @@
 package ninjaphenix.expandedstorage.block.misc;
 
 import net.minecraft.util.StringIdentifiable;
+import ninjaphenix.expandedstorage.api.EsChestType;
+import ninjaphenix.expandedstorage.api.ExpandedStorageAccessors;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Locale;
 
 /**
  * Note to self, do not rename, used by chest tracker.
+ * @deprecated Use {@link EsChestType} and {@link ExpandedStorageAccessors} instead.
  */
+@Deprecated
+@ApiStatus.Internal
 public enum CursedChestType implements StringIdentifiable {
     TOP(-1),
     BOTTOM(-1),
@@ -37,6 +43,17 @@ public enum CursedChestType implements StringIdentifiable {
     CursedChestType(int offset) {
         this.name = name().toLowerCase(Locale.ROOT);
         this.offset = offset;
+    }
+
+    public static CursedChestType of(EsChestType type) {
+        if (type == EsChestType.TOP) return CursedChestType.TOP;
+        else if (type == EsChestType.BOTTOM) return CursedChestType.BOTTOM;
+        else if (type == EsChestType.FRONT) return CursedChestType.FRONT;
+        else if (type == EsChestType.BACK) return CursedChestType.BACK;
+        else if (type == EsChestType.LEFT) return CursedChestType.LEFT;
+        else if (type == EsChestType.RIGHT) return CursedChestType.RIGHT;
+        else if (type == EsChestType.SINGLE) return CursedChestType.SINGLE;
+        throw new IllegalStateException("Invalid type passed");
     }
 
     @Override
