@@ -1,6 +1,6 @@
 [plugins]
 gradle-utils = { id = "ninjaphenix.gradle-utils", version = "0.1.0-beta.7" }
-gradle-forge = { id = "net.minecraftforge.gradle", version = "5.1.23" }
+gradle-forge = { id = "net.minecraftforge.gradle", version = "5.1.26" }
 gradle-fabric = { id = "fabric-loom", version = "0.10-SNAPSHOT" }
 gradle-mixin = { id = "org.spongepowered.mixin", version = "0.7-SNAPSHOT" }
 

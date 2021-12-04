@@ -56,7 +56,12 @@ minecraft {
 }
 
 repositories {
-    mavenCentral()
+    maven {
+        url  = uri("https://cursemaven.com")
+        content {
+            includeGroup("curse.maven")
+        }
+    }
     maven {
         // JEI maven
         name = "Progwml6 maven"
@@ -67,17 +72,16 @@ repositories {
         name = "ModMaven"
         url = uri("https://modmaven.k-4u.nl")
     }
-    mavenLocal()
 }
 
 dependencies {
     minecraft("net.minecraftforge:forge:${properties["minecraft_version"]}-${properties["forge_version"]}")
     implementation(group = "org.spongepowered", name = "mixin", version = properties["mixin_version"] as String)
     annotationProcessor(group = "org.spongepowered", name = "mixin", version = properties["mixin_version"] as String, classifier = "processor")
-    implementation(fg.deobf("ninjaphenix:container_library:${properties["container_library_version"]}+${properties["minecraft_version"]}:forge"))
+    implementation(fg.deobf("curse.maven:ninjaphenixs-container-library-530668:3549171"))
     implementation(group = "org.jetbrains", name = "annotations", version = properties["jetbrains_annotations_version"] as String)
 
-    //implementation(fg.deobf("mezz.jei:jei-${properties["minecraft_version"]}:${properties["jei_version"]}"))
+    //implementation(fg.deobf("mezz.jei:jei-${properties["jei_minecraft_version"]}:${properties["jei_version"]}"))
 }
 
 tasks.withType<ProcessResources> {

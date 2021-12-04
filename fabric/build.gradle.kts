@@ -31,7 +31,6 @@ repositories {
             includeGroup("curse.maven")
         }
     }
-
     maven {
         name = "Ladysnake maven"
         url = uri("https://ladysnake.jfrog.io/artifactory/mods")
@@ -39,7 +38,6 @@ repositories {
             includeGroup("io.github.onyxstudios.Cardinal-Components-API")
         }
     }
-
     maven {
         name = "Devan maven"
         url = uri("https://raw.githubusercontent.com/Devan-Kerman/Devan-Repo/master/")
@@ -47,24 +45,7 @@ repositories {
             includeGroup("net.devtech")
         }
     }
-
     maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") }
-
-    repositories {
-        exclusiveContent {
-            forRepository {
-                flatDir {
-                    name = "Local Dependencies"
-                    dir(rootDir.resolve("local_dependencies"))
-                }
-            }
-            filter {
-                includeGroup("local")
-            }
-        }
-    }
-
-    mavenLocal()
 }
 
 val excludeFabric: (ModuleDependency) -> Unit = {
@@ -79,18 +60,18 @@ dependencies {
     modImplementation(group = "net.fabricmc", name = "fabric-loader", version = properties["fabric_loader_version"] as String)
     implementation(group = "org.jetbrains", name = "annotations", version = properties["jetbrains_annotations_version"] as String)
     modImplementation(group = "net.fabricmc.fabric-api", name = "fabric-api", version = properties["fabric_api_version"] as String)
-    modImplementation(group = "ninjaphenix", name = "container_library", version = "${properties["container_library_version"]}+${properties["container_library_minecraft_version"]}", classifier = "fabric")
+    modImplementation(group = "curse.maven", name = "ninjaphenixs-container-library-530668", version = "3549144", dependencyConfiguration = excludeFabric)
 
     // For chest module
     modCompileOnly(group = "curse.maven", name = "statement-340604", version = "3423826", dependencyConfiguration = excludeFabric)
     modCompileOnly(group = "curse.maven", name = "towelette-309338", version = "3398761", dependencyConfiguration = excludeFabric)
-    modImplementation(group = "curse.maven", name = "carrier-409184", version = "3504375", dependencyConfiguration = excludeFabric)
-    modImplementation(group = "io.github.onyxstudios.Cardinal-Components-API", name = "cardinal-components-base", version = properties["cardinal_version"] as String)
-    modImplementation(group = "io.github.onyxstudios.Cardinal-Components-API", name = "cardinal-components-entity", version = properties["cardinal_version"] as String)
-    modRuntimeOnly(group = "net.devtech", name = "arrp", version = "0.4.2")
+    modCompileOnly(group = "curse.maven", name = "carrier-409184", version = "3504375", dependencyConfiguration = excludeFabric)
+    modCompileOnly(group = "io.github.onyxstudios.Cardinal-Components-API", name = "cardinal-components-base", version = properties["cardinal_version"] as String)
+    modCompileOnly(group = "io.github.onyxstudios.Cardinal-Components-API", name = "cardinal-components-entity", version = properties["cardinal_version"] as String)
+    //modRuntimeOnly(group = "net.devtech", name = "arrp", version = "0.4.2")
 
-    modRuntimeOnly("me.lucko:fabric-permissions-api:0.1-SNAPSHOT")
-    modImplementation(group = "local", name = "htm", version = "dda0f76870e3a424af53416603ff489b1c733b3d")
+    //modRuntimeOnly("me.lucko:fabric-permissions-api:0.1-SNAPSHOT")
+    modCompileOnly(group = "curse.maven", name = "htm-462534", version = "3539120")
 }
 
 tasks.withType<ProcessResources> {

@@ -172,7 +172,7 @@ public final class Main {
 
         if (FMLLoader.getDist() == Dist.CLIENT) {
             modBus.addListener((TextureStitchEvent.Pre event) -> {
-                if (!event.getMap().location().equals(Sheets.CHEST_SHEET)) {
+                if (!event.getAtlas().location().equals(Sheets.CHEST_SHEET)) {
                     return;
                 }
                 for (ResourceLocation texture : Common.getChestTextures(content.getBlocks())) {

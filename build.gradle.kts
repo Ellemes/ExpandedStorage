@@ -177,11 +177,13 @@ val publishTask = tasks.create("publish") {
     }
 }
 
-// Usage: ./gradlew :updateFabricSources -Pmc="1.18-pre8" -Pyv="2"
-tasks.register("updateFabricSources") {
-    subprojects.forEach {
-        if (it.name.startsWith("fabric")) {
-            dependsOn(it.tasks["updateFabricSources"])
+if (hasProperty("yv")) {
+    // Usage: ./gradlew :updateFabricSources -Pmc="1.18-pre8" -Pyv="2"
+    tasks.register("updateFabricSources") {
+        subprojects.forEach {
+            if (it.name.startsWith("fabric")) {
+                dependsOn(it.tasks["updateFabricSources"])
+            }
         }
     }
 }

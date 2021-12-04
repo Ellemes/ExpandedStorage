@@ -97,7 +97,7 @@ public final class ChestBlock extends AbstractChestBlock implements SimpleWaterl
     @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState otherState, LevelAccessor world, BlockPos pos, BlockPos otherPos) {
         if (state.getValue(BlockStateProperties.WATERLOGGED)) {
-            world.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+            world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
         }
         return super.updateShape(state, direction, otherState, world, pos, otherPos);
     }
