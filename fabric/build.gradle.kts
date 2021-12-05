@@ -6,6 +6,21 @@ plugins {
     alias(libs.plugins.gradle.fabric)
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDir("src/main/generated")
+        }
+    }
+
+    create("datagen") {
+        compileClasspath += sourceSets.main.get().compileClasspath
+        runtimeClasspath += sourceSets.main.get().runtimeClasspath
+        compileClasspath += sourceSets.main.get().output
+        runtimeClasspath += sourceSets.main.get().output
+    }
+}
+
 loom {
     runs {
         named("client") {
@@ -14,6 +29,14 @@ loom {
         named("server") {
             ideConfigGenerated(false)
             serverWithGui()
+        }
+        create("datagen") {
+            client()
+            vmArg("-Dfabric-api.datagen")
+            vmArg("-Dfabric-api.datagen.output-dir=${file("src/main/generated")}")
+            vmArg("-Dfabric-api.datagen.datagen.modid=expandedstorage")
+            runDir("build/fabric-datagen")
+            source(sourceSets.getByName("datagen"))
         }
     }
 
@@ -80,6 +103,7 @@ tasks.withType<ProcessResources> {
     filesMatching("fabric.mod.json") {
         expand(props)
     }
+    exclude(".cache/*")
 }
 
 val mappingsMcVersion = if (hasProperty("mc")) findProperty("mc") else properties["minecraft_version"]

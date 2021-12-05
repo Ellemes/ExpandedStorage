@@ -19,14 +19,12 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import ninjaphenix.expandedstorage.block.MiniChestBlock;
-import org.jetbrains.annotations.Nullable;
 
 public class MiniChestBlockItem extends BlockItem {
     public MiniChestBlockItem(MiniChestBlock block, Properties settings) {
         super(block, settings);
     }
 
-    @Nullable
     @Override
     public EquipmentSlot getEquipmentSlot(ItemStack stack) {
         return EquipmentSlot.HEAD;

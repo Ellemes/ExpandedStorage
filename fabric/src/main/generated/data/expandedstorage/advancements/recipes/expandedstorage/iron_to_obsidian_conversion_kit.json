@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "expandedstorage:iron_to_obsidian_conversion_kit"
+    ]
+  },
+  "criteria": {
+    "has_previous_kit": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "expandedstorage:iron_to_diamond_conversion_kit"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "expandedstorage:iron_to_obsidian_conversion_kit"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_previous_kit",
+      "has_the_recipe"
+    ]
+  ]
+}

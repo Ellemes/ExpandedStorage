@@ -8,7 +8,8 @@
     "ninjaphenix_container_lib": ">=1.2.6"
   },
   "entrypoints": {
-    "main": ["ninjaphenix.expandedstorage.Main"]
+    "main": ["ninjaphenix.expandedstorage.Main"],
+    "fabric-datagen": ["ninjaphenix.expandedstorage.data.Main"]
   },
   "environment": "*",
   "authors": ["NinjaPhenix"],
