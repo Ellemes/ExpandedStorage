@@ -27,6 +27,6 @@ side = "BOTH"
 [[dependencies.expandedstorage]]
 modId = "ninjaphenix_container_lib"
 mandatory = true
-versionRange = "[1.2.6,)"
+versionRange = "[1.2.7,)"
 ordering = "NONE"
 side = "BOTH"
