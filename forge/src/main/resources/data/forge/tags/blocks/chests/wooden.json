@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    {
-      "id": "expandedstorage:wood_chest",
-      "required": true
-    }
-  ]
-}

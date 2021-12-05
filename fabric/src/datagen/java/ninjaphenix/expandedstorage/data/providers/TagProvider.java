@@ -19,25 +19,27 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Items;
+import net.minecraft.tag.BlockTags;
+import net.minecraft.tag.ItemTags;
 import ninjaphenix.expandedstorage.data.content.ModBlocks;
 import ninjaphenix.expandedstorage.data.content.ModItems;
-import ninjaphenix.expandedstorage.data.content.Tags;
+import ninjaphenix.expandedstorage.data.content.ModTags;
 
 public final class TagProvider {
-    public static class Block extends FabricTagProvider.BlockTagProvider {
+    public static final class Block extends FabricTagProvider.BlockTagProvider {
         public Block(FabricDataGenerator generator) {
             super(generator);
         }
 
         @Override
         protected void generateTags() {
-            this.getOrCreateTagBuilder(Tags.Blocks.WOODEN_CHESTS)
+            this.getOrCreateTagBuilder(ModTags.Blocks.WOODEN_CHESTS)
                     .add(Blocks.CHEST)
                     .add(Blocks.TRAPPED_CHEST)
                     .add(ModBlocks.WOOD_CHEST);
-            this.getOrCreateTagBuilder(Tags.Blocks.WOODEN_BARRELS)
+            this.getOrCreateTagBuilder(ModTags.Blocks.WOODEN_BARRELS)
                     .add(Blocks.BARREL);
-            this.getOrCreateTagBuilder(Tags.Blocks.MINEABLE_AXE)
+            this.getOrCreateTagBuilder(BlockTags.AXE_MINEABLE)
                     .add(ModBlocks.IRON_BARREL)
                     .add(ModBlocks.GOLD_BARREL)
                     .add(ModBlocks.DIAMOND_BARREL)
@@ -65,7 +67,7 @@ public final class TagProvider {
                     .add(ModBlocks.GREEN_MINI_PRESENT_WITH_SPARROW)
                     .add(ModBlocks.LAVENDER_MINI_PRESENT_WITH_SPARROW)
                     .add(ModBlocks.PINK_AMETHYST_MINI_PRESENT_WITH_SPARROW);
-            this.getOrCreateTagBuilder(Tags.Blocks.MINEABLE_PICKAXE)
+            this.getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE)
                     .add(ModBlocks.IRON_CHEST)
                     .add(ModBlocks.GOLD_CHEST)
                     .add(ModBlocks.DIAMOND_CHEST)
@@ -76,7 +78,7 @@ public final class TagProvider {
                     .add(ModBlocks.OLD_DIAMOND_CHEST)
                     .add(ModBlocks.OLD_OBSIDIAN_CHEST)
                     .add(ModBlocks.OLD_NETHERITE_CHEST);
-            this.getOrCreateTagBuilder(Tags.Blocks.GUARDED_BY_PIGLINS)
+            this.getOrCreateTagBuilder(BlockTags.GUARDED_BY_PIGLINS)
                     .add(ModBlocks.IRON_BARREL)
                     .add(ModBlocks.GOLD_BARREL)
                     .add(ModBlocks.DIAMOND_BARREL)
@@ -114,29 +116,29 @@ public final class TagProvider {
                     .add(ModBlocks.GREEN_MINI_PRESENT_WITH_SPARROW)
                     .add(ModBlocks.LAVENDER_MINI_PRESENT_WITH_SPARROW)
                     .add(ModBlocks.PINK_AMETHYST_MINI_PRESENT_WITH_SPARROW);
-            this.getOrCreateTagBuilder(Tags.Blocks.NEEDS_DIAMOND_TOOL)
+            this.getOrCreateTagBuilder(BlockTags.NEEDS_DIAMOND_TOOL)
                     .add(ModBlocks.OBSIDIAN_BARREL)
                     .add(ModBlocks.NETHERITE_BARREL)
                     .add(ModBlocks.OBSIDIAN_CHEST)
                     .add(ModBlocks.NETHERITE_CHEST)
                     .add(ModBlocks.OLD_OBSIDIAN_CHEST)
                     .add(ModBlocks.OLD_NETHERITE_CHEST);
-            this.getOrCreateTagBuilder(Tags.Blocks.NEEDS_IRON_TOOL)
+            this.getOrCreateTagBuilder(BlockTags.NEEDS_IRON_TOOL)
                     .add(ModBlocks.DIAMOND_BARREL)
                     .add(ModBlocks.DIAMOND_CHEST)
                     .add(ModBlocks.OLD_DIAMOND_CHEST);
-            this.getOrCreateTagBuilder(Tags.Blocks.NEEDS_STONE_TOOL)
+            this.getOrCreateTagBuilder(BlockTags.NEEDS_STONE_TOOL)
                     .add(ModBlocks.IRON_BARREL)
                     .add(ModBlocks.GOLD_BARREL)
                     .add(ModBlocks.IRON_CHEST)
                     .add(ModBlocks.GOLD_CHEST)
                     .add(ModBlocks.OLD_IRON_CHEST)
                     .add(ModBlocks.OLD_GOLD_CHEST);
-            this.getOrCreateTagBuilder(Tags.Blocks.CHEST_CYCLE)
+            this.getOrCreateTagBuilder(ModTags.Blocks.CHEST_CYCLE)
                     .add(ModBlocks.WOOD_CHEST)
                     .add(ModBlocks.PUMPKIN_CHEST)
                     .add(ModBlocks.PRESENT);
-            this.getOrCreateTagBuilder(Tags.Blocks.MINI_CHEST_CYCLE)
+            this.getOrCreateTagBuilder(ModTags.Blocks.MINI_CHEST_CYCLE)
                     .add(ModBlocks.VANILLA_WOOD_MINI_CHEST)
                     .add(ModBlocks.WOOD_MINI_CHEST)
                     .add(ModBlocks.PUMPKIN_MINI_CHEST)
@@ -144,7 +146,7 @@ public final class TagProvider {
                     .add(ModBlocks.WHITE_MINI_PRESENT)
                     .add(ModBlocks.CANDY_CANE_MINI_PRESENT)
                     .add(ModBlocks.GREEN_MINI_PRESENT);
-            this.getOrCreateTagBuilder(Tags.Blocks.MINI_CHEST_SECRET_CYCLE)
+            this.getOrCreateTagBuilder(ModTags.Blocks.MINI_CHEST_SECRET_CYCLE)
                     .add(ModBlocks.VANILLA_WOOD_MINI_CHEST)
                     .add(ModBlocks.WOOD_MINI_CHEST)
                     .add(ModBlocks.PUMPKIN_MINI_CHEST)
@@ -154,7 +156,7 @@ public final class TagProvider {
                     .add(ModBlocks.GREEN_MINI_PRESENT)
                     .add(ModBlocks.LAVENDER_MINI_PRESENT)
                     .add(ModBlocks.PINK_AMETHYST_MINI_PRESENT);
-            this.getOrCreateTagBuilder(Tags.Blocks.MINI_CHEST_SECRET_CYCLE_2)
+            this.getOrCreateTagBuilder(ModTags.Blocks.MINI_CHEST_SECRET_CYCLE_2)
                     .add(ModBlocks.VANILLA_WOOD_MINI_CHEST)
                     .add(ModBlocks.WOOD_MINI_CHEST)
                     .add(ModBlocks.PUMPKIN_MINI_CHEST)
@@ -176,20 +178,20 @@ public final class TagProvider {
         }
     }
 
-    public static class Item extends FabricTagProvider.ItemTagProvider {
+    public static final class Item extends FabricTagProvider.ItemTagProvider {
         public Item(FabricDataGenerator generator) {
             super(generator);
         }
 
         @Override
         protected void generateTags() {
-            this.getOrCreateTagBuilder(Tags.Items.WOODEN_CHESTS)
+            this.getOrCreateTagBuilder(ModTags.Items.WOODEN_CHESTS)
                     .add(Items.CHEST)
                     .add(Items.TRAPPED_CHEST)
                     .add(ModItems.WOOD_CHEST);
-            this.getOrCreateTagBuilder(Tags.Items.WOODEN_BARRELS)
+            this.getOrCreateTagBuilder(ModTags.Items.WOODEN_BARRELS)
                     .add(Items.BARREL);
-            this.getOrCreateTagBuilder(Tags.Items.GLASS_BLOCKS)
+            this.getOrCreateTagBuilder(ModTags.Items.GLASS_BLOCKS)
                     .add(Items.GLASS)
                     .add(Items.TINTED_GLASS)
                     .add(Items.WHITE_STAINED_GLASS)
@@ -208,19 +210,19 @@ public final class TagProvider {
                     .add(Items.GREEN_STAINED_GLASS)
                     .add(Items.RED_STAINED_GLASS)
                     .add(Items.BLACK_STAINED_GLASS);
-            this.getOrCreateTagBuilder(Tags.Items.DIAMONDS)
+            this.getOrCreateTagBuilder(ModTags.Items.DIAMONDS)
                     .add(Items.DIAMOND);
-            this.getOrCreateTagBuilder(Tags.Items.IRON_INGOTS)
+            this.getOrCreateTagBuilder(ModTags.Items.IRON_INGOTS)
                     .add(Items.IRON_INGOT);
-            this.getOrCreateTagBuilder(Tags.Items.GOLD_INGOTS)
+            this.getOrCreateTagBuilder(ModTags.Items.GOLD_INGOTS)
                     .add(Items.GOLD_INGOT);
-            this.getOrCreateTagBuilder(Tags.Items.NETHERITE_INGOTS)
+            this.getOrCreateTagBuilder(ModTags.Items.NETHERITE_INGOTS)
                     .add(Items.NETHERITE_INGOT);
-            this.getOrCreateTagBuilder(Tags.Items.RED_DYES)
+            this.getOrCreateTagBuilder(ModTags.Items.RED_DYES)
                     .add(Items.RED_DYE);
-            this.getOrCreateTagBuilder(Tags.Items.WHITE_DYES)
+            this.getOrCreateTagBuilder(ModTags.Items.WHITE_DYES)
                     .add(Items.WHITE_DYE);
-            this.getOrCreateTagBuilder(Tags.Items.PIGLIN_LOVED)
+            this.getOrCreateTagBuilder(ItemTags.PIGLIN_LOVED)
                     .add(ModItems.WOOD_TO_GOLD_CONVERSION_KIT)
                     .add(ModItems.IRON_TO_GOLD_CONVERSION_KIT)
                     .add(ModItems.GOLD_TO_DIAMOND_CONVERSION_KIT)

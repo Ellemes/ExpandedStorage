@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "expandedstorage:white_mini_present"
+    }
+  ],
+  "result": {
+    "item": "expandedstorage:candy_cane_mini_present"
+  }
+}

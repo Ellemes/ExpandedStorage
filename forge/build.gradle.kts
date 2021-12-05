@@ -11,6 +11,21 @@ mixin {
     disableAnnotationProcessorCheck()
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDir("src/main/generated")
+        }
+    }
+
+    create("datagen") {
+        compileClasspath += sourceSets.main.get().compileClasspath
+        runtimeClasspath += sourceSets.main.get().runtimeClasspath
+        compileClasspath += sourceSets.main.get().output
+        runtimeClasspath += sourceSets.main.get().output
+    }
+}
+
 minecraft {
     mappings("official", properties["minecraft_version"] as String)
 
@@ -52,6 +67,19 @@ minecraft {
             // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             //property("forge.logging.console.level", "debug")
         }
+
+        create("data") {
+            workingDirectory(rootProject.file("run"))
+            mods {
+                create("expandedstorage") {
+                    sources(sourceSets.main.get(), sourceSets.getByName("datagen"))
+                }
+            }
+            args("--mod", "expandedstorage", "--all",
+                    "--output", file("src/main/generated"),
+                    "--existing", file("src/main/resources"),
+                    "--existing", rootDir.resolve("common/src/main/resources"))
+        }
     }
 }
 
@@ -90,6 +118,7 @@ tasks.withType<ProcessResources> {
     filesMatching("META-INF/mods.toml") {
         expand(props)
     }
+    exclude(".cache/*")
 }
 
 val jarTask = tasks.getByName<Jar>("jar") {
