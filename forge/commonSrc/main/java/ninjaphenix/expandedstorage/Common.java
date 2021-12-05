@@ -86,8 +86,8 @@ import net.minecraft.world.level.material.MaterialColor;
 
 public final class Common {
     public static final ResourceLocation BARREL_BLOCK_TYPE = Utils.id("barrel");
-    public static final ResourceLocation CHEST_BLOCK_TYPE = Utils.id("cursed_chest");
-    public static final ResourceLocation OLD_CHEST_BLOCK_TYPE = Utils.id("old_cursed_chest");
+    public static final ResourceLocation CHEST_BLOCK_TYPE = Utils.id("chest");
+    public static final ResourceLocation OLD_CHEST_BLOCK_TYPE = Utils.id("old_chest");
     public static final ResourceLocation MINI_CHEST_BLOCK_TYPE = Utils.id("mini_chest");
 
     private static final Map<Predicate<Block>, BlockUpgradeBehaviour> BLOCK_UPGRADE_BEHAVIOURS = new HashMap<>();
@@ -347,7 +347,7 @@ public final class Common {
         // Init block settings
         Properties woodSettings = Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.5f).sound(SoundType.WOOD);
         Properties pumpkinSettings = Properties.of(Material.VEGETABLE, MaterialColor.COLOR_ORANGE).strength(1).sound(SoundType.WOOD);
-        Properties christmasSettings = Properties.of(Material.WOOD, state -> {
+        Properties presentSettings = Properties.of(Material.WOOD, state -> {
             CursedChestType type = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
             if (type == CursedChestType.SINGLE) return MaterialColor.COLOR_RED;
             else if (type == CursedChestType.FRONT || type == CursedChestType.BACK) return MaterialColor.PLANT;
@@ -362,7 +362,7 @@ public final class Common {
         BlockItemCollection<ChestBlock, BlockItem> chestContent = BlockItemCollection.of(ChestBlock[]::new, BlockItem[]::new,
                 Common.chestBlock(Utils.id("wood_chest"), Common.stat("open_wood_chest"), woodTier, woodSettings, chestItemMaker, group),
                 Common.chestBlock(Utils.id("pumpkin_chest"), Common.stat("open_pumpkin_chest"), woodTier, pumpkinSettings, chestItemMaker, group),
-                Common.chestBlock(Utils.id("present"), Common.stat("open_present"), woodTier, christmasSettings, chestItemMaker, group),
+                Common.chestBlock(Utils.id("present"), Common.stat("open_present"), woodTier, presentSettings, chestItemMaker, group),
                 Common.chestBlock(Utils.id("iron_chest"), Common.stat("open_iron_chest"), ironTier, ironSettings, chestItemMaker, group),
                 Common.chestBlock(Utils.id("gold_chest"), Common.stat("open_gold_chest"), goldTier, goldSettings, chestItemMaker, group),
                 Common.chestBlock(Utils.id("diamond_chest"), Common.stat("open_diamond_chest"), diamondTier, diamondSettings, chestItemMaker, group),

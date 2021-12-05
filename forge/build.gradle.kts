@@ -8,6 +8,7 @@ plugins {
 }
 
 mixin {
+    add(sourceSets.main.get(), "expandedstorage.refmap.json")
     disableAnnotationProcessorCheck()
 }
 
@@ -133,6 +134,7 @@ val minifyJarTask = tasks.register<MinifyJsonTask>("minJar") {
 
     manifest.attributes(mapOf(
             "Automatic-Module-Name" to "ninjaphenix.expandedstorage",
+            "MixinConfigs" to "expandedstorage.mixins.json"
     ))
 
     from(rootDir.resolve("LICENSE"))

@@ -4,9 +4,11 @@
   "plugin": "ninjaphenix.expandedstorage.MixinPlugin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-    "MiniChestHeadEquipment",
+    "BlockEntityIdFix",
+    "DataFixerEntrypoint",
     "HTMChestCompat",
     "HTMLockableBlockEntityCompat",
+    "MiniChestHeadEquipment",
     "ToweletteCompat"
   ],
   "client": [],

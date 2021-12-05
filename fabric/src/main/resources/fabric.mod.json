@@ -7,6 +7,9 @@
     "minecraft": "~1.18",
     "ninjaphenix_container_lib": ">=1.2.6"
   },
+  "breaks": {
+    "quilt_loader": "*"
+  },
   "entrypoints": {
     "main": ["ninjaphenix.expandedstorage.Main"],
     "fabric-datagen": ["ninjaphenix.expandedstorage.data.Main"]

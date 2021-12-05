@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "ninjaphenix.expandedstorage.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+    "BlockEntityIdFix",
+    "DataFixerEntrypoint"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8",
+  "refmap": "expandedstorage.refmap.json"
+}

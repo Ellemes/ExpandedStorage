@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 NinjaPhenix
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package ninjaphenix.expandedstorage.data.providers;
 
 import net.minecraft.data.DataGenerator;
@@ -14,7 +29,6 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
 import ninjaphenix.expandedstorage.Utils;
 import ninjaphenix.expandedstorage.data.content.ModItems;
-import ninjaphenix.expandedstorage.data.content.ModTags;
 
 import java.util.function.Consumer;
 
@@ -127,10 +141,10 @@ public final class RecipeProvider extends net.minecraft.data.recipes.RecipeProvi
 
     private void offerChestRecipes(Consumer<FinishedRecipe> exporter) {
         ShapelessRecipeBuilder.shapeless(ModItems.WOOD_CHEST)
-                                  .requires(Items.CHEST)
-                                  .group(id(ModItems.WOOD_CHEST))
-                                  .unlockedBy(Criterions.HAS_PREVIOUS_BLOCK, RecipeProvider.has(Items.CHEST))
-                                  .save(exporter);
+                              .requires(Items.CHEST)
+                              .group(id(ModItems.WOOD_CHEST))
+                              .unlockedBy(Criterions.HAS_PREVIOUS_BLOCK, RecipeProvider.has(Items.CHEST))
+                              .save(exporter);
         shapedRecipe(ModItems.PUMPKIN_CHEST, 1, Criterions.HAS_PREVIOUS_BLOCK, Tags.Items.CHESTS_WOODEN)
                 .pattern("SSS")
                 .pattern("SBS")
@@ -225,68 +239,68 @@ public final class RecipeProvider extends net.minecraft.data.recipes.RecipeProvi
 
     private void offerChestToOldChestRecipes(Consumer<FinishedRecipe> exporter) {
         ShapelessRecipeBuilder.shapeless(ModItems.OLD_WOOD_CHEST)
-                                  .requires(ModItems.WOOD_CHEST)
-                                  .group(id(ModItems.OLD_WOOD_CHEST))
-                                  .unlockedBy(Criterions.HAS_ITEM, RecipeProvider.has(ModItems.WOOD_CHEST))
-                                  .save(exporter, Utils.id("wood_to_old_wood_chest"));
+                              .requires(ModItems.WOOD_CHEST)
+                              .group(id(ModItems.OLD_WOOD_CHEST))
+                              .unlockedBy(Criterions.HAS_ITEM, RecipeProvider.has(ModItems.WOOD_CHEST))
+                              .save(exporter, Utils.id("wood_to_old_wood_chest"));
         ShapelessRecipeBuilder.shapeless(ModItems.OLD_IRON_CHEST)
-                                  .requires(ModItems.IRON_CHEST)
-                                  .group(id(ModItems.OLD_IRON_CHEST))
-                                  .unlockedBy(Criterions.HAS_ITEM, RecipeProvider.has(ModItems.IRON_CHEST))
-                                  .save(exporter, Utils.id("iron_to_old_iron_chest"));
+                              .requires(ModItems.IRON_CHEST)
+                              .group(id(ModItems.OLD_IRON_CHEST))
+                              .unlockedBy(Criterions.HAS_ITEM, RecipeProvider.has(ModItems.IRON_CHEST))
+                              .save(exporter, Utils.id("iron_to_old_iron_chest"));
         ShapelessRecipeBuilder.shapeless(ModItems.OLD_GOLD_CHEST)
-                                  .requires(ModItems.GOLD_CHEST)
-                                  .group(id(ModItems.OLD_GOLD_CHEST))
-                                  .unlockedBy(Criterions.HAS_ITEM, RecipeProvider.has(ModItems.GOLD_CHEST))
-                                  .save(exporter, Utils.id("gold_to_old_gold_chest"));
+                              .requires(ModItems.GOLD_CHEST)
+                              .group(id(ModItems.OLD_GOLD_CHEST))
+                              .unlockedBy(Criterions.HAS_ITEM, RecipeProvider.has(ModItems.GOLD_CHEST))
+                              .save(exporter, Utils.id("gold_to_old_gold_chest"));
         ShapelessRecipeBuilder.shapeless(ModItems.OLD_DIAMOND_CHEST)
-                                  .requires(ModItems.DIAMOND_CHEST)
-                                  .group(id(ModItems.OLD_DIAMOND_CHEST))
-                                  .unlockedBy(Criterions.HAS_ITEM, RecipeProvider.has(ModItems.DIAMOND_CHEST))
-                                  .save(exporter, Utils.id("diamond_to_old_diamond_chest"));
+                              .requires(ModItems.DIAMOND_CHEST)
+                              .group(id(ModItems.OLD_DIAMOND_CHEST))
+                              .unlockedBy(Criterions.HAS_ITEM, RecipeProvider.has(ModItems.DIAMOND_CHEST))
+                              .save(exporter, Utils.id("diamond_to_old_diamond_chest"));
         ShapelessRecipeBuilder.shapeless(ModItems.OLD_OBSIDIAN_CHEST)
-                                  .requires(ModItems.OBSIDIAN_CHEST)
-                                  .group(id(ModItems.OLD_OBSIDIAN_CHEST))
-                                  .unlockedBy(Criterions.HAS_ITEM, RecipeProvider.has(ModItems.OBSIDIAN_CHEST))
-                                  .save(exporter, Utils.id("obsidian_to_old_obsidian_chest"));
+                              .requires(ModItems.OBSIDIAN_CHEST)
+                              .group(id(ModItems.OLD_OBSIDIAN_CHEST))
+                              .unlockedBy(Criterions.HAS_ITEM, RecipeProvider.has(ModItems.OBSIDIAN_CHEST))
+                              .save(exporter, Utils.id("obsidian_to_old_obsidian_chest"));
         ShapelessRecipeBuilder.shapeless(ModItems.OLD_NETHERITE_CHEST)
-                                  .requires(ModItems.NETHERITE_CHEST)
-                                  .group(id(ModItems.OLD_NETHERITE_CHEST))
-                                  .unlockedBy(Criterions.HAS_ITEM, RecipeProvider.has(ModItems.NETHERITE_CHEST))
-                                  .save(exporter, Utils.id("netherite_to_old_netherite_chest"));
+                              .requires(ModItems.NETHERITE_CHEST)
+                              .group(id(ModItems.OLD_NETHERITE_CHEST))
+                              .unlockedBy(Criterions.HAS_ITEM, RecipeProvider.has(ModItems.NETHERITE_CHEST))
+                              .save(exporter, Utils.id("netherite_to_old_netherite_chest"));
     }
 
     private void offerOldChestToChestRecipes(Consumer<FinishedRecipe> exporter) {
         ShapelessRecipeBuilder.shapeless(ModItems.WOOD_CHEST)
-                                  .requires(ModItems.OLD_WOOD_CHEST)
-                                  .group(id(ModItems.WOOD_CHEST))
-                                  .unlockedBy(Criterions.HAS_ITEM, RecipeProvider.has(ModItems.OLD_WOOD_CHEST))
-                                  .save(exporter, Utils.id("old_wood_to_wood_chest"));
+                              .requires(ModItems.OLD_WOOD_CHEST)
+                              .group(id(ModItems.WOOD_CHEST))
+                              .unlockedBy(Criterions.HAS_ITEM, RecipeProvider.has(ModItems.OLD_WOOD_CHEST))
+                              .save(exporter, Utils.id("old_wood_to_wood_chest"));
         ShapelessRecipeBuilder.shapeless(ModItems.IRON_CHEST)
-                                  .requires(ModItems.OLD_IRON_CHEST)
-                                  .group(id(ModItems.IRON_CHEST))
-                                  .unlockedBy(Criterions.HAS_ITEM, RecipeProvider.has(ModItems.OLD_IRON_CHEST))
-                                  .save(exporter, Utils.id("old_iron_to_iron_chest"));
+                              .requires(ModItems.OLD_IRON_CHEST)
+                              .group(id(ModItems.IRON_CHEST))
+                              .unlockedBy(Criterions.HAS_ITEM, RecipeProvider.has(ModItems.OLD_IRON_CHEST))
+                              .save(exporter, Utils.id("old_iron_to_iron_chest"));
         ShapelessRecipeBuilder.shapeless(ModItems.GOLD_CHEST)
-                                  .requires(ModItems.OLD_GOLD_CHEST)
-                                  .group(id(ModItems.GOLD_CHEST))
-                                  .unlockedBy(Criterions.HAS_ITEM, RecipeProvider.has(ModItems.OLD_GOLD_CHEST))
-                                  .save(exporter, Utils.id("old_gold_to_gold_chest"));
+                              .requires(ModItems.OLD_GOLD_CHEST)
+                              .group(id(ModItems.GOLD_CHEST))
+                              .unlockedBy(Criterions.HAS_ITEM, RecipeProvider.has(ModItems.OLD_GOLD_CHEST))
+                              .save(exporter, Utils.id("old_gold_to_gold_chest"));
         ShapelessRecipeBuilder.shapeless(ModItems.DIAMOND_CHEST)
-                                  .requires(ModItems.OLD_DIAMOND_CHEST)
-                                  .group(id(ModItems.DIAMOND_CHEST))
-                                  .unlockedBy(Criterions.HAS_ITEM, RecipeProvider.has(ModItems.OLD_DIAMOND_CHEST))
-                                  .save(exporter, Utils.id("old_diamond_to_diamond_chest"));
+                              .requires(ModItems.OLD_DIAMOND_CHEST)
+                              .group(id(ModItems.DIAMOND_CHEST))
+                              .unlockedBy(Criterions.HAS_ITEM, RecipeProvider.has(ModItems.OLD_DIAMOND_CHEST))
+                              .save(exporter, Utils.id("old_diamond_to_diamond_chest"));
         ShapelessRecipeBuilder.shapeless(ModItems.OBSIDIAN_CHEST)
-                                  .requires(ModItems.OLD_OBSIDIAN_CHEST)
-                                  .group(id(ModItems.OBSIDIAN_CHEST))
-                                  .unlockedBy(Criterions.HAS_ITEM, RecipeProvider.has(ModItems.OLD_OBSIDIAN_CHEST))
-                                  .save(exporter, Utils.id("old_obsidian_to_obsidian_chest"));
+                              .requires(ModItems.OLD_OBSIDIAN_CHEST)
+                              .group(id(ModItems.OBSIDIAN_CHEST))
+                              .unlockedBy(Criterions.HAS_ITEM, RecipeProvider.has(ModItems.OLD_OBSIDIAN_CHEST))
+                              .save(exporter, Utils.id("old_obsidian_to_obsidian_chest"));
         ShapelessRecipeBuilder.shapeless(ModItems.NETHERITE_CHEST)
-                                  .requires(ModItems.OLD_NETHERITE_CHEST)
-                                  .group(id(ModItems.NETHERITE_CHEST))
-                                  .unlockedBy(Criterions.HAS_ITEM, RecipeProvider.has(ModItems.OLD_NETHERITE_CHEST))
-                                  .save(exporter, Utils.id("old_netherite_to_netherite_chest"));
+                              .requires(ModItems.OLD_NETHERITE_CHEST)
+                              .group(id(ModItems.NETHERITE_CHEST))
+                              .unlockedBy(Criterions.HAS_ITEM, RecipeProvider.has(ModItems.OLD_NETHERITE_CHEST))
+                              .save(exporter, Utils.id("old_netherite_to_netherite_chest"));
     }
 
     private void offerBarrelRecipes(Consumer<FinishedRecipe> exporter) {
@@ -357,18 +371,18 @@ public final class RecipeProvider extends net.minecraft.data.recipes.RecipeProvi
                               .unlockedBy(Criterions.HAS_PREVIOUS_BLOCK, RecipeProvider.has(ModItems.RED_MINI_PRESENT))
                               .save(exporter);
         ShapelessRecipeBuilder.shapeless(ModItems.CANDY_CANE_MINI_PRESENT)
-                                  .requires(ModItems.WHITE_MINI_PRESENT)
-                                  .unlockedBy(Criterions.HAS_PREVIOUS_BLOCK, RecipeProvider.has(ModItems.WHITE_MINI_PRESENT))
-                                  .save(exporter);
+                              .requires(ModItems.WHITE_MINI_PRESENT)
+                              .unlockedBy(Criterions.HAS_PREVIOUS_BLOCK, RecipeProvider.has(ModItems.WHITE_MINI_PRESENT))
+                              .save(exporter);
         ShapelessRecipeBuilder.shapeless(ModItems.GREEN_MINI_PRESENT)
-                                  .requires(ModItems.CANDY_CANE_MINI_PRESENT)
-                                  .unlockedBy(Criterions.HAS_PREVIOUS_BLOCK, RecipeProvider.has(ModItems.CANDY_CANE_MINI_PRESENT))
-                                  .save(exporter);
+                              .requires(ModItems.CANDY_CANE_MINI_PRESENT)
+                              .unlockedBy(Criterions.HAS_PREVIOUS_BLOCK, RecipeProvider.has(ModItems.CANDY_CANE_MINI_PRESENT))
+                              .save(exporter);
         ShapelessRecipeBuilder.shapeless(ModItems.RED_MINI_PRESENT)
-                                  .requires(ModItems.GREEN_MINI_PRESENT)
-                                  .group(id(ModItems.RED_MINI_PRESENT))
-                                  .unlockedBy(Criterions.HAS_PREVIOUS_BLOCK, RecipeProvider.has(ModItems.GREEN_MINI_PRESENT))
-                                  .save(exporter, Utils.MOD_ID + ":red_mini_present_cycle");
+                              .requires(ModItems.GREEN_MINI_PRESENT)
+                              .group(id(ModItems.RED_MINI_PRESENT))
+                              .unlockedBy(Criterions.HAS_PREVIOUS_BLOCK, RecipeProvider.has(ModItems.GREEN_MINI_PRESENT))
+                              .save(exporter, Utils.MOD_ID + ":red_mini_present_cycle");
     }
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -391,15 +405,15 @@ public final class RecipeProvider extends net.minecraft.data.recipes.RecipeProvi
         return item.asItem().getRegistryName().toString();
     }
 
+    @Override
+    public String getName() {
+        return "Expanded Storage - Recipes";
+    }
+
     @SuppressWarnings("SpellCheckingInspection")
     private static class Criterions {
         public static final String HAS_ITEM = "has_item";
         private static final String HAS_PREVIOUS_KIT = "has_previous_kit";
         private static final String HAS_PREVIOUS_BLOCK = "has_previous_block";
-    }
-
-    @Override
-    public String getName() {
-        return "Expanded Storage - Recipes";
     }
 }
