@@ -35,7 +35,7 @@ public class OldChestBlockEntity extends InventoryBlockEntity {
     WorldlyContainer cachedDoubleInventory = null;
     public OldChestBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, ResourceLocation blockId,
                                Function<OpenableBlockEntity, ItemAccess> access, Function<OpenableBlockEntity, Lockable> lockable) {
-        super(type, pos, state, blockId, ((OpenableBlock) state.getBlock()).getInventoryTitle(), ((AbstractChestBlock) state.getBlock()).getSlotCount());
+        super(type, pos, state, blockId, ((OpenableBlock) state.getBlock()).getInventoryTitle(), ((OpenableBlock) state.getBlock()).getSlotCount());
         this.setItemAccess(access.apply(this));
         this.setLockable(lockable.apply(this));
     }

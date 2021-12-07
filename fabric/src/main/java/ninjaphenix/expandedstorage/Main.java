@@ -116,13 +116,18 @@ public final class Main implements ModInitializer {
                 return (Storage<ItemVariant>) access.get();
             }
             if (world.getBlockEntity(pos.offset(AbstractChestBlock.getDirectionToAttached(type, facing))) instanceof OldChestBlockEntity otherEntity) {
+                DoubleItemAccess otherAccess = otherEntity.getItemAccess();
+                if (otherAccess.hasCachedAccess()) {
+                    //noinspection unchecked
+                    return (Storage<ItemVariant>) otherAccess.get();
+                }
                 DoubleItemAccess first, second;
                 if (AbstractChestBlock.getBlockType(type) == DoubleBlockProperties.Type.FIRST) {
-                    first = entity.getItemAccess();
-                    second = otherEntity.getItemAccess();
+                    first = access;
+                    second = otherAccess;
                 } else {
-                    first = otherEntity.getItemAccess();
-                    second = entity.getItemAccess();
+                    first = otherAccess;
+                    second = access;
                 }
                 first.setOther(second);
                 //noinspection unchecked

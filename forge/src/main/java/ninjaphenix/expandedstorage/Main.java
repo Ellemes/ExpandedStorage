@@ -122,12 +122,17 @@ public final class Main {
                                     Level world = entity.getLevel();
                                     BlockPos pos = entity.getBlockPos();
                                     if (world.getBlockEntity(pos.relative(AbstractChestBlock.getDirectionToAttached(chestType, facing))) instanceof OldChestBlockEntity otherEntity) {
+                                        DoubleItemAccess otherAccess = otherEntity.getItemAccess();
+                                        if (otherAccess.hasCachedAccess()) {
+                                            //noinspection unchecked
+                                            return (T) otherAccess.get();
+                                        }
                                         DoubleItemAccess first, second;
                                         if (AbstractChestBlock.getBlockType(chestType) == DoubleBlockCombiner.BlockType.FIRST) {
                                             first = access;
-                                            second = otherEntity.getItemAccess();
+                                            second = otherAccess;
                                         } else {
-                                            first = otherEntity.getItemAccess();
+                                            first = otherAccess;
                                             second = access;
                                         }
                                         first.setOther(second);
