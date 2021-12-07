@@ -393,12 +393,14 @@ public final class Common {
             Player player = context.getPlayer();
             ItemStack handStack = context.getItemInHand();
             if (state.getBlock() instanceof ChestBlock) {
-                if (ChestBlock.getBlockType(state) == DoubleBlockCombiner.BlockType.SINGLE) {
+                CursedChestType type = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
+                Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+                if (AbstractChestBlock.getBlockType(type) == DoubleBlockCombiner.BlockType.SINGLE) {
                     boolean upgradeSucceeded = Common.upgradeSingleBlockToChest(world, state, pos, from, to);
                     if (upgradeSucceeded) handStack.shrink(1);
                     return upgradeSucceeded;
                 } else if (handStack.getCount() > 1 || (player != null && player.isCreative())) {
-                    BlockPos otherPos = pos.relative(ChestBlock.getDirectionToAttached(state));
+                    BlockPos otherPos = pos.relative(AbstractChestBlock.getDirectionToAttached(type, facing));
                     BlockState otherState = world.getBlockState(otherPos);
                     boolean firstSucceeded = Common.upgradeSingleBlockToChest(world, state, pos, from, to);
                     boolean secondSucceeded = Common.upgradeSingleBlockToChest(world, otherState, otherPos, from, to);
@@ -446,7 +448,7 @@ public final class Common {
             BlockState state = world.getBlockState(pos);
             Player player = context.getPlayer();
             ItemStack handStack = context.getItemInHand();
-            if (AbstractChestBlock.getBlockType(state) == DoubleBlockCombiner.BlockType.SINGLE) {
+            if (AbstractChestBlock.getBlockType(state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE)) == DoubleBlockCombiner.BlockType.SINGLE) {
                 boolean upgradeSucceeded = Common.upgradeSingleBlockToOldChest(world, state, pos, from, to);
                 if (upgradeSucceeded) handStack.shrink(1);
                 return upgradeSucceeded;

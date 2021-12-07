@@ -16,6 +16,7 @@
 package ninjaphenix.expandedstorage.api;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.Direction;
 import ninjaphenix.expandedstorage.block.AbstractChestBlock;
 import ninjaphenix.expandedstorage.block.misc.CursedChestType;
@@ -42,9 +43,11 @@ public final class ExpandedStorageAccessors {
      * @return The direction to attached chest block or empty if the state passed is not a chest block or is a single chest.
      */
     public static Optional<Direction> getAttachedChestDirection(BlockState state) {
-        if (state.contains(AbstractChestBlock.CURSED_CHEST_TYPE)) {
-            if (state.get(AbstractChestBlock.CURSED_CHEST_TYPE) != CursedChestType.SINGLE) {
-                return Optional.of(AbstractChestBlock.getDirectionToAttached(state));
+        if (state.contains(AbstractChestBlock.CURSED_CHEST_TYPE) && state.contains(Properties.HORIZONTAL_FACING)) {
+            CursedChestType type = state.get(AbstractChestBlock.CURSED_CHEST_TYPE);
+            if (type != CursedChestType.SINGLE) {
+                Direction facing = state.get(Properties.HORIZONTAL_FACING);
+                return Optional.of(AbstractChestBlock.getDirectionToAttached(type, facing));
             }
         }
         return Optional.empty();

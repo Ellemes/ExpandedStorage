@@ -35,6 +35,7 @@ import net.minecraft.world.level.block.DoubleBlockCombiner;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -112,15 +113,17 @@ public final class Main {
                                 if (entity instanceof OldChestBlockEntity chestBlockEntity) {
                                     BlockState state = chestBlockEntity.getBlockState();
                                     DoubleItemAccess access = chestBlockEntity.getItemAccess();
-                                    if (access.hasCachedAccess() || state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE) == CursedChestType.SINGLE) {
+                                    CursedChestType chestType = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
+                                    Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+                                    if (access.hasCachedAccess() || chestType == CursedChestType.SINGLE) {
                                         //noinspection unchecked
                                         return (T) access.get();
                                     }
                                     Level world = entity.getLevel();
                                     BlockPos pos = entity.getBlockPos();
-                                    if (world.getBlockEntity(pos.relative(AbstractChestBlock.getDirectionToAttached(state))) instanceof OldChestBlockEntity otherEntity) {
+                                    if (world.getBlockEntity(pos.relative(AbstractChestBlock.getDirectionToAttached(chestType, facing))) instanceof OldChestBlockEntity otherEntity) {
                                         DoubleItemAccess first, second;
-                                        if (AbstractChestBlock.getBlockType(state) == DoubleBlockCombiner.BlockType.FIRST) {
+                                        if (AbstractChestBlock.getBlockType(chestType) == DoubleBlockCombiner.BlockType.FIRST) {
                                             first = access;
                                             second = otherEntity.getItemAccess();
                                         } else {

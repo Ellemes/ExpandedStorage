@@ -90,7 +90,9 @@ public class AbstractChestBlock extends OpenableBlock implements InventoryProvid
 
     public static <T extends OldChestBlockEntity> PropertyRetriever<T> createPropertyRetriever(AbstractChestBlock block, BlockState state, WorldAccess world, BlockPos pos, boolean retrieveBlockedChests) {
         BiPredicate<WorldAccess, BlockPos> isChestBlocked = retrieveBlockedChests ? (_world, _pos) -> false : block::isAccessBlocked;
-        return PropertyRetriever.create(block.getBlockEntityType(), AbstractChestBlock::getBlockType, AbstractChestBlock::getDirectionToAttached,
+        return PropertyRetriever.create(block.getBlockEntityType(),
+                (s) -> AbstractChestBlock.getBlockType(s.get(AbstractChestBlock.CURSED_CHEST_TYPE)),
+                (s, facing) -> AbstractChestBlock.getDirectionToAttached(s.get(AbstractChestBlock.CURSED_CHEST_TYPE), facing),
                 (s) -> s.get(Properties.HORIZONTAL_FACING), state, world, pos, isChestBlocked);
     }
 
@@ -108,6 +110,25 @@ public class AbstractChestBlock extends OpenableBlock implements InventoryProvid
         return Common.OLD_CHEST_BLOCK_TYPE;
     }
 
+    public static Direction getDirectionToAttached(CursedChestType type, Direction facing) {
+        if (type == CursedChestType.TOP) {
+            return Direction.DOWN;
+        } else if (type == CursedChestType.BACK) {
+            return facing;
+        } else if (type == CursedChestType.RIGHT) {
+            return facing.rotateYClockwise();
+        } else if (type == CursedChestType.BOTTOM) {
+            return Direction.UP;
+        } else if (type == CursedChestType.FRONT) {
+            return facing.getOpposite();
+        } else if (type == CursedChestType.LEFT) {
+            return facing.rotateYCounterclockwise();
+        } else if (type == CursedChestType.SINGLE) {
+            throw new IllegalArgumentException("AbstractChestBlock#getDirectionToAttached received an unexpected chest type.");
+        }
+        throw new IllegalArgumentException("AbstractChestBlock#getDirectionToAttached received an unknown chest type.");
+    }
+
     /**
      * Note to self, do not rename, used by chest tracker.
      * @deprecated Use {@link ExpandedStorageAccessors} instead.
@@ -115,32 +136,15 @@ public class AbstractChestBlock extends OpenableBlock implements InventoryProvid
     @Deprecated
     @ApiStatus.Internal
     public static Direction getDirectionToAttached(BlockState state) {
-        CursedChestType value = state.get(AbstractChestBlock.CURSED_CHEST_TYPE);
-        if (value == CursedChestType.TOP) {
-            return Direction.DOWN;
-        } else if (value == CursedChestType.BACK) {
-            return state.get(Properties.HORIZONTAL_FACING);
-        } else if (value == CursedChestType.RIGHT) {
-            return state.get(Properties.HORIZONTAL_FACING).rotateYClockwise();
-        } else if (value == CursedChestType.BOTTOM) {
-            return Direction.UP;
-        } else if (value == CursedChestType.FRONT) {
-            return state.get(Properties.HORIZONTAL_FACING).getOpposite();
-        } else if (value == CursedChestType.LEFT) {
-            return state.get(Properties.HORIZONTAL_FACING).rotateYCounterclockwise();
-        } else if (value == CursedChestType.SINGLE) {
-            throw new IllegalArgumentException("BaseChestBlock#getDirectionToAttached received an unexpected state.");
-        }
-        throw new IllegalArgumentException("Invalid CursedChestType passed.");
+        return AbstractChestBlock.getDirectionToAttached(state.get(AbstractChestBlock.CURSED_CHEST_TYPE), state.get(Properties.HORIZONTAL_FACING));
     }
 
-    public static DoubleBlockProperties.Type getBlockType(BlockState state) {
-        CursedChestType value = state.get(AbstractChestBlock.CURSED_CHEST_TYPE);
-        if (value == CursedChestType.TOP || value == CursedChestType.LEFT || value == CursedChestType.FRONT) {
+    public static DoubleBlockProperties.Type getBlockType(CursedChestType type) {
+        if (type == CursedChestType.TOP || type == CursedChestType.LEFT || type == CursedChestType.FRONT) {
             return DoubleBlockProperties.Type.FIRST;
-        } else if (value == CursedChestType.BACK || value == CursedChestType.RIGHT || value == CursedChestType.BOTTOM) {
+        } else if (type == CursedChestType.BACK || type == CursedChestType.RIGHT || type == CursedChestType.BOTTOM) {
             return DoubleBlockProperties.Type.SECOND;
-        } else if (value == CursedChestType.SINGLE) {
+        } else if (type == CursedChestType.SINGLE) {
             return DoubleBlockProperties.Type.SINGLE;
         }
         throw new IllegalArgumentException("Invalid CursedChestType passed.");
@@ -213,7 +217,7 @@ public class AbstractChestBlock extends OpenableBlock implements InventoryProvid
     @SuppressWarnings("deprecation")
     public BlockState getStateForNeighborUpdate(BlockState state, Direction offset, BlockState offsetState, WorldAccess world,
                                                 BlockPos pos, BlockPos offsetPos) {
-        DoubleBlockProperties.Type mergeType = AbstractChestBlock.getBlockType(state);
+        DoubleBlockProperties.Type mergeType = AbstractChestBlock.getBlockType(state.get(AbstractChestBlock.CURSED_CHEST_TYPE));
         if (mergeType == DoubleBlockProperties.Type.SINGLE) {
             Direction facing = state.get(Properties.HORIZONTAL_FACING);
             if (!offsetState.isOf(this)) {
@@ -290,7 +294,7 @@ public class AbstractChestBlock extends OpenableBlock implements InventoryProvid
             CursedChestType oldChestType = state.get(AbstractChestBlock.CURSED_CHEST_TYPE);
             CursedChestType newChestType = newState.get(AbstractChestBlock.CURSED_CHEST_TYPE);
             if (oldChestType != CursedChestType.SINGLE && newChestType == CursedChestType.SINGLE) {
-                if (AbstractChestBlock.getBlockType(state) == DoubleBlockProperties.Type.FIRST) {
+                if (AbstractChestBlock.getBlockType(oldChestType) == DoubleBlockProperties.Type.FIRST) {
                     if (world.getBlockEntity(pos) instanceof OldChestBlockEntity entity) {
                         entity.invalidateDoubleBlockCache();
                     }

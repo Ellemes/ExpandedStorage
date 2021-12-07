@@ -24,6 +24,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.WorldAccess;
 
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 
@@ -33,7 +34,7 @@ public interface PropertyRetriever<A> {
     static <A extends BlockEntity> PropertyRetriever<A> create(
             BlockEntityType<A> blockEntityType,
             Function<BlockState, DoubleBlockProperties.Type> typeGetter,
-            Function<BlockState, Direction> attachedDirectionGetter,
+            BiFunction<BlockState, Direction, Direction> attachedDirectionGetter,
             Function<BlockState, Direction> directionGetter,
             BlockState state,
             WorldAccess world,
@@ -45,10 +46,11 @@ public interface PropertyRetriever<A> {
 
         DoubleBlockProperties.Type type = typeGetter.apply(state);
         if (type != DoubleBlockProperties.Type.SINGLE) {
-            BlockPos attachedPos = pos.offset(attachedDirectionGetter.apply(state));
+            Direction facing = directionGetter.apply(state);
+            BlockPos attachedPos = pos.offset(attachedDirectionGetter.apply(state, facing));
             BlockState attachedState = world.getBlockState(attachedPos);
             if (attachedState.isOf(state.getBlock())) {
-                if (PropertyRetriever.areTypesOpposite(type, typeGetter.apply(attachedState)) && directionGetter.apply(state) == directionGetter.apply(attachedState)) {
+                if (PropertyRetriever.areTypesOpposite(type, typeGetter.apply(attachedState)) && facing == directionGetter.apply(attachedState)) {
                     if (blockInaccessible.test(world, attachedPos))
                         return new EmptyPropertyRetriever<>();
 

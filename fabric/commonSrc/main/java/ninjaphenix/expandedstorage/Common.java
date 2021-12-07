@@ -394,12 +394,14 @@ public final class Common {
             PlayerEntity player = context.getPlayer();
             ItemStack handStack = context.getStack();
             if (state.getBlock() instanceof ChestBlock) {
-                if (ChestBlock.getBlockType(state) == DoubleBlockProperties.Type.SINGLE) {
+                CursedChestType type = state.get(AbstractChestBlock.CURSED_CHEST_TYPE);
+                Direction facing = state.get(Properties.HORIZONTAL_FACING);
+                if (AbstractChestBlock.getBlockType(type) == DoubleBlockProperties.Type.SINGLE) {
                     boolean upgradeSucceeded = Common.upgradeSingleBlockToChest(world, state, pos, from, to);
                     if (upgradeSucceeded) handStack.decrement(1);
                     return upgradeSucceeded;
                 } else if (handStack.getCount() > 1 || (player != null && player.isCreative())) {
-                    BlockPos otherPos = pos.offset(ChestBlock.getDirectionToAttached(state));
+                    BlockPos otherPos = pos.offset(AbstractChestBlock.getDirectionToAttached(type, facing));
                     BlockState otherState = world.getBlockState(otherPos);
                     boolean firstSucceeded = Common.upgradeSingleBlockToChest(world, state, pos, from, to);
                     boolean secondSucceeded = Common.upgradeSingleBlockToChest(world, otherState, otherPos, from, to);
@@ -447,7 +449,7 @@ public final class Common {
             BlockState state = world.getBlockState(pos);
             PlayerEntity player = context.getPlayer();
             ItemStack handStack = context.getStack();
-            if (AbstractChestBlock.getBlockType(state) == DoubleBlockProperties.Type.SINGLE) {
+            if (AbstractChestBlock.getBlockType(state.get(AbstractChestBlock.CURSED_CHEST_TYPE)) == DoubleBlockProperties.Type.SINGLE) {
                 boolean upgradeSucceeded = Common.upgradeSingleBlockToOldChest(world, state, pos, from, to);
                 if (upgradeSucceeded) handStack.decrement(1);
                 return upgradeSucceeded;

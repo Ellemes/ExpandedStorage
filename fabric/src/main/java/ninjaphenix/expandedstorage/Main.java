@@ -43,6 +43,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -108,13 +109,15 @@ public final class Main implements ModInitializer {
     private static Storage<ItemVariant> getItemAccess(World world, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, @SuppressWarnings("unused") Direction context) {
         if (blockEntity instanceof OldChestBlockEntity entity) {
             DoubleItemAccess access = entity.getItemAccess();
-            if (access.hasCachedAccess() || state.get(AbstractChestBlock.CURSED_CHEST_TYPE) == CursedChestType.SINGLE) {
+            CursedChestType type = state.get(AbstractChestBlock.CURSED_CHEST_TYPE);
+            Direction facing = state.get(Properties.HORIZONTAL_FACING);
+            if (access.hasCachedAccess() || type == CursedChestType.SINGLE) {
                 //noinspection unchecked
                 return (Storage<ItemVariant>) access.get();
             }
-            if (world.getBlockEntity(pos.offset(AbstractChestBlock.getDirectionToAttached(state))) instanceof OldChestBlockEntity otherEntity) {
+            if (world.getBlockEntity(pos.offset(AbstractChestBlock.getDirectionToAttached(type, facing))) instanceof OldChestBlockEntity otherEntity) {
                 DoubleItemAccess first, second;
-                if (AbstractChestBlock.getBlockType(state) == DoubleBlockProperties.Type.FIRST) {
+                if (AbstractChestBlock.getBlockType(type) == DoubleBlockProperties.Type.FIRST) {
                     first = entity.getItemAccess();
                     second = otherEntity.getItemAccess();
                 } else {

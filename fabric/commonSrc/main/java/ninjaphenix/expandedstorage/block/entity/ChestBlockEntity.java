@@ -33,6 +33,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import ninjaphenix.container_library.api.helpers.VariableInventory;
 import ninjaphenix.container_library.api.inventory.AbstractHandler;
+import ninjaphenix.expandedstorage.block.AbstractChestBlock;
 import ninjaphenix.expandedstorage.block.ChestBlock;
 import ninjaphenix.expandedstorage.block.entity.extendable.OpenableBlockEntity;
 import ninjaphenix.expandedstorage.block.strategies.ItemAccess;
@@ -93,12 +94,12 @@ public final class ChestBlockEntity extends OldChestBlockEntity {
     }
 
     private static void playSound(World world, BlockPos pos, BlockState state, SoundEvent sound) {
-        DoubleBlockProperties.Type mergeType = ChestBlock.getBlockType(state);
+        DoubleBlockProperties.Type mergeType = AbstractChestBlock.getBlockType(state.get(AbstractChestBlock.CURSED_CHEST_TYPE));
         Vec3d soundPos;
         if (mergeType == DoubleBlockProperties.Type.SINGLE) {
             soundPos = Vec3d.ofCenter(pos);
         } else if (mergeType == DoubleBlockProperties.Type.FIRST) {
-            soundPos = Vec3d.ofCenter(pos).add(Vec3d.of(ChestBlock.getDirectionToAttached(state).getVector()).multiply(0.5D));
+            soundPos = Vec3d.ofCenter(pos).add(Vec3d.of(AbstractChestBlock.getDirectionToAttached(state).getVector()).multiply(0.5D));
         } else {
             return;
         }

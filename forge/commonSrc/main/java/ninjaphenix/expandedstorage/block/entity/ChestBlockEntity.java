@@ -17,6 +17,7 @@ package ninjaphenix.expandedstorage.block.entity;
 
 import ninjaphenix.container_library.api.helpers.VariableInventory;
 import ninjaphenix.container_library.api.inventory.AbstractHandler;
+import ninjaphenix.expandedstorage.block.AbstractChestBlock;
 import ninjaphenix.expandedstorage.block.ChestBlock;
 import ninjaphenix.expandedstorage.block.entity.extendable.OpenableBlockEntity;
 import ninjaphenix.expandedstorage.block.strategies.ItemAccess;
@@ -93,12 +94,12 @@ public final class ChestBlockEntity extends OldChestBlockEntity {
     }
 
     private static void playSound(Level world, BlockPos pos, BlockState state, SoundEvent sound) {
-        DoubleBlockCombiner.BlockType mergeType = ChestBlock.getBlockType(state);
+        DoubleBlockCombiner.BlockType mergeType = AbstractChestBlock.getBlockType(state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE));
         Vec3 soundPos;
         if (mergeType == DoubleBlockCombiner.BlockType.SINGLE) {
             soundPos = Vec3.atCenterOf(pos);
         } else if (mergeType == DoubleBlockCombiner.BlockType.FIRST) {
-            soundPos = Vec3.atCenterOf(pos).add(Vec3.atLowerCornerOf(ChestBlock.getDirectionToAttached(state).getNormal()).scale(0.5D));
+            soundPos = Vec3.atCenterOf(pos).add(Vec3.atLowerCornerOf(AbstractChestBlock.getDirectionToAttached(state).getNormal()).scale(0.5D));
         } else {
             return;
         }
