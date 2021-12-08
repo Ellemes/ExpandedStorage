@@ -74,7 +74,6 @@ var modrinthFabricTask : TaskProvider<com.modrinth.minotaur.TaskModrinthUpload>?
 var curseforgeForgeTask : TaskProvider<com.matthewprenger.cursegradle.CurseUploadTask>? = null
 var curseforgeFabricTask : TaskProvider<com.matthewprenger.cursegradle.CurseUploadTask>? = null
 
-
 val realChangelog = rootDir.resolve("changelog.md").readText(Charsets.UTF_8)
 val modrinthToken: String? = System.getenv("MODRINTH_TOKEN")
 val curseforgeToken: String? = System.getenv("CURSEFORGE_TOKEN")
@@ -177,11 +176,13 @@ val publishTask = tasks.create("publish") {
     }
 }
 
-// Usage: ./gradlew :updateFabricSources -Pmc="1.18-pre8" -Pyv="2"
-tasks.register("updateFabricSources") {
-    subprojects.forEach {
-        if (it.name.startsWith("fabric")) {
-            dependsOn(it.tasks["updateFabricSources"])
+if (hasProperty("yv")) {
+    // Usage: ./gradlew :updateFabricSources -Pmc="1.18-pre8" -Pyv="2"
+    tasks.register("updateFabricSources") {
+        subprojects.forEach {
+            if (it.name.startsWith("fabric")) {
+                dependsOn(it.tasks["updateFabricSources"])
+            }
         }
     }
 }

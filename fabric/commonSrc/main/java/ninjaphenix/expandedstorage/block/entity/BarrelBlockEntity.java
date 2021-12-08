@@ -37,6 +37,7 @@ import ninjaphenix.expandedstorage.block.strategies.ItemAccess;
 import ninjaphenix.expandedstorage.block.strategies.Lockable;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public final class BarrelBlockEntity extends ExposedInventoryBlockEntity {
     private final ViewerCountManager manager = new ViewerCountManager() {
@@ -64,10 +65,10 @@ public final class BarrelBlockEntity extends ExposedInventoryBlockEntity {
     };
 
     public BarrelBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, Identifier blockId,
-                             Function<OpenableBlockEntity, ItemAccess> access, Function<OpenableBlockEntity, Lockable> lockable) {
+                             Function<OpenableBlockEntity, ItemAccess> access, Supplier<Lockable> lockable) {
         super(type, pos, state, blockId, ((OpenableBlock) state.getBlock()).getInventoryTitle(), ((OpenableBlock) state.getBlock()).getSlotCount());
         this.setItemAccess(access.apply(this));
-        this.setLockable(lockable.apply(this));
+        this.setLockable(lockable.get());
     }
 
     private static void playSound(World world, BlockState state, BlockPos pos, SoundEvent sound) {

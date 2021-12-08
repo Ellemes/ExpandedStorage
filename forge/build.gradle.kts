@@ -11,6 +11,21 @@ mixin {
     disableAnnotationProcessorCheck()
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDir("src/main/generated")
+        }
+    }
+
+    create("datagen") {
+        compileClasspath += sourceSets.main.get().compileClasspath
+        runtimeClasspath += sourceSets.main.get().runtimeClasspath
+        compileClasspath += sourceSets.main.get().output
+        runtimeClasspath += sourceSets.main.get().output
+    }
+}
+
 minecraft {
     mappings("official", properties["minecraft_version"] as String)
 
@@ -52,11 +67,29 @@ minecraft {
             // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             //property("forge.logging.console.level", "debug")
         }
+
+        create("data") {
+            workingDirectory(rootProject.file("run"))
+            mods {
+                create("expandedstorage") {
+                    sources(sourceSets.main.get(), sourceSets.getByName("datagen"))
+                }
+            }
+            args("--mod", "expandedstorage", "--all",
+                    "--output", file("src/main/generated"),
+                    "--existing", file("src/main/resources"),
+                    "--existing", rootDir.resolve("common/src/main/resources"))
+        }
     }
 }
 
 repositories {
-    mavenCentral()
+    maven {
+        url  = uri("https://cursemaven.com")
+        content {
+            includeGroup("curse.maven")
+        }
+    }
     maven {
         // JEI maven
         name = "Progwml6 maven"
@@ -67,17 +100,16 @@ repositories {
         name = "ModMaven"
         url = uri("https://modmaven.k-4u.nl")
     }
-    mavenLocal()
 }
 
 dependencies {
     minecraft("net.minecraftforge:forge:${properties["minecraft_version"]}-${properties["forge_version"]}")
     implementation(group = "org.spongepowered", name = "mixin", version = properties["mixin_version"] as String)
     annotationProcessor(group = "org.spongepowered", name = "mixin", version = properties["mixin_version"] as String, classifier = "processor")
-    implementation(fg.deobf("ninjaphenix:container_library:${properties["container_library_version"]}+${properties["minecraft_version"]}:forge"))
+    implementation(fg.deobf("curse.maven:ninjaphenixs-container-library-530668:3546708"))
     implementation(group = "org.jetbrains", name = "annotations", version = properties["jetbrains_annotations_version"] as String)
 
-    //implementation(fg.deobf("mezz.jei:jei-${properties["minecraft_version"]}:${properties["jei_version"]}"))
+    //implementation(fg.deobf("mezz.jei:jei-${properties["jei_minecraft_version"]}:${properties["jei_version"]}"))
 }
 
 tasks.withType<ProcessResources> {
@@ -86,6 +118,7 @@ tasks.withType<ProcessResources> {
     filesMatching("META-INF/mods.toml") {
         expand(props)
     }
+    exclude(".cache/*")
 }
 
 val jarTask = tasks.getByName<Jar>("jar") {

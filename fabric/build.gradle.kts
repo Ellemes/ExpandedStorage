@@ -6,6 +6,21 @@ plugins {
     alias(libs.plugins.gradle.fabric)
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDir("src/main/generated")
+        }
+    }
+
+    create("datagen") {
+        compileClasspath += sourceSets.main.get().compileClasspath
+        runtimeClasspath += sourceSets.main.get().runtimeClasspath
+        compileClasspath += sourceSets.main.get().output
+        runtimeClasspath += sourceSets.main.get().output
+    }
+}
+
 loom {
     runs {
         named("client") {
@@ -14,6 +29,14 @@ loom {
         named("server") {
             ideConfigGenerated(false)
             serverWithGui()
+        }
+        create("datagen") {
+            client()
+            vmArg("-Dfabric-api.datagen")
+            vmArg("-Dfabric-api.datagen.output-dir=${file("src/main/generated")}")
+            vmArg("-Dfabric-api.datagen.datagen.modid=expandedstorage")
+            runDir("build/fabric-datagen")
+            source(sourceSets.getByName("datagen"))
         }
     }
 
@@ -31,7 +54,6 @@ repositories {
             includeGroup("curse.maven")
         }
     }
-
     maven {
         name = "Ladysnake maven"
         url = uri("https://ladysnake.jfrog.io/artifactory/mods")
@@ -39,7 +61,6 @@ repositories {
             includeGroup("io.github.onyxstudios.Cardinal-Components-API")
         }
     }
-
     maven {
         name = "Devan maven"
         url = uri("https://raw.githubusercontent.com/Devan-Kerman/Devan-Repo/master/")
@@ -47,7 +68,6 @@ repositories {
             includeGroup("net.devtech")
         }
     }
-
     maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") }
 
     repositories {
@@ -79,7 +99,7 @@ dependencies {
     modImplementation(group = "net.fabricmc", name = "fabric-loader", version = properties["fabric_loader_version"] as String)
     implementation(group = "org.jetbrains", name = "annotations", version = properties["jetbrains_annotations_version"] as String)
     modImplementation(group = "net.fabricmc.fabric-api", name = "fabric-api", version = properties["fabric_api_version"] as String)
-    modImplementation(group = "ninjaphenix", name = "container_library", version = "${properties["container_library_version"]}+${properties["container_library_minecraft_version"]}", classifier = "fabric")
+    modImplementation(group = "curse.maven", name = "ninjaphenixs-container-library-530668", version = "3531691", dependencyConfiguration = excludeFabric)
 
     // For chest module
     modCompileOnly(group = "curse.maven", name = "statement-340604", version = "3423826", dependencyConfiguration = excludeFabric)
@@ -99,6 +119,7 @@ tasks.withType<ProcessResources> {
     filesMatching("fabric.mod.json") {
         expand(props)
     }
+    exclude(".cache/*")
 }
 
 val mappingsMcVersion = if (hasProperty("mc")) findProperty("mc") else properties["minecraft_version"]

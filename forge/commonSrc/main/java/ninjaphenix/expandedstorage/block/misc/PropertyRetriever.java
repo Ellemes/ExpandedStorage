@@ -16,6 +16,7 @@
 package ninjaphenix.expandedstorage.block.misc;
 
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import net.minecraft.core.BlockPos;
@@ -32,7 +33,7 @@ public interface PropertyRetriever<A> {
     static <A extends BlockEntity> PropertyRetriever<A> create(
             BlockEntityType<A> blockEntityType,
             Function<BlockState, DoubleBlockCombiner.BlockType> typeGetter,
-            Function<BlockState, Direction> attachedDirectionGetter,
+            BiFunction<BlockState, Direction, Direction> attachedDirectionGetter,
             Function<BlockState, Direction> directionGetter,
             BlockState state,
             LevelAccessor world,
@@ -44,10 +45,11 @@ public interface PropertyRetriever<A> {
 
         DoubleBlockCombiner.BlockType type = typeGetter.apply(state);
         if (type != DoubleBlockCombiner.BlockType.SINGLE) {
-            BlockPos attachedPos = pos.relative(attachedDirectionGetter.apply(state));
+            Direction facing = directionGetter.apply(state);
+            BlockPos attachedPos = pos.relative(attachedDirectionGetter.apply(state, facing));
             BlockState attachedState = world.getBlockState(attachedPos);
             if (attachedState.is(state.getBlock())) {
-                if (PropertyRetriever.areTypesOpposite(type, typeGetter.apply(attachedState)) && directionGetter.apply(state) == directionGetter.apply(attachedState)) {
+                if (PropertyRetriever.areTypesOpposite(type, typeGetter.apply(attachedState)) && facing == directionGetter.apply(attachedState)) {
                     if (blockInaccessible.test(world, attachedPos))
                         return new EmptyPropertyRetriever<>();
 

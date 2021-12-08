@@ -47,6 +47,7 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.core.BlockPos;
@@ -84,6 +85,7 @@ import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 
+@SuppressWarnings("deprecation")
 public final class Common {
     public static final ResourceLocation BARREL_BLOCK_TYPE = Utils.id("barrel");
     public static final ResourceLocation CHEST_BLOCK_TYPE = Utils.id("cursed_chest");
@@ -101,7 +103,7 @@ public final class Common {
     private static BlockEntityType<MiniChestBlockEntity> miniChestBlockEntityType;
 
     private static Function<OpenableBlockEntity, ItemAccess> itemAccess;
-    private static Function<OpenableBlockEntity, Lockable> lockable;
+    private static Supplier<Lockable> lockable;
     private static MenuType<MiniChestScreenHandler> miniChestScreenHandler;
 
     public static BlockEntityType<ChestBlockEntity> getChestBlockEntityType() {
@@ -182,11 +184,11 @@ public final class Common {
         }
     }
 
-    private static void upgradeSingleBlockToChest(Level world, BlockState state, BlockPos pos, ResourceLocation from, ResourceLocation to) {
+    private static boolean upgradeSingleBlockToChest(Level world, BlockState state, BlockPos pos, ResourceLocation from, ResourceLocation to) {
         Block block = state.getBlock();
         boolean isExpandedStorageChest = block instanceof ChestBlock;
-        int inventorySize = !isExpandedStorageChest ? Utils.WOOD_STACK_COUNT : Common.getTieredBlock(Common.CHEST_BLOCK_TYPE, ((ChestBlock) block).getBlockTier()).getSlotCount();
-        if (isExpandedStorageChest && ((ChestBlock) block).getBlockTier() == from || !isExpandedStorageChest && from == Utils.WOOD_TIER_ID) {
+        int inventorySize = !isExpandedStorageChest ? Utils.WOOD_STACK_COUNT : Common.getTieredBlock(Common.CHEST_BLOCK_TYPE, ((OpenableBlock) block).getBlockTier()).getSlotCount();
+        if (isExpandedStorageChest && ((OpenableBlock) block).getBlockTier() == from || !isExpandedStorageChest && from == Utils.WOOD_TIER_ID) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             //noinspection ConstantConditions
             CompoundTag tag = blockEntity.save(new CompoundTag());
@@ -222,17 +224,22 @@ public final class Common {
                     ContainerHelper.saveAllItems(newTag, inventory);
                     code.addToTag(newTag);
                     newEntity.load(newTag);
+                    return true;
+                } else {
+                    world.setBlockEntity(blockEntity);
                 }
             }
         }
+        return false;
     }
 
-    private static void upgradeSingleBlockToOldChest(Level world, BlockState state, BlockPos pos, ResourceLocation from, ResourceLocation to) {
-        if (((AbstractChestBlock) state.getBlock()).getBlockTier() == from) {
+    private static boolean upgradeSingleBlockToOldChest(Level world, BlockState state, BlockPos pos, ResourceLocation from, ResourceLocation to) {
+        if (((OpenableBlock) state.getBlock()).getBlockTier() == from) {
             AbstractChestBlock toBlock = (AbstractChestBlock) Common.getTieredBlock(Common.OLD_CHEST_BLOCK_TYPE, to);
             NonNullList<ItemStack> inventory = NonNullList.withSize(toBlock.getSlotCount(), ItemStack.EMPTY);
+            BlockEntity blockEntity = world.getBlockEntity(pos);
             //noinspection ConstantConditions
-            CompoundTag tag = world.getBlockEntity(pos).save(new CompoundTag());
+            CompoundTag tag = blockEntity.save(new CompoundTag());
             LockCode code = LockCode.fromTag(tag);
             ContainerHelper.loadAllItems(tag, inventory);
             world.removeBlockEntity(pos);
@@ -244,8 +251,12 @@ public final class Common {
                 ContainerHelper.saveAllItems(newTag, inventory);
                 code.addToTag(newTag);
                 newEntity.load(newTag);
+                return true;
+            }  else {
+                world.setBlockEntity(blockEntity);
             }
         }
+        return false;
     }
 
     public static ResourceLocation stat(String stat) {
@@ -283,11 +294,6 @@ public final class Common {
         Common.BLOCK_UPGRADE_BEHAVIOURS.put(target, behaviour);
     }
 
-    public static void setSharedStrategies(Function<OpenableBlockEntity, ItemAccess> itemAccess, Function<OpenableBlockEntity, Lockable> lockable) {
-        Common.itemAccess = itemAccess;
-        Common.lockable = lockable;
-    }
-
     private static void registerTieredBlock(OpenableBlock block) {
         Common.BLOCKS.putIfAbsent(new Pair<>(block.getBlockType(), block.getBlockTier()), block);
     }
@@ -322,13 +328,16 @@ public final class Common {
         return null;
     }
 
-    public static void registerContent(CreativeModeTab group, boolean isClient,
+    public static void registerContent(Function<OpenableBlockEntity, ItemAccess> itemAccess, Supplier<Lockable> lockable,
+                                       CreativeModeTab group, boolean isClient,
                                        Consumer<Pair<ResourceLocation, Item>[]> baseRegistration, boolean manuallyWrapTooltips,
                                        RegistrationConsumer<ChestBlock, BlockItem, ChestBlockEntity> chestRegistration, net.minecraft.tags.Tag.Named<Block> chestTag, BiFunction<ChestBlock, Item.Properties, BlockItem> chestItemMaker, Function<OpenableBlockEntity, ItemAccess> chestAccessMaker,
                                        RegistrationConsumer<AbstractChestBlock, BlockItem, OldChestBlockEntity> oldChestRegistration,
                                        RegistrationConsumer<BarrelBlock, BlockItem, BarrelBlockEntity> barrelRegistration, net.minecraft.tags.Tag.Named<Block> barrelTag,
                                        RegistrationConsumer<MiniChestBlock, BlockItem, MiniChestBlockEntity> miniChestRegistration, BiFunction<MiniChestBlock, Item.Properties, BlockItem> miniChestItemMaker, MenuType<MiniChestScreenHandler> miniChestScreenHandlerType,
                                        net.minecraft.tags.Tag.Named<Block> chestCycle, net.minecraft.tags.Tag.Named<Block> miniChestCycle, net.minecraft.tags.Tag.Named<Block> miniChestSecretCycle, net.minecraft.tags.Tag.Named<Block> miniChestSecretCycle2) {
+        Common.itemAccess = itemAccess;
+        Common.lockable = lockable;
         final Tier woodTier = new Tier(Utils.WOOD_TIER_ID, Utils.WOOD_STACK_COUNT, UnaryOperator.identity(), UnaryOperator.identity());
         final Tier ironTier = new Tier(Utils.id("iron"), 54, Properties::requiresCorrectToolForDrops, UnaryOperator.identity());
         final Tier goldTier = new Tier(Utils.id("gold"), 81, Properties::requiresCorrectToolForDrops, UnaryOperator.identity());
@@ -347,7 +356,7 @@ public final class Common {
         // Init block settings
         Properties woodSettings = Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.5f).sound(SoundType.WOOD);
         Properties pumpkinSettings = Properties.of(Material.VEGETABLE, MaterialColor.COLOR_ORANGE).strength(1).sound(SoundType.WOOD);
-        Properties christmasSettings = Properties.of(Material.WOOD, state -> {
+        Properties presentSettings = Properties.of(Material.WOOD, state -> {
             CursedChestType type = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
             if (type == CursedChestType.SINGLE) return MaterialColor.COLOR_RED;
             else if (type == CursedChestType.FRONT || type == CursedChestType.BACK) return MaterialColor.PLANT;
@@ -362,7 +371,7 @@ public final class Common {
         BlockItemCollection<ChestBlock, BlockItem> chestContent = BlockItemCollection.of(ChestBlock[]::new, BlockItem[]::new,
                 Common.chestBlock(Utils.id("wood_chest"), Common.stat("open_wood_chest"), woodTier, woodSettings, chestItemMaker, group),
                 Common.chestBlock(Utils.id("pumpkin_chest"), Common.stat("open_pumpkin_chest"), woodTier, pumpkinSettings, chestItemMaker, group),
-                Common.chestBlock(Utils.id("christmas_chest"), Common.stat("open_christmas_chest"), woodTier, christmasSettings, chestItemMaker, group),
+                Common.chestBlock(Utils.id("christmas_chest"), Common.stat("open_christmas_chest"), woodTier, presentSettings, chestItemMaker, group),
                 Common.chestBlock(Utils.id("iron_chest"), Common.stat("open_iron_chest"), ironTier, ironSettings, chestItemMaker, group),
                 Common.chestBlock(Utils.id("gold_chest"), Common.stat("open_gold_chest"), goldTier, goldSettings, chestItemMaker, group),
                 Common.chestBlock(Utils.id("diamond_chest"), Common.stat("open_diamond_chest"), diamondTier, diamondSettings, chestItemMaker, group),
@@ -371,7 +380,7 @@ public final class Common {
         );
         if (isClient) Common.registerChestTextures(chestContent.getBlocks());
         // Init block entity type
-        Common.chestBlockEntityType = BlockEntityType.Builder.of((pos, state) -> new ChestBlockEntity(Common.getChestBlockEntityType(), pos, state, ((ChestBlock) state.getBlock()).getBlockId(), chestAccessMaker, Common.lockable), chestContent.getBlocks()).build(null);
+        Common.chestBlockEntityType = BlockEntityType.Builder.of((pos, state) -> new ChestBlockEntity(Common.getChestBlockEntityType(), pos, state, ((OpenableBlock) state.getBlock()).getBlockId(), chestAccessMaker, Common.lockable), chestContent.getBlocks()).build(null);
         chestRegistration.accept(chestContent, Common.chestBlockEntityType);
         // Register chest upgrade behaviours
         Predicate<Block> isUpgradableChestBlock = (block) -> block instanceof ChestBlock || block instanceof net.minecraft.world.level.block.ChestBlock || chestTag.contains(block);
@@ -382,30 +391,34 @@ public final class Common {
             Player player = context.getPlayer();
             ItemStack handStack = context.getItemInHand();
             if (state.getBlock() instanceof ChestBlock) {
-                if (ChestBlock.getBlockType(state) == DoubleBlockCombiner.BlockType.SINGLE) {
-                    Common.upgradeSingleBlockToChest(world, state, pos, from, to);
-                    handStack.shrink(1);
-                    return true;
+                CursedChestType type = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
+                Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+                if (AbstractChestBlock.getBlockType(type) == DoubleBlockCombiner.BlockType.SINGLE) {
+                    boolean upgradeSucceeded = Common.upgradeSingleBlockToChest(world, state, pos, from, to);
+                    if (upgradeSucceeded) handStack.shrink(1);
+                    return upgradeSucceeded;
                 } else if (handStack.getCount() > 1 || (player != null && player.isCreative())) {
-                    BlockPos otherPos = pos.relative(ChestBlock.getDirectionToAttached(state));
+                    BlockPos otherPos = pos.relative(AbstractChestBlock.getDirectionToAttached(type, facing));
                     BlockState otherState = world.getBlockState(otherPos);
-                    Common.upgradeSingleBlockToChest(world, state, pos, from, to);
-                    Common.upgradeSingleBlockToChest(world, otherState, otherPos, from, to);
-                    handStack.shrink(2);
-                    return true;
+                    boolean firstSucceeded = Common.upgradeSingleBlockToChest(world, state, pos, from, to);
+                    boolean secondSucceeded = Common.upgradeSingleBlockToChest(world, otherState, otherPos, from, to);
+                    if (firstSucceeded && secondSucceeded) handStack.shrink(2);
+                    else if (firstSucceeded || secondSucceeded) handStack.shrink(1);
+                    return firstSucceeded || secondSucceeded;
                 }
             } else {
                 if (net.minecraft.world.level.block.ChestBlock.getBlockType(state) == DoubleBlockCombiner.BlockType.SINGLE) {
-                    Common.upgradeSingleBlockToChest(world, state, pos, from, to);
-                    handStack.shrink(1);
-                    return true;
+                    boolean upgradeSucceeded = Common.upgradeSingleBlockToChest(world, state, pos, from, to);
+                    if (upgradeSucceeded) handStack.shrink(1);
+                    return upgradeSucceeded;
                 } else if (handStack.getCount() > 1 || (player != null && player.isCreative())) {
                     BlockPos otherPos = pos.relative(net.minecraft.world.level.block.ChestBlock.getConnectedDirection(state));
                     BlockState otherState = world.getBlockState(otherPos);
-                    Common.upgradeSingleBlockToChest(world, state, pos, from, to);
-                    Common.upgradeSingleBlockToChest(world, otherState, otherPos, from, to);
-                    handStack.shrink(2);
-                    return true;
+                    boolean firstSucceeded = Common.upgradeSingleBlockToChest(world, state, pos, from, to);
+                    boolean secondSucceeded = Common.upgradeSingleBlockToChest(world, otherState, otherPos, from, to);
+                    if (firstSucceeded && secondSucceeded) handStack.shrink(2);
+                    else if (firstSucceeded || secondSucceeded) handStack.shrink(1);
+                    return firstSucceeded || secondSucceeded;
                 }
             }
 
@@ -423,7 +436,7 @@ public final class Common {
                 Common.oldChestBlock(Utils.id("old_netherite_chest"), Common.stat("open_old_netherite_chest"), netheriteTier, netheriteSettings, group)
         );
         // Init block entity type
-        Common.oldChestBlockEntityType = BlockEntityType.Builder.of((pos, state) -> new OldChestBlockEntity(Common.getOldChestBlockEntityType(), pos, state, ((AbstractChestBlock) state.getBlock()).getBlockId(), chestAccessMaker, Common.lockable), oldChestContent.getBlocks()).build(null);
+        Common.oldChestBlockEntityType = BlockEntityType.Builder.of((pos, state) -> new OldChestBlockEntity(Common.getOldChestBlockEntityType(), pos, state, ((OpenableBlock) state.getBlock()).getBlockId(), chestAccessMaker, Common.lockable), oldChestContent.getBlocks()).build(null);
         oldChestRegistration.accept(oldChestContent, Common.oldChestBlockEntityType);
         // Register upgrade behaviours
         Predicate<Block> isUpgradableOldChestBlock = (block) -> block.getClass() == AbstractChestBlock.class;
@@ -433,17 +446,18 @@ public final class Common {
             BlockState state = world.getBlockState(pos);
             Player player = context.getPlayer();
             ItemStack handStack = context.getItemInHand();
-            if (AbstractChestBlock.getBlockType(state) == DoubleBlockCombiner.BlockType.SINGLE) {
-                Common.upgradeSingleBlockToOldChest(world, state, pos, from, to);
-                handStack.shrink(1);
-                return true;
+            if (AbstractChestBlock.getBlockType(state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE)) == DoubleBlockCombiner.BlockType.SINGLE) {
+                boolean upgradeSucceeded = Common.upgradeSingleBlockToOldChest(world, state, pos, from, to);
+                if (upgradeSucceeded) handStack.shrink(1);
+                return upgradeSucceeded;
             } else if (handStack.getCount() > 1 || (player != null && player.isCreative())) {
                 BlockPos otherPos = pos.relative(AbstractChestBlock.getDirectionToAttached(state));
                 BlockState otherState = world.getBlockState(otherPos);
-                Common.upgradeSingleBlockToOldChest(world, state, pos, from, to);
-                Common.upgradeSingleBlockToOldChest(world, otherState, otherPos, from, to);
-                handStack.shrink(2);
-                return true;
+                boolean firstSucceeded = Common.upgradeSingleBlockToOldChest(world, state, pos, from, to);
+                boolean secondSucceeded = Common.upgradeSingleBlockToOldChest(world, otherState, otherPos, from, to);
+                if (firstSucceeded && secondSucceeded) handStack.shrink(2);
+                else if (firstSucceeded || secondSucceeded) handStack.shrink(1);
+                return firstSucceeded || secondSucceeded;
             }
             return false;
         });
@@ -464,7 +478,7 @@ public final class Common {
                 Common.barrelBlock(Utils.id("netherite_barrel"), Common.stat("open_netherite_barrel"), netheriteTier, netheriteBarrelSettings, group)
         );
         // Init block entity type
-        Common.barrelBlockEntityType = BlockEntityType.Builder.of((pos, state) -> new BarrelBlockEntity(Common.getBarrelBlockEntityType(), pos, state, ((BarrelBlock) state.getBlock()).getBlockId(), Common.itemAccess, Common.lockable), barrelContent.getBlocks()).build(null);
+        Common.barrelBlockEntityType = BlockEntityType.Builder.of((pos, state) -> new BarrelBlockEntity(Common.getBarrelBlockEntityType(), pos, state, ((OpenableBlock) state.getBlock()).getBlockId(), Common.itemAccess, Common.lockable), barrelContent.getBlocks()).build(null);
         barrelRegistration.accept(barrelContent, Common.barrelBlockEntityType);
         // Register upgrade behaviours
         Predicate<Block> isUpgradableBarrelBlock = (block) -> block instanceof BarrelBlock || block instanceof net.minecraft.world.level.block.BarrelBlock || barrelTag.contains(block);
@@ -474,8 +488,8 @@ public final class Common {
             BlockState state = world.getBlockState(pos);
             Block block = state.getBlock();
             boolean isExpandedStorageBarrel = block instanceof BarrelBlock;
-            int inventorySize = !isExpandedStorageBarrel ? Utils.WOOD_STACK_COUNT : Common.getTieredBlock(Common.BARREL_BLOCK_TYPE, ((BarrelBlock) block).getBlockTier()).getSlotCount();
-            if (isExpandedStorageBarrel && ((BarrelBlock) block).getBlockTier() == from || !isExpandedStorageBarrel && from == Utils.WOOD_TIER_ID) {
+            int inventorySize = !isExpandedStorageBarrel ? Utils.WOOD_STACK_COUNT : Common.getTieredBlock(Common.BARREL_BLOCK_TYPE, ((OpenableBlock) block).getBlockTier()).getSlotCount();
+            if (isExpandedStorageBarrel && ((OpenableBlock) block).getBlockTier() == from || !isExpandedStorageBarrel && from == Utils.WOOD_TIER_ID) {
                 BlockEntity blockEntity = world.getBlockEntity(pos);
                 //noinspection ConstantConditions
                 CompoundTag tag = blockEntity.save(new CompoundTag());
@@ -504,6 +518,8 @@ public final class Common {
                         newEntity.load(newTag);
                         context.getItemInHand().shrink(1);
                         return true;
+                    } else {
+                        world.setBlockEntity(blockEntity);
                     }
                 }
             }
@@ -549,7 +565,7 @@ public final class Common {
                 Common.miniChestBlock(Utils.id("pink_amethyst_mini_present_with_sparrow"), pinkAmethystPresentStat, woodTier, pinkAmethystPresentSettings, miniChestItemMaker, group)
         );
         // Init block entity type
-        Common.miniChestBlockEntityType = BlockEntityType.Builder.of((pos, state) -> new MiniChestBlockEntity(Common.getMiniChestBlockEntityType(), pos, state, ((MiniChestBlock) state.getBlock()).getBlockId(), Common.itemAccess, Common.lockable), miniChestContent.getBlocks()).build(null);
+        Common.miniChestBlockEntityType = BlockEntityType.Builder.of((pos, state) -> new MiniChestBlockEntity(Common.getMiniChestBlockEntityType(), pos, state, ((OpenableBlock) state.getBlock()).getBlockId(), Common.itemAccess, Common.lockable), miniChestContent.getBlocks()).build(null);
         miniChestRegistration.accept(miniChestContent, Common.miniChestBlockEntityType);
         //</editor-fold>
         Common.miniChestScreenHandler = miniChestScreenHandlerType;

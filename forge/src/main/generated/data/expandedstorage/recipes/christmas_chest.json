@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "expandedstorage:christmas_chest",
+  "pattern": [
+    " B ",
+    "RCW",
+    " S "
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:sweet_berries"
+    },
+    "R": {
+      "tag": "forge:dyes/red"
+    },
+    "C": {
+      "tag": "forge:chests/wooden"
+    },
+    "W": {
+      "tag": "forge:dyes/white"
+    },
+    "S": {
+      "item": "minecraft:spruce_sapling"
+    }
+  },
+  "result": {
+    "item": "expandedstorage:christmas_chest"
+  }
+}

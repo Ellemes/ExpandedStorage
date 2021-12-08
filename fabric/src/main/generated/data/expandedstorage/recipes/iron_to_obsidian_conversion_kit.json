@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "OOO",
+    "OKO",
+    "OOO"
+  ],
+  "key": {
+    "O": {
+      "item": "minecraft:obsidian"
+    },
+    "K": {
+      "item": "expandedstorage:iron_to_diamond_conversion_kit"
+    }
+  },
+  "result": {
+    "item": "expandedstorage:iron_to_obsidian_conversion_kit"
+  }
+}

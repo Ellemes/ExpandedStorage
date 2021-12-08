@@ -35,6 +35,7 @@ import net.minecraft.world.level.block.DoubleBlockCombiner;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -70,24 +71,25 @@ import ninjaphenix.expandedstorage.registration.BlockItemCollection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("deprecation")
 @Mod("expandedstorage")
 public final class Main {
     private final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 
     public Main() {
-        Common.setSharedStrategies(GenericItemAccess::new, (entity) -> new BasicLockable());
         Tag.Named<Block> chestCycle = BlockTags.createOptional(Utils.id("chest_cycle"));
         Tag.Named<Block> miniChestCycle = BlockTags.createOptional(Utils.id("mini_chest_cycle"));
         Tag.Named<Block> miniChestSecretCycle = BlockTags.createOptional(Utils.id("mini_chest_secret_cycle"));
         Tag.Named<Block> miniChestSecretCycle2 = BlockTags.createOptional(Utils.id("mini_chest_secret_cycle_2"));
         MenuType<MiniChestScreenHandler> screenHandlerType = new MenuType<>(MiniChestScreenHandler::createClientMenu);
-        screenHandlerType.setRegistryName(Utils.id("minichest_handler"));
-        Common.registerContent(new CreativeModeTab(Utils.MOD_ID) {
-                                   @Override
-                                   public ItemStack makeIcon() {
-                                       return new ItemStack(ForgeRegistries.ITEMS.getValue(Utils.id("netherite_chest")), 1);
-                                   }
-                               }, FMLLoader.getDist().isClient(),
+        screenHandlerType.setRegistryName(Utils.id("mini_chest_handler"));
+        Common.registerContent(GenericItemAccess::new, BasicLockable::new,
+                new CreativeModeTab(Utils.MOD_ID) {
+                    @Override
+                    public ItemStack makeIcon() {
+                        return new ItemStack(ForgeRegistries.ITEMS.getValue(Utils.id("netherite_chest")), 1);
+                    }
+                }, FMLLoader.getDist().isClient(),
                 this::baseRegistration, false,
                 this::chestRegistration, BlockTags.createOptional(new ResourceLocation("forge", "chests/wooden")), ChestBlockItem::new, ChestItemAccess::new,
                 this::oldChestRegistration,
@@ -112,19 +114,26 @@ public final class Main {
                                 if (entity instanceof OldChestBlockEntity chestBlockEntity) {
                                     BlockState state = chestBlockEntity.getBlockState();
                                     DoubleItemAccess access = chestBlockEntity.getItemAccess();
-                                    if (access.hasCachedAccess() || state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE) == CursedChestType.SINGLE) {
+                                    CursedChestType chestType = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
+                                    Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+                                    if (access.hasCachedAccess() || chestType == CursedChestType.SINGLE) {
                                         //noinspection unchecked
                                         return (T) access.get();
                                     }
                                     Level world = entity.getLevel();
                                     BlockPos pos = entity.getBlockPos();
-                                    if (world.getBlockEntity(pos.relative(AbstractChestBlock.getDirectionToAttached(state))) instanceof OldChestBlockEntity otherEntity) {
+                                    if (world.getBlockEntity(pos.relative(AbstractChestBlock.getDirectionToAttached(chestType, facing))) instanceof OldChestBlockEntity otherEntity) {
+                                        DoubleItemAccess otherAccess = otherEntity.getItemAccess();
+                                        if (otherAccess.hasCachedAccess()) {
+                                            //noinspection unchecked
+                                            return (T) otherAccess.get();
+                                        }
                                         DoubleItemAccess first, second;
-                                        if (AbstractChestBlock.getBlockType(state) == DoubleBlockCombiner.BlockType.FIRST) {
+                                        if (AbstractChestBlock.getBlockType(chestType) == DoubleBlockCombiner.BlockType.FIRST) {
                                             first = access;
-                                            second = otherEntity.getItemAccess();
+                                            second = otherAccess;
                                         } else {
-                                            first = otherEntity.getItemAccess();
+                                            first = otherAccess;
                                             second = access;
                                         }
                                         first.setOther(second);
