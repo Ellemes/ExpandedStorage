@@ -46,27 +46,27 @@ public final class ItemModelProvider extends net.minecraftforge.client.model.gen
         this.simple(ModItems.DIAMOND_TO_NETHERITE_CONVERSION_KIT);
         this.simple(ModItems.OBSIDIAN_TO_NETHERITE_CONVERSION_KIT);
 
-        this.chest(ModItems.WOOD_CHEST);
-        this.chest(ModItems.PUMPKIN_CHEST);
-        this.chest(ModItems.PRESENT);
-        this.chest(ModItems.IRON_CHEST);
-        this.chest(ModItems.GOLD_CHEST);
-        this.chest(ModItems.DIAMOND_CHEST);
-        this.chest(ModItems.OBSIDIAN_CHEST);
-        this.chest(ModItems.NETHERITE_CHEST);
+        //this.chest(ModItems.WOOD_CHEST);
+        //this.chest(ModItems.PUMPKIN_CHEST);
+        //this.chest(ModItems.PRESENT);
+        //this.chest(ModItems.IRON_CHEST);
+        //this.chest(ModItems.GOLD_CHEST);
+        //this.chest(ModItems.DIAMOND_CHEST);
+        //this.chest(ModItems.OBSIDIAN_CHEST);
+        //this.chest(ModItems.NETHERITE_CHEST);
 
-        this.oldChest(ModItems.OLD_WOOD_CHEST);
-        this.oldChest(ModItems.OLD_IRON_CHEST);
-        this.oldChest(ModItems.OLD_GOLD_CHEST);
-        this.oldChest(ModItems.OLD_DIAMOND_CHEST);
-        this.oldChest(ModItems.OLD_OBSIDIAN_CHEST);
-        this.oldChest(ModItems.OLD_NETHERITE_CHEST);
+        //this.oldChest(ModItems.OLD_WOOD_CHEST);
+        //this.oldChest(ModItems.OLD_IRON_CHEST);
+        //this.oldChest(ModItems.OLD_GOLD_CHEST);
+        //this.oldChest(ModItems.OLD_DIAMOND_CHEST);
+        //this.oldChest(ModItems.OLD_OBSIDIAN_CHEST);
+        //this.oldChest(ModItems.OLD_NETHERITE_CHEST);
 
-        this.barrel(ModItems.IRON_BARREL);
-        this.barrel(ModItems.GOLD_BARREL);
-        this.barrel(ModItems.DIAMOND_BARREL);
-        this.barrel(ModItems.OBSIDIAN_BARREL);
-        this.barrel(ModItems.NETHERITE_BARREL);
+        //this.barrel(ModItems.IRON_BARREL);
+        //this.barrel(ModItems.GOLD_BARREL);
+        //this.barrel(ModItems.DIAMOND_BARREL);
+        //this.barrel(ModItems.OBSIDIAN_BARREL);
+        //this.barrel(ModItems.NETHERITE_BARREL);
     }
 
     @SuppressWarnings("ConstantConditions")
