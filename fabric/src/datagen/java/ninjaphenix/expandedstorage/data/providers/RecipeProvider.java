@@ -41,11 +41,11 @@ public class RecipeProvider extends FabricRecipesProvider {
 
     @Override
     protected void generateRecipes(Consumer<RecipeJsonProvider> exporter) {
-        shapedRecipe(ModItems.STORAGE_MUTATOR, 1, "has_chest", ModTags.Items.WOODEN_CHESTS)
+        shapedRecipe(ModItems.STORAGE_MUTATOR, 1, "has_chest", ModTags.Items.ES_WOODEN_CHESTS)
                 .pattern("  C")
                 .pattern(" S ")
                 .pattern("S  ")
-                .input('C', ModTags.Items.WOODEN_CHESTS)
+                .input('C', ModTags.Items.ES_WOODEN_CHESTS)
                 .input('S', Items.STICK)
                 .offerTo(exporter);
         this.offerConversionKitRecipes(exporter);
@@ -164,12 +164,12 @@ public class RecipeProvider extends FabricRecipesProvider {
                 .input('S', Items.SPRUCE_SAPLING)
                 .group(id(ModItems.PRESENT))
                 .offerTo(exporter);
-        shapedRecipe(ModItems.IRON_CHEST, 1, Criterions.HAS_PREVIOUS_BLOCK, ModTags.Items.WOODEN_CHESTS)
+        shapedRecipe(ModItems.IRON_CHEST, 1, Criterions.HAS_PREVIOUS_BLOCK, ModTags.Items.ES_WOODEN_CHESTS)
                 .pattern("III")
                 .pattern("IBI")
                 .pattern("III")
                 .input('I', ModTags.Items.IRON_INGOTS)
-                .input('B', ModTags.Items.WOODEN_CHESTS)
+                .input('B', ModTags.Items.ES_WOODEN_CHESTS)
                 .group(id(ModItems.IRON_CHEST))
                 .offerTo(exporter);
         shapedRecipe(ModItems.GOLD_CHEST, 1, Criterions.HAS_PREVIOUS_BLOCK, ModItems.IRON_CHEST)

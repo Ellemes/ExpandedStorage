@@ -33,6 +33,7 @@ public final class ModTags {
         public static final Tag.Identified<Item> NETHERITE_INGOTS = tag(commonId("netherite_ingots"));
         public static final Tag.Identified<Item> RED_DYES = tag(commonId("red_dyes"));
         public static final Tag.Identified<Item> WHITE_DYES = tag(commonId("white_dyes"));
+        public static final Tag.Identified<Item> ES_WOODEN_CHESTS = tag(Utils.id("wooden_chests"));
 
         private static Tag.Identified<Item> tag(Identifier id) {
             return TagFactory.ITEM.create(id);

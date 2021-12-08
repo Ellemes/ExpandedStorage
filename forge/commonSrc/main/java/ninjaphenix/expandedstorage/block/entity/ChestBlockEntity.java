@@ -25,6 +25,7 @@ import ninjaphenix.expandedstorage.block.strategies.Lockable;
 import ninjaphenix.expandedstorage.block.strategies.Observable;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -70,7 +71,7 @@ public final class ChestBlockEntity extends OldChestBlockEntity {
     private final ChestLidController lidController;
 
     public ChestBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, ResourceLocation blockId,
-                            Function<OpenableBlockEntity, ItemAccess> access, Function<OpenableBlockEntity, Lockable> lockable) {
+                            Function<OpenableBlockEntity, ItemAccess> access, Supplier<Lockable> lockable) {
         super(type, pos, state, blockId, access, lockable);
         this.setObservable(new Observable() {
             @Override

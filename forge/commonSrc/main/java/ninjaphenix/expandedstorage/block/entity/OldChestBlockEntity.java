@@ -25,6 +25,7 @@ import ninjaphenix.expandedstorage.block.strategies.ItemAccess;
 import ninjaphenix.expandedstorage.block.strategies.Lockable;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.WorldlyContainer;
@@ -34,10 +35,10 @@ import net.minecraft.world.level.block.state.BlockState;
 public class OldChestBlockEntity extends InventoryBlockEntity {
     WorldlyContainer cachedDoubleInventory = null;
     public OldChestBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, ResourceLocation blockId,
-                               Function<OpenableBlockEntity, ItemAccess> access, Function<OpenableBlockEntity, Lockable> lockable) {
+                               Function<OpenableBlockEntity, ItemAccess> access, Supplier<Lockable> lockable) {
         super(type, pos, state, blockId, ((OpenableBlock) state.getBlock()).getInventoryTitle(), ((OpenableBlock) state.getBlock()).getSlotCount());
         this.setItemAccess(access.apply(this));
-        this.setLockable(lockable.apply(this));
+        this.setLockable(lockable.get());
     }
 
     public void invalidateDoubleBlockCache() {

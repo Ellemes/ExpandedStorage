@@ -26,12 +26,13 @@ import ninjaphenix.expandedstorage.block.strategies.ItemAccess;
 import ninjaphenix.expandedstorage.block.strategies.Lockable;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public final class MiniChestBlockEntity extends ExposedInventoryBlockEntity {
     public MiniChestBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, Identifier blockId,
-                                Function<OpenableBlockEntity, ItemAccess> access, Function<OpenableBlockEntity, Lockable> lockable) {
+                                Function<OpenableBlockEntity, ItemAccess> access, Supplier<Lockable> lockable) {
         super(type, pos, state, blockId, ((OpenableBlock) state.getBlock()).getInventoryTitle(), 1);
         this.setItemAccess(access.apply(this));
-        this.setLockable(lockable.apply(this));
+        this.setLockable(lockable.get());
     }
 }

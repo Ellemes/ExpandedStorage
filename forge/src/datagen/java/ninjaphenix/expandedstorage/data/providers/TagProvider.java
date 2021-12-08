@@ -36,7 +36,6 @@ public final class TagProvider {
         @Override
         protected void addTags() {
             this.tag(Tags.Blocks.CHESTS_WOODEN).add(ModBlocks.WOOD_CHEST);
-
             this.tag(BlockTags.MINEABLE_WITH_AXE)
                 .add(ModBlocks.IRON_BARREL)
                 .add(ModBlocks.GOLD_BARREL)
@@ -189,7 +188,10 @@ public final class TagProvider {
         @Override
         protected void addTags() {
             this.tag(Tags.Items.CHESTS_WOODEN).add(ModItems.WOOD_CHEST);
-
+            this.tag(ModTags.Items.ES_WOODEN_CHESTS)
+                .addTag(Tags.Items.CHESTS_WOODEN)
+                .add(ModItems.PUMPKIN_CHEST)
+                .add(ModItems.PRESENT);
             this.tag(ItemTags.PIGLIN_LOVED)
                 .add(ModItems.WOOD_TO_GOLD_CONVERSION_KIT)
                 .add(ModItems.IRON_TO_GOLD_CONVERSION_KIT)

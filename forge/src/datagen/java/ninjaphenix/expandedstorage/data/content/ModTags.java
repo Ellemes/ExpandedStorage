@@ -17,7 +17,9 @@ package ninjaphenix.expandedstorage.data.content;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import ninjaphenix.expandedstorage.Utils;
 
@@ -30,6 +32,13 @@ public final class ModTags {
 
         private static Tag.Named<Block> tag(ResourceLocation id) {
             return BlockTags.createOptional(id, null);
+        }
+    }
+    public static class Items {
+        public static final Tag.Named<Item> ES_WOODEN_CHESTS = tag(Utils.id("wooden_chests"));
+
+        private static Tag.Named<Item> tag(ResourceLocation id) {
+            return ItemTags.createOptional(id, null);
         }
     }
 }

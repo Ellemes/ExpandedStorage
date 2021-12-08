@@ -71,24 +71,25 @@ import ninjaphenix.expandedstorage.registration.BlockItemCollection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("deprecation")
 @Mod("expandedstorage")
 public final class Main {
     private final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 
     public Main() {
-        Common.setSharedStrategies(GenericItemAccess::new, (entity) -> new BasicLockable());
         Tag.Named<Block> chestCycle = BlockTags.createOptional(Utils.id("chest_cycle"));
         Tag.Named<Block> miniChestCycle = BlockTags.createOptional(Utils.id("mini_chest_cycle"));
         Tag.Named<Block> miniChestSecretCycle = BlockTags.createOptional(Utils.id("mini_chest_secret_cycle"));
         Tag.Named<Block> miniChestSecretCycle2 = BlockTags.createOptional(Utils.id("mini_chest_secret_cycle_2"));
         MenuType<MiniChestScreenHandler> screenHandlerType = new MenuType<>(MiniChestScreenHandler::createClientMenu);
-        screenHandlerType.setRegistryName(Utils.id("minichest_handler"));
-        Common.registerContent(new CreativeModeTab(Utils.MOD_ID) {
-                                   @Override
-                                   public ItemStack makeIcon() {
-                                       return new ItemStack(ForgeRegistries.ITEMS.getValue(Utils.id("netherite_chest")), 1);
-                                   }
-                               }, FMLLoader.getDist().isClient(),
+        screenHandlerType.setRegistryName(Utils.id("mini_chest_handler"));
+        Common.registerContent(GenericItemAccess::new, BasicLockable::new,
+                new CreativeModeTab(Utils.MOD_ID) {
+                    @Override
+                    public ItemStack makeIcon() {
+                        return new ItemStack(ForgeRegistries.ITEMS.getValue(Utils.id("netherite_chest")), 1);
+                    }
+                }, FMLLoader.getDist().isClient(),
                 this::baseRegistration, false,
                 this::chestRegistration, BlockTags.createOptional(new ResourceLocation("forge", "chests/wooden")), ChestBlockItem::new, ChestItemAccess::new,
                 this::oldChestRegistration,

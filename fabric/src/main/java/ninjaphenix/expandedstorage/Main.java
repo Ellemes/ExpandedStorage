@@ -69,6 +69,7 @@ import ninjaphenix.expandedstorage.compat.htm.HTMLockable;
 import ninjaphenix.expandedstorage.registration.BlockItemCollection;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("deprecation")
 public final class Main implements ModInitializer {
     private final FabricLoaderImpl fabricLoader = FabricLoaderImpl.INSTANCE;
     private boolean isCarrierCompatEnabled = false;
@@ -85,7 +86,6 @@ public final class Main implements ModInitializer {
         } catch (VersionParsingException ignored) {
         }
 
-        Common.setSharedStrategies(GenericItemAccess::new, (entity) -> fabricLoader.isModLoaded("htm") ? new HTMLockable() : new BasicLockable());
         FabricItemGroupBuilder.build(new Identifier("dummy"), null); // Fabric API is dumb.
         ItemGroup group = new ItemGroup(ItemGroup.GROUPS.length - 1, Utils.MOD_ID) {
             @Override
@@ -94,12 +94,13 @@ public final class Main implements ModInitializer {
             }
         };
         boolean isClient = fabricLoader.getEnvironmentType() == EnvType.CLIENT;
-        Common.registerContent(group, isClient,
+        Common.registerContent(GenericItemAccess::new, fabricLoader.isModLoaded("htm") ? HTMLockable::new : BasicLockable::new,
+                group, isClient,
                 this::baseRegistration, true,
                 this::chestRegistration, TagFactory.BLOCK.create(new Identifier("c", "wooden_chests")), BlockItem::new, ChestItemAccess::new,
                 this::oldChestRegistration,
                 this::barrelRegistration, TagFactory.BLOCK.create(new Identifier("c", "wooden_barrels")),
-                this::miniChestRegistration, BlockItem::new, ScreenHandlerRegistry.registerSimple(Utils.id("minichest_handler"), MiniChestScreenHandler::createClientMenu),
+                this::miniChestRegistration, BlockItem::new, ScreenHandlerRegistry.registerSimple(Utils.id("mini_chest_handler"), MiniChestScreenHandler::createClientMenu),
                 TagFactory.BLOCK.create(Utils.id("chest_cycle")), TagFactory.BLOCK.create(Utils.id("mini_chest_cycle")), TagFactory.BLOCK.create(Utils.id("mini_chest_secret_cycle")), TagFactory.BLOCK.create(Utils.id("mini_chest_secret_cycle_2")));
 
         if (isClient) ScreenRegistry.register(Common.getMiniChestScreenHandlerType(), MiniChestScreen::new);

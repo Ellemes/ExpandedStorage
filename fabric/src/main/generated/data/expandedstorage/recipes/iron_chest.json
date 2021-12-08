@@ -11,7 +11,7 @@
       "tag": "c:iron_ingots"
     },
     "B": {
-      "tag": "c:wooden_chests"
+      "tag": "expandedstorage:wooden_chests"
     }
   },
   "result": {

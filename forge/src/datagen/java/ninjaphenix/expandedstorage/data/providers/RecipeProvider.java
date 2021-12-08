@@ -29,6 +29,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
 import ninjaphenix.expandedstorage.Utils;
 import ninjaphenix.expandedstorage.data.content.ModItems;
+import ninjaphenix.expandedstorage.data.content.ModTags;
 
 import java.util.function.Consumer;
 
@@ -39,11 +40,11 @@ public final class RecipeProvider extends net.minecraft.data.recipes.RecipeProvi
 
     @Override
     protected void buildCraftingRecipes(Consumer<FinishedRecipe> exporter) {
-        shapedRecipe(ModItems.STORAGE_MUTATOR, 1, "has_chest", Tags.Items.CHESTS_WOODEN)
+        shapedRecipe(ModItems.STORAGE_MUTATOR, 1, "has_chest", ModTags.Items.ES_WOODEN_CHESTS)
                 .pattern("  C")
                 .pattern(" S ")
                 .pattern("S  ")
-                .define('C', Tags.Items.CHESTS_WOODEN)
+                .define('C', ModTags.Items.ES_WOODEN_CHESTS)
                 .define('S', Items.STICK)
                 .save(exporter);
         this.offerConversionKitRecipes(exporter);
@@ -164,12 +165,12 @@ public final class RecipeProvider extends net.minecraft.data.recipes.RecipeProvi
                 .define('S', Items.SPRUCE_SAPLING)
                 .group(id(ModItems.PRESENT))
                 .save(exporter);
-        shapedRecipe(ModItems.IRON_CHEST, 1, Criterions.HAS_PREVIOUS_BLOCK, Tags.Items.CHESTS_WOODEN)
+        shapedRecipe(ModItems.IRON_CHEST, 1, Criterions.HAS_PREVIOUS_BLOCK, ModTags.Items.ES_WOODEN_CHESTS)
                 .pattern("III")
                 .pattern("IBI")
                 .pattern("III")
                 .define('I', Tags.Items.INGOTS_IRON)
-                .define('B', Tags.Items.CHESTS_WOODEN)
+                .define('B', ModTags.Items.ES_WOODEN_CHESTS)
                 .group(id(ModItems.IRON_CHEST))
                 .save(exporter);
         shapedRecipe(ModItems.GOLD_CHEST, 1, Criterions.HAS_PREVIOUS_BLOCK, ModItems.IRON_CHEST)

@@ -47,6 +47,7 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
@@ -86,6 +87,7 @@ import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 
+@SuppressWarnings("deprecation")
 public final class Common {
     public static final ResourceLocation BARREL_BLOCK_TYPE = Utils.id("barrel");
     public static final ResourceLocation CHEST_BLOCK_TYPE = Utils.id("chest");
@@ -103,7 +105,7 @@ public final class Common {
     private static BlockEntityType<MiniChestBlockEntity> miniChestBlockEntityType;
 
     private static Function<OpenableBlockEntity, ItemAccess> itemAccess;
-    private static Function<OpenableBlockEntity, Lockable> lockable;
+    private static Supplier<Lockable> lockable;
     private static MenuType<MiniChestScreenHandler> miniChestScreenHandler;
 
     public static BlockEntityType<ChestBlockEntity> getChestBlockEntityType() {
@@ -294,11 +296,6 @@ public final class Common {
         Common.BLOCK_UPGRADE_BEHAVIOURS.put(target, behaviour);
     }
 
-    public static void setSharedStrategies(Function<OpenableBlockEntity, ItemAccess> itemAccess, Function<OpenableBlockEntity, Lockable> lockable) {
-        Common.itemAccess = itemAccess;
-        Common.lockable = lockable;
-    }
-
     private static void registerTieredBlock(OpenableBlock block) {
         Common.BLOCKS.putIfAbsent(new Pair<>(block.getBlockType(), block.getBlockTier()), block);
     }
@@ -333,13 +330,16 @@ public final class Common {
         return null;
     }
 
-    public static void registerContent(CreativeModeTab group, boolean isClient,
+    public static void registerContent(Function<OpenableBlockEntity, ItemAccess> itemAccess, Supplier<Lockable> lockable,
+                                       CreativeModeTab group, boolean isClient,
                                        Consumer<Pair<ResourceLocation, Item>[]> baseRegistration, boolean manuallyWrapTooltips,
                                        RegistrationConsumer<ChestBlock, BlockItem, ChestBlockEntity> chestRegistration, net.minecraft.tags.Tag.Named<Block> chestTag, BiFunction<ChestBlock, Item.Properties, BlockItem> chestItemMaker, Function<OpenableBlockEntity, ItemAccess> chestAccessMaker,
                                        RegistrationConsumer<AbstractChestBlock, BlockItem, OldChestBlockEntity> oldChestRegistration,
                                        RegistrationConsumer<BarrelBlock, BlockItem, BarrelBlockEntity> barrelRegistration, net.minecraft.tags.Tag.Named<Block> barrelTag,
                                        RegistrationConsumer<MiniChestBlock, BlockItem, MiniChestBlockEntity> miniChestRegistration, BiFunction<MiniChestBlock, Item.Properties, BlockItem> miniChestItemMaker, MenuType<MiniChestScreenHandler> miniChestScreenHandlerType,
                                        net.minecraft.tags.Tag.Named<Block> chestCycle, net.minecraft.tags.Tag.Named<Block> miniChestCycle, net.minecraft.tags.Tag.Named<Block> miniChestSecretCycle, net.minecraft.tags.Tag.Named<Block> miniChestSecretCycle2) {
+        Common.itemAccess = itemAccess;
+        Common.lockable = lockable;
         final Tier woodTier = new Tier(Utils.WOOD_TIER_ID, Utils.WOOD_STACK_COUNT, UnaryOperator.identity(), UnaryOperator.identity());
         final Tier ironTier = new Tier(Utils.id("iron"), 54, Properties::requiresCorrectToolForDrops, UnaryOperator.identity());
         final Tier goldTier = new Tier(Utils.id("gold"), 81, Properties::requiresCorrectToolForDrops, UnaryOperator.identity());

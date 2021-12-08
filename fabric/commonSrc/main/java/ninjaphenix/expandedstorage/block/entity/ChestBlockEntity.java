@@ -41,6 +41,7 @@ import ninjaphenix.expandedstorage.block.strategies.Lockable;
 import ninjaphenix.expandedstorage.block.strategies.Observable;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public final class ChestBlockEntity extends OldChestBlockEntity {
     private final ViewerCountManager manager = new ViewerCountManager() {
@@ -70,7 +71,7 @@ public final class ChestBlockEntity extends OldChestBlockEntity {
     private final ChestLidAnimator lidController;
 
     public ChestBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, Identifier blockId,
-                            Function<OpenableBlockEntity, ItemAccess> access, Function<OpenableBlockEntity, Lockable> lockable) {
+                            Function<OpenableBlockEntity, ItemAccess> access, Supplier<Lockable> lockable) {
         super(type, pos, state, blockId, access, lockable);
         this.setObservable(new Observable() {
             @Override
