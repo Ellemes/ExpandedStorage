@@ -1,4 +1,5 @@
 import com.matthewprenger.cursegradle.CurseArtifact
+import com.matthewprenger.cursegradle.CurseRelation
 import com.modrinth.minotaur.request.VersionType
 
 buildscript {
@@ -139,6 +140,9 @@ if (curseforgeToken != null) {
                 displayName = "[${properties["minecraft_version"]}] ${properties["mod_version"]}"
                 releaseType = "release"
                 gameVersionStrings = listOf(gameVersion, "Forge", "Java ${properties["mod_java_version"]}")
+                curseRelations = CurseRelation().apply {
+                    requiredDependency("ninjaphenixs-container-library")
+                }
             }
             additionalArtifacts = listOf()
         }
@@ -161,6 +165,12 @@ if (curseforgeToken != null) {
                 displayName = "[${properties["minecraft_version"]}] ${properties["mod_version"]}"
                 releaseType = "release"
                 gameVersionStrings = listOf(gameVersion, "Fabric", "Java ${properties["mod_java_version"]}")
+                curseRelations = CurseRelation().apply {
+                    requiredDependency("fabric-api")
+                    requiredDependency("ninjaphenixs-container-library")
+                    optionalDependency("carrier")
+                    optionalDependency("towelette")
+                }
             }
             additionalArtifacts = listOf()
         }
