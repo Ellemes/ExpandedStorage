@@ -1,3 +1,3 @@
-- Updated to 1.18
-- Make upgrades not consume if upgrading fails, also restores the old block entity, I've never had it fail before but have heard users reporting it does.
-- Fix iron barrel recipe requiring gold ingots...
+- Make it so iron chests and storage mutator can be crafted with pumpkin chest and presents
+- Fix a minor bug in item transfer impl
+- rework some code to mitigate an odd crash
