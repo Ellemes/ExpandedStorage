@@ -4,7 +4,7 @@ import org.gradle.jvm.tasks.Jar
 
 plugins {
     java
-    id("dev.architectury.loom").version("0.8.0-SNAPSHOT").apply(false)
+    id("dev.architectury.loom").version("0.10.0-SNAPSHOT").apply(false)
     id("com.gitlab.ninjaphenix.gradle-utils").version("0.1.0-beta.2")
 }
 
@@ -26,29 +26,14 @@ subprojects {
         main {
             java {
                 setSrcDirs(listOf(
-                        "src/barrel/java",
-                        "src/base/java",
-                        "src/chest/java",
-                        "src/old_chest/java",
-                        rootDir.resolve("common/${project.name}Src/barrel/java"),
-                        rootDir.resolve("common/${project.name}Src/base/java"),
-                        rootDir.resolve("common/${project.name}Src/chest/java"),
-                        rootDir.resolve("common/${project.name}Src/old_chest/java")
+                        "src/main/java",
+                        "commonSrc/java"
                 ))
             }
             resources {
                 setSrcDirs(listOf(
-                        "src/barrel/resources",
-                        "src/base/resources",
-                        "src/chest/resources",
-                        "src/old_chest/resources",
-                        "src/common/resources",
-                        rootDir.resolve("common/${project.name}Src/barrel/resources"),
-                        rootDir.resolve("common/${project.name}Src/base/resources"),
-                        rootDir.resolve("common/${project.name}Src/chest/resources"),
-                        rootDir.resolve("common/${project.name}Src/old_chest/resources"),
-                        rootDir.resolve("common/${project.name}Src/common/resources"),
-                        rootDir.resolve("common/${project.name}Src/chest_compat/resources")
+                        "src/main/resources",
+                        "commonSrc/resources"
                 ))
             }
         }

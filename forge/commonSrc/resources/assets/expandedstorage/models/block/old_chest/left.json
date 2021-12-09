@@ -1,0 +1,91 @@
+{
+  "parent": "block/block",
+  "display": {
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        135,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.40,
+        0.40,
+        0.40
+      ]
+    }
+  },
+  "textures": {
+    "all": "#atlas"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            12,
+            0,
+            8,
+            4
+          ],
+          "texture": "#all",
+          "cullface": "down"
+        },
+        "up": {
+          "uv": [
+            12,
+            4,
+            8,
+            0
+          ],
+          "texture": "#all",
+          "cullface": "up"
+        },
+        "north": {
+          "uv": [
+            8,
+            8,
+            12,
+            12
+          ],
+          "texture": "#all",
+          "cullface": "north"
+        },
+        "south": {
+          "uv": [
+            12,
+            4,
+            16,
+            8
+          ],
+          "texture": "#all",
+          "cullface": "south"
+        },
+        "east": {
+          "uv": [
+            0,
+            4,
+            4,
+            8
+          ],
+          "texture": "#all",
+          "cullface": "east"
+        }
+      }
+    }
+  ]
+}

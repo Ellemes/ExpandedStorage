@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "expandedstorage:obsidian_barrel"
+    ]
+  },
+  "criteria": {
+    "has_previous_barrel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "expandedstorage:diamond_barrel"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "expandedstorage:obsidian_barrel"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_previous_barrel",
+      "has_the_recipe"
+    ]
+  ]
+}

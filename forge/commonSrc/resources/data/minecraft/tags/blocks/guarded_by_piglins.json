@@ -1,0 +1,73 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "expandedstorage:iron_barrel",
+      "required": true
+    },
+    {
+      "id": "expandedstorage:gold_barrel",
+      "required": true
+    },
+    {
+      "id": "expandedstorage:diamond_barrel",
+      "required": true
+    },
+    {
+      "id": "expandedstorage:obsidian_barrel",
+      "required": true
+    },
+    {
+      "id": "expandedstorage:netherite_barrel",
+      "required": true
+    },
+    {
+      "id": "expandedstorage:wood_chest",
+      "required": true
+    },
+    {
+      "id": "expandedstorage:iron_chest",
+      "required": true
+    },
+    {
+      "id": "expandedstorage:gold_chest",
+      "required": true
+    },
+    {
+      "id": "expandedstorage:diamond_chest",
+      "required": true
+    },
+    {
+      "id": "expandedstorage:obsidian_chest",
+      "required": true
+    },
+    {
+      "id": "expandedstorage:netherite_chest",
+      "required": true
+    },
+    {
+      "id": "expandedstorage:old_wood_chest",
+      "required": true
+    },
+    {
+      "id": "expandedstorage:old_iron_chest",
+      "required": true
+    },
+    {
+      "id": "expandedstorage:old_gold_chest",
+      "required": true
+    },
+    {
+      "id": "expandedstorage:old_diamond_chest",
+      "required": true
+    },
+    {
+      "id": "expandedstorage:old_obsidian_chest",
+      "required": true
+    },
+    {
+      "id": "expandedstorage:old_netherite_chest",
+      "required": true
+    }
+  ]
+}

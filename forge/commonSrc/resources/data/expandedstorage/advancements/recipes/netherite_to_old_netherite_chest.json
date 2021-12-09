@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "expandedstorage:netherite_to_old_netherite_chest"
+    ]
+  },
+  "criteria": {
+    "has_chest": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "expandedstorage:netherite_chest"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "expandedstorage:netherite_to_old_netherite_chest"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_chest",
+      "has_the_recipe"
+    ]
+  ]
+}

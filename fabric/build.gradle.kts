@@ -4,7 +4,6 @@ plugins {
 
 loom {
     silentMojangMappingsLicense()
-    useFabricMixin = true
     runs {
         named("client") {
             vmArgs("-XX:+IgnoreUnrecognizedVMOptions")
@@ -16,7 +15,7 @@ loom {
         }
     }
 
-    accessWidener = file("src/base/resources/expandedstorage_base.accessWidener")
+    accessWidenerPath.set(file("src/main/resources/expandedstorage_base.accessWidener"))
 }
 
 dependencies {

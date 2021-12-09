@@ -7,7 +7,7 @@
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$" />
       <option name="externalSystemIdString" value="GRADLE" />
-      <option name="scriptParameters" value=":fabric:runClient" />
+      <option name="scriptParameters" value=":fabric:runClient --stacktrace" />
       <option name="taskDescriptions">
         <list />
       </option>

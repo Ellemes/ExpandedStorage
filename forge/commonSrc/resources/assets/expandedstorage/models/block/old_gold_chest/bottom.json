@@ -1,0 +1,7 @@
+{
+  "parent": "expandedstorage:block/old_chest/bottom",
+  "textures": {
+    "atlas": "expandedstorage:block/old_gold_chest",
+    "particle": "minecraft:block/gold_block"
+  }
+}
