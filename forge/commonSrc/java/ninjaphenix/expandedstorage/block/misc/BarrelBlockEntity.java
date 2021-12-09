@@ -20,7 +20,7 @@ public class BarrelBlockEntity extends AbstractOpenableStorageBlockEntity {
 
     public void recountObservers() {
         //noinspection ConstantConditions
-        observerCount = AbstractOpenableStorageBlockEntity.countObservers(level, this.getContainerWrapper(), worldPosition.getX(), worldPosition.getY(), worldPosition.getZ());
+        observerCount = AbstractOpenableStorageBlockEntity.countObservers(level, this, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ());
         if (observerCount > 0) {
             this.scheduleObserverRecount();
         } else {

@@ -92,7 +92,7 @@ public final class ChestBlock extends AbstractChestBlock<ChestBlockEntity> imple
 
     @NotNull
     @Override
-    public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
+    public BlockEntity newBlockEntity(BlockGetter getter) {
         return new ChestBlockEntity(ChestCommon.getBlockEntityType(), this.getBlockId());
     }
 
