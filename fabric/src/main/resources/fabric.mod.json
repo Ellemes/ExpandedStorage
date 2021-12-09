@@ -1,6 +1,5 @@
 {
   "schemaVersion": 1,
-  "accessWidener": "expandedstorage_base.accessWidener",
   "depends": {
     "fabric": ">=0.29.3",
     "fabricloader": ">=0.7.4",
@@ -8,19 +7,8 @@
   },
   "entrypoints": {
     "main": [
-      "ninjaphenix.expandedstorage.base.Main"
+      "ninjaphenix.expandedstorage.Main"
     ],
-    "rei_plugins": [
-      "ninjaphenix.expandedstorage.base.client.ReiCompat"
-    ],
-    "modmenu": [
-      "ninjaphenix.expandedstorage.base.client.ModMenuCompat"
-    ],
-    "expandedstorage-module": [
-      "ninjaphenix.expandedstorage.barrel.Main",
-      "ninjaphenix.expandedstorage.chest.Main",
-      "ninjaphenix.expandedstorage.old_chest.Main"
-    ]
   },
   "environment": "*",
   "mixins": [

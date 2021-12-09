@@ -14,8 +14,6 @@ loom {
             ideConfigGenerated(false)
         }
     }
-
-    accessWidenerPath.set(file("src/main/resources/expandedstorage_base.accessWidener"))
 }
 
 dependencies {
