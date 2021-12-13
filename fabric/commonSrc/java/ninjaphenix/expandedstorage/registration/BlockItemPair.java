@@ -13,11 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ninjaphenix.expandedstorage.item;
+package ninjaphenix.expandedstorage.registration;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.context.UseOnContext;
+@SuppressWarnings("ClassCanBeRecord")
+public final class BlockItemPair<B, I> {
+    private final B block;
+    private final I item;
 
-public interface BlockUpgradeBehaviour {
-    boolean tryUpgradeBlock(UseOnContext context, ResourceLocation from, ResourceLocation to);
+    public BlockItemPair(B block, I item) {
+        this.block = block;
+        this.item = item;
+    }
+
+    public B getBlock() {
+        return block;
+    }
+
+    public I getItem() {
+        return item;
+    }
 }

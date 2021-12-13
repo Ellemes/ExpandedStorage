@@ -1,4 +1,4 @@
-package ninjaphenix.expandedstorage;
+package ninjaphenix.expandedstorage.client;
 
 import net.minecraft.resources.ResourceLocation;
 import ninjaphenix.expandedstorage.block.misc.CursedChestType;
@@ -24,7 +24,7 @@ public final class TextureCollection {
         this.back = back;
     }
 
-    ResourceLocation getTexture(CursedChestType type) {
+    public ResourceLocation getTexture(CursedChestType type) {
         if (type == CursedChestType.TOP) {
             return this.top;
         } else if (type == CursedChestType.BOTTOM) {

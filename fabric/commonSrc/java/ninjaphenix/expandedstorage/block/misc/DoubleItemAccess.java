@@ -13,11 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ninjaphenix.expandedstorage.item;
+package ninjaphenix.expandedstorage.block.misc;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.context.UseOnContext;
+import ninjaphenix.expandedstorage.block.strategies.ItemAccess;
 
-public interface BlockUpgradeBehaviour {
-    boolean tryUpgradeBlock(UseOnContext context, ResourceLocation from, ResourceLocation to);
+public interface DoubleItemAccess extends ItemAccess {
+    Object getSingle();
+
+    void setOther(DoubleItemAccess other);
+
+    boolean hasCachedAccess();
 }

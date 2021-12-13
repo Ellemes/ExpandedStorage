@@ -1,24 +1,29 @@
+/*
+ * Copyright 2021 NinjaPhenix
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package ninjaphenix.expandedstorage.item;
 
-import org.jetbrains.annotations.ApiStatus.Experimental;
-import org.jetbrains.annotations.ApiStatus.Internal;
+import java.util.Locale;
 
-@Internal
-@Experimental
 public enum MutationMode {
-    MERGE("merge", 0),
-    SPLIT("split", 1),
-    ROTATE("rotate", 2);
+    MERGE,
+    SPLIT,
+    ROTATE,
+    SWAP_THEME;
 
     private static final MutationMode[] VALUES = MutationMode.values();
-    private final String name;
-    private final int index;
-
-    MutationMode(String name, int index) {
-        // todo: can maybe replace with Enum's name() privat field
-        this.name = name;
-        this.index = index;
-    }
 
     public static MutationMode from(byte index) {
         if (index >= 0 && index < MutationMode.VALUES.length) {
@@ -28,15 +33,15 @@ public enum MutationMode {
     }
 
     public byte toByte() {
-        return (byte) index;
+        return (byte) this.ordinal();
     }
 
     @Override
     public String toString() {
-        return name;
+        return this.name().toLowerCase(Locale.ROOT);
     }
 
     public MutationMode next() {
-        return MutationMode.VALUES[(index + 1) % MutationMode.VALUES.length];
+        return MutationMode.VALUES[(ordinal() + 1) % MutationMode.VALUES.length];
     }
 }

@@ -10,7 +10,7 @@ public interface PlatformUtils {
         return PlatformUtilsImpl.getInstance();
     }
 
-    CreativeModeTab createTab(Supplier<ItemStack> icon);
+    CreativeModeTab createTab();
 
     boolean isClient();
 }

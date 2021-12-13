@@ -37,8 +37,7 @@ repositories {
 dependencies {
     forge("net.minecraftforge:forge:${properties["minecraft_version"]}-${properties["forge_version"]}")
 
-    // For base module
-    modCompileOnly("mezz.jei:jei-${properties["minecraft_version"]}:${properties["jei_version"]}:api")
+    modImplementation(group = "curse.maven", name = "ninjaphenixs-container-library-530668", version = "3483412")
     modRuntime("mezz.jei:jei-${properties["minecraft_version"]}:${properties["jei_version"]}")
 }
 

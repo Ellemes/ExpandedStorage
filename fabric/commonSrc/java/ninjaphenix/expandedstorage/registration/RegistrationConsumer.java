@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ninjaphenix.expandedstorage.item;
+package ninjaphenix.expandedstorage.registration;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 
-public interface BlockUpgradeBehaviour {
-    boolean tryUpgradeBlock(UseOnContext context, ResourceLocation from, ResourceLocation to);
+public interface RegistrationConsumer<B extends Block, I extends BlockItem, E extends BlockEntity> {
+    void accept(BlockItemCollection<B, I> content, BlockEntityType<E> blockEntityType);
 }

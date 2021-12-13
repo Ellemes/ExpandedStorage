@@ -13,11 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ninjaphenix.expandedstorage.item;
+package ninjaphenix.expandedstorage.block.strategies;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.entity.player.Player;
 
-public interface BlockUpgradeBehaviour {
-    boolean tryUpgradeBlock(UseOnContext context, ResourceLocation from, ResourceLocation to);
+public interface Observable {
+    Observable NOT = new Observable() {
+        @Override
+        public void playerStartViewing(Player player) {
+
+        }
+
+        @Override
+        public void playerStopViewing(Player player) {
+
+        }
+    };
+
+    void playerStartViewing(Player player);
+
+    void playerStopViewing(Player player);
 }

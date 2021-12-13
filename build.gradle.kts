@@ -22,6 +22,15 @@ subprojects {
         targetCompatibility = JavaVersion.toVersion(properties["mod_java_version"] as String)
     }
 
+    repositories {
+        maven {
+            url  = uri("https://cursemaven.com")
+            content {
+                includeGroup("curse.maven")
+            }
+        }
+    }
+
     sourceSets {
         main {
             java {

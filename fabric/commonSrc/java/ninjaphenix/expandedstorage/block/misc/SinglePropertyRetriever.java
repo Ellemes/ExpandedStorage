@@ -13,11 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ninjaphenix.expandedstorage.item;
+package ninjaphenix.expandedstorage.block.misc;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.context.UseOnContext;
+import java.util.Optional;
 
-public interface BlockUpgradeBehaviour {
-    boolean tryUpgradeBlock(UseOnContext context, ResourceLocation from, ResourceLocation to);
+@SuppressWarnings("ClassCanBeRecord")
+public final class SinglePropertyRetriever<A> implements PropertyRetriever<A> {
+    private final A single;
+
+    public SinglePropertyRetriever(A single) {
+        this.single = single;
+    }
+
+    @Override
+    public <B> Optional<B> get(Property<A, B> property) {
+        return Optional.ofNullable(property.get(single));
+    }
 }
