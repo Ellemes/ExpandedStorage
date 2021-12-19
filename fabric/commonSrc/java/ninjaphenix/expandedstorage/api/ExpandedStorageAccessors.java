@@ -15,10 +15,10 @@
  */
 package ninjaphenix.expandedstorage.api;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.math.Direction;
-import ninjaphenix.expandedstorage.block.old.AbstractChestBlock;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import ninjaphenix.expandedstorage.block.AbstractChestBlock;
 import ninjaphenix.expandedstorage.block.misc.CursedChestType;
 
 import java.util.Optional;
@@ -33,8 +33,8 @@ public final class ExpandedStorageAccessors {
      * @return The chest type or empty if the state passed is not a chest block.
      */
     public static Optional<EsChestType> getChestType(BlockState state) {
-        if (state.contains(AbstractChestBlock.CURSED_CHEST_TYPE)) {
-            return Optional.of(EsChestType.of(state.get(AbstractChestBlock.CURSED_CHEST_TYPE)));
+        if (state.hasProperty(AbstractChestBlock.CURSED_CHEST_TYPE)) {
+            return Optional.of(EsChestType.of(state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE)));
         }
         return Optional.empty();
     }
@@ -43,10 +43,10 @@ public final class ExpandedStorageAccessors {
      * @return The direction to attached chest block or empty if the state passed is not a chest block or is a single chest.
      */
     public static Optional<Direction> getAttachedChestDirection(BlockState state) {
-        if (state.contains(AbstractChestBlock.CURSED_CHEST_TYPE) && state.contains(Properties.HORIZONTAL_FACING)) {
-            CursedChestType type = state.get(AbstractChestBlock.CURSED_CHEST_TYPE);
+        if (state.hasProperty(AbstractChestBlock.CURSED_CHEST_TYPE) && state.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
+            CursedChestType type = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
             if (type != CursedChestType.SINGLE) {
-                Direction facing = state.get(Properties.HORIZONTAL_FACING);
+                Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
                 return Optional.of(AbstractChestBlock.getDirectionToAttached(type, facing));
             }
         }
@@ -57,8 +57,8 @@ public final class ExpandedStorageAccessors {
      * @return A chest block of the specified type or empty if the passed in state is not a chest block.
      */
     public static Optional<BlockState> chestWithType(BlockState original, EsChestType type) {
-        if (original.contains(AbstractChestBlock.CURSED_CHEST_TYPE)) {
-            return Optional.of(original.with(AbstractChestBlock.CURSED_CHEST_TYPE, CursedChestType.of(type)));
+        if (original.hasProperty(AbstractChestBlock.CURSED_CHEST_TYPE)) {
+            return Optional.of(original.setValue(AbstractChestBlock.CURSED_CHEST_TYPE, CursedChestType.of(type)));
         }
         return Optional.empty();
     }

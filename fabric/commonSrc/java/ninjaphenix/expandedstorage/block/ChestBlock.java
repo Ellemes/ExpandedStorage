@@ -15,11 +15,10 @@
  */
 package ninjaphenix.expandedstorage.block;
 
-import ninjaphenix.expandedstorage.ChestCommon;
+import ninjaphenix.expandedstorage.Common;
 import ninjaphenix.expandedstorage.block.entity.ChestBlockEntity;
 import ninjaphenix.expandedstorage.block.entity.OldChestBlockEntity;
 import ninjaphenix.expandedstorage.block.misc.CursedChestType;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 import net.minecraft.core.BlockPos;
@@ -111,12 +110,12 @@ public final class ChestBlock extends AbstractChestBlock implements SimpleWaterl
     @Override
     protected <T extends OldChestBlockEntity> BlockEntityType<T> getBlockEntityType() {
         //noinspection unchecked
-        return (BlockEntityType<T>) ChestCommon.getChestBlockEntityType();
+        return (BlockEntityType<T>) Common.getChestBlockEntityType();
     }
 
     @Override
     public ResourceLocation getBlockType() {
-        return ChestCommon.CHEST_BLOCK_TYPE;
+        return Common.CHEST_BLOCK_TYPE;
     }
 
     //@Nullable

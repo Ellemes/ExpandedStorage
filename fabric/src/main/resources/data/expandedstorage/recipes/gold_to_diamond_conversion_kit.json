@@ -2,18 +2,18 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "GGG",
-    "DID",
+    "IDI",
     "GGG"
   ],
   "key": {
-    "I": {
-      "item": "minecraft:gold_ingot"
-    },
-    "D": {
-      "item": "minecraft:diamond"
-    },
     "G": {
       "tag": "c:glass_blocks"
+    },
+    "I": {
+      "tag": "c:gold_ingots"
+    },
+    "D": {
+      "tag": "c:diamonds"
     }
   },
   "result": {

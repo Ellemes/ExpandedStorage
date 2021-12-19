@@ -24,6 +24,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import ninjaphenix.expandedstorage.block.OpenableBlock;
 import ninjaphenix.expandedstorage.block.strategies.Observable;
 import org.jetbrains.annotations.Nullable;
 
@@ -133,6 +134,7 @@ public abstract class InventoryBlockEntity extends OpenableBlockEntity {
 
     @Override
     public void loadAdditional(BlockState state, CompoundTag tag) {
+        items = NonNullList.withSize(((OpenableBlock) state.getBlock()).getSlotCount(), ItemStack.EMPTY);
         ContainerHelper.loadAllItems(tag, items);
     }
 

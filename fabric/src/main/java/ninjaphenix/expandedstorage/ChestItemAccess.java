@@ -15,6 +15,7 @@
  */
 package ninjaphenix.expandedstorage;
 
+import com.google.common.collect.ImmutableList;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.CombinedStorage;
@@ -45,7 +46,7 @@ public final class ChestItemAccess extends GenericItemAccess implements DoubleIt
     @SuppressWarnings("UnstableApiUsage")
     public void setOther(DoubleItemAccess other) {
         //noinspection unchecked
-        cache = other == null ? null : new CombinedStorage<>(List.of((Storage<ItemVariant>) this.getSingle(), (Storage<ItemVariant>) other.getSingle()));
+        cache = other == null ? null : new CombinedStorage<>(ImmutableList.of((Storage<ItemVariant>) this.getSingle(), (Storage<ItemVariant>) other.getSingle()));
     }
 
     @Override

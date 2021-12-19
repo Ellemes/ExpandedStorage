@@ -15,6 +15,7 @@
  */
 package ninjaphenix.expandedstorage.block;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.BlockGetter;
 import ninjaphenix.container_library.api.v2.OpenableBlockEntityV2;
 import ninjaphenix.container_library.api.v2.helpers.OpenableBlockEntitiesV2;
@@ -182,7 +183,13 @@ public class AbstractChestBlock extends OpenableBlock implements WorldlyContaine
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockGetter world) {
-        return this.getBlockEntityType().create();
+        CompoundTag tag = new CompoundTag();
+        tag.putInt("x", 0);
+        tag.putInt("y", 0);
+        tag.putInt("z", 0);
+        BlockEntity blockEntity = this.getBlockEntityType().create();
+        blockEntity.load(this.defaultBlockState(), tag);
+        return blockEntity;
     }
 
     @NotNull

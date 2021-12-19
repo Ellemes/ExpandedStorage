@@ -15,8 +15,9 @@
  */
 package ninjaphenix.expandedstorage.block;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.BlockGetter;
-import ninjaphenix.expandedstorage.BarrelCommon;
+import ninjaphenix.expandedstorage.Common;
 import ninjaphenix.expandedstorage.block.entity.BarrelBlockEntity;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,7 +45,7 @@ public final class BarrelBlock extends OpenableBlock {
 
     @Override
     public ResourceLocation getBlockType() {
-        return BarrelCommon.BARREL_BLOCK_TYPE;
+        return Common.BARREL_BLOCK_TYPE;
     }
 
     @Nullable
@@ -59,10 +60,15 @@ public final class BarrelBlock extends OpenableBlock {
         builder.add(BlockStateProperties.FACING, BlockStateProperties.OPEN);
     }
 
-    @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockGetter world) {
-        return BarrelCommon.getBarrelBlockEntityType().create();
+        CompoundTag tag = new CompoundTag();
+        tag.putInt("x", 0);
+        tag.putInt("y", 0);
+        tag.putInt("z", 0);
+        BlockEntity blockEntity = Common.getBarrelBlockEntityType().create();
+        blockEntity.load(this.defaultBlockState(), tag);
+        return blockEntity;
     }
 
     @Override

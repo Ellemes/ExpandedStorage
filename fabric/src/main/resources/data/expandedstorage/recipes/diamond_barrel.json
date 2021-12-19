@@ -2,22 +2,21 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "GGG",
-    "IBI",
+    "DBD",
     "GGG"
   ],
   "key": {
-    "I": {
-      "item": "minecraft:diamond"
+    "G": {
+      "tag": "c:glass_blocks"
+    },
+    "D": {
+      "tag": "c:diamonds"
     },
     "B": {
       "item": "expandedstorage:gold_barrel"
-    },
-    "G": {
-      "tag": "c:glass_blocks"
     }
   },
   "result": {
     "item": "expandedstorage:diamond_barrel"
-  },
-  "group": "expandedstorage:diamond_barrel"
+  }
 }

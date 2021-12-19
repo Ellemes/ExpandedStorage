@@ -1,20 +1,20 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "expandedstorage:pumpkin_chest",
   "pattern": [
     "SSS",
-    "SCS",
+    "SBS",
     "SSS"
   ],
   "key": {
     "S": {
       "item": "minecraft:pumpkin_seeds"
     },
-    "C": {
+    "B": {
       "tag": "c:wooden_chests"
     }
   },
   "result": {
     "item": "expandedstorage:pumpkin_chest"
-  },
-  "group": "expandedstorage:pumpkin_chest"
+  }
 }

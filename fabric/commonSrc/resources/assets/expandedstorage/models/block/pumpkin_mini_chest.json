@@ -1,0 +1,7 @@
+{
+  "parent": "expandedstorage:block/parent/mini_chest",
+  "textures": {
+    "atlas": "expandedstorage:block/pumpkin_mini_chest",
+    "particle": "minecraft:block/pumpkin_top"
+  }
+}

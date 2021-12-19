@@ -1,0 +1,7 @@
+{
+  "parent": "expandedstorage:block/parent/mini_present_with_sparrow",
+  "textures": {
+    "atlas": "expandedstorage:block/red_mini_present",
+    "particle": "expandedstorage:block/red_present_break"
+  }
+}

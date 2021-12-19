@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import ninjaphenix.container_library.api.v2.OpenableBlockEntityV2;
 import ninjaphenix.expandedstorage.Utils;
+import ninjaphenix.expandedstorage.block.OpenableBlock;
 import ninjaphenix.expandedstorage.block.strategies.ItemAccess;
 import ninjaphenix.expandedstorage.block.strategies.Lockable;
 
@@ -65,16 +66,18 @@ public abstract class OpenableBlockEntity extends BlockEntity implements Openabl
         if (tag.contains("CustomName", Utils.NBT_STRING_TYPE)) {
             customName = Component.Serializer.fromJson(tag.getString("CustomName"));
         }
-        this.loadAdditional(state, tag);
         this.initialize(state, tag);
+        this.loadAdditional(state, tag);
     }
 
     protected void loadAdditional(BlockState state, CompoundTag tag) {
 
     }
 
-    protected void initialize(BlockState state, CompoundTag tag) {
-
+    private void initialize(BlockState state, CompoundTag tag) {
+        OpenableBlock block = (OpenableBlock) state.getBlock();
+        this.blockId = block.getBlockId();
+        this.defaultName = block.getInventoryTitle();
     }
 
     @Override

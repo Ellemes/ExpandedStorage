@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "expandedstorage:block/vanilla_wood_mini_chest_with_sparrow"
+    },
+    "facing=east": {
+      "model": "expandedstorage:block/vanilla_wood_mini_chest_with_sparrow",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "expandedstorage:block/vanilla_wood_mini_chest_with_sparrow",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "expandedstorage:block/vanilla_wood_mini_chest_with_sparrow",
+      "y": 270
+    }
+  }
+}

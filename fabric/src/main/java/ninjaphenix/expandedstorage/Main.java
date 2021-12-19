@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
+import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.fabricmc.fabric.api.tag.TagRegistry;
@@ -14,8 +15,8 @@ import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.loader.impl.FabricLoaderImpl;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
@@ -45,6 +46,7 @@ import ninjaphenix.expandedstorage.block.misc.BasicLockable;
 import ninjaphenix.expandedstorage.block.misc.CursedChestType;
 import ninjaphenix.expandedstorage.block.misc.DoubleItemAccess;
 import ninjaphenix.expandedstorage.client.ChestBlockEntityRenderer;
+import ninjaphenix.expandedstorage.client.MiniChestScreen;
 import ninjaphenix.expandedstorage.registration.BlockItemCollection;
 import org.jetbrains.annotations.Nullable;
 
@@ -59,14 +61,16 @@ public final class Main implements ModInitializer {
                 return new ItemStack(Registry.ITEM.get(Utils.id("netherite_chest")));
             }
         };
+        boolean isClient = fabricLoader.getEnvironmentType() == EnvType.CLIENT;
         Common.registerContent(GenericItemAccess::new, BasicLockable::new,
-                group, fabricLoader.getEnvironmentType() == EnvType.CLIENT,
+                group, isClient,
                 this::baseRegistration, true,
                 this::chestRegistration, TagRegistry.block(new ResourceLocation("c", "wooden_chests")), BlockItem::new, ChestItemAccess::new,
                 this::oldChestRegistration,
                 this::barrelRegistration, TagRegistry.block(new ResourceLocation("c", "wooden_barrels")),
                 this::miniChestRegistration, BlockItem::new, ScreenHandlerRegistry.registerSimple(Utils.id("mini_chest_handler"), MiniChestScreenHandler::createClientMenu),
                 TagRegistry.block(Utils.id("chest_cycle")), TagRegistry.block(Utils.id("mini_chest_cycle")), TagRegistry.block(Utils.id("mini_chest_secret_cycle")), TagRegistry.block(Utils.id("mini_chest_secret_cycle_2")));
+        if (isClient) ScreenRegistry.register(Common.getMiniChestScreenHandlerType(), MiniChestScreen::new);
     }
 
     @SuppressWarnings({"UnstableApiUsage"})
@@ -166,7 +170,7 @@ public final class Main implements ModInitializer {
 
     private static class Client {
         public static void registerChestTextures(ChestBlock[] blocks) {
-            ClientSpriteRegistryCallback.event(TextureAtlas.LOCATION_BLOCKS).register((atlasTexture, registry) -> {
+            ClientSpriteRegistryCallback.event(Sheets.CHEST_SHEET).register((atlasTexture, registry) -> {
                 for (ResourceLocation texture : Common.getChestTextures(blocks)) registry.register(texture);
             });
             BlockEntityRendererRegistry.INSTANCE.register(Common.getChestBlockEntityType(), ChestBlockEntityRenderer::new);

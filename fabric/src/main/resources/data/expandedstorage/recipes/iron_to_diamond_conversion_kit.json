@@ -6,14 +6,14 @@
     "GGG"
   ],
   "key": {
-    "K": {
-      "item": "expandedstorage:iron_to_gold_conversion_kit"
-    },
-    "D": {
-      "item": "minecraft:diamond"
-    },
     "G": {
       "tag": "c:glass_blocks"
+    },
+    "D": {
+      "tag": "c:diamonds"
+    },
+    "K": {
+      "item": "expandedstorage:iron_to_gold_conversion_kit"
     }
   },
   "result": {

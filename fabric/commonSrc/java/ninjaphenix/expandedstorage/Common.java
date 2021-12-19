@@ -352,7 +352,7 @@ public final class Common {
         //<editor-fold desc="-- Base Content">
         //noinspection unchecked
         Pair<ResourceLocation, Item>[] baseContent = new Pair[16];
-        baseContent[0] = new Pair<>(Utils.id("storage_mutator"), new StorageMutator(new Item.Properties().stacksTo(1).tab(group)));
+        baseContent[0] = new Pair<>(Utils.id("chest_mutator"), new StorageMutator(new Item.Properties().stacksTo(1).tab(group)));
         Common.defineTierUpgradePath(baseContent, manuallyWrapTooltips, group, woodTier, ironTier, goldTier, diamondTier, obsidianTier, netheriteTier);
         baseRegistration.accept(baseContent);
         //</editor-fold>
@@ -375,7 +375,7 @@ public final class Common {
         BlockItemCollection<ChestBlock, BlockItem> chestContent = BlockItemCollection.of(ChestBlock[]::new, BlockItem[]::new,
                 Common.chestBlock(Utils.id("wood_chest"), Common.stat("open_wood_chest"), woodTier, woodSettings, chestItemMaker, group),
                 Common.chestBlock(Utils.id("pumpkin_chest"), Common.stat("open_pumpkin_chest"), woodTier, pumpkinSettings, chestItemMaker, group),
-                Common.chestBlock(Utils.id("present"), Common.stat("open_present"), woodTier, presentSettings, chestItemMaker, group),
+                Common.chestBlock(Utils.id("christmas_chest"), Common.stat("open_christmas_chest"), woodTier, presentSettings, chestItemMaker, group),
                 Common.chestBlock(Utils.id("iron_chest"), Common.stat("open_iron_chest"), ironTier, ironSettings, chestItemMaker, group),
                 Common.chestBlock(Utils.id("gold_chest"), Common.stat("open_gold_chest"), goldTier, goldSettings, chestItemMaker, group),
                 Common.chestBlock(Utils.id("diamond_chest"), Common.stat("open_diamond_chest"), diamondTier, diamondSettings, chestItemMaker, group),

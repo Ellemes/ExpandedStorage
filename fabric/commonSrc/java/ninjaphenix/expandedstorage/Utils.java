@@ -6,11 +6,9 @@ import net.minecraft.network.chat.KeybindComponent;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import ninjaphenix.expandedstorage.tier.Tier;
-import ninjaphenix.expandedstorage.wrappers.PlatformUtils;
 import org.jetbrains.annotations.ApiStatus.Experimental;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.ScheduledForRemoval;
@@ -26,7 +24,6 @@ import java.util.function.UnaryOperator;
 public final class Utils {
     @Internal
     public static final String MOD_ID = "expandedstorage";
-    public static final CreativeModeTab TAB = PlatformUtils.getInstance().createTab();
     @Internal
     public static final Component ALT_USE = new TranslatableComponent("tooltip.expandedstorage.alt_use",
             new KeybindComponent("key.sneak").withStyle(ChatFormatting.GOLD),

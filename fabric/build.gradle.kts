@@ -63,10 +63,10 @@ dependencies {
     modCompileOnly("com.github.Virtuoel:Statement:31a2c3f", excludeFabric)
     modCompileOnly("com.github.Virtuoel:Towelette:e5e39eb", excludeFabric)
 
-    modImplementation(group = "curse.maven", name = "ninjaphenixs-container-library-530668", version = "3483413")
+    modImplementation(group = "curse.maven", name = "ninjaphenixs-container-library-530668", version = "3569522")
 
     modRuntimeOnly("me.shedaniel:RoughlyEnoughItems:${properties["rei_version"]}")
-    modRuntimeOnly("io.github.prospector:modmenu:${properties["modmenu_version"]}")
+    //modRuntimeOnly("io.github.prospector:modmenu:${properties["modmenu_version"]}")
 }
 
 tasks.withType<ProcessResources>() {

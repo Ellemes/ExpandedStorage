@@ -15,13 +15,13 @@
  */
 package ninjaphenix.expandedstorage.api;
 
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.StringRepresentable;
 import ninjaphenix.expandedstorage.block.misc.CursedChestType;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Locale;
 
-public enum EsChestType implements StringIdentifiable {
+public enum EsChestType implements StringRepresentable {
     TOP,
     BOTTOM,
     FRONT,
@@ -37,7 +37,7 @@ public enum EsChestType implements StringIdentifiable {
     }
 
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return name;
     }
 

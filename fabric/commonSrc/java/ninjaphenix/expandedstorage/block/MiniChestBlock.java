@@ -17,6 +17,7 @@ package ninjaphenix.expandedstorage.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -101,8 +102,14 @@ public final class MiniChestBlock extends OpenableBlock implements SimpleWaterlo
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return Common.getMiniChestBlockEntityType().create(pos, state);
+    public BlockEntity newBlockEntity(BlockGetter world) {
+        CompoundTag tag = new CompoundTag();
+        tag.putInt("x", 0);
+        tag.putInt("y", 0);
+        tag.putInt("z", 0);
+        BlockEntity blockEntity = Common.getMiniChestBlockEntityType().create();
+        blockEntity.load(this.defaultBlockState(), tag);
+        return blockEntity;
     }
 
     @Override
