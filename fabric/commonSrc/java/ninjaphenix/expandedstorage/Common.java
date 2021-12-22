@@ -90,8 +90,8 @@ import net.minecraft.world.level.material.MaterialColor;
 @SuppressWarnings("deprecation")
 public final class Common {
     public static final ResourceLocation BARREL_BLOCK_TYPE = Utils.id("barrel");
-    public static final ResourceLocation CHEST_BLOCK_TYPE = Utils.id("chest");
-    public static final ResourceLocation OLD_CHEST_BLOCK_TYPE = Utils.id("old_chest");
+    public static final ResourceLocation CHEST_BLOCK_TYPE = Utils.id("cursed_chest");
+    public static final ResourceLocation OLD_CHEST_BLOCK_TYPE = Utils.id("old_cursed_chest");
     public static final ResourceLocation MINI_CHEST_BLOCK_TYPE = Utils.id("mini_chest");
 
     private static final Map<Predicate<Block>, BlockUpgradeBehaviour> BLOCK_UPGRADE_BEHAVIOURS = new HashMap<>();
