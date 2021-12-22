@@ -89,7 +89,7 @@ public final class Main {
                     public ItemStack makeIcon() {
                         return new ItemStack(ForgeRegistries.ITEMS.getValue(Utils.id("netherite_chest")), 1);
                     }
-                }, FMLLoader.getDist().isClient(),
+                }, FMLLoader.getDist().isClient(),  BlockSettingsImpl::new,
                 this::baseRegistration, false,
                 this::chestRegistration, BlockTags.createOptional(new ResourceLocation("forge", "chests/wooden")), ChestBlockItem::new, ChestItemAccess::new,
                 this::oldChestRegistration,

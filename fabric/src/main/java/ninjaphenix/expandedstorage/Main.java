@@ -63,7 +63,7 @@ public final class Main implements ModInitializer {
         };
         boolean isClient = fabricLoader.getEnvironmentType() == EnvType.CLIENT;
         Common.registerContent(GenericItemAccess::new, BasicLockable::new,
-                group, isClient,
+                group, isClient, BlockSettingsImpl::new,
                 this::baseRegistration, true,
                 this::chestRegistration, TagRegistry.block(new ResourceLocation("c", "wooden_chests")), BlockItem::new, ChestItemAccess::new,
                 this::oldChestRegistration,
