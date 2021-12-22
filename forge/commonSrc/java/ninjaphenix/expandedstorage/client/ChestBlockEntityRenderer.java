@@ -1,5 +1,6 @@
 package ninjaphenix.expandedstorage.client;
 
+import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
@@ -12,7 +13,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BrightnessCombiner;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
@@ -33,15 +33,56 @@ import java.util.Map;
 public final class ChestBlockEntityRenderer extends BlockEntityRenderer<ChestBlockEntity> {
     private static final BlockState DEFAULT_STATE = Registry.BLOCK.get(Utils.id("wood_chest")).defaultBlockState();
 
-    private static final Map<CursedChestType, SingleChestModel> MODELS = Utils.unmodifiableMap(map -> {
-        map.put(CursedChestType.SINGLE, new SingleChestModel());
-        map.put(CursedChestType.FRONT, new FrontChestModel());
-        map.put(CursedChestType.BACK, new BackChestModel());
-        map.put(CursedChestType.TOP, new TopChestModel());
-        map.put(CursedChestType.BOTTOM, new BottomChestModel());
-        map.put(CursedChestType.LEFT, new LeftChestModel());
-        map.put(CursedChestType.RIGHT, new RightChestModel());
-    });
+    private static final Map<CursedChestType, ChestModel> MODELS = ImmutableMap.<CursedChestType, ChestModel>builder()
+                                                                               .put(CursedChestType.SINGLE, new ChestModel(64, 48, (lid, base) -> {
+                                                                                   lid.addBox(0, 0, 0, 14, 5, 14, 0);
+                                                                                   lid.addBox(6, -2, 14, 2, 4, 1, 0);
+                                                                                   lid.setPos(1, 9, 1);
+                                                                                   base.addBox(0, 0, 0, 14, 10, 14, 0);
+                                                                                   base.setPos(1, 0, 1);
+                                                                               }))
+                                                                               .put(CursedChestType.FRONT, new ChestModel(64, 48, (lid, base) -> {
+                                                                                   lid.addBox(0, 0, 15, 14, 5, 15, 0);
+                                                                                   lid.addBox(6, -2, 30, 2, 4, 1, 0);
+                                                                                   lid.setPos(1, 9, -15);
+                                                                                   base.texOffs(0, 20);
+                                                                                   base.addBox(0, 0, 0, 14, 10, 15, 0);
+                                                                                   base.setPos(1, 0, 0);
+                                                                               }))
+                                                                               .put(CursedChestType.BACK, new ChestModel(48, 48, (lid, base) -> {
+                                                                                   lid.addBox(0, 0, 0, 14, 5, 15, 0);
+                                                                                   lid.setPos(1, 9, 1);
+                                                                                   base.texOffs(0, 20);
+                                                                                   base.addBox(0, 0, 0, 14, 10, 15, 0);
+                                                                                   base.setPos(1, 0, 1);
+                                                                               }))
+                                                                               .put(CursedChestType.TOP, new ChestModel(64, 48, (lid, base) -> {
+                                                                                   lid.addBox(0, 0, 0, 14, 5, 14, 0);
+                                                                                   lid.addBox(6, -2, 14, 2, 4, 1, 0);
+                                                                                   lid.setPos(1, 9, 1);
+                                                                                   base.addBox(0, 0, 0, 14, 10, 14, 0);
+                                                                                   base.setPos(1, 0, 1);
+                                                                               }))
+                                                                               .put(CursedChestType.BOTTOM, new ChestModel(64, 32, (lid, base) -> {
+                                                                                   base.texOffs(0, 0);
+                                                                                   base.addBox(0, 0, 0, 14, 16, 14, 0);
+                                                                                   base.setPos(1, 0, 1);
+                                                                               }))
+                                                                               .put(CursedChestType.LEFT, new ChestModel(64, 48, (lid, base) -> {
+                                                                                   lid.addBox(0, 0, 0, 15, 5, 14, 0);
+                                                                                   lid.addBox(14, -2, 14, 1, 4, 1, 0);
+                                                                                   lid.setPos(1, 9, 1);
+                                                                                   base.addBox(0, 0, 0, 15, 10, 14, 0);
+                                                                                   base.setPos(1, 0, 1);
+                                                                               }))
+                                                                               .put(CursedChestType.RIGHT, new ChestModel(64, 48, (lid, base) -> {
+                                                                                   lid.addBox(0, 0, 0, 15, 5, 14, 0);
+                                                                                   lid.addBox(0, -2, 14, 1, 4, 1, 0);
+                                                                                   lid.setPos(0, 9, 1);
+                                                                                   base.addBox(0, 0, 0, 15, 10, 14, 0);
+                                                                                   base.setPos(0, 0, 1);
+                                                                               }))
+                                                                               .build();
 
     private static final Property<ChestBlockEntity, Float2FloatFunction> LID_OPENNESS_FUNCTION_GETTER = new Property<>() {
         @Override
@@ -90,7 +131,7 @@ public final class ChestBlockEntityRenderer extends BlockEntityRenderer<ChestBlo
             return;
         }
         CursedChestType chestType = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
-        SingleChestModel model = ChestBlockEntityRenderer.MODELS.get(chestType);
+        ChestModel model = ChestBlockEntityRenderer.MODELS.get(chestType);
         stack.pushPose();
         stack.translate(0.5D, 0.5D, 0.5D);
         stack.mulPose(Vector3f.YP.rotationDegrees(-state.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot()));

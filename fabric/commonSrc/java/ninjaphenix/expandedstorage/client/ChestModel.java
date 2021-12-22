@@ -6,25 +6,19 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.RenderType;
 
-public class SingleChestModel extends Model {
+import java.util.function.BiConsumer;
+
+public class ChestModel extends Model {
     protected final ModelPart lid;
     protected final ModelPart base;
 
-    public SingleChestModel(int textureWidth, int textureHeight) {
+    public ChestModel(int textureWidth, int textureHeight, BiConsumer<ModelPart, ModelPart> consumer) {
         super(RenderType::entityCutout);
         texWidth = textureWidth;
         texHeight = textureHeight;
         lid = new ModelPart(this, 0, 0);
         base = new ModelPart(this, 0, 19);
-    }
-
-    public SingleChestModel() {
-        this(64, 48);
-        lid.addBox(0, 0, 0, 14, 5, 14, 0);
-        lid.addBox(6, -2, 14, 2, 4, 1, 0);
-        lid.setPos(1, 9, 1);
-        base.addBox(0, 0, 0, 14, 10, 14, 0);
-        base.setPos(1, 0, 1);
+        consumer.accept(lid, base);
     }
 
     public final void setLidPitch(float pitch) {

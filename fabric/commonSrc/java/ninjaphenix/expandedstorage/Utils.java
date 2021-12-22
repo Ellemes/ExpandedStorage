@@ -39,14 +39,6 @@ public final class Utils {
     public static final int WOOD_STACK_COUNT = 27;
     public static final ResourceLocation WOOD_TIER_ID = Utils.id("wood");
 
-    // Default tiers which all modules can, but don't need to, specify blocks for.
-    public static final Tier WOOD_TIER = new Tier(WOOD_TIER_ID, WOOD_STACK_COUNT, UnaryOperator.identity(), UnaryOperator.identity());
-    public static final Tier IRON_TIER = new Tier(Utils.id("iron"), IRON_STACK_COUNT, BlockBehaviour.Properties::requiresCorrectToolForDrops, UnaryOperator.identity());
-    public static final Tier GOLD_TIER = new Tier(Utils.id("gold"), GOLD_STACK_COUNT, BlockBehaviour.Properties::requiresCorrectToolForDrops, UnaryOperator.identity());
-    public static final Tier DIAMOND_TIER = new Tier(Utils.id("diamond"), DIAMOND_STACK_COUNT, BlockBehaviour.Properties::requiresCorrectToolForDrops, UnaryOperator.identity());
-    public static final Tier OBSIDIAN_TIER = new Tier(Utils.id("obsidian"), OBSIDIAN_STACK_COUNT, BlockBehaviour.Properties::requiresCorrectToolForDrops, UnaryOperator.identity());
-    public static final Tier NETHERITE_TIER = new Tier(Utils.id("netherite"), NETHERITE_STACK_COUNT, BlockBehaviour.Properties::requiresCorrectToolForDrops, Item.Properties::fireResistant);
-
     // NBT Tag Types
     /**
      * @deprecated Removing in 1.17, in 1.17 use {@link net.minecraft.nbt.Tag.TAG_STRING} instead.
@@ -91,12 +83,5 @@ public final class Utils {
     @Internal
     public static MutableComponent translation(String key, Object... params) {
         return new TranslatableComponent(key, params);
-    }
-
-    @Internal
-    public static <K, V> Map<K, V> unmodifiableMap(Consumer<Map<K, V>> initialiser) {
-        Map<K, V> map = new HashMap<>();
-        initialiser.accept(map);
-        return Collections.unmodifiableMap(map);
     }
 }

@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "depends": {
-    "fabric": ">=0.29.3",
-    "fabricloader": ">=0.7.4",
-    "minecraft": "~1.16.4"
+    "fabric": ">=0.42.0",
+    "fabricloader": ">=0.12.5",
+    "minecraft": "~1.16.5"
   },
   "entrypoints": {
     "main": [
@@ -20,11 +20,11 @@
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/expanded-storage-fabric/",
     "sources": "https://github.com/NinjaPhenix/ExpandedStorage/",
-    "issues": "https://github.com/NinjaPhenix/ExpandedStorage/issues/"
+    "issues": "https://github.com/NinjaPhenix/expanded-storage/issues/"
   },
   "icon": "icon.png",
   "id": "expandedstorage",
-  "license": "All Rights Reserved",
+  "license": "Multiple",
   "name": "Expanded Storage",
   "version": "${version}"
 }
