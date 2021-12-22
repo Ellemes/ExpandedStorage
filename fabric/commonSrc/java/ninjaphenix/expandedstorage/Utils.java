@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 NinjaPhenix
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package ninjaphenix.expandedstorage;
 
 import net.minecraft.ChatFormatting;
@@ -28,13 +43,6 @@ public final class Utils {
     public static final Component ALT_USE = new TranslatableComponent("tooltip.expandedstorage.alt_use",
             new KeybindComponent("key.sneak").withStyle(ChatFormatting.GOLD),
             new KeybindComponent("key.use").withStyle(ChatFormatting.GOLD));
-
-    // Slots for Storage Tiers
-    public static final int IRON_STACK_COUNT = 54;
-    public static final int GOLD_STACK_COUNT = 81;
-    public static final int DIAMOND_STACK_COUNT = 108;
-    public static final int OBSIDIAN_STACK_COUNT = 108;
-    public static final int NETHERITE_STACK_COUNT = 135;
 
     public static final int WOOD_STACK_COUNT = 27;
     public static final ResourceLocation WOOD_TIER_ID = Utils.id("wood");
