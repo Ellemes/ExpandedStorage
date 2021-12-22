@@ -18,6 +18,7 @@ package ninjaphenix.expandedstorage.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
@@ -50,7 +51,7 @@ public abstract class OpenableBlock extends Block implements OpenableBlockEntity
     }
 
     public Component getInventoryTitle() {
-        return this.getName();
+        return new TranslatableComponent(this.getDescriptionId());
     }
 
     public abstract ResourceLocation getBlockType();
