@@ -6,11 +6,11 @@
     "S  "
   ],
   "key": {
+    "C": {
+      "tag": "expandedstorage:wooden_chests"
+    },
     "S": {
       "item": "minecraft:stick"
-    },
-    "C": {
-      "tag": "forge:chests/wooden"
     }
   },
   "result": {

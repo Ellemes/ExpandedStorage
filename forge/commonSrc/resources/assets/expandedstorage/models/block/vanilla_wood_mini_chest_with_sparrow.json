@@ -1,0 +1,7 @@
+{
+  "parent": "expandedstorage:block/parent/mini_chest_with_sparrow",
+  "textures": {
+    "atlas": "expandedstorage:block/vanilla_wood_mini_chest",
+    "particle": "minecraft:block/oak_planks"
+  }
+}

@@ -1,25 +1,25 @@
 {
   "variants": {
     "type=single": {
-      "model": "expandedstorage:block/single_christmas_chest"
+      "model": "expandedstorage:block/red_present"
     },
     "type=left": {
-      "model": "expandedstorage:block/vanilla_christmas_chest"
+      "model": "expandedstorage:block/white_present"
     },
     "type=right": {
-      "model": "expandedstorage:block/vanilla_christmas_chest"
+      "model": "expandedstorage:block/white_present"
     },
     "type=top": {
-      "model": "expandedstorage:block/tall_christmas_chest"
+      "model": "expandedstorage:block/candy_cane_present"
     },
     "type=bottom": {
-      "model": "expandedstorage:block/tall_christmas_chest"
+      "model": "expandedstorage:block/candy_cane_present"
     },
     "type=front": {
-      "model": "expandedstorage:block/long_christmas_chest"
+      "model": "expandedstorage:block/green_present"
     },
     "type=back": {
-      "model": "expandedstorage:block/long_christmas_chest"
+      "model": "expandedstorage:block/green_present"
     }
   }
 }

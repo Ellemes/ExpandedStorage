@@ -1,0 +1,7 @@
+{
+  "parent": "expandedstorage:block/parent/mini_chest",
+  "textures": {
+    "atlas": "expandedstorage:block/candy_cane_mini_present",
+    "particle": "expandedstorage:block/candy_cane_present_break"
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "parent": "expandedstorage:block/old_chest/top",
+  "parent": "expandedstorage:block/parent/old_chest_top",
   "textures": {
     "atlas": "expandedstorage:block/old_netherite_chest",
     "particle": "minecraft:block/netherite_block"

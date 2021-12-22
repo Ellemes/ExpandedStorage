@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "expandedstorage:block/pumpkin_mini_chest"
+    },
+    "facing=east": {
+      "model": "expandedstorage:block/pumpkin_mini_chest",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "expandedstorage:block/pumpkin_mini_chest",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "expandedstorage:block/pumpkin_mini_chest",
+      "y": 270
+    }
+  }
+}

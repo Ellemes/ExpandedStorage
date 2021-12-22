@@ -7,7 +7,7 @@
   ],
   "key": {
     "I": {
-      "item": "minecraft:iron_ingot"
+      "tag": "forge:ingots/iron"
     },
     "B": {
       "tag": "forge:barrels/wooden"
@@ -15,6 +15,5 @@
   },
   "result": {
     "item": "expandedstorage:iron_barrel"
-  },
-  "group": "expandedstorage:iron_barrel"
+  }
 }

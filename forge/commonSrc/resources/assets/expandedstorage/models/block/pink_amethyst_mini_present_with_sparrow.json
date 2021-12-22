@@ -1,0 +1,7 @@
+{
+  "parent": "expandedstorage:block/parent/mini_present_with_sparrow",
+  "textures": {
+    "atlas": "expandedstorage:block/pink_amethyst_mini_present",
+    "particle": "expandedstorage:block/pink_amethyst_present_break"
+  }
+}

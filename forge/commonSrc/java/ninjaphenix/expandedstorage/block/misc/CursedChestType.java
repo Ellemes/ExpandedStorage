@@ -1,27 +1,59 @@
+/*
+ * Copyright 2021 NinjaPhenix
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package ninjaphenix.expandedstorage.block.misc;
 
 import net.minecraft.util.StringRepresentable;
-import org.jetbrains.annotations.ApiStatus.Experimental;
-import org.jetbrains.annotations.ApiStatus.Internal;
+import ninjaphenix.expandedstorage.api.EsChestType;
+import ninjaphenix.expandedstorage.api.ExpandedStorageAccessors;
+import org.jetbrains.annotations.ApiStatus;
 
-@Internal
-@Experimental
+import java.util.Locale;
+
+/**
+ * Note to self, do not rename, used by chest tracker.
+ * @deprecated Use {@link EsChestType} and {@link ExpandedStorageAccessors} instead.
+ */
+@Deprecated
+@ApiStatus.Internal
 public enum CursedChestType implements StringRepresentable {
-    TOP("top", -1),
-    BOTTOM("bottom", -1),
-    FRONT("front", 0),
-    BACK("back", 2),
-    LEFT("left", 1),
-    RIGHT("right", 3),
-    SINGLE("single", -1);
+    TOP(-1),
+    BOTTOM(-1),
+    FRONT(0),
+    BACK(2),
+    LEFT(1),
+    RIGHT(3),
+    SINGLE(-1);
 
     private final String name;
     private final int offset;
 
-    CursedChestType(String name, int offset) {
-        // todo: can maybe replace name with accessing Enum's name() private field
-        this.name = name;
+    CursedChestType(int offset) {
+        this.name = name().toLowerCase(Locale.ROOT);
         this.offset = offset;
+    }
+
+    public static CursedChestType of(EsChestType type) {
+        if (type == EsChestType.TOP) return CursedChestType.TOP;
+        else if (type == EsChestType.BOTTOM) return CursedChestType.BOTTOM;
+        else if (type == EsChestType.FRONT) return CursedChestType.FRONT;
+        else if (type == EsChestType.BACK) return CursedChestType.BACK;
+        else if (type == EsChestType.LEFT) return CursedChestType.LEFT;
+        else if (type == EsChestType.RIGHT) return CursedChestType.RIGHT;
+        else if (type == EsChestType.SINGLE) return CursedChestType.SINGLE;
+        throw new IllegalStateException("Invalid type passed");
     }
 
     @Override
@@ -47,6 +79,6 @@ public enum CursedChestType implements StringRepresentable {
         } else if (this == CursedChestType.RIGHT) {
             return CursedChestType.LEFT;
         }
-        throw new IllegalStateException("CursedChestType.SINGLE CursedChestType has no opposite");
+        throw new IllegalStateException("CursedChestType.SINGLE has no opposite type.");
     }
 }
