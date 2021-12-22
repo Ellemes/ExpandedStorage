@@ -61,6 +61,9 @@ public abstract class OpenableBlockEntity extends BlockEntity implements Openabl
 
     @Override
     public final void load(BlockState state, CompoundTag tag) {
+        if (!(state.getBlock() instanceof OpenableBlock)) { // Mekanism...
+            state = this.getBlockState();
+        }
         super.load(state, tag);
         lockable.readLock(tag);
         if (tag.contains("CustomName", Utils.NBT_STRING_TYPE)) {

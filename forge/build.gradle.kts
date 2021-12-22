@@ -38,6 +38,7 @@ dependencies {
     forge("net.minecraftforge:forge:${properties["minecraft_version"]}-${properties["forge_version"]}")
 
     modImplementation(group = "curse.maven", name = "ninjaphenixs-container-library-530668", version = "3569521")
+    modRuntimeOnly(group = "curse.maven", name = "mekanism-268560", version = "3577006")
     modRuntimeOnly("mezz.jei:jei-${properties["minecraft_version"]}:${properties["jei_version"]}")
 }
 
