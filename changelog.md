@@ -1,3 +1,1 @@
-- Make it so iron chests and storage mutator can be crafted with pumpkin chest and presents
-- Fix a minor bug in item transfer impl
-- rework some code to mitigate an odd crash
+- Update translations thanks to https://github.com/seriousfreezing and https://github.com/RawPineapple
