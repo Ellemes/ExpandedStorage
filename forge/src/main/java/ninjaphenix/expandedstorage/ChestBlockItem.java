@@ -23,12 +23,27 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.loading.FMLLoader;
 import ninjaphenix.expandedstorage.block.ChestBlock;
 import ninjaphenix.expandedstorage.block.entity.ChestBlockEntity;
 
 public final class ChestBlockItem extends BlockItem {
     public ChestBlockItem(ChestBlock block, Properties properties) {
-        super(block, properties.setISTER(() -> () -> new BlockEntityWithoutLevelRenderer() {
+        super(block, ChestBlockItem.configure(properties, block));
+    }
+
+    private static Properties configure(Properties properties, ChestBlock block) {
+        if (FMLLoader.getDist() == Dist.CLIENT) {
+            ChestBlockItem.addClientProperties(properties, block);
+        }
+        return properties;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private static void addClientProperties(Properties properties, ChestBlock block) {
+        properties.setISTER(() -> () -> new BlockEntityWithoutLevelRenderer() {
             ChestBlockEntity renderEntity = null;
 
             @Override
@@ -47,6 +62,6 @@ public final class ChestBlockItem extends BlockItem {
                 }
                 return renderEntity;
             }
-        }));
+        });
     }
 }
