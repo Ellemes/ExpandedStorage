@@ -4,6 +4,7 @@
   "plugin": "ninjaphenix.expandedstorage.MixinPlugin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "MiniChestHeadEquipment",
     "ToweletteSupport"
   ],
   "injectors": {
