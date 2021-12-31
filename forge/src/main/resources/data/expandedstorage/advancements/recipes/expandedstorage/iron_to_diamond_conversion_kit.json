@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "expandedstorage:iron_to_gold_conversion_kit"
-            ]
+            "item": "expandedstorage:iron_to_gold_conversion_kit"
           }
         ]
       }

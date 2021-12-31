@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "expandedstorage:diamond_to_obsidian_conversion_kit"
-            ]
+            "item": "expandedstorage:diamond_to_obsidian_conversion_kit"
           }
         ]
       }

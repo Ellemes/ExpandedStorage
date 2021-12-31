@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "expandedstorage:gold_to_obsidian_conversion_kit"
-            ]
+            "item": "expandedstorage:gold_to_obsidian_conversion_kit"
           }
         ]
       }

@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "expandedstorage:white_mini_present"
-            ]
+            "item": "expandedstorage:white_mini_present"
           }
         ]
       }

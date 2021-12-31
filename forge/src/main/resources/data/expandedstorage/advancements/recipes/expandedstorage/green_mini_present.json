@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "expandedstorage:candy_cane_mini_present"
-            ]
+            "item": "expandedstorage:candy_cane_mini_present"
           }
         ]
       }

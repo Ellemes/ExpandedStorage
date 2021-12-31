@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "expandedstorage:wood_to_iron_conversion_kit"
-            ]
+            "item": "expandedstorage:wood_to_iron_conversion_kit"
           }
         ]
       }

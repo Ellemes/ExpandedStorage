@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "expandedstorage:iron_chest"
-            ]
+            "item": "expandedstorage:iron_chest"
           }
         ]
       }
