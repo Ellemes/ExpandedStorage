@@ -79,6 +79,8 @@ val realChangelog = rootDir.resolve("changelog.md").readText(Charsets.UTF_8)
 val modrinthToken: String? = System.getenv("MODRINTH_TOKEN")
 val curseforgeToken: String? = System.getenv("CURSEFORGE_TOKEN")
 
+val extraGameVersions = (properties["extra_game_versions"] as String).split(",")
+
 if (modrinthToken != null) {
     if (forgeProject != null) {
         modrinthForgeTask = tasks.register<com.modrinth.minotaur.TaskModrinthUpload>("publishModrinthForge") {
@@ -94,6 +96,9 @@ if (modrinthToken != null) {
             versionType = VersionType.RELEASE
             uploadFile = releaseJarTask
             addGameVersion(properties["minecraft_version"] as String)
+            extraGameVersions.forEach {
+                addGameVersion(it)
+            }
             addLoader("forge")
         }
     }
@@ -115,6 +120,9 @@ if (modrinthToken != null) {
             versionType = VersionType.RELEASE
             uploadFile = releaseJarTask
             addGameVersion(properties["minecraft_version"] as String)
+            extraGameVersions.forEach {
+                addGameVersion(it)
+            }
             addLoader("fabric")
         }
     }
@@ -139,7 +147,7 @@ if (curseforgeToken != null) {
                 changelog = realChangelog
                 displayName = "[${properties["minecraft_version"]}] ${properties["mod_version"]}"
                 releaseType = "release"
-                gameVersionStrings = listOf(gameVersion, "Forge", "Java ${properties["mod_java_version"]}")
+                gameVersionStrings = listOf(gameVersion, "Forge", "Java ${properties["mod_java_version"]}") + extraGameVersions
                 curseRelations = CurseRelation().apply {
                     requiredDependency("ninjaphenixs-container-library")
                 }
@@ -164,7 +172,7 @@ if (curseforgeToken != null) {
                 changelog = realChangelog
                 displayName = "[${properties["minecraft_version"]}] ${properties["mod_version"]}"
                 releaseType = "release"
-                gameVersionStrings = listOf(gameVersion, "Fabric", "Java ${properties["mod_java_version"]}")
+                gameVersionStrings = listOf(gameVersion, "Fabric", "Java ${properties["mod_java_version"]}") + extraGameVersions
                 curseRelations = CurseRelation().apply {
                     requiredDependency("fabric-api")
                     requiredDependency("ninjaphenixs-container-library")
