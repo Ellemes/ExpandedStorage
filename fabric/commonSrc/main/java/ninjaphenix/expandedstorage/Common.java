@@ -38,7 +38,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.stat.Stats;
 import net.minecraft.state.property.Properties;
@@ -66,6 +65,7 @@ import ninjaphenix.expandedstorage.block.entity.extendable.OpenableBlockEntity;
 import ninjaphenix.expandedstorage.block.misc.CursedChestType;
 import ninjaphenix.expandedstorage.block.strategies.ItemAccess;
 import ninjaphenix.expandedstorage.block.strategies.Lockable;
+import ninjaphenix.expandedstorage.client.MiniChestScreen;
 import ninjaphenix.expandedstorage.client.TextureCollection;
 import ninjaphenix.expandedstorage.item.BlockUpgradeBehaviour;
 import ninjaphenix.expandedstorage.item.MutationMode;
@@ -107,7 +107,6 @@ public final class Common {
 
     private static Function<OpenableBlockEntity, ItemAccess> itemAccess;
     private static Supplier<Lockable> lockable;
-    private static ScreenHandlerType<MiniChestScreenHandler> miniChestScreenHandler;
 
     public static BlockEntityType<ChestBlockEntity> getChestBlockEntityType() {
         return chestBlockEntityType;
@@ -337,7 +336,7 @@ public final class Common {
                                        RegistrationConsumer<ChestBlock, BlockItem, ChestBlockEntity> chestRegistration, Tag.Identified<Block> chestTag, BiFunction<ChestBlock, Item.Settings, BlockItem> chestItemMaker, Function<OpenableBlockEntity, ItemAccess> chestAccessMaker,
                                        RegistrationConsumer<AbstractChestBlock, BlockItem, OldChestBlockEntity> oldChestRegistration,
                                        RegistrationConsumer<BarrelBlock, BlockItem, BarrelBlockEntity> barrelRegistration, Tag.Identified<Block> barrelTag,
-                                       RegistrationConsumer<MiniChestBlock, BlockItem, MiniChestBlockEntity> miniChestRegistration, BiFunction<MiniChestBlock, Item.Settings, BlockItem> miniChestItemMaker, ScreenHandlerType<MiniChestScreenHandler> miniChestScreenHandlerType,
+                                       RegistrationConsumer<MiniChestBlock, BlockItem, MiniChestBlockEntity> miniChestRegistration, BiFunction<MiniChestBlock, Item.Settings, BlockItem> miniChestItemMaker,
                                        Tag.Identified<Block> chestCycle, Tag.Identified<Block> miniChestCycle, Tag.Identified<Block> miniChestSecretCycle, Tag.Identified<Block> miniChestSecretCycle2) {
         Common.itemAccess = itemAccess;
         Common.lockable = lockable;
@@ -571,7 +570,9 @@ public final class Common {
         Common.miniChestBlockEntityType = BlockEntityType.Builder.create((pos, state) -> new MiniChestBlockEntity(Common.getMiniChestBlockEntityType(), pos, state, ((OpenableBlock) state.getBlock()).getBlockId(), Common.itemAccess, Common.lockable), miniChestContent.getBlocks()).build(Util.getChoiceType(TypeReferences.BLOCK_ENTITY, Common.MINI_CHEST_BLOCK_TYPE.toString()));
         miniChestRegistration.accept(miniChestContent, Common.miniChestBlockEntityType);
         //</editor-fold>
-        Common.miniChestScreenHandler = miniChestScreenHandlerType;
+        if (isClient) {
+            MiniChestScreen.registerScreenType();
+        }
         //<editor-fold desc="-- Storage mutator logic">
         Predicate<Block> isChestBlock = b -> b instanceof AbstractChestBlock;
         Common.registerMutationBehaviour(isChestBlock, MutationMode.MERGE, (context, world, state, pos, stack) -> {
@@ -709,9 +710,5 @@ public final class Common {
             return ActionResult.FAIL;
         });
         //</editor-fold>
-    }
-
-    public static ScreenHandlerType<MiniChestScreenHandler> getMiniChestScreenHandlerType() {
-        return miniChestScreenHandler;
     }
 }

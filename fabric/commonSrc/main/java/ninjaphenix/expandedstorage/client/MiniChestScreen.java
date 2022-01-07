@@ -17,22 +17,41 @@ package ninjaphenix.expandedstorage.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.util.math.Rect2i;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import ninjaphenix.expandedstorage.MiniChestScreenHandler;
+import ninjaphenix.container_library.api.client.function.ScreenSize;
+import ninjaphenix.container_library.api.client.gui.AbstractScreen;
+import ninjaphenix.container_library.api.inventory.AbstractHandler;
+import ninjaphenix.container_library.api.v2.client.NCL_ClientApiV2;
 import ninjaphenix.expandedstorage.Utils;
-import org.lwjgl.glfw.GLFW;
+import org.jetbrains.annotations.NotNull;
 
-public final class MiniChestScreen extends HandledScreen<MiniChestScreenHandler> {
+import java.util.List;
+
+public final class MiniChestScreen extends AbstractScreen {
     private static final Identifier TEXTURE = Utils.id("textures/gui/mini_chest_screen.png");
     private static final int TEXTURE_WIDTH = 176;
     private static final int TEXTURE_HEIGHT = 176;
 
-    public MiniChestScreen(MiniChestScreenHandler handler, PlayerInventory inventory, Text title) {
-        super(handler, inventory, title);
+    public MiniChestScreen(AbstractHandler handler, PlayerInventory playerInventory, Text title, ScreenSize screenSize) {
+        super(handler, playerInventory, title, screenSize);
+        this.initializeSlots(playerInventory);
+    }
+
+    private void initializeSlots(PlayerInventory playerInventory) {
+        handler.addClientSlot(new Slot(handler.getInventory(), 0, 80, 35));
+        for (int y = 0; y < 3; y++) {
+            for (int x = 0; x < 9; x++) {
+                handler.addClientSlot(new Slot(playerInventory, 9 + x + y * 9, 8 + x * 18, 84 + y * 18));
+            }
+        }
+        for (int x = 0; x < 9; x++) {
+            handler.addClientSlot(new Slot(playerInventory, x, 8 + x * 18, 142));
+        }
     }
 
     @Override
@@ -42,18 +61,18 @@ public final class MiniChestScreen extends HandledScreen<MiniChestScreenHandler>
         DrawableHelper.drawTexture(stack, x, y, 0, 0, backgroundWidth, backgroundHeight, MiniChestScreen.TEXTURE_WIDTH, MiniChestScreen.TEXTURE_HEIGHT);
     }
 
+    @NotNull
     @Override
-    public void render(MatrixStack stack, int mouseX, int mouseY, float delta) {
-        this.renderBackground(stack);
-        super.render(stack, mouseX, mouseY, delta);
-        this.drawMouseoverTooltip(stack, mouseX, mouseY);
+    public List<Rect2i> getExclusionZones() {
+        return List.of();
     }
 
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (keyCode == GLFW.GLFW_KEY_ESCAPE || this.client.options.keyInventory.matchesKey(keyCode, scanCode)) {
-            this.client.player.closeHandledScreen();
-            return true;
-        }
-        return super.keyPressed(keyCode, scanCode, modifiers);
+    public static ScreenSize retrieveScreenSize(int slots, int scaledWidth, int scaledHeight) {
+        return ScreenSize.of(1, 1);
+    }
+
+    public static void registerScreenType() {
+        NCL_ClientApiV2.registerScreenType(Utils.id("mini_chest"), MiniChestScreen::new);
+        NCL_ClientApiV2.registerDefaultScreenSize(Utils.id("mini_chest"), MiniChestScreen::retrieveScreenSize);
     }
 }

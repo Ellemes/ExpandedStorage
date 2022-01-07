@@ -101,13 +101,15 @@ repositories {
         name = "ModMaven"
         url = uri("https://modmaven.k-4u.nl")
     }
+    mavenLocal()
 }
 
 dependencies {
     minecraft("net.minecraftforge:forge:${properties["minecraft_version"]}-${properties["forge_version"]}")
     implementation(group = "org.spongepowered", name = "mixin", version = properties["mixin_version"] as String)
     annotationProcessor(group = "org.spongepowered", name = "mixin", version = properties["mixin_version"] as String, classifier = "processor")
-    implementation(fg.deobf("curse.maven:ninjaphenixs-container-library-530668:3549171"))
+    //implementation(fg.deobf("curse.maven:ninjaphenixs-container-library-530668:3549171"))
+    implementation(fg.deobf("ninjaphenix:container_library:1.3.0+1.18:forge"))
     implementation(group = "org.jetbrains", name = "annotations", version = properties["jetbrains_annotations_version"] as String)
 
     //implementation(fg.deobf("mezz.jei:jei-${properties["jei_minecraft_version"]}:${properties["jei_version"]}"))

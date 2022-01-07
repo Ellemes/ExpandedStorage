@@ -22,9 +22,7 @@ import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
-import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
-import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.fabricmc.fabric.api.tag.TagFactory;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
@@ -63,7 +61,6 @@ import ninjaphenix.expandedstorage.block.misc.BasicLockable;
 import ninjaphenix.expandedstorage.block.misc.CursedChestType;
 import ninjaphenix.expandedstorage.block.misc.DoubleItemAccess;
 import ninjaphenix.expandedstorage.client.ChestBlockEntityRenderer;
-import ninjaphenix.expandedstorage.client.MiniChestScreen;
 import ninjaphenix.expandedstorage.compat.carrier.CarrierCompat;
 import ninjaphenix.expandedstorage.compat.htm.HTMLockable;
 import ninjaphenix.expandedstorage.registration.BlockItemCollection;
@@ -100,10 +97,8 @@ public final class Main implements ModInitializer {
                 this::chestRegistration, TagFactory.BLOCK.create(new Identifier("c", "wooden_chests")), BlockItem::new, ChestItemAccess::new,
                 this::oldChestRegistration,
                 this::barrelRegistration, TagFactory.BLOCK.create(new Identifier("c", "wooden_barrels")),
-                this::miniChestRegistration, BlockItem::new, ScreenHandlerRegistry.registerSimple(Utils.id("mini_chest_handler"), MiniChestScreenHandler::createClientMenu),
+                this::miniChestRegistration, BlockItem::new,
                 TagFactory.BLOCK.create(Utils.id("chest_cycle")), TagFactory.BLOCK.create(Utils.id("mini_chest_cycle")), TagFactory.BLOCK.create(Utils.id("mini_chest_secret_cycle")), TagFactory.BLOCK.create(Utils.id("mini_chest_secret_cycle_2")));
-
-        if (isClient) ScreenRegistry.register(Common.getMiniChestScreenHandlerType(), MiniChestScreen::new);
     }
 
     @SuppressWarnings({"UnstableApiUsage"})

@@ -21,19 +21,13 @@ import net.minecraft.block.ShapeContext;
 import net.minecraft.block.Waterloggable;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
@@ -46,10 +40,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
-import ninjaphenix.container_library.api.v2.OpenableBlockEntityV2;
-import ninjaphenix.container_library.wrappers.NetworkWrapper;
 import ninjaphenix.expandedstorage.Common;
-import ninjaphenix.expandedstorage.MiniChestScreenHandler;
 import ninjaphenix.expandedstorage.Utils;
 import org.jetbrains.annotations.Nullable;
 
@@ -131,30 +122,13 @@ public final class MiniChestBlock extends OpenableBlock implements Waterloggable
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (world.isClient()) return ActionResult.SUCCESS;
-        if (player instanceof ServerPlayerEntity serverPlayer) {
-            if (NetworkWrapper.getInstance().canOpenInventory(serverPlayer, pos)) {
-                OpenableBlockEntityV2 inventory = this.getOpenableBlockEntity(world, state, pos);
-                Text title = inventory.getInventoryTitle();
-                if (!inventory.canBeUsedBy(serverPlayer)) {
-                    player.sendMessage(new TranslatableText("container.isLocked", title), true);
-                    player.playSound(SoundEvents.BLOCK_CHEST_LOCKED, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                    return ActionResult.CONSUME;
-                }
-
-                this.onInitialOpen(serverPlayer);
-
-                player.openHandledScreen(new NamedScreenHandlerFactory() {
-                    public Text getDisplayName() {
-                        return title;
-                    }
-
-                    public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-                        return new MiniChestScreenHandler(syncId, inventory.getInventory(), playerInventory);
-                    }
-                });
+        if (world.isClient()) {
+            return this.ncl_cOpenInventoryNoScreenCheck(pos, hand, hit) ? ActionResult.SUCCESS : ActionResult.FAIL;
+        } else {
+            if (player instanceof ServerPlayerEntity serverPlayer) {
+                this.ncl_sOpenInventory(world, state, pos, serverPlayer, Utils.id("mini_chest"));
             }
+            return ActionResult.CONSUME;
         }
-        return ActionResult.CONSUME;
     }
 }
