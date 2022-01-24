@@ -2,9 +2,9 @@ import com.gitlab.ninjaphenix.gradle.api.task.MinifyJsonTask
 import org.gradle.jvm.tasks.Jar
 
 plugins {
-    alias(libs.plugins.gradle.utils)
-    alias(libs.plugins.gradle.forge)
-    alias(libs.plugins.gradle.mixin)
+    id("ninjaphenix.gradle-utils")
+    id("net.minecraftforge.gradle").version("5.1.26")
+    id("org.spongepowered.mixin").version("0.7-SNAPSHOT")
 }
 
 mixin {

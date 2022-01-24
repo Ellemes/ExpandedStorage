@@ -2,8 +2,8 @@ import com.gitlab.ninjaphenix.gradle.api.task.MinifyJsonTask
 import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
-    alias(libs.plugins.gradle.utils)
-    alias(libs.plugins.gradle.fabric)
+    id("ninjaphenix.gradle-utils")
+    id("fabric-loom").version("0.10.66")
 }
 
 sourceSets {

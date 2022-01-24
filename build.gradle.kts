@@ -15,8 +15,9 @@ buildscript {
 
 plugins {
     java
-    alias(libs.plugins.gradle.modrinth)
-    alias(libs.plugins.gradle.curseforge)
+    id("ninjaphenix.gradle-utils").version("0.1.0-beta.7").apply(false)
+    id("com.modrinth.minotaur").version("1.2.1")
+    id("com.matthewprenger.cursegradle").version("1.4.0")
 }
 
 fun isMainSubProject(name: String): Boolean {
