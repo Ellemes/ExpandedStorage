@@ -3,7 +3,7 @@ import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
     id("ninjaphenix.gradle-utils")
-    id("fabric-loom").version("0.10.66")
+    id("fabric-loom").version("0.11.21")
 }
 
 sourceSets {
