@@ -42,6 +42,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.property.Properties;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -83,11 +85,17 @@ public final class Main implements ModInitializer {
         } catch (VersionParsingException ignored) {
         }
 
-        FabricItemGroupBuilder.build(new Identifier("dummy"), null); // Fabric API is dumb.
-        ItemGroup group = new ItemGroup(ItemGroup.GROUPS.length - 1, Utils.MOD_ID) {
+        FabricItemGroupBuilder.build(Utils.id("tab"), null); // Fabric API is dumb.
+        ItemGroup group = new ItemGroup(ItemGroup.GROUPS.length - 1, Utils.MOD_ID + ".tab") {
+            private final Text displayName = new TranslatableText("itemGroup.expandedstorage");
             @Override
             public ItemStack createIcon() {
                 return new ItemStack(Registry.ITEM.get(Utils.id("netherite_chest")));
+            }
+
+            @Override
+            public Text getDisplayName() {
+                return displayName;
             }
         };
         boolean isClient = fabricLoader.getEnvironmentType() == EnvType.CLIENT;
