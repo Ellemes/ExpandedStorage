@@ -52,30 +52,6 @@ dependencies {
     modCompileOnly(group = "curse.maven", name = "htm-462534", version = "3539120")
 }
 
-//val mappingsMcVersion = if (hasProperty("mc")) findProperty("mc") else properties["minecraft_version"]
-//
-//if (hasProperty("yv")) {
-//    val updateCommonSources = tasks.register<net.fabricmc.loom.task.MigrateMappingsTask>("updateCommonSources") {
-//        setInputDir(rootDir.toPath().resolve("fabric/commonSrc/main/java").toString())
-//        setOutputDir(rootDir.toPath().resolve("fabric/commonSrc/main/java").toString())
-//        setMappings("net.fabricmc:yarn:${mappingsMcVersion}+build.${findProperty("yv")}")
-//    }
-//
-//    tasks.register<net.fabricmc.loom.task.MigrateMappingsTask>("updateFabricSources") {
-//        dependsOn(updateCommonSources)
-//
-//        setInputDir(file("src/main/java").toString())
-//        setOutputDir(file("src/main/java").toString())
-//        setMappings("net.fabricmc:yarn:${mappingsMcVersion}+build.${findProperty("yv")}")
-//    }
-//}
-//
-
-tasks.register<net.fabricmc.loom.task.MigrateMappingsTask>("updateForgeSources") {
-    setInputDir(rootDir.toPath().resolve("fabric/commonSrc/main/java").toString())
-    setOutputDir(rootDir.toPath().resolve("forge/commonSrc/main/java").toString())
-    setMappings("net.minecraft:mappings:1.18.1")
-}
 //
 //configurations {
 //    create("dev")
