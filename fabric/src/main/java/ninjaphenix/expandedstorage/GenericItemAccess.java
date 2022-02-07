@@ -16,11 +16,11 @@
 package ninjaphenix.expandedstorage;
 
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import ninjaphenix.expandedstorage.block.entity.extendable.OpenableBlockEntity;
 import ninjaphenix.expandedstorage.block.strategies.ItemAccess;
 
@@ -36,12 +36,12 @@ public class GenericItemAccess implements ItemAccess {
     @Override
     public Object get() {
         if (storage == null) {
-            DefaultedList<ItemStack> items = entity.getItems();
-            Inventory wrapped = entity.getInventory();
-            Inventory transferApiInventory = new Inventory() {
+            NonNullList<ItemStack> items = entity.getItems();
+            Container wrapped = entity.getInventory();
+            Container transferApiInventory = new Container() {
                 @Override
-                public int size() {
-                    return wrapped.size();
+                public int getContainerSize() {
+                    return wrapped.getContainerSize();
                 }
 
                 @Override
@@ -50,51 +50,51 @@ public class GenericItemAccess implements ItemAccess {
                 }
 
                 @Override
-                public ItemStack getStack(int slot) {
-                    return wrapped.getStack(slot);
+                public ItemStack getItem(int slot) {
+                    return wrapped.getItem(slot);
                 }
 
                 @Override
-                public ItemStack removeStack(int slot, int amount) {
-                    return Inventories.splitStack(items, slot, amount);
+                public ItemStack removeItem(int slot, int amount) {
+                    return ContainerHelper.removeItem(items, slot, amount);
                 }
 
                 @Override
-                public ItemStack removeStack(int slot) {
-                    return wrapped.removeStack(slot);
+                public ItemStack removeItemNoUpdate(int slot) {
+                    return wrapped.removeItemNoUpdate(slot);
                 }
 
                 @Override
-                public void setStack(int slot, ItemStack stack) {
+                public void setItem(int slot, ItemStack stack) {
                     items.set(slot, stack);
-                    if (stack.getCount() > this.getMaxCountPerStack()) {
-                        stack.setCount(this.getMaxCountPerStack());
+                    if (stack.getCount() > this.getMaxStackSize()) {
+                        stack.setCount(this.getMaxStackSize());
                     }
                 }
 
                 @Override
-                public void markDirty() {
-                    wrapped.markDirty();
+                public void setChanged() {
+                    wrapped.setChanged();
                 }
 
                 @Override
-                public boolean canPlayerUse(PlayerEntity player) {
-                    return wrapped.canPlayerUse(player);
+                public boolean stillValid(Player player) {
+                    return wrapped.stillValid(player);
                 }
 
                 @Override
-                public void clear() {
-                    wrapped.clear();
+                public void clearContent() {
+                    wrapped.clearContent();
                 }
 
                 @Override
-                public void onOpen(PlayerEntity player) {
-                    wrapped.onOpen(player);
+                public void startOpen(Player player) {
+                    wrapped.startOpen(player);
                 }
 
                 @Override
-                public void onClose(PlayerEntity player) {
-                    wrapped.onClose(player);
+                public void stopOpen(Player player) {
+                    wrapped.stopOpen(player);
                 }
             };
             //noinspection UnstableApiUsage

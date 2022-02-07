@@ -30,25 +30,24 @@ import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.loader.api.SemanticVersion;
 import net.fabricmc.loader.api.VersionParsingException;
 import net.fabricmc.loader.impl.FabricLoaderImpl;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.DoubleBlockProperties;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.TexturedRenderLayers;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.property.Properties;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.DoubleBlockCombiner;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import ninjaphenix.expandedstorage.block.AbstractChestBlock;
 import ninjaphenix.expandedstorage.block.BarrelBlock;
 import ninjaphenix.expandedstorage.block.ChestBlock;
@@ -85,48 +84,36 @@ public final class Main implements ModInitializer {
         } catch (VersionParsingException ignored) {
         }
 
-        FabricItemGroupBuilder.build(Utils.id("tab"), null); // Fabric API is dumb.
-        ItemGroup group = new ItemGroup(ItemGroup.GROUPS.length - 1, Utils.MOD_ID + ".tab") {
-            private final Text displayName = new TranslatableText("itemGroup.expandedstorage");
-            @Override
-            public ItemStack createIcon() {
-                return new ItemStack(Registry.ITEM.get(Utils.id("netherite_chest")));
-            }
-
-            @Override
-            public Text getDisplayName() {
-                return displayName;
-            }
-        };
+        CreativeModeTab group = FabricItemGroupBuilder.build(Utils.id("tab"), () -> new ItemStack(Registry.ITEM.get(Utils.id("netherite_chest")))); // Fabric API is dumb.
         boolean isClient = fabricLoader.getEnvironmentType() == EnvType.CLIENT;
         Common.registerContent(GenericItemAccess::new, fabricLoader.isModLoaded("htm") ? HTMLockable::new : BasicLockable::new,
                 group, isClient,
                 this::baseRegistration, true,
-                this::chestRegistration, TagFactory.BLOCK.create(new Identifier("c", "wooden_chests")), BlockItem::new, ChestItemAccess::new,
+                this::chestRegistration, TagFactory.BLOCK.create(new ResourceLocation("c", "wooden_chests")), BlockItem::new, ChestItemAccess::new,
                 this::oldChestRegistration,
-                this::barrelRegistration, TagFactory.BLOCK.create(new Identifier("c", "wooden_barrels")),
+                this::barrelRegistration, TagFactory.BLOCK.create(new ResourceLocation("c", "wooden_barrels")),
                 this::miniChestRegistration, BlockItem::new,
                 TagFactory.BLOCK.create(Utils.id("chest_cycle")), TagFactory.BLOCK.create(Utils.id("mini_chest_cycle")), TagFactory.BLOCK.create(Utils.id("mini_chest_secret_cycle")), TagFactory.BLOCK.create(Utils.id("mini_chest_secret_cycle_2")));
     }
 
     @SuppressWarnings({"UnstableApiUsage"})
-    private static Storage<ItemVariant> getItemAccess(World world, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, @SuppressWarnings("unused") Direction context) {
+    private static Storage<ItemVariant> getItemAccess(Level world, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, @SuppressWarnings("unused") Direction context) {
         if (blockEntity instanceof OldChestBlockEntity entity) {
             DoubleItemAccess access = entity.getItemAccess();
-            CursedChestType type = state.get(AbstractChestBlock.CURSED_CHEST_TYPE);
-            Direction facing = state.get(Properties.HORIZONTAL_FACING);
+            CursedChestType type = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
+            Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
             if (access.hasCachedAccess() || type == CursedChestType.SINGLE) {
                 //noinspection unchecked
                 return (Storage<ItemVariant>) access.get();
             }
-            if (world.getBlockEntity(pos.offset(AbstractChestBlock.getDirectionToAttached(type, facing))) instanceof OldChestBlockEntity otherEntity) {
+            if (world.getBlockEntity(pos.relative(AbstractChestBlock.getDirectionToAttached(type, facing))) instanceof OldChestBlockEntity otherEntity) {
                 DoubleItemAccess otherAccess = otherEntity.getItemAccess();
                 if (otherAccess.hasCachedAccess()) {
                     //noinspection unchecked
                     return (Storage<ItemVariant>) otherAccess.get();
                 }
                 DoubleItemAccess first, second;
-                if (AbstractChestBlock.getBlockType(type) == DoubleBlockProperties.Type.FIRST) {
+                if (AbstractChestBlock.getBlockType(type) == DoubleBlockCombiner.BlockType.FIRST) {
                     first = access;
                     second = otherAccess;
                 } else {
@@ -146,8 +133,8 @@ public final class Main implements ModInitializer {
         return null;
     }
 
-    private void baseRegistration(Pair<Identifier, Item>[] items) {
-        for (Pair<Identifier, Item> item : items) Registry.register(Registry.ITEM, item.getFirst(), item.getSecond());
+    private void baseRegistration(Pair<ResourceLocation, Item>[] items) {
+        for (Pair<ResourceLocation, Item> item : items) Registry.register(Registry.ITEM, item.getFirst(), item.getSecond());
     }
 
     private void chestRegistration(BlockItemCollection<ChestBlock, BlockItem> content, BlockEntityType<ChestBlockEntity> blockEntityType) {
@@ -184,7 +171,7 @@ public final class Main implements ModInitializer {
         boolean isClient = fabricLoader.getEnvironmentType() == EnvType.CLIENT;
         for (BarrelBlock block : content.getBlocks()) {
             Registry.register(Registry.BLOCK, block.getBlockId(), block);
-            if (isClient) BlockRenderLayerMap.INSTANCE.putBlock(block, RenderLayer.getCutoutMipped());
+            if (isClient) BlockRenderLayerMap.INSTANCE.putBlock(block, RenderType.cutoutMipped());
         }
         for (BlockItem item : content.getItems())
             Registry.register(Registry.ITEM, ((OpenableBlock) item.getBlock()).getBlockId(), item);
@@ -206,17 +193,17 @@ public final class Main implements ModInitializer {
 
     private static class Client {
         public static void registerChestTextures(ChestBlock[] blocks) {
-            ClientSpriteRegistryCallback.event(TexturedRenderLayers.CHEST_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
-                for (Identifier texture : Common.getChestTextures(blocks)) registry.register(texture);
+            ClientSpriteRegistryCallback.event(Sheets.CHEST_SHEET).register((atlasTexture, registry) -> {
+                for (ResourceLocation texture : Common.getChestTextures(blocks)) registry.register(texture);
             });
             BlockEntityRendererRegistry.register(Common.getChestBlockEntityType(), ChestBlockEntityRenderer::new);
         }
 
         public static void registerItemRenderers(BlockItem[] items) {
             for (BlockItem item : items) {
-                ChestBlockEntity renderEntity = Common.getChestBlockEntityType().instantiate(BlockPos.ORIGIN, item.getBlock().getDefaultState());
+                ChestBlockEntity renderEntity = Common.getChestBlockEntityType().create(BlockPos.ZERO, item.getBlock().defaultBlockState());
                 BuiltinItemRendererRegistry.INSTANCE.register(item, (itemStack, transform, stack, source, light, overlay) ->
-                        MinecraftClient.getInstance().getBlockEntityRenderDispatcher().renderEntity(renderEntity, stack, source, light, overlay));
+                        Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(renderEntity, stack, source, light, overlay));
             }
             EntityModelLayerRegistry.registerModelLayer(ChestBlockEntityRenderer.SINGLE_LAYER, ChestBlockEntityRenderer::createSingleBodyLayer);
             EntityModelLayerRegistry.registerModelLayer(ChestBlockEntityRenderer.LEFT_LAYER, ChestBlockEntityRenderer::createLeftBodyLayer);

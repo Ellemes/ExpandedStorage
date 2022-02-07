@@ -14,57 +14,11 @@ buildscript {
 }
 
 plugins {
-    java
+    id("fabric-loom").version("0.11.29").apply(false)
+    id("ninjaphenix.gradle.mod").version("0.0.8")
     id("ninjaphenix.gradle-utils").version("0.1.0-beta.7").apply(false)
     id("com.modrinth.minotaur").version("1.2.1")
     id("com.matthewprenger.cursegradle").version("1.4.0")
-}
-
-fun isMainSubProject(name: String): Boolean {
-    return name == "fabric" || name == "forge"
-}
-
-subprojects {
-    apply(plugin = "java")
-
-    group = properties["maven_group"] as String
-    version = "${properties["mod_version"]}+${properties["minecraft_version"]}"
-    base.archivesName.set(properties["archives_base_name"] as String)
-    buildDir = rootDir.resolve("build/${project.name}")
-
-    java {
-        sourceCompatibility = JavaVersion.toVersion(properties["mod_java_version"] as String)
-        targetCompatibility = JavaVersion.toVersion(properties["mod_java_version"] as String)
-    }
-
-    sourceSets {
-        main {
-            java {
-                setSrcDirs(listOf(
-                        "src/main/java",
-                        "commonSrc/main/java"
-                ))
-            }
-            resources {
-                setSrcDirs(listOf(
-                        "src/main/resources",
-                        rootDir.resolve("common/src/main/resources")
-                ))
-            }
-        }
-    }
-
-    tasks.withType<JavaCompile>().configureEach {
-        options.encoding = "UTF-8"
-    }
-}
-
-tasks.register("buildMod") {
-    subprojects.forEach {
-        if (isMainSubProject(it.name)) {
-            dependsOn(it.tasks["build"])
-        }
-    }
 }
 
 val forgeProject = findProject(":forge")

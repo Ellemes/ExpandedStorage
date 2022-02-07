@@ -2,49 +2,8 @@ import com.gitlab.ninjaphenix.gradle.api.task.MinifyJsonTask
 import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
+    id("fabric-loom")
     id("ninjaphenix.gradle-utils")
-    id("fabric-loom").version("0.11.21")
-}
-
-sourceSets {
-    main {
-        resources {
-            srcDir("src/main/generated")
-        }
-    }
-
-    create("datagen") {
-        compileClasspath += sourceSets.main.get().compileClasspath
-        runtimeClasspath += sourceSets.main.get().runtimeClasspath
-        compileClasspath += sourceSets.main.get().output
-        runtimeClasspath += sourceSets.main.get().output
-    }
-}
-
-loom {
-    runs {
-        named("client") {
-            ideConfigGenerated(false)
-        }
-        named("server") {
-            ideConfigGenerated(false)
-            serverWithGui()
-        }
-        create("datagen") {
-            client()
-            vmArg("-Dfabric-api.datagen")
-            vmArg("-Dfabric-api.datagen.output-dir=${file("src/main/generated")}")
-            vmArg("-Dfabric-api.datagen.datagen.modid=expandedstorage")
-            runDir("build/fabric-datagen")
-            source(sourceSets.getByName("datagen"))
-        }
-    }
-
-    mixin {
-        useLegacyMixinAp.set(false)
-    }
-
-    accessWidenerPath.set(file("src/main/resources/expandedstorage.accessWidener"))
 }
 
 repositories {
@@ -78,12 +37,6 @@ val excludeFabric: (ModuleDependency) -> Unit = {
 }
 
 dependencies {
-    minecraft(group = "com.mojang", name = "minecraft", version = properties["minecraft_version"] as String)
-    mappings(group = "net.fabricmc", name = "yarn", version = "${properties["minecraft_version"]}+build.${properties["yarn_version"]}", classifier = "v2")
-
-    modImplementation(group = "net.fabricmc", name = "fabric-loader", version = properties["fabric_loader_version"] as String)
-    implementation(group = "org.jetbrains", name = "annotations", version = properties["jetbrains_annotations_version"] as String)
-    modImplementation(group = "net.fabricmc.fabric-api", name = "fabric-api", version = properties["fabric_api_version"] as String)
     //modImplementation(group = "curse.maven", name = "ninjaphenixs-container-library-530668", version = "3549144", dependencyConfiguration = excludeFabric)
     modImplementation(group = "ninjaphenix", name = "container_library", version = "1.3.0+1.18", classifier = "fabric", dependencyConfiguration = excludeFabric)
 
@@ -99,52 +52,44 @@ dependencies {
     modCompileOnly(group = "curse.maven", name = "htm-462534", version = "3539120")
 }
 
-tasks.withType<ProcessResources> {
-    val props = mutableMapOf("version" to properties["mod_version"]) // Needs to be mutable
-    inputs.properties(props)
-    filesMatching("fabric.mod.json") {
-        expand(props)
-    }
-    exclude(".cache/*")
-}
-
-val mappingsMcVersion = if (hasProperty("mc")) findProperty("mc") else properties["minecraft_version"]
-
-if (hasProperty("yv")) {
-    val updateCommonSources = tasks.register<net.fabricmc.loom.task.MigrateMappingsTask>("updateCommonSources") {
-        setInputDir(rootDir.toPath().resolve("fabric/commonSrc/main/java").toString())
-        setOutputDir(rootDir.toPath().resolve("fabric/commonSrc/main/java").toString())
-        setMappings("net.fabricmc:yarn:${mappingsMcVersion}+build.${findProperty("yv")}")
-    }
-
-    tasks.register<net.fabricmc.loom.task.MigrateMappingsTask>("updateFabricSources") {
-        dependsOn(updateCommonSources)
-
-        setInputDir(file("src/main/java").toString())
-        setOutputDir(file("src/main/java").toString())
-        setMappings("net.fabricmc:yarn:${mappingsMcVersion}+build.${findProperty("yv")}")
-    }
-}
+//val mappingsMcVersion = if (hasProperty("mc")) findProperty("mc") else properties["minecraft_version"]
+//
+//if (hasProperty("yv")) {
+//    val updateCommonSources = tasks.register<net.fabricmc.loom.task.MigrateMappingsTask>("updateCommonSources") {
+//        setInputDir(rootDir.toPath().resolve("fabric/commonSrc/main/java").toString())
+//        setOutputDir(rootDir.toPath().resolve("fabric/commonSrc/main/java").toString())
+//        setMappings("net.fabricmc:yarn:${mappingsMcVersion}+build.${findProperty("yv")}")
+//    }
+//
+//    tasks.register<net.fabricmc.loom.task.MigrateMappingsTask>("updateFabricSources") {
+//        dependsOn(updateCommonSources)
+//
+//        setInputDir(file("src/main/java").toString())
+//        setOutputDir(file("src/main/java").toString())
+//        setMappings("net.fabricmc:yarn:${mappingsMcVersion}+build.${findProperty("yv")}")
+//    }
+//}
+//
 
 tasks.register<net.fabricmc.loom.task.MigrateMappingsTask>("updateForgeSources") {
     setInputDir(rootDir.toPath().resolve("fabric/commonSrc/main/java").toString())
     setOutputDir(rootDir.toPath().resolve("forge/commonSrc/main/java").toString())
-    setMappings("net.minecraft:mappings:${mappingsMcVersion}")
+    setMappings("net.minecraft:mappings:1.18.1")
 }
-
-configurations {
-    create("dev")
-}
-
-tasks.jar {
-    archiveClassifier.set("dev")
-}
-
-artifacts {
-    add("dev", tasks.jar.get().archiveFile) {
-        builtBy(tasks.jar)
-    }
-}
+//
+//configurations {
+//    create("dev")
+//}
+//
+//tasks.jar {
+//    archiveClassifier.set("dev")
+//}
+//
+//artifacts {
+//    add("dev", tasks.jar.get().archiveFile) {
+//        builtBy(tasks.jar)
+//    }
+//}
 
 val remapJarTask: RemapJarTask = tasks.getByName<RemapJarTask>("remapJar") {
     archiveClassifier.set("fat")

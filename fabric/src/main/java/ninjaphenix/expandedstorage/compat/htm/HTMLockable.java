@@ -16,9 +16,9 @@
 package ninjaphenix.expandedstorage.compat.htm;
 
 import com.github.fabricservertools.htm.HTMContainerLock;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerPlayer;
 import ninjaphenix.expandedstorage.block.misc.BasicLockable;
 
 public final class HTMLockable extends BasicLockable {
@@ -26,22 +26,22 @@ public final class HTMLockable extends BasicLockable {
     private HTMContainerLock lock = new HTMContainerLock();
 
     @Override
-    public void writeLock(NbtCompound tag) {
+    public void writeLock(CompoundTag tag) {
         super.writeLock(tag);
-        NbtCompound subTag = new NbtCompound();
+        CompoundTag subTag = new CompoundTag();
         lock.toTag(subTag);
         tag.put(HTMLockable.LOCK_TAG_KEY, subTag);
     }
 
     @Override
-    public void readLock(NbtCompound tag) {
+    public void readLock(CompoundTag tag) {
         super.readLock(tag);
-        if (tag.contains(HTMLockable.LOCK_TAG_KEY, NbtElement.COMPOUND_TYPE))
+        if (tag.contains(HTMLockable.LOCK_TAG_KEY, Tag.TAG_COMPOUND))
             lock.fromTag(tag.getCompound(HTMLockable.LOCK_TAG_KEY));
     }
 
     @Override
-    public boolean canPlayerOpenLock(ServerPlayerEntity player) {
+    public boolean canPlayerOpenLock(ServerPlayer player) {
         return !lock.isLocked() && super.canPlayerOpenLock(player) || lock.isLocked() && lock.canOpen(player);
     }
 

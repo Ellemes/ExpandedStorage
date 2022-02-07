@@ -15,40 +15,40 @@
  */
 package ninjaphenix.expandedstorage.compat.carrier;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import me.steven.carrier.api.Carriable;
 import me.steven.carrier.api.CarriablePlacementContext;
 import me.steven.carrier.api.CarrierComponent;
 import me.steven.carrier.api.CarryingData;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3f;
-import net.minecraft.world.World;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import ninjaphenix.expandedstorage.block.entity.OldChestBlockEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class CarriableOldChest implements Carriable<Block> {
-    private final Identifier id;
+    private final ResourceLocation id;
     private final Block parent;
 
-    public CarriableOldChest(Identifier id, Block parent) {
+    public CarriableOldChest(ResourceLocation id, Block parent) {
         this.id = id;
         this.parent = parent;
     }
@@ -61,53 +61,53 @@ public class CarriableOldChest implements Carriable<Block> {
 
     @NotNull
     @Override
-    public final ActionResult tryPickup(@NotNull CarrierComponent component, @NotNull World world, @NotNull BlockPos pos, @Nullable Entity entity) {
-        if (world.isClient()) return ActionResult.PASS;
+    public final InteractionResult tryPickup(@NotNull CarrierComponent component, @NotNull Level world, @NotNull BlockPos pos, @Nullable Entity entity) {
+        if (world.isClientSide()) return InteractionResult.PASS;
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (blockEntity instanceof OldChestBlockEntity && !blockEntity.isRemoved()) {
-            NbtCompound tag = new NbtCompound();
-            tag.put("blockEntity", blockEntity.createNbt());
+            CompoundTag tag = new CompoundTag();
+            tag.put("blockEntity", blockEntity.saveWithoutMetadata());
             CarryingData carrying = new CarryingData(id, tag);
             component.setCarryingData(carrying);
             world.removeBlockEntity(pos);
             world.removeBlock(pos, false); // todo: may return false if failed to remove block?
-            return ActionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 
     @NotNull
     @Override
-    public final ActionResult tryPlace(@NotNull CarrierComponent component, @NotNull World world, @NotNull CarriablePlacementContext context) {
-        if (world.isClient()) return ActionResult.PASS;
+    public final InteractionResult tryPlace(@NotNull CarrierComponent component, @NotNull Level world, @NotNull CarriablePlacementContext context) {
+        if (world.isClientSide()) return InteractionResult.PASS;
         CarryingData carrying = component.getCarryingData();
-        if (carrying == null) return ActionResult.PASS; // Should never be null, but if it is just ignore.
+        if (carrying == null) return InteractionResult.PASS; // Should never be null, but if it is just ignore.
         BlockPos pos = context.getBlockPos();
-        BlockState state = this.parent.getPlacementState(new ItemPlacementContext(component.getOwner(), Hand.MAIN_HAND, ItemStack.EMPTY, new BlockHitResult(new Vec3d(pos.getX(), pos.getY(), pos.getZ()), context.getSide(), context.getBlockPos(), false)));
-        world.setBlockState(pos, state);
+        BlockState state = this.parent.getStateForPlacement(new BlockPlaceContext(component.getOwner(), InteractionHand.MAIN_HAND, ItemStack.EMPTY, new BlockHitResult(new Vec3(pos.getX(), pos.getY(), pos.getZ()), context.getSide(), context.getBlockPos(), false)));
+        world.setBlockAndUpdate(pos, state);
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (blockEntity == null) { // Should be very rare if not impossible to be null.
             world.removeBlock(pos, false);
-            return ActionResult.FAIL;
+            return InteractionResult.FAIL;
         }
-        blockEntity.readNbt(carrying.getBlockEntityTag());
+        blockEntity.load(carrying.getBlockEntityTag());
         component.setCarryingData(null);
-        return ActionResult.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
     @Override
-    public final void render(@NotNull PlayerEntity player, @NotNull CarrierComponent component, @NotNull MatrixStack stack, @NotNull VertexConsumerProvider consumer, float delta, int light) {
-        stack.push();
+    public final void render(@NotNull Player player, @NotNull CarrierComponent component, @NotNull PoseStack stack, @NotNull MultiBufferSource consumer, float delta, int light) {
+        stack.pushPose();
         stack.scale(0.6F, 0.6F, 0.6F);
-        float yaw = MathHelper.lerpAngleDegrees(delta, player.prevBodyYaw, player.bodyYaw);
-        stack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180 - yaw));
+        float yaw = Mth.approachDegrees(delta, player.yBodyRotO, player.yBodyRot);
+        stack.mulPose(Vector3f.YP.rotationDegrees(180 - yaw));
         stack.translate(-0.5D, 0.8D, -1.3D);
         this.preRenderBlock(player, component, stack, consumer, delta, light);
-        MinecraftClient.getInstance().getBlockRenderManager().renderBlockAsEntity(this.getParent().getDefaultState(), stack, consumer, light, OverlayTexture.DEFAULT_UV);
-        stack.pop();
+        Minecraft.getInstance().getBlockRenderer().renderSingleBlock(this.getParent().defaultBlockState(), stack, consumer, light, OverlayTexture.NO_OVERLAY);
+        stack.popPose();
     }
 
-    protected void preRenderBlock(PlayerEntity player, CarrierComponent component, MatrixStack stack, VertexConsumerProvider consumer, float delta, int light) {
+    protected void preRenderBlock(Player player, CarrierComponent component, PoseStack stack, MultiBufferSource consumer, float delta, int light) {
 
     }
 }

@@ -15,23 +15,23 @@
  */
 package ninjaphenix.expandedstorage.compat.carrier;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import me.steven.carrier.api.CarrierComponent;
-import net.minecraft.block.Block;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Block;
 
 public final class CarriableChest extends CarriableOldChest {
-    public CarriableChest(Identifier id, Block parent) {
+    public CarriableChest(ResourceLocation id, Block parent) {
         super(id, parent);
     }
 
     @Override
-    protected void preRenderBlock(PlayerEntity player, CarrierComponent component, MatrixStack stack, VertexConsumerProvider consumer, float delta, int light) {
+    protected void preRenderBlock(Player player, CarrierComponent component, PoseStack stack, MultiBufferSource consumer, float delta, int light) {
         stack.translate(0.5D, 0.5D, 0.5D);
-        stack.multiply(Vec3f.NEGATIVE_Y.getDegreesQuaternion(180.0F));
+        stack.mulPose(Vector3f.YN.rotationDegrees(180.0F));
         stack.translate(-0.5D, -0.5D, -0.5D);
     }
 }
