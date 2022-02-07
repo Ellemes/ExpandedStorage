@@ -3,35 +3,11 @@ import org.gradle.jvm.tasks.Jar
 
 plugins {
     id("ninjaphenix.gradle-utils")
-    id("net.minecraftforge.gradle").version("5.1.26")
-    id("org.spongepowered.mixin").version("0.7-SNAPSHOT")
-}
-
-mixin {
-    add(sourceSets.main.get(), "expandedstorage.refmap.json")
-    disableAnnotationProcessorCheck()
-}
-
-sourceSets {
-    main {
-        resources {
-            srcDir("src/main/generated")
-        }
-    }
-
-    create("datagen") {
-        compileClasspath += sourceSets.main.get().compileClasspath
-        runtimeClasspath += sourceSets.main.get().runtimeClasspath
-        compileClasspath += sourceSets.main.get().output
-        runtimeClasspath += sourceSets.main.get().output
-    }
+    id("net.minecraftforge.gradle")
+    id("org.spongepowered.mixin")
 }
 
 minecraft {
-    mappings("official", properties["minecraft_version"] as String)
-
-    accessTransformer(file("src/common/resources/META-INF/accesstransformer.cfg")) // Currently, this location cannot be changed from the default.
-
     runs {
         create("client") {
             workingDirectory(rootProject.file("run"))
@@ -105,23 +81,10 @@ repositories {
 }
 
 dependencies {
-    minecraft("net.minecraftforge:forge:${properties["minecraft_version"]}-${properties["forge_version"]}")
-    implementation(group = "org.spongepowered", name = "mixin", version = properties["mixin_version"] as String)
-    annotationProcessor(group = "org.spongepowered", name = "mixin", version = properties["mixin_version"] as String, classifier = "processor")
     //implementation(fg.deobf("curse.maven:ninjaphenixs-container-library-530668:3549171"))
     implementation(fg.deobf("ninjaphenix:container_library:1.3.0+1.18:forge"))
-    implementation(group = "org.jetbrains", name = "annotations", version = properties["jetbrains_annotations_version"] as String)
 
     //implementation(fg.deobf("mezz.jei:jei-${properties["jei_minecraft_version"]}:${properties["jei_version"]}"))
-}
-
-tasks.withType<ProcessResources> {
-    val props = mutableMapOf("version" to properties["mod_version"]) // Needs to be mutable
-    inputs.properties(props)
-    filesMatching("META-INF/mods.toml") {
-        expand(props)
-    }
-    exclude(".cache/*")
 }
 
 val jarTask = tasks.getByName<Jar>("jar") {

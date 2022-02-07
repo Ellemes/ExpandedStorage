@@ -81,10 +81,8 @@ public final class Main {
         Tag.Named<Block> miniChestCycle = BlockTags.createOptional(Utils.id("mini_chest_cycle"));
         Tag.Named<Block> miniChestSecretCycle = BlockTags.createOptional(Utils.id("mini_chest_secret_cycle"));
         Tag.Named<Block> miniChestSecretCycle2 = BlockTags.createOptional(Utils.id("mini_chest_secret_cycle_2"));
-        MenuType<MiniChestScreenHandler> screenHandlerType = new MenuType<>(MiniChestScreenHandler::createClientMenu);
-        screenHandlerType.setRegistryName(Utils.id("mini_chest_handler"));
         Common.registerContent(GenericItemAccess::new, BasicLockable::new,
-                new CreativeModeTab(Utils.MOD_ID) {
+                new CreativeModeTab(Utils.MOD_ID + ".tab") {
                     @Override
                     public ItemStack makeIcon() {
                         return new ItemStack(ForgeRegistries.ITEMS.getValue(Utils.id("netherite_chest")), 1);
@@ -94,14 +92,9 @@ public final class Main {
                 this::chestRegistration, BlockTags.createOptional(new ResourceLocation("forge", "chests/wooden")), ChestBlockItem::new, ChestItemAccess::new,
                 this::oldChestRegistration,
                 this::barrelRegistration, BlockTags.createOptional(new ResourceLocation("forge", "barrels/wooden")),
-                this::miniChestRegistration, MiniChestBlockItem::new, screenHandlerType,
+                this::miniChestRegistration, MiniChestBlockItem::new,
                 chestCycle, miniChestCycle, miniChestSecretCycle, miniChestSecretCycle2
         );
-        modBus.addGenericListener(MenuType.class, (RegistryEvent.Register<MenuType<?>> event) -> {
-            IForgeRegistry<MenuType<?>> registry = event.getRegistry();
-            registry.registerAll(Common.getMiniChestScreenHandlerType());
-        });
-        modBus.addListener((FMLClientSetupEvent event) -> MenuScreens.register(Common.getMiniChestScreenHandlerType(), MiniChestScreen::new));
 
         MinecraftForge.EVENT_BUS.addGenericListener(BlockEntity.class, (AttachCapabilitiesEvent<BlockEntity> event) -> {
             if (event.getObject() instanceof OpenableBlockEntity entity) {
