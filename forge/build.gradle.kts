@@ -7,66 +7,7 @@ plugins {
     id("org.spongepowered.mixin")
 }
 
-minecraft {
-    runs {
-        create("client") {
-            workingDirectory(rootProject.file("run"))
-            mods {
-                create("expandedstorage") {
-                    source(sourceSets.main.get())
-                }
-            }
-            // "SCAN": For mods scan.
-            // "REGISTRIES": For firing of registry events.
-            // "REGISTRYDUMP": For getting the contents of all registries.
-            //property("forge.logging.markers", "REGISTRIES")
-
-            // Recommended logging level for the console
-            // You can set various levels here.
-            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
-            //property("forge.logging.console.level", "debug")
-        }
-
-        create("server") {
-            workingDirectory(rootProject.file("run"))
-            mods {
-                create("expandedstorage") {
-                    source(sourceSets.main.get())
-                }
-            }
-            // "SCAN": For mods scan.
-            // "REGISTRIES": For firing of registry events.
-            // "REGISTRYDUMP": For getting the contents of all registries.
-            //property("forge.logging.markers", "REGISTRIES")
-
-            // Recommended logging level for the console
-            // You can set various levels here.
-            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
-            //property("forge.logging.console.level", "debug")
-        }
-
-        create("data") {
-            workingDirectory(rootProject.file("run"))
-            mods {
-                create("expandedstorage") {
-                    sources(sourceSets.main.get(), sourceSets.getByName("datagen"))
-                }
-            }
-            args("--mod", "expandedstorage", "--all",
-                    "--output", file("src/main/generated"),
-                    "--existing", file("src/main/resources"),
-                    "--existing", rootDir.resolve("common/src/main/resources"))
-        }
-    }
-}
-
 repositories {
-    maven {
-        url  = uri("https://cursemaven.com")
-        content {
-            includeGroup("curse.maven")
-        }
-    }
     maven {
         // JEI maven
         name = "Progwml6 maven"

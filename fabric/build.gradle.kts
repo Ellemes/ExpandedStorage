@@ -8,12 +8,6 @@ plugins {
 
 repositories {
     maven {
-        url  = uri("https://cursemaven.com")
-        content {
-            includeGroup("curse.maven")
-        }
-    }
-    maven {
         name = "Ladysnake maven"
         url = uri("https://ladysnake.jfrog.io/artifactory/mods")
         content {
