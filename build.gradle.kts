@@ -38,6 +38,7 @@ val curseforgeToken: String? = System.getenv("CURSEFORGE_TOKEN")
 
 val extraGameVersions = (properties["extra_game_versions"] as String).split(",")
 
+// todo: needs reworking as game version is now in gradle plugin
 if (modrinthToken != null) {
     if (forgeProject != null) {
         modrinthForgeTask = tasks.register<com.modrinth.minotaur.TaskModrinthUpload>("publishModrinthForge") {
@@ -148,17 +149,6 @@ val publishTask = tasks.create("publish") {
         if (it != null) {
             this.dependsOn(it)
             this.mustRunAfter(it)
-        }
-    }
-}
-
-if (hasProperty("yv")) {
-    // Usage: ./gradlew :updateFabricSources -Pmc="1.18-pre8" -Pyv="2"
-    tasks.register("updateFabricSources") {
-        subprojects.forEach {
-            if (it.name.startsWith("fabric")) {
-                dependsOn(it.tasks["updateFabricSources"])
-            }
         }
     }
 }

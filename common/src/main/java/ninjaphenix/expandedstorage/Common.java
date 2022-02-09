@@ -128,7 +128,7 @@ public final class Common {
     ) {
         ChestBlock block = new ChestBlock(tier.getBlockSettings().apply(settings), blockId, tier.getId(), stat, tier.getSlotCount());
         Common.registerTieredBlock(block);
-        return new BlockItemPair<>(block, blockItemMaker.apply(block, new Item.Properties().tab(group)));
+        return new BlockItemPair<>(block, blockItemMaker.apply(block, tier.getItemSettings().apply(new Item.Properties().tab(group))));
     }
 
     private static BlockItemPair<AbstractChestBlock, BlockItem> oldChestBlock(
