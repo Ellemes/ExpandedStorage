@@ -22,8 +22,8 @@ repositories {
 }
 
 dependencies {
-    //implementation(fg.deobf("curse.maven:ninjaphenixs-container-library-530668:3549171"))
-    implementation(fg.deobf("ninjaphenix:container_library:1.3.0+1.18:forge"))
+    implementation(fg.deobf("maven.modrinth:ninjaphenix-container-library:1.3.0+1.18-forge"))
+    //implementation(fg.deobf("ninjaphenix:container_library:1.3.0+1.18:forge"))
 
     //implementation(fg.deobf("mezz.jei:jei-${properties["jei_minecraft_version"]}:${properties["jei_version"]}"))
 }

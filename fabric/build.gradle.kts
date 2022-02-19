@@ -31,8 +31,8 @@ val excludeFabric: (ModuleDependency) -> Unit = {
 }
 
 dependencies {
-    //modImplementation(group = "curse.maven", name = "ninjaphenixs-container-library-530668", version = "3549144", dependencyConfiguration = excludeFabric)
-    modImplementation(group = "ninjaphenix", name = "container_library", version = "1.3.0+1.18", classifier = "fabric", dependencyConfiguration = excludeFabric)
+    modImplementation(group = "maven.modrinth", name = "ninjaphenix-container-library", version = "1.3.0+1.18-fabric", dependencyConfiguration = excludeFabric)
+    //modImplementation(group = "ninjaphenix", name = "container_library", version = "1.3.0+1.18", classifier = "fabric", dependencyConfiguration = excludeFabric)
 
     // For chest module
     modCompileOnly(group = "curse.maven", name = "statement-340604", version = "3423826", dependencyConfiguration = excludeFabric)

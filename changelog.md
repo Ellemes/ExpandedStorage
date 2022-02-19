@@ -1,1 +1,1 @@
-- Update translations thanks to https://github.com/seriousfreezing and https://github.com/RawPineapple
+Fix netherite chest burning up in lava.
