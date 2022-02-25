@@ -14,6 +14,7 @@ buildscript {
 }
 
 plugins {
+    java // todo: move publish code to sub-projects or move to different publishing method / custom gradle plugin
     id("fabric-loom").version("0.11.29").apply(false)
     id("net.minecraftforge.gradle").version("5.1.26").apply(false)
     id("org.spongepowered.mixin").version("0.7-SNAPSHOT").apply(false)
@@ -38,7 +39,6 @@ val curseforgeToken: String? = System.getenv("CURSEFORGE_TOKEN")
 
 val extraGameVersions = (properties["extra_game_versions"] as String).split(",")
 
-// todo: needs reworking as game version is now in gradle plugin
 if (modrinthToken != null) {
     if (forgeProject != null) {
         modrinthForgeTask = tasks.register<com.modrinth.minotaur.TaskModrinthUpload>("publishModrinthForge") {
@@ -49,11 +49,11 @@ if (modrinthToken != null) {
             changelog = realChangelog
             token = modrinthToken
             projectId = properties["modrinth_project_id"] as String
-            versionName = "Forge ${properties["mod_version"]}+${mod.getMinecraftVersion()}"
-            versionNumber = "${properties["mod_version"]}+${mod.getMinecraftVersion()}-forge"
+            versionName = "Forge ${properties["mod_version"]}+${mod.minecraftVersion}"
+            versionNumber = "${properties["mod_version"]}+${mod.minecraftVersion}-forge"
             versionType = VersionType.RELEASE
             uploadFile = releaseJarTask
-            addGameVersion(mod.getMinecraftVersion())
+            addGameVersion(mod.minecraftVersion)
             extraGameVersions.forEach {
                 addGameVersion(it)
             }
@@ -73,11 +73,11 @@ if (modrinthToken != null) {
             changelog = realChangelog
             token = modrinthToken
             projectId = properties["modrinth_project_id"] as String
-            versionName = "Fabric ${properties["mod_version"]}+${mod.getMinecraftVersion()}"
-            versionNumber = "${properties["mod_version"]}+${mod.getMinecraftVersion()}-fabric"
+            versionName = "Fabric ${properties["mod_version"]}+${mod.minecraftVersion}"
+            versionNumber = "${properties["mod_version"]}+${mod.minecraftVersion}-fabric"
             versionType = VersionType.RELEASE
             uploadFile = releaseJarTask
-            addGameVersion(mod.getMinecraftVersion())
+            addGameVersion(mod.minecraftVersion)
             extraGameVersions.forEach {
                 addGameVersion(it)
             }
@@ -87,7 +87,7 @@ if (modrinthToken != null) {
 }
 
 if (curseforgeToken != null) {
-    var gameVersion = mod.getMinecraftVersion()
+    var gameVersion = mod.minecraftVersion
     if ("w" in gameVersion || "rc" in gameVersion) {
         gameVersion = "1.18-Snapshot"
     }
@@ -103,7 +103,7 @@ if (curseforgeToken != null) {
                 artifact = releaseJarTask
                 changelogType = "markdown"
                 changelog = realChangelog
-                displayName = "[${mod.getMinecraftVersion()}] ${properties["mod_version"]}"
+                displayName = "[${mod.minecraftVersion}] ${properties["mod_version"]}"
                 releaseType = "release"
                 gameVersionStrings = listOf(gameVersion, "Forge", "Java ${properties["mod_java_version"]}") + extraGameVersions
                 curseRelations = CurseRelation().apply {
@@ -128,7 +128,7 @@ if (curseforgeToken != null) {
                 artifact = releaseJarTask
                 changelogType = "markdown"
                 changelog = realChangelog
-                displayName = "[${mod.getMinecraftVersion()}] ${properties["mod_version"]}"
+                displayName = "[${mod.minecraftVersion}] ${properties["mod_version"]}"
                 releaseType = "release"
                 gameVersionStrings = listOf(gameVersion, "Fabric", "Java ${properties["mod_java_version"]}") + extraGameVersions
                 curseRelations = CurseRelation().apply {
