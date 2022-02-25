@@ -23,7 +23,6 @@ import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
-import net.fabricmc.fabric.api.tag.TagFactory;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
@@ -36,8 +35,8 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -89,11 +88,11 @@ public final class Main implements ModInitializer {
         Common.registerContent(GenericItemAccess::new, fabricLoader.isModLoaded("htm") ? HTMLockable::new : BasicLockable::new,
                 group, isClient,
                 this::baseRegistration, true,
-                this::chestRegistration, TagFactory.BLOCK.create(new ResourceLocation("c", "wooden_chests")), BlockItem::new, ChestItemAccess::new,
+                this::chestRegistration, TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "wooden_chests")), BlockItem::new, ChestItemAccess::new,
                 this::oldChestRegistration,
-                this::barrelRegistration, TagFactory.BLOCK.create(new ResourceLocation("c", "wooden_barrels")),
+                this::barrelRegistration, TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "wooden_barrels")),
                 this::miniChestRegistration, BlockItem::new,
-                TagFactory.BLOCK.create(Utils.id("chest_cycle")), TagFactory.BLOCK.create(Utils.id("mini_chest_cycle")), TagFactory.BLOCK.create(Utils.id("mini_chest_secret_cycle")), TagFactory.BLOCK.create(Utils.id("mini_chest_secret_cycle_2")));
+                TagKey.create(Registry.BLOCK_REGISTRY, Utils.id("chest_cycle")), TagKey.create(Registry.BLOCK_REGISTRY, Utils.id("mini_chest_cycle")), TagKey.create(Registry.BLOCK_REGISTRY, Utils.id("mini_chest_secret_cycle")), TagKey.create(Registry.BLOCK_REGISTRY, Utils.id("mini_chest_secret_cycle_2")));
     }
 
     @SuppressWarnings({"UnstableApiUsage"})

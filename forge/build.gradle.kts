@@ -1,8 +1,7 @@
-import com.gitlab.ninjaphenix.gradle.api.task.MinifyJsonTask
 import org.gradle.jvm.tasks.Jar
 
 plugins {
-    id("ninjaphenix.gradle-utils")
+    id("ninjaphenix.gradle.mod").apply(false)
     id("net.minecraftforge.gradle")
     id("org.spongepowered.mixin")
 }
@@ -34,7 +33,7 @@ val jarTask = tasks.getByName<Jar>("jar") {
     this.finalizedBy("reobfJar")
 }
 
-val minifyJarTask = tasks.register<MinifyJsonTask>("minJar") {
+val minifyJarTask = tasks.register<ninjaphenix.gradle.mod.api.task.MinifyJsonTask>("minJar") {
     input.set(jarTask.outputs.files.singleFile)
     archiveClassifier.set("")
 

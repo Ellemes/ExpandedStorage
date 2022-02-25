@@ -15,8 +15,10 @@
  */
 package ninjaphenix.expandedstorage;
 
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.block.Rotation;
 import ninjaphenix.expandedstorage.block.AbstractChestBlock;
@@ -43,7 +45,6 @@ import ninjaphenix.expandedstorage.registration.BlockItemCollection;
 import ninjaphenix.expandedstorage.registration.BlockItemPair;
 import ninjaphenix.expandedstorage.registration.RegistrationConsumer;
 import ninjaphenix.expandedstorage.tier.Tier;
-import org.apache.commons.codec.digest.DigestUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -331,11 +332,11 @@ public final class Common {
     public static void registerContent(Function<OpenableBlockEntity, ItemAccess> itemAccess, Supplier<Lockable> lockable,
                                        CreativeModeTab group, boolean isClient,
                                        Consumer<Pair<ResourceLocation, Item>[]> baseRegistration, boolean manuallyWrapTooltips,
-                                       RegistrationConsumer<ChestBlock, BlockItem, ChestBlockEntity> chestRegistration, net.minecraft.tags.Tag.Named<Block> chestTag, BiFunction<ChestBlock, Item.Properties, BlockItem> chestItemMaker, Function<OpenableBlockEntity, ItemAccess> chestAccessMaker,
+                                       RegistrationConsumer<ChestBlock, BlockItem, ChestBlockEntity> chestRegistration, TagKey<Block> chestTag, BiFunction<ChestBlock, Item.Properties, BlockItem> chestItemMaker, Function<OpenableBlockEntity, ItemAccess> chestAccessMaker,
                                        RegistrationConsumer<AbstractChestBlock, BlockItem, OldChestBlockEntity> oldChestRegistration,
-                                       RegistrationConsumer<BarrelBlock, BlockItem, BarrelBlockEntity> barrelRegistration, net.minecraft.tags.Tag.Named<Block> barrelTag,
+                                       RegistrationConsumer<BarrelBlock, BlockItem, BarrelBlockEntity> barrelRegistration, TagKey<Block> barrelTag,
                                        RegistrationConsumer<MiniChestBlock, BlockItem, MiniChestBlockEntity> miniChestRegistration, BiFunction<MiniChestBlock, Item.Properties, BlockItem> miniChestItemMaker,
-                                       net.minecraft.tags.Tag.Named<Block> chestCycle, net.minecraft.tags.Tag.Named<Block> miniChestCycle, net.minecraft.tags.Tag.Named<Block> miniChestSecretCycle, net.minecraft.tags.Tag.Named<Block> miniChestSecretCycle2) {
+                                       TagKey<Block> chestCycle, TagKey<Block> miniChestCycle, TagKey<Block> miniChestSecretCycle, TagKey<Block> miniChestSecretCycle2) {
         Common.itemAccess = itemAccess;
         Common.lockable = lockable;
         final Tier woodTier = new Tier(Utils.WOOD_TIER_ID, Utils.WOOD_STACK_COUNT, UnaryOperator.identity(), UnaryOperator.identity());
@@ -383,7 +384,7 @@ public final class Common {
         Common.chestBlockEntityType = BlockEntityType.Builder.of((pos, state) -> new ChestBlockEntity(Common.getChestBlockEntityType(), pos, state, ((OpenableBlock) state.getBlock()).getBlockId(), chestAccessMaker, Common.lockable), chestContent.getBlocks()).build(Util.fetchChoiceType(References.BLOCK_ENTITY, Common.CHEST_BLOCK_TYPE.toString()));
         chestRegistration.accept(chestContent, Common.chestBlockEntityType);
         // Register chest upgrade behaviours
-        Predicate<Block> isUpgradableChestBlock = (block) -> block instanceof ChestBlock || block instanceof net.minecraft.world.level.block.ChestBlock || chestTag.contains(block);
+        Predicate<Block> isUpgradableChestBlock = (block) -> block instanceof ChestBlock || block instanceof net.minecraft.world.level.block.ChestBlock || block.defaultBlockState().is(chestTag);
         Common.defineBlockUpgradeBehaviour(isUpgradableChestBlock, (context, from, to) -> {
             Level world = context.getLevel();
             BlockPos pos = context.getClickedPos();
@@ -481,7 +482,7 @@ public final class Common {
         Common.barrelBlockEntityType = BlockEntityType.Builder.of((pos, state) -> new BarrelBlockEntity(Common.getBarrelBlockEntityType(), pos, state, ((OpenableBlock) state.getBlock()).getBlockId(), Common.itemAccess, Common.lockable), barrelContent.getBlocks()).build(Util.fetchChoiceType(References.BLOCK_ENTITY, Common.BARREL_BLOCK_TYPE.toString()));
         barrelRegistration.accept(barrelContent, Common.barrelBlockEntityType);
         // Register upgrade behaviours
-        Predicate<Block> isUpgradableBarrelBlock = (block) -> block instanceof BarrelBlock || block instanceof net.minecraft.world.level.block.BarrelBlock || barrelTag.contains(block);
+        Predicate<Block> isUpgradableBarrelBlock = (block) -> block instanceof BarrelBlock || block instanceof net.minecraft.world.level.block.BarrelBlock || block.defaultBlockState().is(barrelTag);
         Common.defineBlockUpgradeBehaviour(isUpgradableBarrelBlock, (context, from, to) -> {
             Level world = context.getLevel();
             BlockPos pos = context.getClickedPos();
@@ -651,7 +652,9 @@ public final class Common {
             return InteractionResult.SUCCESS;
         });
         Common.registerMutationBehaviour(b -> b instanceof ChestBlock, MutationMode.SWAP_THEME, (context, world, state, pos, stack) -> {
-            List<Block> blocks = chestCycle.getValues();
+            // todo: better method of doing this?
+            List<Block> blocks = Registry.BLOCK.getOrCreateTag(chestCycle).stream().map(Holder::value).toList();
+            //List<Block> blocks = chestCycle.getValues();
             int index = blocks.indexOf(state.getBlock());
             if (index != -1) { // Cannot change style e.g. iron chest, ect.
                 Block next = blocks.get((index + 1) % blocks.size());
@@ -672,7 +675,7 @@ public final class Common {
             }
             return InteractionResult.FAIL;
         });
-        Predicate<Block> isBarrelBlock = b -> b instanceof BarrelBlock || b instanceof net.minecraft.world.level.block.BarrelBlock || barrelTag.contains(b);
+        Predicate<Block> isBarrelBlock = b -> b instanceof BarrelBlock || b instanceof net.minecraft.world.level.block.BarrelBlock || b.defaultBlockState().is(barrelTag);
         Common.registerMutationBehaviour(isBarrelBlock, MutationMode.ROTATE, (context, world, state, pos, stack) -> {
             if (state.hasProperty(BlockStateProperties.FACING)) {
                 if (!world.isClientSide()) {
@@ -690,14 +693,20 @@ public final class Common {
             return InteractionResult.SUCCESS;
         });
         Common.registerMutationBehaviour(isMiniChest, MutationMode.SWAP_THEME, (context, world, state, pos, stack) -> {
-            String nameHash = DigestUtils.md5Hex(stack.getDisplayName().getString());
+            String itemName = stack.getHoverName().getString();
             List<Block> blocks;
-            if (nameHash.equals("4c88924788f419b562d50acfddc3a781")) {
-                blocks = miniChestSecretCycle.getValues();
-            } else if (nameHash.equals("ef5a30521df4c0dc7568844eefe7e7e3")) {
-                blocks = miniChestSecretCycle2.getValues();
+            if (itemName.equals("Sunrise")) {
+                // todo: better method of doing this?
+                blocks = Registry.BLOCK.getOrCreateTag(miniChestSecretCycle).stream().map(Holder::value).toList();
+                //blocks = miniChestSecretCycle.getValues();
+            } else if (itemName.equals("Sparrow")) {
+                // todo: better method of doing this?
+                blocks = Registry.BLOCK.getOrCreateTag(miniChestSecretCycle2).stream().map(Holder::value).toList();
+                //blocks = miniChestSecretCycle2.getValues();
             } else {
-                blocks = miniChestCycle.getValues();
+                // todo: better method of doing this?
+                blocks = Registry.BLOCK.getOrCreateTag(miniChestCycle).stream().map(Holder::value).toList();
+                //blocks = miniChestCycle.getValues();
             }
             int index = blocks.indexOf(state.getBlock());
             if (index != -1) { // Illegal state / misconfigured tag

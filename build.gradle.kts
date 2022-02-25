@@ -18,8 +18,7 @@ plugins {
     id("fabric-loom").version("0.11.29").apply(false)
     id("net.minecraftforge.gradle").version("5.1.26").apply(false)
     id("org.spongepowered.mixin").version("0.7-SNAPSHOT").apply(false)
-    id("ninjaphenix.gradle-utils").version("0.1.0-beta.7").apply(false)
-    id("ninjaphenix.gradle.mod").version("6.1.0.1")
+    id("ninjaphenix.gradle.mod").version("6.2.0.0")
     id("com.modrinth.minotaur").version("1.2.1")
     id("com.matthewprenger.cursegradle").version("1.4.0")
 }

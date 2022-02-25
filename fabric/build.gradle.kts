@@ -1,9 +1,8 @@
-import com.gitlab.ninjaphenix.gradle.api.task.MinifyJsonTask
 import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
     id("fabric-loom")
-    id("ninjaphenix.gradle-utils")
+    id("ninjaphenix.gradle.mod").apply(false)
 }
 
 repositories {
@@ -66,7 +65,7 @@ val remapJarTask: RemapJarTask = tasks.getByName<RemapJarTask>("remapJar") {
     dependsOn(tasks.jar)
 }
 
-val minifyJarTask = tasks.register<MinifyJsonTask>("minJar") {
+val minifyJarTask = tasks.register<ninjaphenix.gradle.mod.api.task.MinifyJsonTask>("minJar") {
     input.set(remapJarTask.outputs.files.singleFile)
     archiveClassifier.set("")
     from(rootDir.resolve("LICENSE"))
