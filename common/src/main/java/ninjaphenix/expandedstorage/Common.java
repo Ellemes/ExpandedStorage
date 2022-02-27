@@ -652,9 +652,7 @@ public final class Common {
             return InteractionResult.SUCCESS;
         });
         Common.registerMutationBehaviour(b -> b instanceof ChestBlock, MutationMode.SWAP_THEME, (context, world, state, pos, stack) -> {
-            // todo: better method of doing this?
-            List<Block> blocks = Registry.BLOCK.getOrCreateTag(TagReloadListener.chestCycle).stream().map(Holder::value).toList();
-            //List<Block> blocks = chestCycle.getValues();
+            List<Block> blocks = tagReloadListener.getChestCycleBlocks();
             int index = blocks.indexOf(state.getBlock());
             if (index != -1) { // Cannot change style e.g. iron chest, ect.
                 Block next = blocks.get((index + 1) % blocks.size());

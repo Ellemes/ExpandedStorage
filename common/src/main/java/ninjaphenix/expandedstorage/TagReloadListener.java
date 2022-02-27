@@ -9,6 +9,7 @@ import java.util.List;
 
 public class TagReloadListener {
     public static final TagKey<Block> chestCycle = TagKey.create(Registry.BLOCK_REGISTRY, Utils.id("chest_cycle"));
+    private List<Block> chestCycleBlocks = null;
     public static final TagKey<Block> miniChestCycle = TagKey.create(Registry.BLOCK_REGISTRY, Utils.id("mini_chest_cycle"));
     private List<Block> miniChestCycleBlocks = null;
     public static final TagKey<Block> miniChestSecretCycle = TagKey.create(Registry.BLOCK_REGISTRY, Utils.id("mini_chest_secret_cycle"));
@@ -17,9 +18,17 @@ public class TagReloadListener {
     private List<Block> miniChestSecretCycle2Blocks = null;
 
     public void postDataReload() {
+        chestCycleBlocks = Registry.BLOCK.getOrCreateTag(chestCycle).stream().map(Holder::value).toList();
         miniChestCycleBlocks = Registry.BLOCK.getOrCreateTag(miniChestCycle).stream().map(Holder::value).toList();
         miniChestSecretCycleBlocks = Registry.BLOCK.getOrCreateTag(miniChestSecretCycle).stream().map(Holder::value).toList();
         miniChestSecretCycle2Blocks = Registry.BLOCK.getOrCreateTag(miniChestSecretCycle2).stream().map(Holder::value).toList();
+    }
+
+    public List<Block> getChestCycleBlocks() {
+        if (chestCycleBlocks == null) { // In case no reload has happened yet, any better way to do this?
+            this.postDataReload();
+        }
+        return chestCycleBlocks;
     }
 
     public List<Block> getMiniChestCycleBlocks() {
