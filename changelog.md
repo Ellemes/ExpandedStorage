@@ -1,1 +1,1 @@
-- Update to 1.18.2 release candidate 1.
+- Very minor code changes.
