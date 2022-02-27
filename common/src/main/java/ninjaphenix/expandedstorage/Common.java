@@ -336,7 +336,7 @@ public final class Common {
                                        RegistrationConsumer<AbstractChestBlock, BlockItem, OldChestBlockEntity> oldChestRegistration,
                                        RegistrationConsumer<BarrelBlock, BlockItem, BarrelBlockEntity> barrelRegistration, TagKey<Block> barrelTag,
                                        RegistrationConsumer<MiniChestBlock, BlockItem, MiniChestBlockEntity> miniChestRegistration, BiFunction<MiniChestBlock, Item.Properties, BlockItem> miniChestItemMaker,
-                                       TagKey<Block> chestCycle, TagKey<Block> miniChestCycle, TagKey<Block> miniChestSecretCycle, TagKey<Block> miniChestSecretCycle2) {
+                                       TagReloadListener tagReloadListener) {
         Common.itemAccess = itemAccess;
         Common.lockable = lockable;
         final Tier woodTier = new Tier(Utils.WOOD_TIER_ID, Utils.WOOD_STACK_COUNT, UnaryOperator.identity(), UnaryOperator.identity());
@@ -653,7 +653,7 @@ public final class Common {
         });
         Common.registerMutationBehaviour(b -> b instanceof ChestBlock, MutationMode.SWAP_THEME, (context, world, state, pos, stack) -> {
             // todo: better method of doing this?
-            List<Block> blocks = Registry.BLOCK.getOrCreateTag(chestCycle).stream().map(Holder::value).toList();
+            List<Block> blocks = Registry.BLOCK.getOrCreateTag(TagReloadListener.chestCycle).stream().map(Holder::value).toList();
             //List<Block> blocks = chestCycle.getValues();
             int index = blocks.indexOf(state.getBlock());
             if (index != -1) { // Cannot change style e.g. iron chest, ect.
@@ -696,17 +696,11 @@ public final class Common {
             String itemName = stack.getHoverName().getString();
             List<Block> blocks;
             if (itemName.equals("Sunrise")) {
-                // todo: better method of doing this?
-                blocks = Registry.BLOCK.getOrCreateTag(miniChestSecretCycle).stream().map(Holder::value).toList();
-                //blocks = miniChestSecretCycle.getValues();
+                blocks = tagReloadListener.getMiniChestSecretCycleBlocks();
             } else if (itemName.equals("Sparrow")) {
-                // todo: better method of doing this?
-                blocks = Registry.BLOCK.getOrCreateTag(miniChestSecretCycle2).stream().map(Holder::value).toList();
-                //blocks = miniChestSecretCycle2.getValues();
+                blocks = tagReloadListener.getMiniChestSecretCycle2Blocks();
             } else {
-                // todo: better method of doing this?
-                blocks = Registry.BLOCK.getOrCreateTag(miniChestCycle).stream().map(Holder::value).toList();
-                //blocks = miniChestCycle.getValues();
+                blocks = tagReloadListener.getMiniChestCycleBlocks();
             }
             int index = blocks.indexOf(state.getBlock());
             if (index != -1) { // Illegal state / misconfigured tag

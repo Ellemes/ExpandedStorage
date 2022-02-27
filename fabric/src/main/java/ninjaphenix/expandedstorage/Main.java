@@ -23,6 +23,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
@@ -36,7 +37,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -85,6 +90,7 @@ public final class Main implements ModInitializer {
 
         CreativeModeTab group = FabricItemGroupBuilder.build(Utils.id("tab"), () -> new ItemStack(Registry.ITEM.get(Utils.id("netherite_chest")))); // Fabric API is dumb.
         boolean isClient = fabricLoader.getEnvironmentType() == EnvType.CLIENT;
+        TagReloadListener tagReloadListener = new TagReloadListener();
         Common.registerContent(GenericItemAccess::new, fabricLoader.isModLoaded("htm") ? HTMLockable::new : BasicLockable::new,
                 group, isClient,
                 this::baseRegistration, true,
@@ -92,7 +98,9 @@ public final class Main implements ModInitializer {
                 this::oldChestRegistration,
                 this::barrelRegistration, TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "wooden_barrels")),
                 this::miniChestRegistration, BlockItem::new,
-                TagKey.create(Registry.BLOCK_REGISTRY, Utils.id("chest_cycle")), TagKey.create(Registry.BLOCK_REGISTRY, Utils.id("mini_chest_cycle")), TagKey.create(Registry.BLOCK_REGISTRY, Utils.id("mini_chest_secret_cycle")), TagKey.create(Registry.BLOCK_REGISTRY, Utils.id("mini_chest_secret_cycle_2")));
+                tagReloadListener);
+
+        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, success) -> tagReloadListener.postDataReload());
     }
 
     @SuppressWarnings({"UnstableApiUsage"})
