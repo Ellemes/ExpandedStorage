@@ -16,7 +16,6 @@
 package ninjaphenix.expandedstorage.block.entity;
 
 import ninjaphenix.container_library.api.helpers.VariableSidedInventory;
-import ninjaphenix.expandedstorage.block.AbstractChestBlock;
 import ninjaphenix.expandedstorage.block.OpenableBlock;
 import ninjaphenix.expandedstorage.block.entity.extendable.InventoryBlockEntity;
 import ninjaphenix.expandedstorage.block.entity.extendable.OpenableBlockEntity;
