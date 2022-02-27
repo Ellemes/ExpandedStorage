@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NinjaPhenix
+ * Copyright 2021 - 2022 NinjaPhenix
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ninjaphenix.expandedstorage.data.content;
+package ninjaphenix.expandedstorage.datagen.content;
 
-import net.minecraft.block.Block;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
 import ninjaphenix.expandedstorage.Utils;
 import ninjaphenix.expandedstorage.block.AbstractChestBlock;
 import ninjaphenix.expandedstorage.block.BarrelBlock;
@@ -67,7 +67,7 @@ public final class ModBlocks {
     public static final MiniChestBlock LAVENDER_MINI_PRESENT_WITH_SPARROW = block(Utils.id("lavender_mini_present_with_sparrow"));
     public static final MiniChestBlock PINK_AMETHYST_MINI_PRESENT_WITH_SPARROW = block(Utils.id("pink_amethyst_mini_present_with_sparrow"));
 
-    private static <T extends Block> T block(Identifier id) {
+    private static <T extends Block> T block(ResourceLocation id) {
         //noinspection unchecked
         return (T) Registry.BLOCK.get(id);
     }

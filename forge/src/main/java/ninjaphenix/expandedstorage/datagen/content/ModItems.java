@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NinjaPhenix
+ * Copyright 2021 - 2022 NinjaPhenix
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ninjaphenix.expandedstorage.data.content;
+package ninjaphenix.expandedstorage.datagen.content;
 
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraftforge.registries.ForgeRegistries;
 import ninjaphenix.expandedstorage.Utils;
 
 public final class ModItems {
@@ -71,8 +71,8 @@ public final class ModItems {
     public static final BlockItem CANDY_CANE_MINI_PRESENT = item(Utils.id("candy_cane_mini_present"));
     public static final BlockItem GREEN_MINI_PRESENT = item(Utils.id("green_mini_present"));
 
-    private static <T extends Item> T item(Identifier id) {
+    private static <T extends Item> T item(ResourceLocation id) {
         //noinspection unchecked
-        return (T) Registry.ITEM.get(id);
+        return (T) ForgeRegistries.ITEMS.getValue(id);
     }
 }

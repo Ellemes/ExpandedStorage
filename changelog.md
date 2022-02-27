@@ -1,1 +1,1 @@
-Fix netherite chest burning up in lava.
+- Update to 1.18.2 release candidate 1.

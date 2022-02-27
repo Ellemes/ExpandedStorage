@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NinjaPhenix
+ * Copyright 2021 - 2022 NinjaPhenix
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ninjaphenix.expandedstorage.data;
+package ninjaphenix.expandedstorage.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import ninjaphenix.expandedstorage.data.providers.BlockLootProvider;
-import ninjaphenix.expandedstorage.data.providers.BlockStateProvider;
-import ninjaphenix.expandedstorage.data.providers.RecipeProvider;
-import ninjaphenix.expandedstorage.data.providers.TagProvider;
+import ninjaphenix.expandedstorage.datagen.providers.BlockLootProvider;
+import ninjaphenix.expandedstorage.datagen.providers.BlockStateProvider;
+import ninjaphenix.expandedstorage.datagen.providers.RecipeProvider;
+import ninjaphenix.expandedstorage.datagen.providers.TagProvider;
 
 public final class Main implements DataGeneratorEntrypoint {
     @Override

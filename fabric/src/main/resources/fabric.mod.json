@@ -12,7 +12,7 @@
   },
   "entrypoints": {
     "main": ["ninjaphenix.expandedstorage.Main"],
-    "fabric-datagen": ["ninjaphenix.expandedstorage.data.Main"]
+    "fabric-datagen": ["ninjaphenix.expandedstorage.datagen.Main"]
   },
   "environment": "*",
   "authors": ["NinjaPhenix"],

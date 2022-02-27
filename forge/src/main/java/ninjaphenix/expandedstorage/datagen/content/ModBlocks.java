@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NinjaPhenix
+ * Copyright 2021 - 2022 NinjaPhenix
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ninjaphenix.expandedstorage.data.content;
+package ninjaphenix.expandedstorage.datagen.content;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;

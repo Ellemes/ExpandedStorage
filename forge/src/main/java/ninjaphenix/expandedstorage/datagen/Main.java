@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NinjaPhenix
+ * Copyright 2021 - 2022 NinjaPhenix
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ninjaphenix.expandedstorage.data;
+package ninjaphenix.expandedstorage.datagen;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
@@ -21,12 +21,12 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
-import ninjaphenix.expandedstorage.data.providers.BlockStatesAndModels;
-import ninjaphenix.expandedstorage.data.providers.ItemModelProvider;
-import ninjaphenix.expandedstorage.data.providers.LanguageProvider;
-import ninjaphenix.expandedstorage.data.providers.LootTableProvider;
-import ninjaphenix.expandedstorage.data.providers.RecipeProvider;
-import ninjaphenix.expandedstorage.data.providers.TagProvider;
+import ninjaphenix.expandedstorage.datagen.providers.BlockStatesAndModels;
+import ninjaphenix.expandedstorage.datagen.providers.ItemModelProvider;
+import ninjaphenix.expandedstorage.datagen.providers.LanguageProvider;
+import ninjaphenix.expandedstorage.datagen.providers.LootTableProvider;
+import ninjaphenix.expandedstorage.datagen.providers.RecipeProvider;
+import ninjaphenix.expandedstorage.datagen.providers.TagProvider;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class Main {

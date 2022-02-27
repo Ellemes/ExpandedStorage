@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NinjaPhenix
+ * Copyright 2021 - 2022 NinjaPhenix
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ninjaphenix.expandedstorage.data.providers;
+package ninjaphenix.expandedstorage.datagen.providers;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import ninjaphenix.expandedstorage.Utils;
-import ninjaphenix.expandedstorage.data.content.ModItems;
+import ninjaphenix.expandedstorage.datagen.content.ModItems;
 
 public final class ItemModelProvider extends net.minecraftforge.client.model.generators.ItemModelProvider {
     public ItemModelProvider(DataGenerator generator, ExistingFileHelper fileHelper) {

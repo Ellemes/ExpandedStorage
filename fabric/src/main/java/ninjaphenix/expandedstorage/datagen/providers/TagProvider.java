@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NinjaPhenix
+ * Copyright 2021 - 2022 NinjaPhenix
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ninjaphenix.expandedstorage.data.providers;
+package ninjaphenix.expandedstorage.datagen.providers;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.Items;
-import net.minecraft.tag.BlockTags;
-import net.minecraft.tag.ItemTags;
-import ninjaphenix.expandedstorage.data.content.ModBlocks;
-import ninjaphenix.expandedstorage.data.content.ModItems;
-import ninjaphenix.expandedstorage.data.content.ModTags;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
+import ninjaphenix.expandedstorage.datagen.content.ModBlocks;
+import ninjaphenix.expandedstorage.datagen.content.ModItems;
+import ninjaphenix.expandedstorage.datagen.content.ModTags;
 
 public final class TagProvider {
     public static final class Block extends FabricTagProvider.BlockTagProvider {
@@ -39,7 +39,7 @@ public final class TagProvider {
                 .add(ModBlocks.WOOD_CHEST);
             this.getOrCreateTagBuilder(ModTags.Blocks.WOODEN_BARRELS)
                 .add(Blocks.BARREL);
-            this.getOrCreateTagBuilder(BlockTags.AXE_MINEABLE)
+            this.getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_AXE)
                 .add(ModBlocks.IRON_BARREL)
                 .add(ModBlocks.GOLD_BARREL)
                 .add(ModBlocks.DIAMOND_BARREL)
@@ -67,7 +67,7 @@ public final class TagProvider {
                 .add(ModBlocks.GREEN_MINI_PRESENT_WITH_SPARROW)
                 .add(ModBlocks.LAVENDER_MINI_PRESENT_WITH_SPARROW)
                 .add(ModBlocks.PINK_AMETHYST_MINI_PRESENT_WITH_SPARROW);
-            this.getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE)
+            this.getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(ModBlocks.IRON_CHEST)
                 .add(ModBlocks.GOLD_CHEST)
                 .add(ModBlocks.DIAMOND_CHEST)

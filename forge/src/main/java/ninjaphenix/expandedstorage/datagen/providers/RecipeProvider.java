@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NinjaPhenix
+ * Copyright 2021 - 2022 NinjaPhenix
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ninjaphenix.expandedstorage.data.providers;
+package ninjaphenix.expandedstorage.datagen.providers;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -28,8 +28,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
 import ninjaphenix.expandedstorage.Utils;
-import ninjaphenix.expandedstorage.data.content.ModItems;
-import ninjaphenix.expandedstorage.data.content.ModTags;
+import ninjaphenix.expandedstorage.datagen.content.ModItems;
+import ninjaphenix.expandedstorage.datagen.content.ModTags;
 
 import java.util.function.Consumer;
 

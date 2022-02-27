@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NinjaPhenix
+ * Copyright 2021 - 2022 NinjaPhenix
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,19 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ninjaphenix.expandedstorage.data.providers;
+package ninjaphenix.expandedstorage.datagen.providers;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.data.loot.BlockLoot;
-import net.minecraft.world.level.block.Block;
-import net.minecraftforge.registries.ForgeRegistries;
-import ninjaphenix.expandedstorage.Utils;
-import ninjaphenix.expandedstorage.data.content.ModBlocks;
+import ninjaphenix.expandedstorage.datagen.content.ModBlocks;
 
-import java.util.stream.Collectors;
+public final class BlockLootProvider extends FabricBlockLootTableProvider {
+    public BlockLootProvider(FabricDataGenerator dataGenerator) {
+        super(dataGenerator);
+    }
 
-public final class BlockLootProvider extends BlockLoot {
     @Override
-    protected void addTables() {
+    protected void generateBlockLootTables() {
         this.add(ModBlocks.WOOD_CHEST, BlockLoot::createNameableBlockEntityTable);
         this.add(ModBlocks.PUMPKIN_CHEST, BlockLoot::createNameableBlockEntityTable);
         this.add(ModBlocks.PRESENT, BlockLoot::createNameableBlockEntityTable);
@@ -67,11 +68,5 @@ public final class BlockLootProvider extends BlockLoot {
         this.add(ModBlocks.GREEN_MINI_PRESENT_WITH_SPARROW, BlockLoot::createNameableBlockEntityTable);
         this.add(ModBlocks.LAVENDER_MINI_PRESENT_WITH_SPARROW, BlockLoot::createNameableBlockEntityTable);
         this.add(ModBlocks.PINK_AMETHYST_MINI_PRESENT_WITH_SPARROW, BlockLoot::createNameableBlockEntityTable);
-    }
-
-    @Override
-    @SuppressWarnings("ConstantConditions")
-    protected Iterable<Block> getKnownBlocks() {
-        return ForgeRegistries.BLOCKS.getValues().stream().filter(block -> Utils.MOD_ID.equals(block.getRegistryName().getNamespace())).collect(Collectors.toSet());
     }
 }
