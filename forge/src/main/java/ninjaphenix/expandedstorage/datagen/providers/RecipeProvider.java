@@ -21,7 +21,7 @@ import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.UpgradeRecipeBuilder;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -387,14 +387,14 @@ public final class RecipeProvider extends net.minecraft.data.recipes.RecipeProvi
     }
 
     @SuppressWarnings("SpellCheckingInspection")
-    private static void smithingRecipe(Item output, Item base, Tag<Item> addition, String criterion, Consumer<FinishedRecipe> exporter) {
+    private static void smithingRecipe(Item output, Item base, TagKey<Item> addition, String criterion, Consumer<FinishedRecipe> exporter) {
         UpgradeRecipeBuilder.smithing(Ingredient.of(base), Ingredient.of(addition), output)
                             .unlocks(criterion, RecipeProvider.has(base))
                             .save(exporter, output.getRegistryName());
 
     }
 
-    private static ShapedRecipeBuilder shapedRecipe(ItemLike output, int count, String criterion, Tag<Item> tag) {
+    private static ShapedRecipeBuilder shapedRecipe(ItemLike output, int count, String criterion, TagKey<Item> tag) {
         return ShapedRecipeBuilder.shaped(output, count).unlockedBy(criterion, RecipeProvider.has(tag));
     }
 

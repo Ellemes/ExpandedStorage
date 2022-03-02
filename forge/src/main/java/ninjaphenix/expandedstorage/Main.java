@@ -15,16 +15,14 @@
  */
 package ninjaphenix.expandedstorage;
 
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
-import net.minecraft.world.inventory.MenuType;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -66,7 +64,6 @@ import ninjaphenix.expandedstorage.block.misc.BasicLockable;
 import ninjaphenix.expandedstorage.block.misc.CursedChestType;
 import ninjaphenix.expandedstorage.block.misc.DoubleItemAccess;
 import ninjaphenix.expandedstorage.client.ChestBlockEntityRenderer;
-import ninjaphenix.expandedstorage.client.MiniChestScreen;
 import ninjaphenix.expandedstorage.registration.BlockItemCollection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -77,10 +74,7 @@ public final class Main {
     private final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 
     public Main() {
-        Tag.Named<Block> chestCycle = BlockTags.createOptional(Utils.id("chest_cycle"));
-        Tag.Named<Block> miniChestCycle = BlockTags.createOptional(Utils.id("mini_chest_cycle"));
-        Tag.Named<Block> miniChestSecretCycle = BlockTags.createOptional(Utils.id("mini_chest_secret_cycle"));
-        Tag.Named<Block> miniChestSecretCycle2 = BlockTags.createOptional(Utils.id("mini_chest_secret_cycle_2"));
+        TagReloadListener tagReloadListener = new TagReloadListener();
         Common.registerContent(GenericItemAccess::new, BasicLockable::new,
                 new CreativeModeTab(Utils.MOD_ID + ".tab") {
                     @Override
@@ -89,11 +83,11 @@ public final class Main {
                     }
                 }, FMLLoader.getDist().isClient(),
                 this::baseRegistration, false,
-                this::chestRegistration, BlockTags.createOptional(new ResourceLocation("forge", "chests/wooden")), ChestBlockItem::new, ChestItemAccess::new,
+                this::chestRegistration, TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("forge", "chests/wooden")), ChestBlockItem::new, ChestItemAccess::new,
                 this::oldChestRegistration,
-                this::barrelRegistration, BlockTags.createOptional(new ResourceLocation("forge", "barrels/wooden")),
+                this::barrelRegistration, TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("forge", "barrels/wooden")),
                 this::miniChestRegistration, MiniChestBlockItem::new,
-                chestCycle, miniChestCycle, miniChestSecretCycle, miniChestSecretCycle2
+                tagReloadListener
         );
 
         MinecraftForge.EVENT_BUS.addGenericListener(BlockEntity.class, (AttachCapabilitiesEvent<BlockEntity> event) -> {

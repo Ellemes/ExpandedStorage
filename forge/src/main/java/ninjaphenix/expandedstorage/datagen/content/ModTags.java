@@ -15,30 +15,32 @@
  */
 package ninjaphenix.expandedstorage.datagen.content;
 
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import ninjaphenix.expandedstorage.Utils;
 
 public final class ModTags {
     public static class Blocks {
-        public static final Tag.Named<Block> CHEST_CYCLE = tag(Utils.id("chest_cycle"));
-        public static final Tag.Named<Block> MINI_CHEST_CYCLE = tag(Utils.id("mini_chest_cycle"));
-        public static final Tag.Named<Block> MINI_CHEST_SECRET_CYCLE = tag(Utils.id("mini_chest_secret_cycle"));
-        public static final Tag.Named<Block> MINI_CHEST_SECRET_CYCLE_2 = tag(Utils.id("mini_chest_secret_cycle_2"));
+        public static final TagKey<Block> CHEST_CYCLE = tag(Utils.id("chest_cycle"));
+        public static final TagKey<Block> MINI_CHEST_CYCLE = tag(Utils.id("mini_chest_cycle"));
+        public static final TagKey<Block> MINI_CHEST_SECRET_CYCLE = tag(Utils.id("mini_chest_secret_cycle"));
+        public static final TagKey<Block> MINI_CHEST_SECRET_CYCLE_2 = tag(Utils.id("mini_chest_secret_cycle_2"));
 
-        private static Tag.Named<Block> tag(ResourceLocation id) {
-            return BlockTags.createOptional(id, null);
+        private static TagKey<Block> tag(ResourceLocation id) {
+            return TagKey.create(Registry.BLOCK_REGISTRY, id);
         }
     }
     public static class Items {
-        public static final Tag.Named<Item> ES_WOODEN_CHESTS = tag(Utils.id("wooden_chests"));
+        public static final TagKey<Item> ES_WOODEN_CHESTS = tag(Utils.id("wooden_chests"));
 
-        private static Tag.Named<Item> tag(ResourceLocation id) {
-            return ItemTags.createOptional(id, null);
+        private static TagKey<Item> tag(ResourceLocation id) {
+            return TagKey.create(Registry.ITEM_REGISTRY, id);
         }
     }
 }

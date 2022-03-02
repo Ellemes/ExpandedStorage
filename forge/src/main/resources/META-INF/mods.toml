@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[38,)"
+loaderVersion = "[40,)"
 issueTrackerURL = "https://github.com/NinjaPhenix/expanded-storage/issues/"
 license = "multiple"
 
@@ -13,20 +13,20 @@ logoFile = "icon.png"
 [[dependencies.expandedstorage]]
 modId = "forge"
 mandatory = true
-versionRange = "[38.0.14,)"
+versionRange = "[40.0.1,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.expandedstorage]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.18,)"
+versionRange = "[1.18.2,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.expandedstorage]]
 modId = "ninjaphenix_container_lib"
 mandatory = true
-versionRange = "[1.2.7,)"
+versionRange = "[1.3.0,)"
 ordering = "NONE"
 side = "BOTH"
