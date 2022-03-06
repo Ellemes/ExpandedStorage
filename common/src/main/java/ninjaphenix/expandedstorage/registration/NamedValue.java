@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NinjaPhenix
+ * Copyright 2022 NinjaPhenix
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,21 +15,28 @@
  */
 package ninjaphenix.expandedstorage.registration;
 
-@SuppressWarnings("ClassCanBeRecord")
-public final class BlockItemPair<B, I> {
-    private final B block;
-    private final I item;
+import net.minecraft.resources.ResourceLocation;
 
-    public BlockItemPair(B block, I item) {
-        this.block = block;
-        this.item = item;
+import java.util.function.Supplier;
+
+public final class NamedValue<T> {
+    private final ResourceLocation name;
+    private final Supplier<T> valueSupplier;
+    private T value;
+
+    public NamedValue(ResourceLocation name, Supplier<T> valueSupplier) {
+        this.name = name;
+        this.valueSupplier = valueSupplier;
     }
 
-    public B getBlock() {
-        return block;
+    public ResourceLocation getName() {
+        return name;
     }
 
-    public I getItem() {
-        return item;
+    public T getValue() {
+        if (value == null) {
+            value = valueSupplier.get();
+        }
+        return value;
     }
 }

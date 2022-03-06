@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NinjaPhenix
+ * Copyright 2022 NinjaPhenix
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,10 @@
  */
 package ninjaphenix.expandedstorage.registration;
 
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import ninjaphenix.expandedstorage.tier.Tier;
 
-public interface RegistrationConsumer<B extends Block, I extends BlockItem, E extends BlockEntity> {
-    void accept(BlockItemCollection<B, I> content, BlockEntityType<E> blockEntityType);
+public interface ObjectConsumer {
+    void apply(ResourceLocation id, ResourceLocation statId, Tier tier, BlockBehaviour.Properties settings);
 }
