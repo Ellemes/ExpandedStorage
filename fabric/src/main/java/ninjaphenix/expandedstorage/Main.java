@@ -27,9 +27,9 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.SemanticVersion;
 import net.fabricmc.loader.api.VersionParsingException;
-import net.fabricmc.loader.impl.FabricLoaderImpl;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
@@ -66,6 +66,7 @@ import ninjaphenix.expandedstorage.compat.carrier.CarrierCompat;
 import ninjaphenix.expandedstorage.compat.htm.HTMLockable;
 import ninjaphenix.expandedstorage.registration.NamedValue;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,32 +74,37 @@ import java.util.stream.Collectors;
 
 @SuppressWarnings("deprecation")
 public final class Main implements ModInitializer {
-    private final FabricLoaderImpl fabricLoader = FabricLoaderImpl.INSTANCE;
     private boolean isCarrierCompatEnabled = false;
     @Override
     public void onInitialize() {
-        try {
-            SemanticVersion version = SemanticVersion.parse("1.8.0");
-            isCarrierCompatEnabled = fabricLoader.getModContainer("carrier").map(it -> {
-                if (it.getMetadata().getVersion() instanceof SemanticVersion carrierVersion)
-                    return carrierVersion.compareTo(version) > 0;
+        FabricLoader fabricLoader = FabricLoader.getInstance();
+        if (!fabricLoader.isModLoaded("quilt_loader")) {
+            try {
+                SemanticVersion version = SemanticVersion.parse("1.8.0");
+                isCarrierCompatEnabled = fabricLoader.getModContainer("carrier").map(it -> {
+                    if (it.getMetadata().getVersion() instanceof SemanticVersion carrierVersion)
+                        return carrierVersion.compareTo(version) > 0;
 
-                return false;
-            }).orElse(false);
-        } catch (VersionParsingException ignored) {
+                    return false;
+                }).orElse(false);
+            } catch (VersionParsingException ignored) {
+            }
+
+            CreativeModeTab group = FabricItemGroupBuilder.build(Utils.id("tab"), () -> new ItemStack(Registry.ITEM.get(Utils.id("netherite_chest")))); // Fabric API is dumb.
+            boolean isClient = fabricLoader.getEnvironmentType() == EnvType.CLIENT;
+            TagReloadListener tagReloadListener = new TagReloadListener();
+            Common.constructContent(GenericItemAccess::new, fabricLoader.isModLoaded("htm") ? HTMLockable::new : BasicLockable::new, group, isClient, tagReloadListener, this::registerContent,
+                    /*Base*/ true,
+                    /*Chest*/ TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "wooden_chests")), BlockItem::new, ChestItemAccess::new,
+                    /*Old Chest*/
+                    /*Barrel*/ TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "wooden_barrels")),
+                    /*Mini Chest*/ BlockItem::new);
+
+            ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, success) -> tagReloadListener.postDataReload());
+        } else {
+            LoggerFactory.getLogger(Utils.MOD_ID).warn("Please use Expanded Storage for Quilt instead.");
+            System.exit(0);
         }
-
-        CreativeModeTab group = FabricItemGroupBuilder.build(Utils.id("tab"), () -> new ItemStack(Registry.ITEM.get(Utils.id("netherite_chest")))); // Fabric API is dumb.
-        boolean isClient = fabricLoader.getEnvironmentType() == EnvType.CLIENT;
-        TagReloadListener tagReloadListener = new TagReloadListener();
-        Common.constructContent(GenericItemAccess::new, fabricLoader.isModLoaded("htm") ? HTMLockable::new : BasicLockable::new, group, isClient, tagReloadListener, this::registerContent,
-                /*Base*/ true,
-                /*Chest*/ TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "wooden_chests")), BlockItem::new, ChestItemAccess::new,
-                /*Old Chest*/
-                /*Barrel*/ TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "wooden_barrels")),
-                /*Mini Chest*/ BlockItem::new);
-
-        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, success) -> tagReloadListener.postDataReload());
     }
 
     private void registerContent(List<ResourceLocation> stats, List<NamedValue<Item>> baseItems,
@@ -145,7 +151,7 @@ public final class Main implements ModInitializer {
         Registry.register(Registry.BLOCK_ENTITY_TYPE, barrelBlockEntityType.getName(), barrelBlockEntityType.getValue());
         Registry.register(Registry.BLOCK_ENTITY_TYPE, miniChestBlockEntityType.getName(), miniChestBlockEntityType.getValue());
 
-        if (fabricLoader.getEnvironmentType() == EnvType.CLIENT) {
+        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
             Main.Client.registerChestTextures(chestBlocks.stream().map(NamedValue::getName).collect(Collectors.toList()));
             Main.Client.registerItemRenderers(chestItems);
             for (NamedValue<BarrelBlock> block : barrelBlocks) {
