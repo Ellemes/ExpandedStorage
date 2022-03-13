@@ -1,1 +1,2 @@
-- Very minor code changes, data gen changes ( advancements are now under expandedstorage.tab ).
+- Rework content creation code to work on 1.18.2
+- Fix gold to diamond chest upgrade recipe.

@@ -112,11 +112,11 @@ public final class RecipeProvider extends net.minecraft.data.recipes.RecipeProvi
         smithingRecipe(ModItems.IRON_TO_NETHERITE_CONVERSION_KIT, ModItems.IRON_TO_OBSIDIAN_CONVERSION_KIT, Tags.Items.INGOTS_NETHERITE, Criterions.HAS_PREVIOUS_KIT, exporter);
         shapedRecipe(ModItems.GOLD_TO_DIAMOND_CONVERSION_KIT, 1, Criterions.HAS_ITEM, Tags.Items.INGOTS_GOLD)
                 .pattern("GGG")
-                .pattern("IDI")
+                .pattern("DID")
                 .pattern("GGG")
                 .define('G', Tags.Items.GLASS)
-                .define('I', Tags.Items.INGOTS_GOLD)
                 .define('D', Tags.Items.GEMS_DIAMOND)
+                .define('I', Tags.Items.INGOTS_GOLD)
                 .save(exporter);
         shapedRecipe(ModItems.GOLD_TO_OBSIDIAN_CONVERSION_KIT, 1, Criterions.HAS_PREVIOUS_KIT, ModItems.GOLD_TO_DIAMOND_CONVERSION_KIT)
                 .pattern("OOO")

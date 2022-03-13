@@ -15,6 +15,7 @@ buildscript {
 
 plugins {
     java // todo: move publish code to sub-projects or move to different publishing method / custom gradle plugin
+    //id("org.quiltmc.loom").version("2.0-SNAPSHOT").apply(false) //todo: change when published
     id("fabric-loom").version("0.11.29").apply(false)
     id("net.minecraftforge.gradle").version("5.1.26").apply(false)
     id("org.spongepowered.mixin").version("0.7-SNAPSHOT").apply(false)
@@ -25,12 +26,15 @@ plugins {
 
 val forgeProject = findProject(":forge")
 val fabricProject = findProject(":fabric")
+val quiltProject = findProject(":fabric")
 
 var modrinthForgeTask : TaskProvider<com.modrinth.minotaur.TaskModrinthUpload>? = null
 var modrinthFabricTask : TaskProvider<com.modrinth.minotaur.TaskModrinthUpload>? = null
+var modrinthQuiltTask : TaskProvider<com.modrinth.minotaur.TaskModrinthUpload>? = null
 
 var curseforgeForgeTask : TaskProvider<com.matthewprenger.cursegradle.CurseUploadTask>? = null
 var curseforgeFabricTask : TaskProvider<com.matthewprenger.cursegradle.CurseUploadTask>? = null
+var curseforgeQuiltTask : TaskProvider<com.matthewprenger.cursegradle.CurseUploadTask>? = null
 
 val realChangelog = rootDir.resolve("changelog.md").readText(Charsets.UTF_8)
 val modrinthToken: String? = System.getenv("MODRINTH_TOKEN")
@@ -60,11 +64,37 @@ if (modrinthToken != null) {
         }
     }
 
+    if (quiltProject != null) {
+        modrinthQuiltTask = tasks.register<com.modrinth.minotaur.TaskModrinthUpload>("publishModrinthQuilt") {
+            val releaseJarTask = quiltProject.tasks.getByName("minJar")
+            dependsOn(releaseJarTask)
+            if (modrinthForgeTask != null) {
+                mustRunAfter(modrinthForgeTask)
+            }
+
+            detectLoaders = false
+            changelog = realChangelog
+            token = modrinthToken
+            projectId = properties["modrinth_project_id"] as String
+            versionName = "Quilt ${properties["mod_version"]}+${mod.minecraftVersion}"
+            versionNumber = "${properties["mod_version"]}+${mod.minecraftVersion}-quilt"
+            versionType = VersionType.RELEASE
+            uploadFile = releaseJarTask
+            addGameVersion(mod.minecraftVersion)
+            extraGameVersions.forEach {
+                addGameVersion(it)
+            }
+            addLoader("quilt")
+        }
+    }
+
     if (fabricProject != null) {
         modrinthFabricTask = tasks.register<com.modrinth.minotaur.TaskModrinthUpload>("publishModrinthFabric") {
             val releaseJarTask = fabricProject.tasks.getByName("minJar")
             dependsOn(releaseJarTask)
-            if (modrinthForgeTask != null) {
+            if (modrinthQuiltTask != null) {
+                mustRunAfter(modrinthQuiltTask)
+            } else if (modrinthForgeTask != null) {
                 mustRunAfter(modrinthForgeTask)
             }
 
@@ -113,11 +143,44 @@ if (curseforgeToken != null) {
         }
     }
 
+    // todo: should we publish to CF?
+    //if (quiltProject != null) {
+    //    curseforgeQuiltTask = tasks.register<com.matthewprenger.cursegradle.CurseUploadTask>("publishCurseforgeQuilt") {
+    //        val releaseJarTask = quiltProject.tasks.getByName("minJar")
+    //        dependsOn(releaseJarTask)
+    //        if (curseforgeForgeTask != null) {
+    //            mustRunAfter(curseforgeForgeTask)
+    //        }
+    //
+    //        apiKey = curseforgeToken
+    //        projectId = properties["curseforge_quilt_project_id"] as String
+    //        mainArtifact = CurseArtifact().apply {
+    //            artifact = releaseJarTask
+    //            changelogType = "markdown"
+    //            changelog = realChangelog
+    //            displayName = "[${mod.minecraftVersion}] ${properties["mod_version"]}"
+    //            releaseType = "release"
+    //            gameVersionStrings = listOf(gameVersion, "Quilt", "Java ${mod.javaVersion.majorVersion}") + extraGameVersions
+    //            curseRelations = CurseRelation().apply {
+    //                //requiredDependency("fabric-api")
+    //                requiredDependency("ninjaphenixs-container-library")
+    //                optionalDependency("carrier")
+    //                optionalDependency("towelette")
+    //                optionalDependency("htm")
+    //            }
+    //        }
+    //        additionalArtifacts = listOf()
+    //    }
+    //}
+
     if (fabricProject != null) {
         curseforgeFabricTask = tasks.register<com.matthewprenger.cursegradle.CurseUploadTask>("publishCurseforgeFabric") {
             val releaseJarTask = fabricProject.tasks.getByName("minJar")
             dependsOn(releaseJarTask)
-            if (curseforgeForgeTask != null) {
+            if (curseforgeQuiltTask != null) {
+                mustRunAfter(curseforgeQuiltTask)
+            }
+            else if (curseforgeForgeTask != null) {
                 mustRunAfter(curseforgeForgeTask)
             }
 
@@ -144,7 +207,7 @@ if (curseforgeToken != null) {
 }
 
 val publishTask = tasks.create("publish") {
-    listOf(modrinthForgeTask, modrinthFabricTask, curseforgeForgeTask, curseforgeFabricTask).forEach {
+    listOf(modrinthForgeTask, modrinthQuiltTask, modrinthFabricTask, curseforgeForgeTask, curseforgeQuiltTask, curseforgeFabricTask).forEach {
         if (it != null) {
             this.dependsOn(it)
             this.mustRunAfter(it)
