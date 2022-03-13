@@ -30,9 +30,6 @@ val excludeFabric: (ModuleDependency) -> Unit = {
 }
 
 dependencies {
-    modImplementaiton(group = "org.quiltmc.qsl", name = "qsl", version = "${properties["qsl_version"]}")
-    modImplementaiton(group = "org.quiltmc.fabric_api_qsl", name = "fabric-api", version = "${properties["fabric_api_version"]}-SNAPSHOT")
-
     modImplementation(group = "maven.modrinth", name = "ninjaphenix-container-library", version = "1.3.0+1.18-fabric", dependencyConfiguration = excludeFabric)
     //modImplementation(group = "ninjaphenix", name = "container_library", version = "1.3.0+1.18", classifier = "fabric", dependencyConfiguration = excludeFabric)
 
