@@ -13,7 +13,7 @@ logoFile = "icon.png"
 [[dependencies.expandedstorage]]
 modId = "forge"
 mandatory = true
-versionRange = "[40.0.1,)"
+versionRange = "[40.0.18,)"
 ordering = "NONE"
 side = "BOTH"
 
