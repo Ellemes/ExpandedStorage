@@ -1,24 +1,15 @@
 pluginManagement {
-    resolutionStrategy {
-        eachPlugin {
-            if (requested.id.toString() == "net.minecraftforge.gradle") {
-                useModule("net.minecraftforge.gradle:ForgeGradle:${requested.version}")
-            } else if (requested.id.toString() == "org.spongepowered.mixin") {
-                useModule("org.spongepowered:mixingradle:${requested.version}")
-            }
-        }
-    }
     repositories {
         maven {
-            name = "Fabric"
+            name = "Fabric Maven"
             url = uri("https://maven.fabricmc.net/")
         }
         maven {
-            name = "SpongePowered"
-            url = uri("https://repo.spongepowered.org/repository/maven-public/")
+            name = "Architectury Maven"
+            url = uri("https://maven.architectury.dev/")
         }
         maven {
-            name = "MinecraftForge"
+            name = "MinecraftForge Maven"
             url = uri("https://maven.minecraftforge.net/")
         }
         gradlePluginPortal()
@@ -31,3 +22,4 @@ rootProject.name = "expandedstorage"
 include("common")
 include("fabric")
 include("forge")
+

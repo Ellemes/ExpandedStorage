@@ -22,7 +22,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import ninjaphenix.expandedstorage.block.entity.extendable.OpenableBlockEntity;
-import ninjaphenix.expandedstorage.compat.htm.HTMLockable;
+import ninjaphenix.expandedstorage.fabric.compat.htm.HTMLockable;
 import org.spongepowered.asm.mixin.Mixin;
 
 @SuppressWarnings("unused")

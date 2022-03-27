@@ -1,6 +1,5 @@
 {
   "schemaVersion": 1,
-  "accessWidener": "expandedstorage.accessWidener",
   "depends": {
     "fabric": ">=0.47.8",
     "fabricloader": ">=0.13.2",
@@ -11,7 +10,9 @@
     "quilt_loader": "*"
   },
   "entrypoints": {
-    "main": ["ninjaphenix.expandedstorage.Main"],
+    "main": [
+      "ninjaphenix.expandedstorage.fabric.Main"
+    ],
     "fabric-datagen": ["ninjaphenix.expandedstorage.datagen.Main"]
   },
   "environment": "*",
