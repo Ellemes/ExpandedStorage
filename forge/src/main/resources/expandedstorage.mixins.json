@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "ninjaphenix.expandedstorage.mixin",
+  "package": "ninjaphenix.expandedstorage.fabric.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
     "BlockEntityIdFix",
@@ -9,6 +9,5 @@
   "injectors": {
     "defaultRequire": 1
   },
-  "minVersion": "0.8",
-  "refmap": "expandedstorage.refmap.json"
+  "minVersion": "0.8"
 }

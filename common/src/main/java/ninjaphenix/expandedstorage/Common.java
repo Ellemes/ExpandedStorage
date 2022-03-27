@@ -109,7 +109,7 @@ public final class Common {
         return miniChestBlockEntityType.getValue();
     }
 
-    static ResourceLocation[] getChestTextures(List<ResourceLocation> blocks) {
+    public static ResourceLocation[] getChestTextures(List<ResourceLocation> blocks) {
         ResourceLocation[] textures = new ResourceLocation[blocks.size() * CursedChestType.values().length];
         int index = 0;
         for (ResourceLocation blockId : blocks) {
@@ -221,7 +221,7 @@ public final class Common {
         Common.BLOCK_UPGRADE_BEHAVIOURS.put(target, behaviour);
     }
 
-    static void registerTieredBlock(OpenableBlock block) {
+    public static void registerTieredBlock(OpenableBlock block) {
         Common.BLOCKS.putIfAbsent(new Pair<>(block.getBlockType(), block.getBlockTier()), block);
     }
 
