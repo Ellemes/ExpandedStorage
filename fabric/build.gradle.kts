@@ -7,11 +7,6 @@ plugins {
     id("ninjaphenix.gradle.mod").apply(false)
 }
 
-architectury {
-    platformSetupLoomIde()
-    fabric()
-}
-
 loom {
     accessWidenerPath.set(project(":common").loom.accessWidenerPath)
 }
@@ -40,22 +35,6 @@ repositories {
         }
     }
 
-    maven {
-        name = "Modrinth"
-        url = uri("https://api.modrinth.com/maven")
-        content {
-            includeGroup("maven.modrinth")
-        }
-    }
-
-    maven {
-        name = "CurseMaven"
-        url = uri("https://cursemaven.com")
-        content {
-            includeGroup("curse.maven")
-        }
-    }
-
     maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") }
     mavenLocal()
 }
@@ -66,9 +45,6 @@ val excludeFabric: (ModuleDependency) -> Unit = {
 }
 
 dependencies {
-    modImplementation("net.fabricmc:fabric-loader:${rootProject.properties["fabric_loader_version"]}")
-    modImplementation("net.fabricmc.fabric-api:fabric-api:${project.properties["fabric_api_version"]}")
-
     "common"(project(path = ":common", configuration = "namedElements")) {
         isTransitive = false
     }
@@ -106,14 +82,6 @@ dependencies {
 //        builtBy(tasks.jar)
 //    }
 //}
-
-tasks.withType<ProcessResources> {
-    val properties = mutableMapOf("version" to project.version)
-    inputs.properties(properties)
-    filesMatching("fabric.mod.json") {
-        expand(properties)
-    }
-}
 
 val shadowJar = tasks.getByName<ShadowJar>("shadowJar")
 
