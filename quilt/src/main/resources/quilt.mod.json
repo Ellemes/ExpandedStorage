@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "quilt_loader": {
+    "group": "ninjaphenix",
+    "id": "expandedstorage",
+    "version": "${version}",
+    "entrypoints": {
+      "init": "ninjaphenix.expandedstorage.Main"
+    },
+    "depends": [
+      "quilt_loader",
+      {
+        "id": "ninjaphenix_container_lib",
+        "versions": ">=1.3.2"
+      },
+      {
+        "id": "minecraft",
+        "versions": "~1.18.2"
+      }
+    ],
+    "metadata": {
+      "name": "Expanded Storage",
+      "description": "Adds new storage blocks with higher capacities.",
+      "contributors": {
+        "NinjaPhenix": "Owner"
+      },
+      "contact": {
+        "homepage": "https://modrinth.com/mod/expanded-storage",
+        "issues": "https://github.com/NinjaPhenix/expanded-storage",
+        "sources": "https://github.com/NinjaPhenix/ExpandedStorage"
+      },
+      "license": [
+      ],
+      "icon": "icon.png"
+    }
+  },
+  "mixin": "expandedstorage.mixin.json",
+  "access_widener": "expandedstorage.accessWidener"
+}

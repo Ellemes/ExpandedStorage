@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "expandedstorage:wood_chest",
+  "ingredients": [
+    {
+      "item": "minecraft:chest"
+    }
+  ],
+  "result": {
+    "item": "expandedstorage:wood_chest"
+  }
+}

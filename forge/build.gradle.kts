@@ -1,17 +1,10 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import net.fabricmc.loom.task.RemapJarTask
 import ninjaphenix.gradle.mod.api.task.MinifyJsonTask
-import java.text.DateFormat
-import java.util.Date
 
 plugins {
     id("com.github.johnrengelman.shadow")
     id("ninjaphenix.gradle.mod").apply(false)
-}
-
-architectury {
-    platformSetupLoomIde()
-    forge()
 }
 
 loom {
@@ -47,8 +40,6 @@ repositories {
 }
 
 dependencies {
-    "forge"("net.minecraftforge:forge:${rootProject.properties["minecraft_version"]}-${project.properties["forge_version"]}")
-
     "common"(project(path = ":common", configuration = "namedElements")) {
         isTransitive = false
     }
@@ -63,14 +54,6 @@ dependencies {
     //implementation(fg.deobf("ninjaphenix:container_library:1.3.0+1.18:forge"))
 
     //implementation(fg.deobf("mezz.jei:jei-${properties["jei_minecraft_version"]}:${properties["jei_version"]}"))
-}
-
-tasks.withType<ProcessResources> {
-    val properties = mutableMapOf("version" to project.version)
-    inputs.properties(properties)
-    filesMatching("META-INF/mods.toml") {
-        expand(properties)
-    }
 }
 
 val shadowJar = tasks.getByName<ShadowJar>("shadowJar")
