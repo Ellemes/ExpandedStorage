@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ninjaphenix.expandedstorage.datagen.providers;
+package ninjaphenix.expandedstorage.quilt.datagen.providers;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
@@ -29,8 +29,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import ninjaphenix.expandedstorage.Utils;
-import ninjaphenix.expandedstorage.datagen.content.ModItems;
-import ninjaphenix.expandedstorage.datagen.content.ModTags;
+import ninjaphenix.expandedstorage.quilt.datagen.content.ModItems;
+import ninjaphenix.expandedstorage.quilt.datagen.content.ModTags;
 
 import java.util.function.Consumer;
 

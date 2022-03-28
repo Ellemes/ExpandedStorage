@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ninjaphenix.expandedstorage;
+package ninjaphenix.expandedstorage.quilt;
 
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.minecraft.core.NonNullList;

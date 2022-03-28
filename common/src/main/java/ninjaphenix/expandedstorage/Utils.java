@@ -23,10 +23,6 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 
 public final class Utils {
-    static {
-        System.out.println(Utils.class.getClassLoader());
-    }
-
     public static final String MOD_ID = "expandedstorage";
     public static final Component ALT_USE = new TranslatableComponent("tooltip.expandedstorage.alt_use",
             new KeybindComponent("key.sneak").withStyle(ChatFormatting.GOLD),

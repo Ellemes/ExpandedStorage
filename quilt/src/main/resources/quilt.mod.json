@@ -5,7 +5,7 @@
     "id": "expandedstorage",
     "version": "${version}",
     "entrypoints": {
-      "init": "ninjaphenix.expandedstorage.Main"
+      "init": "ninjaphenix.expandedstorage.quilt.Main"
     },
     "depends": [
       "quilt_loader",

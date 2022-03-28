@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ninjaphenix.expandedstorage.datagen.providers;
+package ninjaphenix.expandedstorage.quilt.datagen.providers;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
@@ -21,9 +21,9 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
-import ninjaphenix.expandedstorage.datagen.content.ModBlocks;
-import ninjaphenix.expandedstorage.datagen.content.ModItems;
-import ninjaphenix.expandedstorage.datagen.content.ModTags;
+import ninjaphenix.expandedstorage.quilt.datagen.content.ModBlocks;
+import ninjaphenix.expandedstorage.quilt.datagen.content.ModItems;
+import ninjaphenix.expandedstorage.quilt.datagen.content.ModTags;
 
 public final class TagProvider {
     public static final class Block extends FabricTagProvider.BlockTagProvider {
