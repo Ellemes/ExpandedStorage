@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ninjaphenix.expandedstorage;
+package ninjaphenix.expandedstorage.quilt;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
@@ -48,6 +48,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import ninjaphenix.expandedstorage.Common;
+import ninjaphenix.expandedstorage.TagReloadListener;
+import ninjaphenix.expandedstorage.Utils;
 import ninjaphenix.expandedstorage.block.AbstractChestBlock;
 import ninjaphenix.expandedstorage.block.BarrelBlock;
 import ninjaphenix.expandedstorage.block.ChestBlock;
@@ -62,8 +65,8 @@ import ninjaphenix.expandedstorage.block.misc.BasicLockable;
 import ninjaphenix.expandedstorage.block.misc.CursedChestType;
 import ninjaphenix.expandedstorage.block.misc.DoubleItemAccess;
 import ninjaphenix.expandedstorage.client.ChestBlockEntityRenderer;
-import ninjaphenix.expandedstorage.compat.carrier.CarrierCompat;
-import ninjaphenix.expandedstorage.compat.htm.HTMLockable;
+import ninjaphenix.expandedstorage.quilt.compat.carrier.CarrierCompat;
+import ninjaphenix.expandedstorage.quilt.compat.htm.HTMLockable;
 import ninjaphenix.expandedstorage.registration.NamedValue;
 import org.jetbrains.annotations.Nullable;
 import org.quiltmc.loader.api.QuiltLoader;

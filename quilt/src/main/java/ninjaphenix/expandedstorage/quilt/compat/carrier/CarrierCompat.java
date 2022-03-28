@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ninjaphenix.expandedstorage.compat.carrier;
+package ninjaphenix.expandedstorage.quilt.compat.carrier;
 
 import me.steven.carrier.api.CarriableRegistry;
 import ninjaphenix.expandedstorage.block.AbstractChestBlock;

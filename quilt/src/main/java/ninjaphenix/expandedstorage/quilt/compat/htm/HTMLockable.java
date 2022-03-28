@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ninjaphenix.expandedstorage.compat.htm;
+package ninjaphenix.expandedstorage.quilt.compat.htm;
 
 import com.github.fabricservertools.htm.HTMContainerLock;
 import net.minecraft.nbt.CompoundTag;

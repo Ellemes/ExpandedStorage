@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ninjaphenix.expandedstorage.datagen;
+package ninjaphenix.expandedstorage.quilt.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import ninjaphenix.expandedstorage.datagen.providers.BlockLootProvider;
-import ninjaphenix.expandedstorage.datagen.providers.BlockStateProvider;
-import ninjaphenix.expandedstorage.datagen.providers.RecipeProvider;
-import ninjaphenix.expandedstorage.datagen.providers.TagProvider;
+import ninjaphenix.expandedstorage.quilt.datagen.providers.BlockLootProvider;
+import ninjaphenix.expandedstorage.quilt.datagen.providers.BlockStateProvider;
+import ninjaphenix.expandedstorage.quilt.datagen.providers.RecipeProvider;
+import ninjaphenix.expandedstorage.quilt.datagen.providers.TagProvider;
 
 public final class Main implements DataGeneratorEntrypoint {
     @Override

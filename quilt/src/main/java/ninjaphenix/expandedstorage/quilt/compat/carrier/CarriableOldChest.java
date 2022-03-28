@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ninjaphenix.expandedstorage.compat.carrier;
+package ninjaphenix.expandedstorage.quilt.compat.carrier;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
