@@ -13,7 +13,7 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value=":fabric:runServer" />
+          <option value=":quilt:runServer" />
         </list>
       </option>
       <option name="vmOptions" />
