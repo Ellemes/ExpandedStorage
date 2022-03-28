@@ -79,18 +79,36 @@ dependencies {
     modRuntimeOnly("maven.modrinth:modmenu:3.1.0")
 }
 
-val remapJarTask: RemapJarTask = tasks.getByName<RemapJarTask>("remapJar") {
+val shadowJar = tasks.getByName<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar")
+
+shadowJar.apply {
+    exclude("architectury.common.json")
+    configurations = listOf(project.configurations["shadowCommon"])
+    archiveClassifier.set("dev-shadow")
+}
+
+tasks.getByName<RemapJarTask>("remapJar") {
+    injectAccessWidener.set(true)
+    inputFile.set(shadowJar.archiveFile)
+    dependsOn(shadowJar)
     archiveClassifier.set("fat")
-    dependsOn(tasks.jar)
+}
+
+tasks.jar {
+    archiveClassifier.set("dev")
 }
 
 val minifyJarTask = tasks.register<ninjaphenix.gradle.mod.api.task.MinifyJsonTask>("minJar") {
-    input.set(remapJarTask.outputs.files.singleFile)
-    archiveClassifier.set("")
+    input.set(tasks.getByName("remapJar").outputs.files.singleFile)
+    archiveClassifier.set(project.name)
     from(rootDir.resolve("LICENSE"))
-    dependsOn(remapJarTask)
+    dependsOn(tasks.getByName("remapJar"))
 }
 
-tasks.getByName("build") {
+tasks.build {
     dependsOn(minifyJarTask)
+}
+
+(components.findByName("java") as AdhocComponentWithVariants).withVariantsFromConfiguration(project.configurations.getByName("shadowRuntimeElements")) {
+    skip()
 }
