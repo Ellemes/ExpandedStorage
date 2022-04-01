@@ -47,13 +47,6 @@ val excludeFabric: (ModuleDependency) -> Unit = {
 }
 
 dependencies {
-    modImplementation("org.quiltmc.qsl:qsl:" + project.property("qsl_version")) {
-        exclude("net.fabricmc")
-    }
-    modImplementation("org.quiltmc.fabric_api_qsl:fabric-api:" + project.property("fabric_api_version")) {
-        exclude("net.fabricmc")
-    }
-
     "common"(project(path = ":common", configuration = "namedElements")) {
         isTransitive = false
     }
