@@ -46,6 +46,11 @@ val excludeFabric: (ModuleDependency) -> Unit = {
     it.exclude("net.fabricmc.fabric-api")
 }
 
+mod {
+    fabricApiModules("all")
+    qslModules("all")
+}
+
 dependencies {
     "common"(project(path = ":common", configuration = "namedElements")) {
         isTransitive = false
@@ -54,7 +59,7 @@ dependencies {
         isTransitive = false
     }
 
-    modImplementation("ninjaphenix:container_library:1.3.2+1.18.2:fabric", dependencyConfiguration = excludeFabric)
+    modImplementation("ninjaphenix:container_library:1.3.4+1.18.2-fabric", dependencyConfiguration = excludeFabric)
 
     //modImplementation(group = "ninjaphenix", name = "container_library", version = "1.3.0+1.18", classifier = "fabric", dependencyConfiguration = excludeFabric)
 
