@@ -11,7 +11,7 @@
       "quilt_loader",
       {
         "id": "ninjaphenix_container_lib",
-        "versions": ">=1.3.2"
+        "versions": "~1.3.4"
       },
       {
         "id": "minecraft",

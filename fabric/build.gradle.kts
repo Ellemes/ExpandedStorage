@@ -44,6 +44,19 @@ val excludeFabric: (ModuleDependency) -> Unit = {
     it.exclude("net.fabricmc.fabric-api")
 }
 
+mod {
+    fabricApiModules(
+            "fabric-api-base",
+            "fabric-data-generation-api-v1",
+            "fabric-blockrenderlayer-v1",
+            "fabric-item-groups-v0",
+            "fabric-rendering-v1",
+            "fabric-textures-v0",
+            "fabric-lifecycle-events-v1",
+            "fabric-transfer-api-v1"
+    )
+}
+
 dependencies {
     "common"(project(path = ":common", configuration = "namedElements")) {
         isTransitive = false
@@ -52,7 +65,7 @@ dependencies {
         isTransitive = false
     }
 
-    modImplementation("ninjaphenix:container_library:1.3.2+1.18.2:fabric", dependencyConfiguration = excludeFabric)
+    modImplementation("ninjaphenix:container_library:1.3.4+1.18.2-fabric")
     //modImplementation(group = "maven.modrinth", name = "ninjaphenix-container-library", version = "1.3.0+1.18-fabric", dependencyConfiguration = excludeFabric)
     //modImplementation(group = "ninjaphenix", name = "container_library", version = "1.3.0+1.18", classifier = "fabric", dependencyConfiguration = excludeFabric)
 
@@ -66,6 +79,9 @@ dependencies {
 
     //modRuntimeOnly("me.lucko:fabric-permissions-api:0.1-SNAPSHOT")
     modCompileOnly(group = "curse.maven", name = "htm-462534", version = "3539120", dependencyConfiguration = excludeFabric)
+
+    modRuntimeOnly("maven.modrinth:modmenu:3.1.0")
+    modRuntimeOnly(fabricApi.module("fabric-screen-api-v1", properties["fabric_api_version"] as String))
 }
 
 //

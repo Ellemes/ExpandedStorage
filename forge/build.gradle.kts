@@ -47,10 +47,7 @@ dependencies {
         isTransitive = false
     }
 
-    modImplementation("ninjaphenix:container_library:1.3.3+1.18.2:forge") {
-        exclude("net.fabricmc")
-        exclude("net.fabricmc.fabric-api")
-    }
+    modImplementation("ninjaphenix:container_library:1.3.4+1.18.2-forge")
     //implementation(fg.deobf("ninjaphenix:container_library:1.3.0+1.18:forge"))
 
     //implementation(fg.deobf("mezz.jei:jei-${properties["jei_minecraft_version"]}:${properties["jei_version"]}"))
