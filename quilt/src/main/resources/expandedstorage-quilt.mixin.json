@@ -1,11 +1,9 @@
 {
   "required": true,
   "package": "ninjaphenix.expandedstorage.mixin",
-  "plugin": "ninjaphenix.expandedstorage.fabric.MixinPlugin",
+  "plugin": "ninjaphenix.expandedstorage.quilt.MixinPlugin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-    "BlockEntityIdFix",
-    "DataFixerEntrypoint",
     "HTMChestCompat",
     "HTMLockableBlockEntityCompat",
     "MiniChestHeadEquipment",

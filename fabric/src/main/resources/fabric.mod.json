@@ -14,10 +14,8 @@
   "environment": "*",
   "authors": ["NinjaPhenix"],
   "mixins": [
-    {
-      "config": "expandedstorage.mixin.json",
-      "environment": "*"
-    }
+    "expandedstorage-common.mixin.json",
+    "expandedstorage-fabric.mixin.json"
   ],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/expanded-storage-fabric/",

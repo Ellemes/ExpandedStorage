@@ -13,7 +13,7 @@ loom {
     forge {
         convertAccessWideners.set(true)
         extraAccessWideners.add(loom.accessWidenerPath.get().asFile.name)
-        mixinConfig("expandedstorage.mixins.json")
+        mixinConfig("expandedstorage-common.mixins.json")
     }
 }
 

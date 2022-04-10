@@ -9,11 +9,6 @@ plugins {
 
 loom {
     accessWidenerPath.set(project(":common").loom.accessWidenerPath)
-    if (!System.getProperty("idea.sync.active").equals("true")) {
-        mixin {
-            useLegacyMixinAp.set(false)
-        }
-    }
 }
 
 configurations {
@@ -85,8 +80,8 @@ dependencies {
     //modRuntimeOnly("me.lucko:fabric-permissions-api:0.1-SNAPSHOT")
     modCompileOnly(group = "curse.maven", name = "htm-462534", version = "3539120", dependencyConfiguration = excludeFabric)
 
-    modRuntimeOnly("maven.modrinth:modmenu:3.1.0")
-    modRuntimeOnly(fabricApi.module("fabric-screen-api-v1", properties["fabric_api_version"] as String))
+    //modRuntimeOnly("maven.modrinth:modmenu:3.1.0")
+    //modRuntimeOnly(fabricApi.module("fabric-screen-api-v1", properties["fabric_api_version"] as String))
 }
 
 //
@@ -108,7 +103,6 @@ val shadowJar = tasks.getByName<ShadowJar>("shadowJar")
 
 shadowJar.apply {
     exclude("architectury.common.json")
-    exclude("expandedstorage-common-refmap.json")
     configurations = listOf(project.configurations["shadowCommon"])
     archiveClassifier.set("dev-shadow")
 }

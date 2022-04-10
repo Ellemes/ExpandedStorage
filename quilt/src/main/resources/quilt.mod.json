@@ -35,6 +35,9 @@
       "icon": "icon.png"
     }
   },
-  "mixin": "expandedstorage.mixin.json",
+  "mixin": [
+    "expandedstorage-common.mixin.json",
+    "expandedstorage-quilt.mixin.json"
+  ],
   "access_widener": "expandedstorage.accessWidener"
 }

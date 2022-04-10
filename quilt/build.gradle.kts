@@ -16,11 +16,6 @@ configurations {
 
 loom {
     accessWidenerPath.set(file("src/main/resources/expandedstorage.accessWidener"))
-    if (!System.getProperty("idea.sync.active").equals("true")) {
-        mixin {
-            useLegacyMixinAp.set(false)
-        }
-    }
 }
 
 repositories {
@@ -63,12 +58,18 @@ mod {
             "fabric-textures-v0",
             "fabric-transfer-api-v1",
             // Mod Menu
-            "fabric-screen-api-v1",
+            //"fabric-screen-api-v1",
             // NCL
             "fabric-screen-handler-api-v1",
-            "fabric-key-binding-api-v1"
+            "fabric-key-binding-api-v1",
     )
-    qslModules("core/resource_loader", "block/block_extensions", "item/item_group", "gui/tooltip", "core/networking")
+    qslModules(
+            "block/block_extensions",
+            "core/networking",
+            "core/resource_loader",
+            "item/item_group",
+            "gui/tooltip",
+    )
     //qslModules("all")
 }
 
@@ -95,14 +96,13 @@ dependencies {
     //modRuntimeOnly("me.lucko:fabric-permissions-api:0.1-SNAPSHOT")
     modCompileOnly(group = "curse.maven", name = "htm-462534", version = "3539120", dependencyConfiguration = excludeFabric)
 
-    modRuntimeOnly("maven.modrinth:modmenu:3.1.0")
+    //modRuntimeOnly("maven.modrinth:modmenu:3.1.0")
 }
 
 val shadowJar = tasks.getByName<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar")
 
 shadowJar.apply {
     exclude("architectury.common.json")
-    exclude("expandedstorage-common-refmap.json")
     configurations = listOf(project.configurations["shadowCommon"])
     archiveClassifier.set("dev-shadow")
 }
