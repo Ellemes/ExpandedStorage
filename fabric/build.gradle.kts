@@ -9,6 +9,11 @@ plugins {
 
 loom {
     accessWidenerPath.set(project(":common").loom.accessWidenerPath)
+    if (!System.getProperty("idea.sync.active").equals("true")) {
+        mixin {
+            useLegacyMixinAp.set(false)
+        }
+    }
 }
 
 configurations {
@@ -103,6 +108,7 @@ val shadowJar = tasks.getByName<ShadowJar>("shadowJar")
 
 shadowJar.apply {
     exclude("architectury.common.json")
+    exclude("expandedstorage-common-refmap.json")
     configurations = listOf(project.configurations["shadowCommon"])
     archiveClassifier.set("dev-shadow")
 }

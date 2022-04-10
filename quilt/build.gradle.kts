@@ -14,6 +14,15 @@ configurations {
     named("developmentFabric").get().extendsFrom(configurations["common"])
 }
 
+loom {
+    accessWidenerPath.set(file("src/main/resources/expandedstorage.accessWidener"))
+    if (!System.getProperty("idea.sync.active").equals("true")) {
+        mixin {
+            useLegacyMixinAp.set(false)
+        }
+    }
+}
+
 repositories {
     maven {
         name = "Quilt Release Maven"
@@ -50,11 +59,8 @@ mod {
     fabricApiModules(
             "fabric-api-base",
             "fabric-data-generation-api-v1",
-            "fabric-blockrenderlayer-v1",
-            "fabric-item-groups-v0",
             "fabric-rendering-v1",
             "fabric-textures-v0",
-            "fabric-lifecycle-events-v1",
             "fabric-transfer-api-v1",
             // Mod Menu
             "fabric-screen-api-v1",
@@ -63,6 +69,7 @@ mod {
             "fabric-key-binding-api-v1"
     )
     qslModules("core/resource_loader", "block/block_extensions", "item/item_group", "gui/tooltip", "core/networking")
+    //qslModules("all")
 }
 
 dependencies {
@@ -95,6 +102,7 @@ val shadowJar = tasks.getByName<com.github.jengelman.gradle.plugins.shadow.tasks
 
 shadowJar.apply {
     exclude("architectury.common.json")
+    exclude("expandedstorage-common-refmap.json")
     configurations = listOf(project.configurations["shadowCommon"])
     archiveClassifier.set("dev-shadow")
 }

@@ -15,8 +15,8 @@
  */
 package ninjaphenix.expandedstorage.quilt;
 
-import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.tree.ClassNode;
+import org.quiltmc.loader.api.QuiltLoader;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
@@ -29,8 +29,8 @@ public final class MixinPlugin implements IMixinConfigPlugin {
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         String className = mixinClassName.substring(34);
         return switch (className) {
-            case "HTMChestCompat", "HTMLockableBlockEntityCompat" -> FabricLoader.getInstance().isModLoaded("htm");
-            case "ToweletteCompat" -> FabricLoader.getInstance().isModLoaded("towelette");
+            case "HTMChestCompat", "HTMLockableBlockEntityCompat" -> QuiltLoader.isModLoaded("htm");
+            case "ToweletteCompat" -> QuiltLoader.isModLoaded("towelette");
             default -> true;
         };
     }

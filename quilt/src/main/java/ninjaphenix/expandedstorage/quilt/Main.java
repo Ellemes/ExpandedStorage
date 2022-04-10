@@ -16,20 +16,14 @@
 package ninjaphenix.expandedstorage.quilt;
 
 import net.fabricmc.api.EnvType;
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
-import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
-import net.fabricmc.loader.api.SemanticVersion;
-import net.fabricmc.loader.api.VersionParsingException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
@@ -70,32 +64,33 @@ import ninjaphenix.expandedstorage.quilt.compat.htm.HTMLockable;
 import ninjaphenix.expandedstorage.registration.NamedValue;
 import org.jetbrains.annotations.Nullable;
 import org.quiltmc.loader.api.QuiltLoader;
+import org.quiltmc.loader.api.Version;
 import org.quiltmc.loader.api.minecraft.MinecraftQuiltLoader;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
+import org.quiltmc.qsl.block.extensions.api.client.BlockRenderLayerMap;
+import org.quiltmc.qsl.item.group.api.QuiltItemGroup;
+import org.quiltmc.qsl.resource.loader.api.ResourceLoaderEvents;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("deprecation")
+//@SuppressWarnings("deprecation")
 public final class Main implements ModInitializer {
     private boolean isCarrierCompatEnabled = false;
     @Override
     public void onInitialize(ModContainer mod) {
         if (QuiltLoader.isModLoaded("quilt_loader")) {
-            try {
-                SemanticVersion version = SemanticVersion.parse("1.8.0");
-                isCarrierCompatEnabled = QuiltLoader.getModContainer("carrier").map(it -> {
-                    if (it.metadata().version() instanceof SemanticVersion carrierVersion)
-                        return carrierVersion.compareTo(version) > 0;
+            isCarrierCompatEnabled = QuiltLoader.getModContainer("carrier").map(it -> {
+                Version carrierVersion = it.metadata().version();
+                if (carrierVersion.isSemantic()) {
+                    return carrierVersion.semantic().compareTo(Version.of("1.8.0").semantic()) > 0;
+                }
+                return false;
+            }).orElse(false);
 
-                    return false;
-                }).orElse(false);
-            } catch (VersionParsingException ignored) {
-            }
-
-            CreativeModeTab group = FabricItemGroupBuilder.build(Utils.id("tab"), () -> new ItemStack(Registry.ITEM.get(Utils.id("netherite_chest")))); // Fabric API is dumb.
+            CreativeModeTab group = QuiltItemGroup.builder(Utils.id("tab")).icon(() -> new ItemStack(Registry.ITEM.get(Utils.id("netherite_chest")))).build();
             boolean isClient = MinecraftQuiltLoader.getEnvironmentType() == EnvType.CLIENT;
             TagReloadListener tagReloadListener = new TagReloadListener();
             Common.constructContent(GenericItemAccess::new, QuiltLoader.isModLoaded("htm") ? HTMLockable::new : BasicLockable::new, group, isClient, tagReloadListener, this::registerContent,
@@ -105,7 +100,7 @@ public final class Main implements ModInitializer {
                     /*Barrel*/ TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "wooden_barrels")),
                     /*Mini Chest*/ BlockItem::new);
 
-            ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, success) -> tagReloadListener.postDataReload());
+            ResourceLoaderEvents.END_DATA_PACK_RELOAD.register(((server, resourceManager, error) -> tagReloadListener.postDataReload()));
         } else {
             LoggerFactory.getLogger(Utils.MOD_ID).warn("Please use Expanded Storage for Fabric instead.");
             System.exit(0);
@@ -156,11 +151,11 @@ public final class Main implements ModInitializer {
         Registry.register(Registry.BLOCK_ENTITY_TYPE, barrelBlockEntityType.getName(), barrelBlockEntityType.getValue());
         Registry.register(Registry.BLOCK_ENTITY_TYPE, miniChestBlockEntityType.getName(), miniChestBlockEntityType.getValue());
 
-        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+        if (MinecraftQuiltLoader.getEnvironmentType() == EnvType.CLIENT) {
             Main.Client.registerChestTextures(chestBlocks.stream().map(NamedValue::getName).collect(Collectors.toList()));
             Main.Client.registerItemRenderers(chestItems);
             for (NamedValue<BarrelBlock> block : barrelBlocks) {
-                BlockRenderLayerMap.INSTANCE.putBlock(block.getValue(), RenderType.cutoutMipped());
+                BlockRenderLayerMap.put(RenderType.cutoutMipped(), block.getValue());
             }
         }
     }
