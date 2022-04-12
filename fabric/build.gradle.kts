@@ -45,7 +45,7 @@ val excludeFabric: (ModuleDependency) -> Unit = {
 }
 
 mod {
-    fabricApiModules(
+    fabricApi(
             "fabric-api-base",
             "fabric-data-generation-api-v1",
             "fabric-blockrenderlayer-v1",

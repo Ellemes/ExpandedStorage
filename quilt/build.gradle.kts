@@ -51,7 +51,7 @@ val excludeFabric: (ModuleDependency) -> Unit = {
 }
 
 mod {
-    fabricApiModules(
+    fabricApi(
             "fabric-api-base",
             "fabric-data-generation-api-v1",
             "fabric-rendering-v1",
@@ -63,14 +63,13 @@ mod {
             "fabric-screen-handler-api-v1",
             "fabric-key-binding-api-v1",
     )
-    qslModules(
+    qsl(
             "block/block_extensions",
             "core/networking",
             "core/resource_loader",
             "item/item_group",
             "gui/tooltip",
     )
-    //qslModules("all")
 }
 
 dependencies {
