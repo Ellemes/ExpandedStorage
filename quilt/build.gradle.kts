@@ -2,7 +2,6 @@ import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
     id("com.github.johnrengelman.shadow")
-    id("org.quiltmc.loom")
     id("ninjaphenix.gradle.mod").apply(false)
 }
 
@@ -19,14 +18,6 @@ loom {
 }
 
 repositories {
-    maven {
-        name = "Quilt Release Maven"
-        url = uri("https://maven.quiltmc.org/repository/release/")
-    }
-    maven {
-        name = "Quilt Snapshot Maven"
-        url = uri("https://maven.quiltmc.org/repository/snapshot/")
-    }
     maven {
         name = "Ladysnake maven"
         url = uri("https://ladysnake.jfrog.io/artifactory/mods")
