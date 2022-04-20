@@ -77,34 +77,29 @@ public final class Main implements ModInitializer {
     private boolean isCarrierCompatEnabled = false;
     @Override
     public void onInitialize() {
-        FabricLoader fabricLoader = FabricLoader.getInstance();
-        if (!fabricLoader.isModLoaded("quilt_loader")) {
-            try {
-                SemanticVersion version = SemanticVersion.parse("1.8.0");
-                isCarrierCompatEnabled = fabricLoader.getModContainer("carrier").map(it -> {
-                    if (it.getMetadata().getVersion() instanceof SemanticVersion carrierVersion)
-                        return carrierVersion.compareTo(version) > 0;
+    FabricLoader fabricLoader = FabricLoader.getInstance();
+    try {
+        SemanticVersion version = SemanticVersion.parse("1.8.0");
+        isCarrierCompatEnabled = fabricLoader.getModContainer("carrier").map(it -> {
+            if (it.getMetadata().getVersion() instanceof SemanticVersion carrierVersion)
+                return carrierVersion.compareTo(version) > 0;
 
-                    return false;
-                }).orElse(false);
-            } catch (VersionParsingException ignored) {
-            }
+            return false;
+        }).orElse(false);
+    } catch (VersionParsingException ignored) {
+    }
 
-            CreativeModeTab group = FabricItemGroupBuilder.build(Utils.id("tab"), () -> new ItemStack(Registry.ITEM.get(Utils.id("netherite_chest")))); // Fabric API is dumb.
-            boolean isClient = fabricLoader.getEnvironmentType() == EnvType.CLIENT;
-            TagReloadListener tagReloadListener = new TagReloadListener();
-            Common.constructContent(GenericItemAccess::new, fabricLoader.isModLoaded("htm") ? HTMLockable::new : BasicLockable::new, group, isClient, tagReloadListener, this::registerContent,
-                    /*Base*/ true,
-                    /*Chest*/ TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "wooden_chests")), BlockItem::new, ChestItemAccess::new,
-                    /*Old Chest*/
-                    /*Barrel*/ TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "wooden_barrels")),
-                    /*Mini Chest*/ BlockItem::new);
+    CreativeModeTab group = FabricItemGroupBuilder.build(Utils.id("tab"), () -> new ItemStack(Registry.ITEM.get(Utils.id("netherite_chest")))); // Fabric API is dumb.
+    boolean isClient = fabricLoader.getEnvironmentType() == EnvType.CLIENT;
+    TagReloadListener tagReloadListener = new TagReloadListener();
+    Common.constructContent(GenericItemAccess::new, fabricLoader.isModLoaded("htm") ? HTMLockable::new : BasicLockable::new, group, isClient, tagReloadListener, this::registerContent,
+            /*Base*/ true,
+            /*Chest*/ TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "wooden_chests")), BlockItem::new, ChestItemAccess::new,
+            /*Old Chest*/
+            /*Barrel*/ TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "wooden_barrels")),
+            /*Mini Chest*/ BlockItem::new);
 
-            ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, success) -> tagReloadListener.postDataReload());
-        } else {
-            LoggerFactory.getLogger(Utils.MOD_ID).warn("Please use Expanded Storage for Quilt instead.");
-            System.exit(0);
-        }
+    ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, success) -> tagReloadListener.postDataReload());
     }
 
     private void registerContent(List<ResourceLocation> stats, List<NamedValue<Item>> baseItems,
