@@ -7,13 +7,13 @@
   ],
   "key": {
     "G": {
-      "tag": "c:glass_blocks"
+      "tag": "forge:glass"
     },
     "D": {
-      "tag": "c:diamonds"
+      "tag": "forge:gems/diamond"
     },
     "I": {
-      "tag": "c:gold_ingots"
+      "tag": "forge:ingots/gold"
     }
   },
   "result": {

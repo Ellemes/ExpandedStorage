@@ -81,7 +81,7 @@ public final class Main {
     private final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 
     public Main() {
-        TagReloadListener tagReloadListener = new TagReloadListener(); // todo: add post data reload hook.
+        TagReloadListener tagReloadListener = new TagReloadListener();
 
         Common.constructContent(GenericItemAccess::new, BasicLockable::new,
                 new CreativeModeTab(Utils.MOD_ID + ".tab") {
