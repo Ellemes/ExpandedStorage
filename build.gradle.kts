@@ -36,8 +36,10 @@ val realChangelog = rootDir.resolve("changelog.md").readText(Charsets.UTF_8)
 val modrinthToken: String? = System.getenv("MODRINTH_TOKEN")
 val curseforgeToken: String? = System.getenv("CURSEFORGE_TOKEN")
 
-val extraGameVersions = (properties["extra_game_versions"] as String).split(",")
-
+var extraGameVersions = (properties["extra_game_versions"] as String).split(",")
+if (extraGameVersions.size == 1 && extraGameVersions[0] == "") {
+    extraGameVersions = listOf()
+}
 if (modrinthToken != null) {
     if (forgeProject != null) {
         modrinthForgeTask = tasks.register<com.modrinth.minotaur.TaskModrinthUpload>("publishModrinthForge") {
