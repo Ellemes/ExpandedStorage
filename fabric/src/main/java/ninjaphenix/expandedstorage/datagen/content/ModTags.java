@@ -26,7 +26,7 @@ public final class ModTags {
     public static class Items {
         public static final TagKey<Item> WOODEN_CHESTS = tag(commonId("wooden_chests"));
         public static final TagKey<Item> WOODEN_BARRELS = tag(commonId("wooden_barrels"));
-        public static final TagKey<Item> GLASS_BLOCKS = tag(commonId("glass_blocks"));
+        public static final TagKey<Item> GLASS_BLOCKS = tag(commonId("glass"));
         public static final TagKey<Item> DIAMONDS = tag(commonId("diamonds"));
         public static final TagKey<Item> IRON_INGOTS = tag(commonId("iron_ingots"));
         public static final TagKey<Item> GOLD_INGOTS = tag(commonId("gold_ingots"));
