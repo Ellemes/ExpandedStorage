@@ -14,7 +14,7 @@ configurations {
 }
 
 loom {
-    accessWidenerPath.set(file("src/main/resources/expandedstorage.accessWidener"))
+    accessWidenerPath.set(project(":common").loom.accessWidenerPath)
 }
 
 repositories {

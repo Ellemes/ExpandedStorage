@@ -38,6 +38,5 @@
   "mixin": [
     "expandedstorage-common.mixin.json",
     "expandedstorage-quilt.mixin.json"
-  ],
-  "access_widener": "expandedstorage.accessWidener"
+  ]
 }
