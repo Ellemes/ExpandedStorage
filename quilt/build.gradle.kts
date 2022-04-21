@@ -10,7 +10,7 @@ configurations {
     create("shadowCommon") // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
     compileClasspath.get().extendsFrom(configurations["common"])
     runtimeClasspath.get().extendsFrom(configurations["common"])
-    named("developmentFabric").get().extendsFrom(configurations["common"])
+    named("developmentQuilt").get().extendsFrom(configurations["common"])
 }
 
 loom {
@@ -67,7 +67,7 @@ dependencies {
     "common"(project(path = ":common", configuration = "namedElements")) {
         isTransitive = false
     }
-    "shadowCommon"(project(path = ":common", configuration = "transformProductionFabric")) {
+    "shadowCommon"(project(path = ":common", configuration = "transformProductionQuilt")) {
         isTransitive = false
     }
 
