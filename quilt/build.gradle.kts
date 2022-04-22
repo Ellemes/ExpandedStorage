@@ -1,20 +1,5 @@
-import net.fabricmc.loom.task.RemapJarTask
-
 plugins {
-    id("com.github.johnrengelman.shadow")
     id("ninjaphenix.gradle.mod").apply(false)
-}
-
-configurations {
-    create("common")
-    create("shadowCommon") // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
-    compileClasspath.get().extendsFrom(configurations["common"])
-    runtimeClasspath.get().extendsFrom(configurations["common"])
-    named("developmentQuilt").get().extendsFrom(configurations["common"])
-}
-
-loom {
-    accessWidenerPath.set(project(":common").loom.accessWidenerPath)
 }
 
 repositories {
@@ -64,13 +49,6 @@ mod {
 }
 
 dependencies {
-    "common"(project(path = ":common", configuration = "namedElements")) {
-        isTransitive = false
-    }
-    "shadowCommon"(project(path = ":common", configuration = "transformProductionQuilt")) {
-        isTransitive = false
-    }
-
     modImplementation("ninjaphenix:container_library:1.3.4+1.18.2-fabric", dependencyConfiguration = excludeFabric)
 
     //modImplementation(group = "ninjaphenix", name = "container_library", version = "1.3.0+1.18", classifier = "fabric", dependencyConfiguration = excludeFabric)
@@ -87,38 +65,4 @@ dependencies {
     modCompileOnly(group = "curse.maven", name = "htm-462534", version = "3539120", dependencyConfiguration = excludeFabric)
 
     //modRuntimeOnly("maven.modrinth:modmenu:3.1.0")
-}
-
-val shadowJar = tasks.getByName<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar")
-
-shadowJar.apply {
-    exclude("architectury.common.json")
-    configurations = listOf(project.configurations["shadowCommon"])
-    archiveClassifier.set("dev-shadow")
-}
-
-tasks.getByName<RemapJarTask>("remapJar") {
-    injectAccessWidener.set(true)
-    inputFile.set(shadowJar.archiveFile)
-    dependsOn(shadowJar)
-    archiveClassifier.set("fat")
-}
-
-tasks.jar {
-    archiveClassifier.set("dev")
-}
-
-val minifyJarTask = tasks.register<ninjaphenix.gradle.mod.api.task.MinifyJsonTask>("minJar") {
-    input.set(tasks.getByName("remapJar").outputs.files.singleFile)
-    archiveClassifier.set(project.name)
-    from(rootDir.resolve("LICENSE"))
-    dependsOn(tasks.getByName("remapJar"))
-}
-
-tasks.build {
-    dependsOn(minifyJarTask)
-}
-
-(components.findByName("java") as AdhocComponentWithVariants).withVariantsFromConfiguration(project.configurations.getByName("shadowRuntimeElements")) {
-    skip()
 }
