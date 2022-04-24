@@ -6,13 +6,14 @@
     "version": "${version}",
     "intermediate_mappings": "net.fabricmc:intermediary",
     "entrypoints": {
-      "init": "ninjaphenix.expandedstorage.quilt.Main"
+      "init": "ninjaphenix.expandedstorage.quilt.Main",
+      "fabric-datagen": "ninjaphenix.expandedstorage.quilt.datagen.Main"
     },
     "depends": [
       "quilt_loader",
       {
         "id": "ninjaphenix_container_lib",
-        "versions": "~1.3.0"
+        "versions": "~1.3.4"
       },
       {
         "id": "minecraft",

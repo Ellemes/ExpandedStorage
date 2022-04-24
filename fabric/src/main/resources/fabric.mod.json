@@ -3,13 +3,13 @@
   "depends": {
     "fabricloader": ">=0.13.2",
     "minecraft": "~1.18.2-rc.1",
-    "ninjaphenix_container_lib": ">=1.3.0"
+    "ninjaphenix_container_lib": "~1.3.4"
   },
   "entrypoints": {
     "main": [
       "ninjaphenix.expandedstorage.fabric.Main"
     ],
-    "fabric-datagen": ["ninjaphenix.expandedstorage.datagen.Main"]
+    "fabric-datagen": ["ninjaphenix.expandedstorage.fabric.datagen.Main"]
   },
   "environment": "*",
   "authors": ["NinjaPhenix"],

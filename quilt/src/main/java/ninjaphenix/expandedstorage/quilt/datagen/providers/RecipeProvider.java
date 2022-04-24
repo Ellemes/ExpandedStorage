@@ -131,11 +131,11 @@ public class RecipeProvider extends FabricRecipeProvider {
         smithingRecipe(ModItems.IRON_TO_NETHERITE_CONVERSION_KIT, ModItems.IRON_TO_OBSIDIAN_CONVERSION_KIT, ModTags.Items.NETHERITE_INGOTS, Criterions.HAS_PREVIOUS_KIT, exporter);
         shapedRecipe(ModItems.GOLD_TO_DIAMOND_CONVERSION_KIT, 1, Criterions.HAS_ITEM, ModTags.Items.GOLD_INGOTS)
                 .pattern("GGG")
-                .pattern("IDI")
+                .pattern("DID")
                 .pattern("GGG")
                 .define('G', ModTags.Items.GLASS_BLOCKS)
-                .define('I', ModTags.Items.GOLD_INGOTS)
                 .define('D', ModTags.Items.DIAMONDS)
+                .define('I', ModTags.Items.GOLD_INGOTS)
                 .save(exporter);
         shapedRecipe(ModItems.GOLD_TO_OBSIDIAN_CONVERSION_KIT, 1, Criterions.HAS_PREVIOUS_KIT, ModItems.GOLD_TO_DIAMOND_CONVERSION_KIT)
                 .pattern("OOO")

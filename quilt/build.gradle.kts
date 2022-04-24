@@ -42,6 +42,7 @@ mod {
     qsl(
             "block/block_extensions",
             "core/networking",
+            "core/registry",
             "core/resource_loader",
             "item/item_group",
             "gui/tooltip",
@@ -49,7 +50,7 @@ mod {
 }
 
 dependencies {
-    modImplementation("ninjaphenix:container_library:1.3.4+1.18.2-fabric", dependencyConfiguration = excludeFabric)
+    modImplementation("ninjaphenix:container_library:1.3.4+1.18.2-quilt", dependencyConfiguration = excludeFabric)
 
     //modImplementation(group = "ninjaphenix", name = "container_library", version = "1.3.0+1.18", classifier = "fabric", dependencyConfiguration = excludeFabric)
 
