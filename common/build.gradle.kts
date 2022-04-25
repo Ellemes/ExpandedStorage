@@ -1,5 +1,5 @@
 dependencies {
-    modImplementation("ninjaphenix:container_library:1.3.2+1.18.2:fabric") {
+    modImplementation("ninjaphenix:container_library:1.3.4+1.18.2-fabric") {
         exclude("net.fabricmc")
         exclude("net.fabricmc.fabric-api")
     }
