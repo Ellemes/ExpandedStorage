@@ -15,15 +15,11 @@
  */
 package ellemes.expandedstorage.block.entity;
 
-import ellemes.expandedstorage.block.entity.extendable.ExposedInventoryBlockEntity;
-import ninjaphenix.container_library.api.inventory.AbstractHandler;
 import ellemes.expandedstorage.block.OpenableBlock;
+import ellemes.expandedstorage.block.entity.extendable.ExposedInventoryBlockEntity;
 import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
 import ellemes.expandedstorage.block.strategies.ItemAccess;
 import ellemes.expandedstorage.block.strategies.Lockable;
-
-import java.util.function.Function;
-import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
@@ -38,6 +34,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import ninjaphenix.container_library.api.inventory.AbstractHandler;
+
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public final class BarrelBlockEntity extends ExposedInventoryBlockEntity {
     private final ContainerOpenersCounter manager = new ContainerOpenersCounter() {

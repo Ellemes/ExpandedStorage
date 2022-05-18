@@ -18,13 +18,16 @@ package ellemes.expandedstorage.fabric;
 import ellemes.expandedstorage.Common;
 import ellemes.expandedstorage.TagReloadListener;
 import ellemes.expandedstorage.Utils;
+import ellemes.expandedstorage.block.BarrelBlock;
+import ellemes.expandedstorage.block.ChestBlock;
+import ellemes.expandedstorage.block.MiniChestBlock;
+import ellemes.expandedstorage.block.OpenableBlock;
 import ellemes.expandedstorage.block.entity.BarrelBlockEntity;
 import ellemes.expandedstorage.block.entity.ChestBlockEntity;
 import ellemes.expandedstorage.block.entity.MiniChestBlockEntity;
 import ellemes.expandedstorage.block.entity.OldChestBlockEntity;
 import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
 import ellemes.expandedstorage.block.misc.BasicLockable;
-import ninjaphenix.expandedstorage.block.misc.CursedChestType;
 import ellemes.expandedstorage.block.misc.DoubleItemAccess;
 import ellemes.expandedstorage.client.ChestBlockEntityRenderer;
 import ellemes.expandedstorage.fabric.compat.carrier.CarrierCompat;
@@ -64,10 +67,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import ninjaphenix.expandedstorage.block.AbstractChestBlock;
-import ellemes.expandedstorage.block.BarrelBlock;
-import ellemes.expandedstorage.block.ChestBlock;
-import ellemes.expandedstorage.block.MiniChestBlock;
-import ellemes.expandedstorage.block.OpenableBlock;
+import ninjaphenix.expandedstorage.block.misc.CursedChestType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -77,31 +77,68 @@ import java.util.stream.Collectors;
 @SuppressWarnings("deprecation")
 public final class Main implements ModInitializer {
     private boolean isCarrierCompatEnabled = false;
-    @Override
-    public void onInitialize() {
-    FabricLoader fabricLoader = FabricLoader.getInstance();
-    try {
-        SemanticVersion version = SemanticVersion.parse("1.8.0");
-        isCarrierCompatEnabled = fabricLoader.getModContainer("carrier").map(it -> {
-            if (it.getMetadata().getVersion() instanceof SemanticVersion carrierVersion)
-                return carrierVersion.compareTo(version) > 0;
 
-            return false;
-        }).orElse(false);
-    } catch (VersionParsingException ignored) {
+    @SuppressWarnings({"UnstableApiUsage"})
+    private static Storage<ItemVariant> getItemAccess(Level world, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, @SuppressWarnings("unused") Direction context) {
+        if (blockEntity instanceof OldChestBlockEntity entity) {
+            DoubleItemAccess access = entity.getItemAccess();
+            CursedChestType type = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
+            Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+            if (access.hasCachedAccess() || type == CursedChestType.SINGLE) {
+                //noinspection unchecked
+                return (Storage<ItemVariant>) access.get();
+            }
+            if (world.getBlockEntity(pos.relative(AbstractChestBlock.getDirectionToAttached(type, facing))) instanceof OldChestBlockEntity otherEntity) {
+                DoubleItemAccess otherAccess = otherEntity.getItemAccess();
+                if (otherAccess.hasCachedAccess()) {
+                    //noinspection unchecked
+                    return (Storage<ItemVariant>) otherAccess.get();
+                }
+                DoubleItemAccess first, second;
+                if (AbstractChestBlock.getBlockType(type) == DoubleBlockCombiner.BlockType.FIRST) {
+                    first = access;
+                    second = otherAccess;
+                } else {
+                    first = otherAccess;
+                    second = access;
+                }
+                first.setOther(second);
+                //noinspection unchecked
+                return (Storage<ItemVariant>) first.get();
+            }
+
+        } else if (blockEntity instanceof OpenableBlockEntity entity) {
+            //noinspection unchecked
+            return (Storage<ItemVariant>) entity.getItemAccess().get();
+        }
+        return null;
     }
 
-    CreativeModeTab group = FabricItemGroupBuilder.build(Utils.id("tab"), () -> new ItemStack(Registry.ITEM.get(Utils.id("netherite_chest")))); // Fabric API is dumb.
-    boolean isClient = fabricLoader.getEnvironmentType() == EnvType.CLIENT;
-    TagReloadListener tagReloadListener = new TagReloadListener();
-    Common.constructContent(GenericItemAccess::new, fabricLoader.isModLoaded("htm") ? HTMLockable::new : BasicLockable::new, group, isClient, tagReloadListener, this::registerContent,
-            /*Base*/ true,
-            /*Chest*/ TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "wooden_chests")), BlockItem::new, ChestItemAccess::new,
-            /*Old Chest*/
-            /*Barrel*/ TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "wooden_barrels")),
-            /*Mini Chest*/ BlockItem::new);
+    @Override
+    public void onInitialize() {
+        FabricLoader fabricLoader = FabricLoader.getInstance();
+        try {
+            SemanticVersion version = SemanticVersion.parse("1.8.0");
+            isCarrierCompatEnabled = fabricLoader.getModContainer("carrier").map(it -> {
+                if (it.getMetadata().getVersion() instanceof SemanticVersion carrierVersion)
+                    return carrierVersion.compareTo(version) > 0;
 
-    ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, success) -> tagReloadListener.postDataReload());
+                return false;
+            }).orElse(false);
+        } catch (VersionParsingException ignored) {
+        }
+
+        CreativeModeTab group = FabricItemGroupBuilder.build(Utils.id("tab"), () -> new ItemStack(Registry.ITEM.get(Utils.id("netherite_chest")))); // Fabric API is dumb.
+        boolean isClient = fabricLoader.getEnvironmentType() == EnvType.CLIENT;
+        TagReloadListener tagReloadListener = new TagReloadListener();
+        Common.constructContent(GenericItemAccess::new, fabricLoader.isModLoaded("htm") ? HTMLockable::new : BasicLockable::new, group, isClient, tagReloadListener, this::registerContent,
+                /*Base*/ true,
+                /*Chest*/ TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "wooden_chests")), BlockItem::new, ChestItemAccess::new,
+                /*Old Chest*/
+                /*Barrel*/ TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "wooden_barrels")),
+                /*Mini Chest*/ BlockItem::new);
+
+        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, success) -> tagReloadListener.postDataReload());
     }
 
     private void registerContent(List<ResourceLocation> stats, List<NamedValue<Item>> baseItems,
@@ -155,43 +192,6 @@ public final class Main implements ModInitializer {
                 BlockRenderLayerMap.INSTANCE.putBlock(block.getValue(), RenderType.cutoutMipped());
             }
         }
-    }
-
-    @SuppressWarnings({"UnstableApiUsage"})
-    private static Storage<ItemVariant> getItemAccess(Level world, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, @SuppressWarnings("unused") Direction context) {
-        if (blockEntity instanceof OldChestBlockEntity entity) {
-            DoubleItemAccess access = entity.getItemAccess();
-            CursedChestType type = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
-            Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
-            if (access.hasCachedAccess() || type == CursedChestType.SINGLE) {
-                //noinspection unchecked
-                return (Storage<ItemVariant>) access.get();
-            }
-            if (world.getBlockEntity(pos.relative(AbstractChestBlock.getDirectionToAttached(type, facing))) instanceof OldChestBlockEntity otherEntity) {
-                DoubleItemAccess otherAccess = otherEntity.getItemAccess();
-                if (otherAccess.hasCachedAccess()) {
-                    //noinspection unchecked
-                    return (Storage<ItemVariant>) otherAccess.get();
-                }
-                DoubleItemAccess first, second;
-                if (AbstractChestBlock.getBlockType(type) == DoubleBlockCombiner.BlockType.FIRST) {
-                    first = access;
-                    second = otherAccess;
-                } else {
-                    first = otherAccess;
-                    second = access;
-                }
-                first.setOther(second);
-                //noinspection unchecked
-                return (Storage<ItemVariant>) first.get();
-            }
-
-        }
-        else if (blockEntity instanceof OpenableBlockEntity entity) {
-            //noinspection unchecked
-            return (Storage<ItemVariant>) entity.getItemAccess().get();
-        }
-        return null;
     }
 
     private static class Client {

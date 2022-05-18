@@ -15,10 +15,10 @@
  */
 package ellemes.expandedstorage.block.misc;
 
+import ellemes.expandedstorage.block.strategies.Lockable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.LockCode;
-import ellemes.expandedstorage.block.strategies.Lockable;
 
 public class BasicLockable implements Lockable {
     LockCode lock = LockCode.NO_LOCK;

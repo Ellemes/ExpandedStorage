@@ -15,11 +15,11 @@
  */
 package ellemes.expandedstorage.forge.datagen.content;
 
+import ellemes.expandedstorage.Utils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.ForgeRegistries;
-import ellemes.expandedstorage.Utils;
 
 public final class ModItems {
     public static final Item STORAGE_MUTATOR = item(Utils.id("storage_mutator"));

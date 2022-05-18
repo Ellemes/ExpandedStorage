@@ -15,9 +15,9 @@
  */
 package ellemes.expandedstorage.fabric.compat.carrier;
 
-import ninjaphenix.expandedstorage.block.AbstractChestBlock;
 import ellemes.expandedstorage.block.ChestBlock;
 import me.steven.carrier.api.CarriableRegistry;
+import ninjaphenix.expandedstorage.block.AbstractChestBlock;
 
 public final class CarrierCompat {
     public static void registerChestBlock(ChestBlock block) {

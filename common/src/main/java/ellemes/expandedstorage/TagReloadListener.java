@@ -24,12 +24,12 @@ import java.util.List;
 
 public class TagReloadListener {
     public static final TagKey<Block> chestCycle = TagKey.create(Registry.BLOCK_REGISTRY, Utils.id("chest_cycle"));
-    private List<Block> chestCycleBlocks = null;
     public static final TagKey<Block> miniChestCycle = TagKey.create(Registry.BLOCK_REGISTRY, Utils.id("mini_chest_cycle"));
-    private List<Block> miniChestCycleBlocks = null;
     public static final TagKey<Block> miniChestSecretCycle = TagKey.create(Registry.BLOCK_REGISTRY, Utils.id("mini_chest_secret_cycle"));
-    private List<Block> miniChestSecretCycleBlocks = null;
     public static final TagKey<Block> miniChestSecretCycle2 = TagKey.create(Registry.BLOCK_REGISTRY, Utils.id("mini_chest_secret_cycle_2"));
+    private List<Block> chestCycleBlocks = null;
+    private List<Block> miniChestCycleBlocks = null;
+    private List<Block> miniChestSecretCycleBlocks = null;
     private List<Block> miniChestSecretCycle2Blocks = null;
 
     public void postDataReload() {

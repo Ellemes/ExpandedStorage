@@ -15,11 +15,6 @@
  */
 package ellemes.expandedstorage.registration;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import ninjaphenix.expandedstorage.block.AbstractChestBlock;
 import ellemes.expandedstorage.block.BarrelBlock;
 import ellemes.expandedstorage.block.ChestBlock;
 import ellemes.expandedstorage.block.MiniChestBlock;
@@ -27,6 +22,11 @@ import ellemes.expandedstorage.block.entity.BarrelBlockEntity;
 import ellemes.expandedstorage.block.entity.ChestBlockEntity;
 import ellemes.expandedstorage.block.entity.MiniChestBlockEntity;
 import ellemes.expandedstorage.block.entity.OldChestBlockEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import ninjaphenix.expandedstorage.block.AbstractChestBlock;
 
 import java.util.List;
 

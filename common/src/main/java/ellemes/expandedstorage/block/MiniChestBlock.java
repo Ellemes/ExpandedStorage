@@ -15,6 +15,8 @@
  */
 package ellemes.expandedstorage.block;
 
+import ellemes.expandedstorage.Common;
+import ellemes.expandedstorage.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -40,8 +42,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import ellemes.expandedstorage.Common;
-import ellemes.expandedstorage.Utils;
 import org.jetbrains.annotations.Nullable;
 
 public final class MiniChestBlock extends OpenableBlock implements SimpleWaterloggedBlock {

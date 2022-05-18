@@ -15,10 +15,11 @@
  */
 package ellemes.expandedstorage.tier;
 
-import java.util.function.UnaryOperator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+
+import java.util.function.UnaryOperator;
 
 public final class Tier {
     private final ResourceLocation id;

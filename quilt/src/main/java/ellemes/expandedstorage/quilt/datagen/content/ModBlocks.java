@@ -15,14 +15,14 @@
  */
 package ellemes.expandedstorage.quilt.datagen.content;
 
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Block;
 import ellemes.expandedstorage.Utils;
-import ninjaphenix.expandedstorage.block.AbstractChestBlock;
 import ellemes.expandedstorage.block.BarrelBlock;
 import ellemes.expandedstorage.block.ChestBlock;
 import ellemes.expandedstorage.block.MiniChestBlock;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import ninjaphenix.expandedstorage.block.AbstractChestBlock;
 
 public final class ModBlocks {
     public static final ChestBlock WOOD_CHEST = block(Utils.id("wood_chest"));

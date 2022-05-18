@@ -15,10 +15,10 @@
  */
 package ellemes.expandedstorage.forge.datagen.providers;
 
+import ellemes.expandedstorage.Utils;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import ellemes.expandedstorage.Utils;
 
 public final class BlockStatesAndModels extends BlockStateProvider {
     public BlockStatesAndModels(DataGenerator generator, ExistingFileHelper fileHelper) {

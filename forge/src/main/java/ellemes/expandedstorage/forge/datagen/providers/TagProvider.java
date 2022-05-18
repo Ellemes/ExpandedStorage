@@ -15,6 +15,7 @@
  */
 package ellemes.expandedstorage.forge.datagen.providers;
 
+import ellemes.expandedstorage.Utils;
 import ellemes.expandedstorage.forge.datagen.content.ModBlocks;
 import ellemes.expandedstorage.forge.datagen.content.ModItems;
 import ellemes.expandedstorage.forge.datagen.content.ModTags;
@@ -25,7 +26,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import ellemes.expandedstorage.Utils;
 
 public final class TagProvider {
     public static final class Block extends BlockTagsProvider {

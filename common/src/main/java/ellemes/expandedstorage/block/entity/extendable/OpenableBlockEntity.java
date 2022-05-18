@@ -15,6 +15,8 @@
  */
 package ellemes.expandedstorage.block.entity.extendable;
 
+import ellemes.expandedstorage.block.strategies.ItemAccess;
+import ellemes.expandedstorage.block.strategies.Lockable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -28,8 +30,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import ninjaphenix.container_library.api.v2.OpenableBlockEntityV2;
-import ellemes.expandedstorage.block.strategies.ItemAccess;
-import ellemes.expandedstorage.block.strategies.Lockable;
 
 public abstract class OpenableBlockEntity extends BlockEntity implements OpenableBlockEntityV2 {
     private final ResourceLocation blockId;

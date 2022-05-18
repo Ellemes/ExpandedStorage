@@ -15,14 +15,18 @@
  */
 package ellemes.expandedstorage.quilt.datagen.content;
 
+import ellemes.expandedstorage.Utils;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import ellemes.expandedstorage.Utils;
 
 public final class ModTags {
+    private static ResourceLocation commonId(String path) {
+        return new ResourceLocation("c", path);
+    }
+
     public static class Items {
         public static final TagKey<Item> WOODEN_CHESTS = tag(commonId("wooden_chests"));
         public static final TagKey<Item> WOODEN_BARRELS = tag(commonId("wooden_barrels"));
@@ -51,9 +55,5 @@ public final class ModTags {
         private static TagKey<Block> tag(ResourceLocation id) {
             return TagKey.create(Registry.BLOCK_REGISTRY, id);
         }
-    }
-
-    private static ResourceLocation commonId(String path) {
-        return new ResourceLocation("c", path);
     }
 }

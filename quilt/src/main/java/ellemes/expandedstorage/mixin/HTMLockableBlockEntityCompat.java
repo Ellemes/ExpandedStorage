@@ -17,12 +17,12 @@ package ellemes.expandedstorage.mixin;
 
 import com.github.fabricservertools.htm.HTMContainerLock;
 import com.github.fabricservertools.htm.api.LockableObject;
+import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
+import ellemes.expandedstorage.quilt.compat.htm.HTMLockable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
-import ellemes.expandedstorage.quilt.compat.htm.HTMLockable;
 import org.spongepowered.asm.mixin.Mixin;
 
 @SuppressWarnings("unused")

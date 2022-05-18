@@ -15,11 +15,11 @@
  */
 package ninjaphenix.expandedstorage.api;
 
+import net.minecraft.util.StringRepresentable;
 import ninjaphenix.expandedstorage.block.misc.CursedChestType;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Locale;
-import net.minecraft.util.StringRepresentable;
 
 public enum EsChestType implements StringRepresentable {
     TOP,
@@ -36,11 +36,6 @@ public enum EsChestType implements StringRepresentable {
         name = this.name().toLowerCase(Locale.ROOT);
     }
 
-    @Override
-    public String getSerializedName() {
-        return name;
-    }
-
     /**
      * @deprecated Temporary method, will be removed in the future.
      */
@@ -55,5 +50,10 @@ public enum EsChestType implements StringRepresentable {
         else if (type == CursedChestType.RIGHT) return EsChestType.RIGHT;
         else if (type == CursedChestType.SINGLE) return EsChestType.SINGLE;
         throw new IllegalStateException("Invalid type passed");
+    }
+
+    @Override
+    public String getSerializedName() {
+        return name;
     }
 }

@@ -15,10 +15,6 @@
  */
 package ellemes.expandedstorage.block.misc;
 
-import java.util.Optional;
-import java.util.function.BiFunction;
-import java.util.function.BiPredicate;
-import java.util.function.Function;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelAccessor;
@@ -27,9 +23,12 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public interface PropertyRetriever<A> {
-    <B> Optional<B> get(Property<A, B> property);
+import java.util.Optional;
+import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
+import java.util.function.Function;
 
+public interface PropertyRetriever<A> {
     static <A extends BlockEntity> PropertyRetriever<A> create(
             BlockEntityType<A> blockEntityType,
             Function<BlockState, DoubleBlockCombiner.BlockType> typeGetter,
@@ -74,4 +73,6 @@ public interface PropertyRetriever<A> {
     static <A> PropertyRetriever<A> createDirect(A single) {
         return new SinglePropertyRetriever<>(single);
     }
+
+    <B> Optional<B> get(Property<A, B> property);
 }

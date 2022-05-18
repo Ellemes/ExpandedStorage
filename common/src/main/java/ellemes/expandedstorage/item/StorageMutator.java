@@ -17,8 +17,6 @@ package ellemes.expandedstorage.item;
 
 import ellemes.expandedstorage.Common;
 import ellemes.expandedstorage.Utils;
-import org.jetbrains.annotations.Nullable;
-import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -37,6 +35,9 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public final class StorageMutator extends Item {
     public StorageMutator(Properties settings) {

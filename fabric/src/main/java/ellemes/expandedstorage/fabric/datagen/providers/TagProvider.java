@@ -15,15 +15,15 @@
  */
 package ellemes.expandedstorage.fabric.datagen.providers;
 
+import ellemes.expandedstorage.fabric.datagen.content.ModBlocks;
+import ellemes.expandedstorage.fabric.datagen.content.ModItems;
+import ellemes.expandedstorage.fabric.datagen.content.ModTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
-import ellemes.expandedstorage.fabric.datagen.content.ModBlocks;
-import ellemes.expandedstorage.fabric.datagen.content.ModItems;
-import ellemes.expandedstorage.fabric.datagen.content.ModTags;
 
 public final class TagProvider {
     public static final class Block extends FabricTagProvider.BlockTagProvider {

@@ -15,6 +15,9 @@
  */
 package ellemes.expandedstorage.quilt.datagen.providers;
 
+import ellemes.expandedstorage.Utils;
+import ellemes.expandedstorage.quilt.datagen.content.ModItems;
+import ellemes.expandedstorage.quilt.datagen.content.ModTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.Registry;
@@ -28,9 +31,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
-import ellemes.expandedstorage.Utils;
-import ellemes.expandedstorage.quilt.datagen.content.ModItems;
-import ellemes.expandedstorage.quilt.datagen.content.ModTags;
 
 import java.util.function.Consumer;
 

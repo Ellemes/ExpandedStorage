@@ -15,10 +15,10 @@
  */
 package ellemes.expandedstorage.forge;
 
-import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
 import ellemes.expandedstorage.block.misc.DoubleItemAccess;
+import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 
 public final class ChestItemAccess extends GenericItemAccess implements DoubleItemAccess {
     private IItemHandlerModifiable cache;

@@ -15,12 +15,12 @@
  */
 package ellemes.expandedstorage.quilt.datagen.providers;
 
+import ellemes.expandedstorage.quilt.datagen.content.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.models.BlockModelGenerators;
 import net.minecraft.data.models.ItemModelGenerators;
 import net.minecraft.data.models.model.ModelTemplates;
-import ellemes.expandedstorage.quilt.datagen.content.ModItems;
 
 public class BlockStateProvider extends FabricModelProvider {
     public BlockStateProvider(FabricDataGenerator generator) {

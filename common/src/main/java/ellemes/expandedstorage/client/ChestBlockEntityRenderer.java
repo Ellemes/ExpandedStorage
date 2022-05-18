@@ -18,6 +18,12 @@ package ellemes.expandedstorage.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
+import ellemes.expandedstorage.Common;
+import ellemes.expandedstorage.Utils;
+import ellemes.expandedstorage.block.ChestBlock;
+import ellemes.expandedstorage.block.entity.ChestBlockEntity;
+import ellemes.expandedstorage.block.misc.Property;
+import ellemes.expandedstorage.block.misc.PropertyRetriever;
 import it.unimi.dsi.fastutil.floats.Float2FloatFunction;
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -41,14 +47,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import ellemes.expandedstorage.Common;
-import ellemes.expandedstorage.block.ChestBlock;
-import ellemes.expandedstorage.Utils;
 import ninjaphenix.expandedstorage.block.AbstractChestBlock;
-import ellemes.expandedstorage.block.entity.ChestBlockEntity;
 import ninjaphenix.expandedstorage.block.misc.CursedChestType;
-import ellemes.expandedstorage.block.misc.Property;
-import ellemes.expandedstorage.block.misc.PropertyRetriever;
 
 public final class ChestBlockEntityRenderer implements BlockEntityRenderer<ChestBlockEntity> {
     public static final ModelLayerLocation SINGLE_LAYER = new ModelLayerLocation(Utils.id("single_chest"), "main");
@@ -189,6 +189,21 @@ public final class ChestBlockEntityRenderer implements BlockEntityRenderer<Chest
         return LayerDefinition.create(meshDefinition, 48, 48);
     }
 
+    private static float getLidOpenness(float delta) {
+        delta = 1 - delta;
+        delta = 1 - delta * delta * delta;
+        return -delta * Mth.HALF_PI;
+    }
+
+    private static void renderBottom(PoseStack stack, VertexConsumer consumer, ModelPart bottom, int light, int overlay) {
+        bottom.render(stack, consumer, light, overlay);
+    }
+
+    private static void renderTop(PoseStack stack, VertexConsumer consumer, ModelPart top, int light, int overlay, float openness) {
+        top.xRot = openness;
+        top.render(stack, consumer, light, overlay);
+    }
+
     @Override
     public void render(ChestBlockEntity entity, float delta, PoseStack stack, MultiBufferSource provider, int light, int overlay) {
         ResourceLocation blockId = entity.getBlockId();
@@ -241,20 +256,5 @@ public final class ChestBlockEntityRenderer implements BlockEntityRenderer<Chest
             ChestBlockEntityRenderer.renderTop(stack, consumer, rightLock, brightness, overlay, lidOpenness);
         }
         stack.popPose();
-    }
-
-    private static float getLidOpenness(float delta) {
-        delta = 1 - delta;
-        delta = 1 - delta * delta * delta;
-        return -delta * Mth.HALF_PI;
-    }
-
-    private static void renderBottom(PoseStack stack, VertexConsumer consumer, ModelPart bottom, int light, int overlay) {
-        bottom.render(stack, consumer, light, overlay);
-    }
-
-    private static void renderTop(PoseStack stack, VertexConsumer consumer, ModelPart top, int light, int overlay, float openness) {
-        top.xRot = openness;
-        top.render(stack, consumer, light, overlay);
     }
 }

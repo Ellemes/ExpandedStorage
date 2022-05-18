@@ -15,15 +15,12 @@
  */
 package ellemes.expandedstorage.forge.datagen.content;
 
+import ellemes.expandedstorage.Utils;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import ellemes.expandedstorage.Utils;
 
 public final class ModTags {
     public static class Blocks {
@@ -36,6 +33,7 @@ public final class ModTags {
             return TagKey.create(Registry.BLOCK_REGISTRY, id);
         }
     }
+
     public static class Items {
         public static final TagKey<Item> ES_WOODEN_CHESTS = tag(Utils.id("wooden_chests"));
 

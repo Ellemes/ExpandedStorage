@@ -15,6 +15,22 @@
  */
 package ellemes.expandedstorage.forge;
 
+import ellemes.expandedstorage.Common;
+import ellemes.expandedstorage.TagReloadListener;
+import ellemes.expandedstorage.Utils;
+import ellemes.expandedstorage.block.BarrelBlock;
+import ellemes.expandedstorage.block.ChestBlock;
+import ellemes.expandedstorage.block.MiniChestBlock;
+import ellemes.expandedstorage.block.OpenableBlock;
+import ellemes.expandedstorage.block.entity.BarrelBlockEntity;
+import ellemes.expandedstorage.block.entity.ChestBlockEntity;
+import ellemes.expandedstorage.block.entity.MiniChestBlockEntity;
+import ellemes.expandedstorage.block.entity.OldChestBlockEntity;
+import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
+import ellemes.expandedstorage.block.misc.BasicLockable;
+import ellemes.expandedstorage.block.misc.DoubleItemAccess;
+import ellemes.expandedstorage.client.ChestBlockEntityRenderer;
+import ellemes.expandedstorage.registration.NamedValue;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
@@ -53,24 +69,8 @@ import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
-import ellemes.expandedstorage.Common;
-import ellemes.expandedstorage.TagReloadListener;
-import ellemes.expandedstorage.Utils;
 import ninjaphenix.expandedstorage.block.AbstractChestBlock;
-import ellemes.expandedstorage.block.BarrelBlock;
-import ellemes.expandedstorage.block.ChestBlock;
-import ellemes.expandedstorage.block.MiniChestBlock;
-import ellemes.expandedstorage.block.OpenableBlock;
-import ellemes.expandedstorage.block.entity.BarrelBlockEntity;
-import ellemes.expandedstorage.block.entity.ChestBlockEntity;
-import ellemes.expandedstorage.block.entity.MiniChestBlockEntity;
-import ellemes.expandedstorage.block.entity.OldChestBlockEntity;
-import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
-import ellemes.expandedstorage.block.misc.BasicLockable;
 import ninjaphenix.expandedstorage.block.misc.CursedChestType;
-import ellemes.expandedstorage.block.misc.DoubleItemAccess;
-import ellemes.expandedstorage.client.ChestBlockEntityRenderer;
-import ellemes.expandedstorage.registration.NamedValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

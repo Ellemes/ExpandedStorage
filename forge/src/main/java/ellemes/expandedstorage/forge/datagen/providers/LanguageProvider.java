@@ -15,12 +15,12 @@
  */
 package ellemes.expandedstorage.forge.datagen.providers;
 
+import ellemes.expandedstorage.Utils;
 import ellemes.expandedstorage.forge.datagen.content.ModBlocks;
 import ellemes.expandedstorage.forge.datagen.content.ModItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.CreativeModeTab;
-import ellemes.expandedstorage.Utils;
 
 import java.util.Arrays;
 import java.util.Locale;

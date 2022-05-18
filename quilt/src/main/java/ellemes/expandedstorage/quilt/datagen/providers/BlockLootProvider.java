@@ -15,10 +15,10 @@
  */
 package ellemes.expandedstorage.quilt.datagen.providers;
 
+import ellemes.expandedstorage.quilt.datagen.content.ModBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.data.loot.BlockLoot;
-import ellemes.expandedstorage.quilt.datagen.content.ModBlocks;
 
 public final class BlockLootProvider extends FabricBlockLootTableProvider {
     public BlockLootProvider(FabricDataGenerator dataGenerator) {

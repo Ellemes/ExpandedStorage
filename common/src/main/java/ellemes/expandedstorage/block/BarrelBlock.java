@@ -17,9 +17,6 @@ package ellemes.expandedstorage.block;
 
 import ellemes.expandedstorage.Common;
 import ellemes.expandedstorage.block.entity.BarrelBlockEntity;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -34,6 +31,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Random;
 
 public final class BarrelBlock extends OpenableBlock {
     public BarrelBlock(Properties settings, ResourceLocation blockId, ResourceLocation tierId, ResourceLocation openingStat, int slotCount) {

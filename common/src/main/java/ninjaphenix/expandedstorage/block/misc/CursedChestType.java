@@ -15,15 +15,16 @@
  */
 package ninjaphenix.expandedstorage.block.misc;
 
+import net.minecraft.util.StringRepresentable;
 import ninjaphenix.expandedstorage.api.EsChestType;
 import ninjaphenix.expandedstorage.api.ExpandedStorageAccessors;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Locale;
-import net.minecraft.util.StringRepresentable;
 
 /**
  * Note to self, do not rename, used by chest tracker.
+ *
  * @deprecated Use {@link EsChestType} and {@link ExpandedStorageAccessors} instead.
  */
 @Deprecated

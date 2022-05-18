@@ -16,10 +16,10 @@
 package ellemes.expandedstorage.quilt.compat.htm;
 
 import com.github.fabricservertools.htm.HTMContainerLock;
+import ellemes.expandedstorage.block.misc.BasicLockable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
-import ellemes.expandedstorage.block.misc.BasicLockable;
 
 public final class HTMLockable extends BasicLockable {
     public static final String LOCK_TAG_KEY = "HTM_Lock";

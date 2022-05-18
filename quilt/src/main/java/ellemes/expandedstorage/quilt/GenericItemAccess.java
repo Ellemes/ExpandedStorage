@@ -15,14 +15,14 @@
  */
 package ellemes.expandedstorage.quilt;
 
+import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
+import ellemes.expandedstorage.block.strategies.ItemAccess;
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
-import ellemes.expandedstorage.block.strategies.ItemAccess;
 
 public class GenericItemAccess implements ItemAccess {
     private final OpenableBlockEntity entity;

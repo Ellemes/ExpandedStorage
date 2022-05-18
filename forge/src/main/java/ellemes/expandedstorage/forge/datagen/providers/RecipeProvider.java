@@ -15,6 +15,7 @@
  */
 package ellemes.expandedstorage.forge.datagen.providers;
 
+import ellemes.expandedstorage.Utils;
 import ellemes.expandedstorage.forge.datagen.content.ModItems;
 import ellemes.expandedstorage.forge.datagen.content.ModTags;
 import net.minecraft.data.DataGenerator;
@@ -29,13 +30,28 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
-import ellemes.expandedstorage.Utils;
 
 import java.util.function.Consumer;
 
 public final class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider {
     public RecipeProvider(DataGenerator generator) {
         super(generator);
+    }
+
+    @SuppressWarnings("SpellCheckingInspection")
+    private static void smithingRecipe(Item output, Item base, TagKey<Item> addition, String criterion, Consumer<FinishedRecipe> exporter) {
+        UpgradeRecipeBuilder.smithing(Ingredient.of(base), Ingredient.of(addition), output)
+                            .unlocks(criterion, RecipeProvider.has(base))
+                            .save(exporter, output.getRegistryName());
+
+    }
+
+    private static ShapedRecipeBuilder shapedRecipe(ItemLike output, int count, String criterion, TagKey<Item> tag) {
+        return ShapedRecipeBuilder.shaped(output, count).unlockedBy(criterion, RecipeProvider.has(tag));
+    }
+
+    private static ShapedRecipeBuilder shapedRecipe(ItemLike output, int count, String criterion, Item item) {
+        return ShapedRecipeBuilder.shaped(output, count).unlockedBy(criterion, RecipeProvider.has(item));
     }
 
     @Override
@@ -384,22 +400,6 @@ public final class RecipeProvider extends net.minecraft.data.recipes.RecipeProvi
                               .group(id(ModItems.RED_MINI_PRESENT))
                               .unlockedBy(Criterions.HAS_PREVIOUS_BLOCK, RecipeProvider.has(ModItems.GREEN_MINI_PRESENT))
                               .save(exporter, Utils.MOD_ID + ":red_mini_present_cycle");
-    }
-
-    @SuppressWarnings("SpellCheckingInspection")
-    private static void smithingRecipe(Item output, Item base, TagKey<Item> addition, String criterion, Consumer<FinishedRecipe> exporter) {
-        UpgradeRecipeBuilder.smithing(Ingredient.of(base), Ingredient.of(addition), output)
-                            .unlocks(criterion, RecipeProvider.has(base))
-                            .save(exporter, output.getRegistryName());
-
-    }
-
-    private static ShapedRecipeBuilder shapedRecipe(ItemLike output, int count, String criterion, TagKey<Item> tag) {
-        return ShapedRecipeBuilder.shaped(output, count).unlockedBy(criterion, RecipeProvider.has(tag));
-    }
-
-    private static ShapedRecipeBuilder shapedRecipe(ItemLike output, int count, String criterion, Item item) {
-        return ShapedRecipeBuilder.shaped(output, count).unlockedBy(criterion, RecipeProvider.has(item));
     }
 
     private String id(ItemLike item) {

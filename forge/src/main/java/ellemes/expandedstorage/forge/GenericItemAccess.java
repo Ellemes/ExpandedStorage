@@ -15,10 +15,10 @@
  */
 package ellemes.expandedstorage.forge;
 
-import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.wrapper.InvWrapper;
 import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
 import ellemes.expandedstorage.block.strategies.ItemAccess;
+import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.wrapper.InvWrapper;
 
 public class GenericItemAccess implements ItemAccess {
     private final OpenableBlockEntity entity;

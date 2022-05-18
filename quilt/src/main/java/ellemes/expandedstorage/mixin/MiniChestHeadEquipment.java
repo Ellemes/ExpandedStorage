@@ -15,11 +15,11 @@
  */
 package ellemes.expandedstorage.mixin;
 
+import ellemes.expandedstorage.block.MiniChestBlock;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import ellemes.expandedstorage.block.MiniChestBlock;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

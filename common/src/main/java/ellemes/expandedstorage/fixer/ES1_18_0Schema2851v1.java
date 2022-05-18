@@ -18,10 +18,11 @@ package ellemes.expandedstorage.fixer;
 import com.mojang.datafixers.DSL;
 import com.mojang.datafixers.schemas.Schema;
 import com.mojang.datafixers.types.templates.TypeTemplate;
-import java.util.Map;
-import java.util.function.Supplier;
 import net.minecraft.util.datafix.fixes.References;
 import net.minecraft.util.datafix.schemas.NamespacedSchema;
+
+import java.util.Map;
+import java.util.function.Supplier;
 
 public final class ES1_18_0Schema2851v1 extends NamespacedSchema {
     public ES1_18_0Schema2851v1(int versionKey, Schema parent) {

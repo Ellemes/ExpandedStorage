@@ -15,12 +15,12 @@
  */
 package ellemes.expandedstorage.forge.datagen.providers;
 
+import ellemes.expandedstorage.Utils;
 import ellemes.expandedstorage.forge.datagen.content.ModItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import ellemes.expandedstorage.Utils;
 
 public final class ItemModelProvider extends net.minecraftforge.client.model.generators.ItemModelProvider {
     public ItemModelProvider(DataGenerator generator, ExistingFileHelper fileHelper) {

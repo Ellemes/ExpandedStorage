@@ -17,20 +17,20 @@ package ellemes.expandedstorage.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import ninjaphenix.container_library.api.client.function.ScreenSize;
-import ninjaphenix.container_library.api.client.gui.AbstractScreen;
-import ninjaphenix.container_library.api.inventory.AbstractHandler;
-import ninjaphenix.container_library.api.v2.client.NCL_ClientApiV2;
 import ellemes.expandedstorage.Utils;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
+import ninjaphenix.container_library.api.client.function.ScreenSize;
+import ninjaphenix.container_library.api.client.gui.AbstractScreen;
+import ninjaphenix.container_library.api.inventory.AbstractHandler;
+import ninjaphenix.container_library.api.v2.client.NCL_ClientApiV2;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public final class MiniChestScreen extends AbstractScreen {
     private static final ResourceLocation TEXTURE = Utils.id("textures/gui/mini_chest_screen.png");
@@ -40,6 +40,15 @@ public final class MiniChestScreen extends AbstractScreen {
     public MiniChestScreen(AbstractHandler handler, Inventory playerInventory, Component title, ScreenSize screenSize) {
         super(handler, playerInventory, title, screenSize);
         this.initializeSlots(playerInventory);
+    }
+
+    public static ScreenSize retrieveScreenSize(int slots, int scaledWidth, int scaledHeight) {
+        return ScreenSize.of(1, 1);
+    }
+
+    public static void registerScreenType() {
+        NCL_ClientApiV2.registerScreenType(Utils.id("mini_chest"), MiniChestScreen::new);
+        NCL_ClientApiV2.registerDefaultScreenSize(Utils.id("mini_chest"), MiniChestScreen::retrieveScreenSize);
     }
 
     private void initializeSlots(Inventory playerInventory) {
@@ -65,14 +74,5 @@ public final class MiniChestScreen extends AbstractScreen {
     @Override
     public List<Rect2i> getExclusionZones() {
         return List.of();
-    }
-
-    public static ScreenSize retrieveScreenSize(int slots, int scaledWidth, int scaledHeight) {
-        return ScreenSize.of(1, 1);
-    }
-
-    public static void registerScreenType() {
-        NCL_ClientApiV2.registerScreenType(Utils.id("mini_chest"), MiniChestScreen::new);
-        NCL_ClientApiV2.registerDefaultScreenSize(Utils.id("mini_chest"), MiniChestScreen::retrieveScreenSize);
     }
 }

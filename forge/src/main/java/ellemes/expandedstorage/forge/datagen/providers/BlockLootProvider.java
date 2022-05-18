@@ -15,11 +15,11 @@
  */
 package ellemes.expandedstorage.forge.datagen.providers;
 
+import ellemes.expandedstorage.Utils;
+import ellemes.expandedstorage.forge.datagen.content.ModBlocks;
 import net.minecraft.data.loot.BlockLoot;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
-import ellemes.expandedstorage.Utils;
-import ellemes.expandedstorage.forge.datagen.content.ModBlocks;
 
 import java.util.stream.Collectors;
 

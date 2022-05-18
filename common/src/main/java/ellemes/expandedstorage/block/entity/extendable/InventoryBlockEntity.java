@@ -16,9 +16,6 @@
 package ellemes.expandedstorage.block.entity.extendable;
 
 import ellemes.expandedstorage.block.strategies.Observable;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.stream.IntStream;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -31,11 +28,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.stream.IntStream;
 
 public abstract class InventoryBlockEntity extends OpenableBlockEntity {
     private final NonNullList<ItemStack> items;
+    private Observable observable = Observable.NOT;
     private final WorldlyContainer inventory = new WorldlyContainer() {
         private int[] availableSlots;
+
         @Override
         public int[] getSlotsForFace(Direction side) {
             if (availableSlots == null) {
@@ -119,7 +121,6 @@ public abstract class InventoryBlockEntity extends OpenableBlockEntity {
             observable.playerStopViewing(player);
         }
     };
-    private Observable observable = Observable.NOT;
 
     public InventoryBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, ResourceLocation blockId, Component defaultName, int inventorySize) {
         super(type, pos, state, blockId, defaultName);
