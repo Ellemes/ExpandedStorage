@@ -1,5 +1,5 @@
 dependencies {
-    modImplementation("ellemes:container_library:1.3.4+1.18.2-fabric") {
+    modImplementation("ellemes:container_library:${properties["container_library_version"]}-fabric") {
         exclude("net.fabricmc")
         exclude("net.fabricmc.fabric-api")
     }

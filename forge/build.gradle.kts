@@ -26,7 +26,7 @@ repositories {
 }
 
 dependencies {
-    modImplementation("ellemes:container_library:1.3.4+1.18.2-forge")
+    modImplementation("ellemes:container_library:${properties["container_library_version"]}-forge")
     //implementation(fg.deobf("ninjaphenix:container_library:1.3.0+1.18:forge"))
 
     //implementation(fg.deobf("mezz.jei:jei-${properties["jei_minecraft_version"]}:${properties["jei_version"]}"))
