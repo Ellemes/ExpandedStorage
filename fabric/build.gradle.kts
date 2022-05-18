@@ -1,5 +1,5 @@
 plugins {
-    id("ninjaphenix.gradle.mod").apply(false)
+    id("ellemes.gradle.mod").apply(false)
 }
 
 repositories {
@@ -40,7 +40,7 @@ mod {
 }
 
 dependencies {
-    modImplementation("ninjaphenix:container_library:1.3.4+1.18.2-fabric")
+    modImplementation("ellemes:container_library:1.3.4+1.18.2-fabric")
     //modImplementation(group = "maven.modrinth", name = "ninjaphenix-container-library", version = "1.3.0+1.18-fabric", dependencyConfiguration = excludeFabric)
     //modImplementation(group = "ninjaphenix", name = "container_library", version = "1.3.0+1.18", classifier = "fabric", dependencyConfiguration = excludeFabric)
 

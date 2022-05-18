@@ -7,19 +7,21 @@
   },
   "entrypoints": {
     "main": [
-      "ninjaphenix.expandedstorage.fabric.Main"
+      "ellemes.expandedstorage.fabric.Main"
     ],
-    "fabric-datagen": ["ninjaphenix.expandedstorage.fabric.datagen.Main"]
+    "fabric-datagen": [
+      "ellemes.expandedstorage.fabric.datagen.Main"
+    ]
   },
   "environment": "*",
-  "authors": ["NinjaPhenix"],
+  "authors": ["Ellemes"],
   "mixins": [
     "expandedstorage-common.mixin.json",
     "expandedstorage-fabric.mixin.json"
   ],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/expanded-storage-fabric/",
-    "issues": "https://github.com/NinjaPhenix/expanded-storage/issues/"
+    "issues": "https://github.com/Ellemes/expanded-storage/issues/"
   },
   "icon": "icon.png",
   "id": "expandedstorage",

@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "ninjaphenix.expandedstorage.mixin",
+  "package": "ellemes.expandedstorage.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
     "BlockEntityIdFix",

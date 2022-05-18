@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NinjaPhenix
+ * Copyright 2021-2022 Ellemes
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,16 @@
  */
 package ninjaphenix.expandedstorage.block;
 
+import ellemes.expandedstorage.block.OpenableBlock;
 import ninjaphenix.container_library.api.v2.OpenableBlockEntityV2;
 import ninjaphenix.container_library.api.v2.helpers.OpenableBlockEntitiesV2;
-import ninjaphenix.expandedstorage.Common;
-import ninjaphenix.expandedstorage.Utils;
+import ellemes.expandedstorage.Common;
+import ellemes.expandedstorage.Utils;
 import ninjaphenix.expandedstorage.api.ExpandedStorageAccessors;
-import ninjaphenix.expandedstorage.block.entity.OldChestBlockEntity;
+import ellemes.expandedstorage.block.entity.OldChestBlockEntity;
 import ninjaphenix.expandedstorage.block.misc.CursedChestType;
-import ninjaphenix.expandedstorage.block.misc.Property;
-import ninjaphenix.expandedstorage.block.misc.PropertyRetriever;
+import ellemes.expandedstorage.block.misc.Property;
+import ellemes.expandedstorage.block.misc.PropertyRetriever;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

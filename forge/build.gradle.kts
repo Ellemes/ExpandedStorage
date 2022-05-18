@@ -1,7 +1,7 @@
-import ninjaphenix.gradle.mod.api.task.MinifyJsonTask
+import ellemes.gradle.mod.api.task.MinifyJsonTask
 
 plugins {
-    id("ninjaphenix.gradle.mod").apply(false)
+    id("ellemes.gradle.mod").apply(false)
 }
 
 loom {
@@ -26,7 +26,7 @@ repositories {
 }
 
 dependencies {
-    modImplementation("ninjaphenix:container_library:1.3.4+1.18.2-forge")
+    modImplementation("ellemes:container_library:1.3.4+1.18.2-forge")
     //implementation(fg.deobf("ninjaphenix:container_library:1.3.0+1.18:forge"))
 
     //implementation(fg.deobf("mezz.jei:jei-${properties["jei_minecraft_version"]}:${properties["jei_version"]}"))
@@ -34,7 +34,7 @@ dependencies {
 
 tasks.getByName<MinifyJsonTask>("minJar") {
     manifest.attributes(mapOf(
-            "Automatic-Module-Name" to "ninjaphenix.expandedstorage",
+            "Automatic-Module-Name" to "ellemes.expandedstorage",
             "MixinConfigs" to "expandedstorage.mixins.json"
     ))
 }
