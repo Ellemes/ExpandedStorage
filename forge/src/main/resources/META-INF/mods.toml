@@ -1,6 +1,6 @@
 modLoader = "javafml"
 loaderVersion = "[40,)"
-issueTrackerURL = "https://github.com/NinjaPhenix/expanded-storage/issues/"
+issueTrackerURL = "https://github.com/Ellemes/expanded-storage/issues/"
 license = "multiple"
 
 [[mods]]
