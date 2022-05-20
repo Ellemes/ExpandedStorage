@@ -1,3 +1,7 @@
+import com.modrinth.minotaur.dependencies.DependencyType
+import com.modrinth.minotaur.dependencies.ModDependency
+import org.gradle.configurationcache.extensions.capitalized
+
 plugins {
     id("ellemes.gradle.mod").apply(false)
 }
@@ -66,4 +70,42 @@ dependencies {
     modCompileOnly(group = "curse.maven", name = "htm-462534", version = "3539120", dependencyConfiguration = excludeFabric)
 
     //modRuntimeOnly("maven.modrinth:modmenu:3.1.0")
+}
+
+val releaseModTask = tasks.getByName("releaseMod")
+val modVersion = properties["mod_version"] as String
+val modReleaseType = if ("alpha" in modVersion) "alpha" else if ("beta" in modVersion) "beta" else "release"
+val modChangelog = rootDir.resolve("changelog.md").readText(Charsets.UTF_8)
+val modTargetVersions = mutableListOf(properties["minecraft_version"] as String)
+val modUploadDebug = System.getProperty("MOD_UPLOAD_DEBUG", "false") == "true" // -DMOD_UPLOAD_DEBUG=true
+
+(properties["extra_game_versions"] as String).split(",").forEach {
+    if (it != "") {
+        modTargetVersions.add(it)
+    }
+}
+
+modrinth {
+    debugMode.set(modUploadDebug)
+    detectLoaders.set(false)
+
+    projectId.set(properties["modrinth_project_id"] as String)
+    versionType.set(modReleaseType)
+    versionNumber.set(modVersion  + "-" + project.name)
+    versionName.set(project.name.capitalized() + " " + modVersion)
+    uploadFile.set(tasks.getByName("minJar"))
+    dependencies.set(listOf(
+        ModDependency("qsl", DependencyType.REQUIRED),
+        ModDependency("ellemes-container-library", DependencyType.REQUIRED),
+        ModDependency("htm", DependencyType.OPTIONAL),
+        //ModDependency("carrier", DependencyType.OPTIONAL), // Not on modrinth
+        ModDependency("towelette", DependencyType.OPTIONAL)
+    ))
+    changelog.set(modChangelog)
+    gameVersions.set(modTargetVersions)
+    loaders.set(listOf("quilt"))
+}
+
+afterEvaluate {
+    releaseModTask.dependsOn(tasks.getByName("modrinth"))
 }
