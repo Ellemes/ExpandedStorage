@@ -11,7 +11,7 @@ loom {
     forge {
         convertAccessWideners.set(true)
         extraAccessWideners.add(loom.accessWidenerPath.get().asFile.name)
-        mixinConfig("expandedstorage-common.mixins.json")
+        mixinConfig("expandedstorage-common.mixin.json")
     }
 }
 
@@ -29,7 +29,7 @@ repositories {
 }
 
 dependencies {
-    modImplementation("ellemes:container_library:${properties["container_library_version"]}-forge")
+    modImplementation("ellemes:${properties["container_library_artifact"]}-forge:${properties["container_library_version"]}")
     //implementation(fg.deobf("ninjaphenix:container_library:1.3.0+1.18:forge"))
 
     //implementation(fg.deobf("mezz.jei:jei-${properties["jei_minecraft_version"]}:${properties["jei_version"]}"))
@@ -38,7 +38,7 @@ dependencies {
 tasks.getByName<MinifyJsonTask>("minJar") {
     manifest.attributes(mapOf(
             "Automatic-Module-Name" to "ellemes.expandedstorage",
-            "MixinConfigs" to "expandedstorage.mixins.json"
+            "MixinConfigs" to "expandedstorage-common.mixin.json"
     ))
 }
 

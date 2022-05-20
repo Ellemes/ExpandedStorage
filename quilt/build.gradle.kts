@@ -54,7 +54,7 @@ mod {
 }
 
 dependencies {
-    modImplementation("ellemes:container_library:${properties["container_library_version"]}-quilt", dependencyConfiguration = excludeFabric)
+    modImplementation("ellemes:${properties["container_library_artifact"]}-quilt:${properties["container_library_version"]}", dependencyConfiguration = excludeFabric)
 
     //modImplementation(group = "ninjaphenix", name = "container_library", version = "1.3.0+1.18", classifier = "fabric", dependencyConfiguration = excludeFabric)
 
