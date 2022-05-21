@@ -92,7 +92,7 @@ modrinth {
     versionName.set(project.name.capitalized() + " " + modVersion)
     uploadFile.set(tasks.getByName("minJar"))
     dependencies.set(listOf(
-        ModDependency("ellemes-container-library", DependencyType.REQUIRED)
+        ModDependency("TIhTvPdy", DependencyType.REQUIRED) // ellemes-container-library
     ))
     changelog.set(modChangelog)
     gameVersions.set(modTargetVersions)

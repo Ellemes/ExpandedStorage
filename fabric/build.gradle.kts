@@ -134,11 +134,11 @@ modrinth {
     versionName.set(project.name.capitalized() + " " + modVersion)
     uploadFile.set(tasks.getByName("minJar"))
     dependencies.set(listOf(
-        ModDependency("fabric-api", DependencyType.REQUIRED),
-        ModDependency("ellemes-container-library", DependencyType.REQUIRED),
-        ModDependency("htm", DependencyType.OPTIONAL),
-        //ModDependency("carrier", DependencyType.OPTIONAL), // Not on modrinth
-        ModDependency("towelette", DependencyType.OPTIONAL)
+        ModDependency("P7dR8mSH", DependencyType.REQUIRED), // fabric-api
+        ModDependency("TIhTvPdy", DependencyType.REQUIRED), // ellemes-container-library
+        ModDependency("IEPAK5x6", DependencyType.OPTIONAL), // htm
+        //ModDependency("carrier", DependencyType.OPTIONAL), // carrier (not on modrinth)
+        ModDependency("bnesqDoc", DependencyType.OPTIONAL) // towelette
     ))
     changelog.set(modChangelog)
     gameVersions.set(modTargetVersions)
