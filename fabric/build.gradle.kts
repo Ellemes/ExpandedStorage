@@ -1,5 +1,3 @@
-import com.modrinth.minotaur.dependencies.DependencyType
-import com.modrinth.minotaur.dependencies.ModDependency
 import me.hypherionmc.cursegradle.CurseProject
 import me.hypherionmc.cursegradle.Options
 import org.gradle.configurationcache.extensions.capitalized
@@ -133,13 +131,13 @@ modrinth {
     versionNumber.set(modVersion  + "+" + project.name)
     versionName.set(project.name.capitalized() + " " + modVersion)
     uploadFile.set(tasks.getByName("minJar"))
-    dependencies.set(listOf(
-        ModDependency("P7dR8mSH", DependencyType.REQUIRED), // fabric-api
-        ModDependency("TIhTvPdy", DependencyType.REQUIRED), // ellemes-container-library
-        ModDependency("IEPAK5x6", DependencyType.OPTIONAL), // htm
-        //ModDependency("carrier", DependencyType.OPTIONAL), // carrier (not on modrinth)
-        ModDependency("bnesqDoc", DependencyType.OPTIONAL) // towelette
-    ))
+    dependencies {
+        required.project("P7dR8mSH") // fabric-api
+        required.project("TIhTvPdy") // ellemes-container-library
+        optional.project("IEPAK5x6") // htm
+        // optional.project("carrier") // carrier (not on modrinth)
+        optional.project("bnesqDoc") // towelette
+    }
     changelog.set(modChangelog)
     gameVersions.set(modTargetVersions)
     loaders.set(listOf(project.name))
