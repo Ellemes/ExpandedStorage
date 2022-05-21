@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ninjaphenix.expandedstorage.api;
+package ellemes.expandedstorage.api;
 
+import ellemes.expandedstorage.block.AbstractChestBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import ninjaphenix.expandedstorage.block.AbstractChestBlock;
-import ninjaphenix.expandedstorage.block.misc.CursedChestType;
 
 import java.util.Optional;
 
@@ -34,7 +33,7 @@ public final class ExpandedStorageAccessors {
      */
     public static Optional<EsChestType> getChestType(BlockState state) {
         if (state.hasProperty(AbstractChestBlock.CURSED_CHEST_TYPE)) {
-            return Optional.of(EsChestType.of(state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE)));
+            return Optional.of(state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE));
         }
         return Optional.empty();
     }
@@ -44,8 +43,8 @@ public final class ExpandedStorageAccessors {
      */
     public static Optional<Direction> getAttachedChestDirection(BlockState state) {
         if (state.hasProperty(AbstractChestBlock.CURSED_CHEST_TYPE) && state.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
-            CursedChestType type = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
-            if (type != CursedChestType.SINGLE) {
+            EsChestType type = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
+            if (type != EsChestType.SINGLE) {
                 Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
                 return Optional.of(AbstractChestBlock.getDirectionToAttached(type, facing));
             }
@@ -58,7 +57,7 @@ public final class ExpandedStorageAccessors {
      */
     public static Optional<BlockState> chestWithType(BlockState original, EsChestType type) {
         if (original.hasProperty(AbstractChestBlock.CURSED_CHEST_TYPE)) {
-            return Optional.of(original.setValue(AbstractChestBlock.CURSED_CHEST_TYPE, CursedChestType.of(type)));
+            return Optional.of(original.setValue(AbstractChestBlock.CURSED_CHEST_TYPE, type));
         }
         return Optional.empty();
     }

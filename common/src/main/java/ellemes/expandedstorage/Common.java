@@ -15,6 +15,8 @@
  */
 package ellemes.expandedstorage;
 
+import ellemes.expandedstorage.api.EsChestType;
+import ellemes.expandedstorage.block.AbstractChestBlock;
 import ellemes.expandedstorage.block.BarrelBlock;
 import ellemes.expandedstorage.block.ChestBlock;
 import ellemes.expandedstorage.block.MiniChestBlock;
@@ -46,7 +48,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.datafix.fixes.References;
@@ -72,8 +74,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-import ninjaphenix.expandedstorage.block.AbstractChestBlock;
-import ninjaphenix.expandedstorage.block.misc.CursedChestType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -86,7 +86,6 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
-@SuppressWarnings("deprecation")
 public final class Common {
     public static final ResourceLocation BARREL_BLOCK_TYPE = Utils.id("barrel");
     public static final ResourceLocation CHEST_BLOCK_TYPE = Utils.id("chest");
@@ -123,10 +122,10 @@ public final class Common {
     }
 
     public static ResourceLocation[] getChestTextures(List<ResourceLocation> blocks) {
-        ResourceLocation[] textures = new ResourceLocation[blocks.size() * CursedChestType.values().length];
+        ResourceLocation[] textures = new ResourceLocation[blocks.size() * EsChestType.values().length];
         int index = 0;
         for (ResourceLocation blockId : blocks) {
-            for (CursedChestType type : CursedChestType.values()) {
+            for (EsChestType type : EsChestType.values()) {
                 textures[index++] = Common.getChestTexture(blockId, type);
             }
         }
@@ -164,7 +163,7 @@ public final class Common {
                     newState = newState.setValue(ChestBlock.CURSED_CHEST_TYPE, state.getValue(ChestBlock.CURSED_CHEST_TYPE));
                 } else if (state.hasProperty(BlockStateProperties.CHEST_TYPE)) {
                     ChestType type = state.getValue(BlockStateProperties.CHEST_TYPE);
-                    newState = newState.setValue(ChestBlock.CURSED_CHEST_TYPE, type == ChestType.LEFT ? CursedChestType.RIGHT : type == ChestType.RIGHT ? CursedChestType.LEFT : CursedChestType.SINGLE);
+                    newState = newState.setValue(ChestBlock.CURSED_CHEST_TYPE, type == ChestType.LEFT ? EsChestType.RIGHT : type == ChestType.RIGHT ? EsChestType.LEFT : EsChestType.SINGLE);
                 }
                 if (world.setBlockAndUpdate(pos, newState)) {
                     BlockEntity newEntity = world.getBlockEntity(pos);
@@ -251,7 +250,7 @@ public final class Common {
         }
     }
 
-    public static ResourceLocation getChestTexture(ResourceLocation block, CursedChestType chestType) {
+    public static ResourceLocation getChestTexture(ResourceLocation block, EsChestType chestType) {
         if (Common.CHEST_TEXTURES.containsKey(block)) return Common.CHEST_TEXTURES.get(block).getTexture(chestType);
         return MissingTextureAtlasSprite.getLocation();
     }
@@ -319,9 +318,9 @@ public final class Common {
             final ResourceLocation netheriteStat = statMaker.apply("open_netherite_chest");
 
             final Properties presentSettings = Properties.of(Material.WOOD, state -> {
-                CursedChestType type = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
-                if (type == CursedChestType.SINGLE) return MaterialColor.COLOR_RED;
-                else if (type == CursedChestType.FRONT || type == CursedChestType.BACK) return MaterialColor.PLANT;
+                EsChestType type = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
+                if (type == EsChestType.SINGLE) return MaterialColor.COLOR_RED;
+                else if (type == EsChestType.FRONT || type == EsChestType.BACK) return MaterialColor.PLANT;
                 return MaterialColor.SNOW;
             }).strength(2.5f).sound(SoundType.WOOD);
 
@@ -366,7 +365,7 @@ public final class Common {
                 Player player = context.getPlayer();
                 ItemStack handStack = context.getItemInHand();
                 if (state.getBlock() instanceof ChestBlock) {
-                    CursedChestType type = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
+                    EsChestType type = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
                     Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
                     if (AbstractChestBlock.getBlockType(type) == DoubleBlockCombiner.BlockType.SINGLE) {
                         boolean upgradeSucceeded = Common.upgradeSingleBlockToChest(world, state, pos, from, to);
@@ -405,8 +404,8 @@ public final class Common {
                 int index = blocks.indexOf(state.getBlock());
                 if (index != -1) { // Cannot change style e.g. iron chest, ect.
                     Block next = blocks.get((index + 1) % blocks.size());
-                    CursedChestType chestType = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
-                    if (chestType != CursedChestType.SINGLE) {
+                    EsChestType chestType = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
+                    if (chestType != EsChestType.SINGLE) {
                         BlockPos otherPos = pos.relative(AbstractChestBlock.getDirectionToAttached(state));
                         BlockState otherState = world.getBlockState(otherPos);
                         world.setBlock(otherPos, next.defaultBlockState()
@@ -479,7 +478,7 @@ public final class Common {
             Predicate<Block> isChestBlock = b -> b instanceof AbstractChestBlock;
             Common.registerMutationBehaviour(isChestBlock, MutationMode.MERGE, (context, world, state, pos, stack) -> {
                 Player player = context.getPlayer();
-                if (state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE) == CursedChestType.SINGLE) {
+                if (state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE) == EsChestType.SINGLE) {
                     CompoundTag tag = stack.getOrCreateTag();
                     if (tag.contains("pos")) {
                         BlockPos otherPos = NbtUtils.readBlockPos(tag.getCompound("pos"));
@@ -487,38 +486,38 @@ public final class Common {
                         Direction direction = Direction.fromNormal(otherPos.subtract(pos));
                         if (direction != null) {
                             if (state.getBlock() == otherState.getBlock()) {
-                                if (otherState.getValue(AbstractChestBlock.CURSED_CHEST_TYPE) == CursedChestType.SINGLE) {
+                                if (otherState.getValue(AbstractChestBlock.CURSED_CHEST_TYPE) == EsChestType.SINGLE) {
                                     if (state.getValue(BlockStateProperties.HORIZONTAL_FACING) == otherState.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
                                         if (!world.isClientSide()) {
-                                            CursedChestType chestType = AbstractChestBlock.getChestType(state.getValue(BlockStateProperties.HORIZONTAL_FACING), direction);
+                                            EsChestType chestType = AbstractChestBlock.getChestType(state.getValue(BlockStateProperties.HORIZONTAL_FACING), direction);
                                             world.setBlockAndUpdate(pos, state.setValue(AbstractChestBlock.CURSED_CHEST_TYPE, chestType));
                                             // note: other state is updated via neighbour update
                                             tag.remove("pos");
                                             //noinspection ConstantConditions
-                                            player.displayClientMessage(new TranslatableComponent("tooltip.expandedstorage.storage_mutator.merge_end"), true);
+                                            player.displayClientMessage(Component.translatable("tooltip.expandedstorage.storage_mutator.merge_end"), true);
                                         }
                                         return InteractionResult.SUCCESS;
                                     } else {
                                         //noinspection ConstantConditions
-                                        player.displayClientMessage(new TranslatableComponent("tooltip.expandedstorage.storage_mutator.merge_wrong_facing"), true);
+                                        player.displayClientMessage(Component.translatable("tooltip.expandedstorage.storage_mutator.merge_wrong_facing"), true);
                                     }
                                 } else {
                                     //noinspection ConstantConditions
-                                    player.displayClientMessage(new TranslatableComponent("tooltip.expandedstorage.storage_mutator.merge_already_double_chest"), true);
+                                    player.displayClientMessage(Component.translatable("tooltip.expandedstorage.storage_mutator.merge_already_double_chest"), true);
                                 }
                             } else {
                                 //noinspection ConstantConditions
-                                player.displayClientMessage(new TranslatableComponent("tooltip.expandedstorage.storage_mutator.merge_wrong_block", state.getBlock().getName()), true);
+                                player.displayClientMessage(Component.translatable("tooltip.expandedstorage.storage_mutator.merge_wrong_block", state.getBlock().getName()), true);
                             }
                         } else {
                             //noinspection ConstantConditions
-                            player.displayClientMessage(new TranslatableComponent("tooltip.expandedstorage.storage_mutator.merge_not_adjacent"), true);
+                            player.displayClientMessage(Component.translatable("tooltip.expandedstorage.storage_mutator.merge_not_adjacent"), true);
                         }
                     } else {
                         if (!world.isClientSide()) {
                             tag.put("pos", NbtUtils.writeBlockPos(pos));
                             //noinspection ConstantConditions
-                            player.displayClientMessage(new TranslatableComponent("tooltip.expandedstorage.storage_mutator.merge_start", Utils.ALT_USE), true);
+                            player.displayClientMessage(Component.translatable("tooltip.expandedstorage.storage_mutator.merge_start", Utils.ALT_USE), true);
                         }
                         return InteractionResult.SUCCESS;
                     }
@@ -526,9 +525,9 @@ public final class Common {
                 return InteractionResult.FAIL;
             });
             Common.registerMutationBehaviour(isChestBlock, MutationMode.SPLIT, (context, world, state, pos, stack) -> {
-                if (state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE) != CursedChestType.SINGLE) {
+                if (state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE) != EsChestType.SINGLE) {
                     if (!world.isClientSide()) {
-                        world.setBlockAndUpdate(pos, state.setValue(AbstractChestBlock.CURSED_CHEST_TYPE, CursedChestType.SINGLE));
+                        world.setBlockAndUpdate(pos, state.setValue(AbstractChestBlock.CURSED_CHEST_TYPE, EsChestType.SINGLE));
                         // note: other state is updated to single via neighbour update
                     }
                     return InteractionResult.SUCCESS;
@@ -537,13 +536,13 @@ public final class Common {
             });
             Common.registerMutationBehaviour(isChestBlock, MutationMode.ROTATE, (context, world, state, pos, stack) -> {
                 if (!world.isClientSide()) {
-                    CursedChestType chestType = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
-                    if (chestType == CursedChestType.SINGLE) {
+                    EsChestType chestType = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
+                    if (chestType == EsChestType.SINGLE) {
                         world.setBlockAndUpdate(pos, state.setValue(BlockStateProperties.HORIZONTAL_FACING, state.getValue(BlockStateProperties.HORIZONTAL_FACING).getClockWise()));
                     } else {
                         BlockPos otherPos = pos.relative(AbstractChestBlock.getDirectionToAttached(state));
                         BlockState otherState = world.getBlockState(otherPos);
-                        if (chestType == CursedChestType.TOP || chestType == CursedChestType.BOTTOM) {
+                        if (chestType == EsChestType.TOP || chestType == EsChestType.BOTTOM) {
                             world.setBlockAndUpdate(pos, state.setValue(BlockStateProperties.HORIZONTAL_FACING, state.getValue(BlockStateProperties.HORIZONTAL_FACING).getClockWise()));
                             world.setBlockAndUpdate(otherPos, otherState.setValue(BlockStateProperties.HORIZONTAL_FACING, state.getValue(BlockStateProperties.HORIZONTAL_FACING).getClockWise()));
                         } else {
@@ -559,8 +558,8 @@ public final class Common {
                 int index = blocks.indexOf(state.getBlock());
                 if (index != -1) { // Cannot change style e.g. iron chest, ect.
                     Block next = blocks.get((index + 1) % blocks.size());
-                    CursedChestType chestType = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
-                    if (chestType != CursedChestType.SINGLE) {
+                    EsChestType chestType = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
+                    if (chestType != EsChestType.SINGLE) {
                         BlockPos otherPos = pos.relative(AbstractChestBlock.getDirectionToAttached(state));
                         BlockState otherState = world.getBlockState(otherPos);
                         world.setBlock(otherPos, next.defaultBlockState()

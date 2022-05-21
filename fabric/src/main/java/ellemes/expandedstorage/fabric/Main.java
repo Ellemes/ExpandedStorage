@@ -18,6 +18,8 @@ package ellemes.expandedstorage.fabric;
 import ellemes.expandedstorage.Common;
 import ellemes.expandedstorage.TagReloadListener;
 import ellemes.expandedstorage.Utils;
+import ellemes.expandedstorage.api.EsChestType;
+import ellemes.expandedstorage.block.AbstractChestBlock;
 import ellemes.expandedstorage.block.BarrelBlock;
 import ellemes.expandedstorage.block.ChestBlock;
 import ellemes.expandedstorage.block.MiniChestBlock;
@@ -66,8 +68,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import ninjaphenix.expandedstorage.block.AbstractChestBlock;
-import ninjaphenix.expandedstorage.block.misc.CursedChestType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -82,9 +82,9 @@ public final class Main implements ModInitializer {
     private static Storage<ItemVariant> getItemAccess(Level world, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, @SuppressWarnings("unused") Direction context) {
         if (blockEntity instanceof OldChestBlockEntity entity) {
             DoubleItemAccess access = entity.getItemAccess();
-            CursedChestType type = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
+            EsChestType type = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
             Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
-            if (access.hasCachedAccess() || type == CursedChestType.SINGLE) {
+            if (access.hasCachedAccess() || type == EsChestType.SINGLE) {
                 //noinspection unchecked
                 return (Storage<ItemVariant>) access.get();
             }

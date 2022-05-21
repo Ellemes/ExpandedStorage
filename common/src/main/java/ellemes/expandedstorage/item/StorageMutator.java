@@ -23,7 +23,6 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -81,7 +80,7 @@ public final class StorageMutator extends Item {
                 tag.remove("pos");
 
             if (!world.isClientSide())
-                player.displayClientMessage(new TranslatableComponent("tooltip.expandedstorage.storage_mutator.description_" + nextMode, Utils.ALT_USE), true);
+                player.displayClientMessage(Component.translatable("tooltip.expandedstorage.storage_mutator.description_" + nextMode, Utils.ALT_USE), true);
 
             player.getCooldowns().addCooldown(this, Utils.QUARTER_SECOND);
             return InteractionResultHolder.success(stack);
@@ -104,7 +103,7 @@ public final class StorageMutator extends Item {
 
     @Override
     public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> stacks) {
-        if (this.allowdedIn(group)) {
+        if (this.allowedIn(group)) {
             stacks.add(this.getDefaultInstance());
         }
     }
@@ -112,7 +111,7 @@ public final class StorageMutator extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> list, TooltipFlag context) {
         MutationMode mode = StorageMutator.getMode(stack);
-        list.add(new TranslatableComponent("tooltip.expandedstorage.storage_mutator.tool_mode", new TranslatableComponent("tooltip.expandedstorage.storage_mutator." + mode)).withStyle(ChatFormatting.GRAY));
+        list.add(Component.translatable("tooltip.expandedstorage.storage_mutator.tool_mode", Component.translatable("tooltip.expandedstorage.storage_mutator." + mode)).withStyle(ChatFormatting.GRAY));
         list.add(Utils.translation("tooltip.expandedstorage.storage_mutator.description_" + mode, Utils.ALT_USE).withStyle(ChatFormatting.GRAY));
     }
 }

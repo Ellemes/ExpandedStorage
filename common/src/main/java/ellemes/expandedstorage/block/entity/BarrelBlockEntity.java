@@ -15,6 +15,7 @@
  */
 package ellemes.expandedstorage.block.entity;
 
+import ellemes.container_library.api.inventory.AbstractHandler;
 import ellemes.expandedstorage.block.OpenableBlock;
 import ellemes.expandedstorage.block.entity.extendable.ExposedInventoryBlockEntity;
 import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
@@ -34,7 +35,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import ninjaphenix.container_library.api.inventory.AbstractHandler;
 
 import java.util.function.Function;
 import java.util.function.Supplier;

@@ -18,6 +18,8 @@ package ellemes.expandedstorage.forge;
 import ellemes.expandedstorage.Common;
 import ellemes.expandedstorage.TagReloadListener;
 import ellemes.expandedstorage.Utils;
+import ellemes.expandedstorage.api.EsChestType;
+import ellemes.expandedstorage.block.AbstractChestBlock;
 import ellemes.expandedstorage.block.BarrelBlock;
 import ellemes.expandedstorage.block.ChestBlock;
 import ellemes.expandedstorage.block.MiniChestBlock;
@@ -69,8 +71,6 @@ import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
-import ninjaphenix.expandedstorage.block.AbstractChestBlock;
-import ninjaphenix.expandedstorage.block.misc.CursedChestType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -113,9 +113,9 @@ public final class Main {
                                 if (entity instanceof OldChestBlockEntity chestBlockEntity) {
                                     BlockState state = chestBlockEntity.getBlockState();
                                     DoubleItemAccess access = chestBlockEntity.getItemAccess();
-                                    CursedChestType chestType = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
+                                    EsChestType chestType = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
                                     Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
-                                    if (access.hasCachedAccess() || chestType == CursedChestType.SINGLE) {
+                                    if (access.hasCachedAccess() || chestType == EsChestType.SINGLE) {
                                         //noinspection unchecked
                                         return (T) access.get();
                                     }

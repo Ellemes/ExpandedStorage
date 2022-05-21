@@ -15,6 +15,7 @@
  */
 package ellemes.expandedstorage.block;
 
+import ellemes.container_library.api.v2.OpenableBlockEntityProviderV2;
 import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -32,7 +33,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import ninjaphenix.container_library.api.v2.OpenableBlockEntityProviderV2;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class OpenableBlock extends Block implements OpenableBlockEntityProviderV2, EntityBlock {

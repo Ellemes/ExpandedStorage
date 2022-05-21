@@ -17,6 +17,10 @@ package ellemes.expandedstorage.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import ellemes.container_library.api.client.function.ScreenSize;
+import ellemes.container_library.api.client.gui.AbstractScreen;
+import ellemes.container_library.api.inventory.AbstractHandler;
+import ellemes.container_library.api.v2.client.NCL_ClientApiV2;
 import ellemes.expandedstorage.Utils;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.Rect2i;
@@ -24,10 +28,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
-import ninjaphenix.container_library.api.client.function.ScreenSize;
-import ninjaphenix.container_library.api.client.gui.AbstractScreen;
-import ninjaphenix.container_library.api.inventory.AbstractHandler;
-import ninjaphenix.container_library.api.v2.client.NCL_ClientApiV2;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

@@ -67,7 +67,7 @@ curseforge {
 
     project(closureOf<me.hypherionmc.cursegradle.CurseProject> {
         apiKey = System.getenv("CURSEFORGE_TOKEN")
-        id = properties["curseforge_forge_project_id"]
+        id = properties["curseforge_project_id"]
         releaseType = modReleaseType
         mainArtifact(tasks.getByName("minJar"), closureOf<me.hypherionmc.cursegradle.CurseArtifact> {
             displayName = project.name.capitalized() + " " + modVersion
@@ -100,6 +100,6 @@ modrinth {
 }
 
 afterEvaluate {
-    releaseModTask.dependsOn(tasks.getByName("curseforge" + properties["curseforge_forge_project_id"]))
+    releaseModTask.dependsOn(tasks.getByName("curseforge" + properties["curseforge_project_id"]))
     releaseModTask.dependsOn(tasks.getByName("modrinth"))
 }

@@ -16,12 +16,14 @@
 package ellemes.expandedstorage.block;
 
 import ellemes.expandedstorage.Common;
+import ellemes.expandedstorage.api.EsChestType;
 import ellemes.expandedstorage.block.entity.ChestBlockEntity;
 import ellemes.expandedstorage.block.entity.OldChestBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -39,11 +41,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import ninjaphenix.expandedstorage.block.AbstractChestBlock;
-import ninjaphenix.expandedstorage.block.misc.CursedChestType;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Random;
 
 public final class ChestBlock extends AbstractChestBlock implements SimpleWaterloggedBlock {
     public static final int SET_OBSERVER_COUNT_EVENT = 1;
@@ -65,12 +63,12 @@ public final class ChestBlock extends AbstractChestBlock implements SimpleWaterl
     @Override
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter view, BlockPos pos, CollisionContext context) {
-        CursedChestType type = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
-        if (type == CursedChestType.TOP) {
+        EsChestType type = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
+        if (type == EsChestType.TOP) {
             return ChestBlock.SHAPES[4];
-        } else if (type == CursedChestType.BOTTOM) {
+        } else if (type == EsChestType.BOTTOM) {
             return ChestBlock.SHAPES[5];
-        } else if (type == CursedChestType.SINGLE) {
+        } else if (type == EsChestType.SINGLE) {
             return ChestBlock.SHAPES[6];
         } else {
             int index = (state.getValue(BlockStateProperties.HORIZONTAL_FACING).get2DDataValue() + type.getOffset()) % 4;
@@ -137,7 +135,7 @@ public final class ChestBlock extends AbstractChestBlock implements SimpleWaterl
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
+    public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
         if (world.getBlockEntity(pos) instanceof ChestBlockEntity entity) {
             entity.updateViewerCount(world, pos, state);
         }

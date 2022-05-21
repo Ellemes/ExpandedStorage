@@ -15,8 +15,8 @@
  */
 package ellemes.expandedstorage.client;
 
+import ellemes.expandedstorage.api.EsChestType;
 import net.minecraft.resources.ResourceLocation;
-import ninjaphenix.expandedstorage.block.misc.CursedChestType;
 
 public final class TextureCollection {
     private final ResourceLocation single;
@@ -38,22 +38,22 @@ public final class TextureCollection {
         this.back = back;
     }
 
-    public ResourceLocation getTexture(CursedChestType type) {
-        if (type == CursedChestType.TOP) {
+    public ResourceLocation getTexture(EsChestType type) {
+        if (type == EsChestType.TOP) {
             return top;
-        } else if (type == CursedChestType.BOTTOM) {
+        } else if (type == EsChestType.BOTTOM) {
             return bottom;
-        } else if (type == CursedChestType.FRONT) {
+        } else if (type == EsChestType.FRONT) {
             return front;
-        } else if (type == CursedChestType.BACK) {
+        } else if (type == EsChestType.BACK) {
             return back;
-        } else if (type == CursedChestType.LEFT) {
+        } else if (type == EsChestType.LEFT) {
             return left;
-        } else if (type == CursedChestType.RIGHT) {
+        } else if (type == EsChestType.RIGHT) {
             return right;
-        } else if (type == CursedChestType.SINGLE) {
+        } else if (type == EsChestType.SINGLE) {
             return single;
         }
-        throw new IllegalArgumentException("TextureCollection#getTexture received an unknown CursedChestType.");
+        throw new IllegalArgumentException("TextureCollection#getTexture received an unknown EsChestType.");
     }
 }

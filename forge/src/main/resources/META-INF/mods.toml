@@ -25,8 +25,8 @@ ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.expandedstorage]]
-modId = "ninjaphenix_container_lib"
+modId = "ellemes_container_lib"
 mandatory = true
-versionRange = "[1.4.0-beta.1,)"
+versionRange = "[2.0.0-beta.1,)"
 ordering = "NONE"
 side = "BOTH"

@@ -16,11 +16,11 @@
       },
       {
         "id": "ellemes:ellemes_container_lib",
-        "versions": "~1.4.0-beta.1"
+        "versions": "~2.0.0-beta.1"
       },
       {
         "id": "minecraft",
-        "versions": "~1.18.2"
+        "versions": "~1.19-beta.1"
       },
       {
         "id": "org.quiltmc:quilted_fabric_api",

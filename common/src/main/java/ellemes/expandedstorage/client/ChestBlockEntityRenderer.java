@@ -20,6 +20,8 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import ellemes.expandedstorage.Common;
 import ellemes.expandedstorage.Utils;
+import ellemes.expandedstorage.api.EsChestType;
+import ellemes.expandedstorage.block.AbstractChestBlock;
 import ellemes.expandedstorage.block.ChestBlock;
 import ellemes.expandedstorage.block.entity.ChestBlockEntity;
 import ellemes.expandedstorage.block.misc.Property;
@@ -47,8 +49,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import ninjaphenix.expandedstorage.block.AbstractChestBlock;
-import ninjaphenix.expandedstorage.block.misc.CursedChestType;
 
 public final class ChestBlockEntityRenderer implements BlockEntityRenderer<ChestBlockEntity> {
     public static final ModelLayerLocation SINGLE_LAYER = new ModelLayerLocation(Utils.id("single_chest"), "main");
@@ -211,7 +211,7 @@ public final class ChestBlockEntityRenderer implements BlockEntityRenderer<Chest
         if (blockId == null || !(state.getBlock() instanceof ChestBlock block)) {
             return;
         }
-        CursedChestType chestType = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
+        EsChestType chestType = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
         stack.pushPose();
         stack.translate(0.5D, 0.5D, 0.5D);
         stack.mulPose(Vector3f.YP.rotationDegrees(-state.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot()));
@@ -225,30 +225,30 @@ public final class ChestBlockEntityRenderer implements BlockEntityRenderer<Chest
         VertexConsumer consumer = new Material(Sheets.CHEST_SHEET, Common.getChestTexture(blockId, chestType)).buffer(provider, RenderType::entityCutout);
         float lidOpenness = ChestBlockEntityRenderer.getLidOpenness(retriever.get(ChestBlockEntityRenderer.LID_OPENNESS_FUNCTION_GETTER).orElse(f -> 0).get(delta));
         int brightness = retriever.get(ChestBlockEntityRenderer.BRIGHTNESS_PROPERTY).orElse(i -> i).applyAsInt(light);
-        if (chestType == CursedChestType.SINGLE) {
+        if (chestType == EsChestType.SINGLE) {
             ChestBlockEntityRenderer.renderBottom(stack, consumer, singleBottom, brightness, overlay);
             ChestBlockEntityRenderer.renderTop(stack, consumer, singleLid, brightness, overlay, lidOpenness);
             ChestBlockEntityRenderer.renderTop(stack, consumer, singleLock, brightness, overlay, lidOpenness);
-        } else if (chestType == CursedChestType.TOP) {
+        } else if (chestType == EsChestType.TOP) {
             ChestBlockEntityRenderer.renderBottom(stack, consumer, topBottom, brightness, overlay);
             ChestBlockEntityRenderer.renderTop(stack, consumer, topLid, brightness, overlay, lidOpenness);
             ChestBlockEntityRenderer.renderTop(stack, consumer, topLock, brightness, overlay, lidOpenness);
-        } else if (chestType == CursedChestType.BOTTOM) {
+        } else if (chestType == EsChestType.BOTTOM) {
             ChestBlockEntityRenderer.renderBottom(stack, consumer, bottomBottom, brightness, overlay);
-        } else if (chestType == CursedChestType.FRONT) {
+        } else if (chestType == EsChestType.FRONT) {
             ChestBlockEntityRenderer.renderBottom(stack, consumer, frontBottom, brightness, overlay);
             ChestBlockEntityRenderer.renderTop(stack, consumer, frontLid, brightness, overlay, lidOpenness);
             ChestBlockEntityRenderer.renderTop(stack, consumer, frontLock, brightness, overlay, lidOpenness);
-        } else if (chestType == CursedChestType.BACK) {
+        } else if (chestType == EsChestType.BACK) {
             ChestBlockEntityRenderer.renderBottom(stack, consumer, backBottom, brightness, overlay);
             ChestBlockEntityRenderer.renderTop(stack, consumer, backLid, brightness, overlay, lidOpenness);
-        } else if (chestType == CursedChestType.LEFT) {
+        } else if (chestType == EsChestType.LEFT) {
             ChestBlockEntityRenderer.renderBottom(stack, consumer, leftBottom, brightness, overlay);
             //noinspection SuspiciousNameCombination
             ChestBlockEntityRenderer.renderTop(stack, consumer, leftLid, brightness, overlay, lidOpenness);
             //noinspection SuspiciousNameCombination
             ChestBlockEntityRenderer.renderTop(stack, consumer, leftLock, brightness, overlay, lidOpenness);
-        } else if (chestType == CursedChestType.RIGHT) {
+        } else if (chestType == EsChestType.RIGHT) {
             ChestBlockEntityRenderer.renderBottom(stack, consumer, rightBottom, brightness, overlay);
             //noinspection SuspiciousNameCombination
             ChestBlockEntityRenderer.renderTop(stack, consumer, rightLid, brightness, overlay, lidOpenness);
