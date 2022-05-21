@@ -130,7 +130,7 @@ modrinth {
 
     projectId.set(properties["modrinth_project_id"] as String)
     versionType.set(modReleaseType)
-    versionNumber.set(modVersion  + "-" + project.name)
+    versionNumber.set(modVersion  + "+" + project.name)
     versionName.set(project.name.capitalized() + " " + modVersion)
     uploadFile.set(tasks.getByName("minJar"))
     dependencies.set(listOf(
