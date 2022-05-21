@@ -3,8 +3,8 @@
   "depends": {
     "fabricloader": ">=0.13.2",
     "minecraft": "~1.18.2",
-    "ellemes_container_lib": "~1.4.0-beta.1",
-    "fabric": "~0.47.8"
+    "ellemes_container_lib": ">=1.4.0-beta.1",
+    "fabric": ">=0.47.8"
   },
   "entrypoints": {
     "main": [
