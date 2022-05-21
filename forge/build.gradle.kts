@@ -1,5 +1,3 @@
-import com.modrinth.minotaur.dependencies.DependencyType
-import com.modrinth.minotaur.dependencies.ModDependency
 import ellemes.gradle.mod.api.task.MinifyJsonTask
 import org.gradle.configurationcache.extensions.capitalized
 
@@ -91,9 +89,9 @@ modrinth {
     versionNumber.set(modVersion  + "+" + project.name)
     versionName.set(project.name.capitalized() + " " + modVersion)
     uploadFile.set(tasks.getByName("minJar"))
-    dependencies.set(listOf(
-        ModDependency("TIhTvPdy", DependencyType.REQUIRED) // ellemes-container-library
-    ))
+    dependencies {
+        required.project("TIhTvPdy") // ellemes-container-library
+    }
     changelog.set(modChangelog)
     gameVersions.set(modTargetVersions)
     loaders.set(listOf(project.name))
