@@ -1,3 +1,2 @@
-- Rewrite mod using architectury (again)
-- This should be functionally equivalent to previous release, please report any issues.
-- There has been a package shake up however I've tried not to move anything that other mods depend on, I will be moving these in 1.19
+- Initial port to 1.19
+- Move api package to ellemes
