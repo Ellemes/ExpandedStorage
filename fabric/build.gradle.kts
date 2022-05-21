@@ -120,7 +120,7 @@ curseforge {
         })
         changelogType = "markdown"
         changelog = modChangelog
-        gameVersionStrings = listOf("Fabric", "Java " + java.targetCompatibility.majorVersion) + modTargetVersions
+        gameVersionStrings = listOf(project.name.capitalized(), "Java " + java.targetCompatibility.majorVersion) + modTargetVersions
     })
 }
 
@@ -142,7 +142,7 @@ modrinth {
     ))
     changelog.set(modChangelog)
     gameVersions.set(modTargetVersions)
-    loaders.set(listOf("fabric"))
+    loaders.set(listOf(project.name))
 }
 
 afterEvaluate {

@@ -103,7 +103,7 @@ modrinth {
     ))
     changelog.set(modChangelog)
     gameVersions.set(modTargetVersions)
-    loaders.set(listOf("quilt"))
+    loaders.set(listOf(project.name))
 }
 
 afterEvaluate {
