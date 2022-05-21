@@ -95,7 +95,7 @@ modrinth {
     versionName.set(project.name.capitalized() + " " + modVersion)
     uploadFile.set(tasks.getByName("minJar"))
     dependencies.set(listOf(
-        ModDependency("qsl", DependencyType.REQUIRED),
+        ModDependency("qvIfYCYJ", DependencyType.REQUIRED), // quilt standard libraries
         ModDependency("TIhTvPdy", DependencyType.REQUIRED), // ellemes-container-library
         ModDependency("IEPAK5x6", DependencyType.OPTIONAL), // htm
         //ModDependency("carrier", DependencyType.OPTIONAL), // carrier (not on modrinth)
