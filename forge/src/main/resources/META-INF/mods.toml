@@ -1,7 +1,7 @@
 modLoader = "javafml"
 loaderVersion = "[40,)"
 issueTrackerURL = "https://github.com/Ellemes/expanded-storage/issues/"
-license = "multiple"
+license = "See LICENSE file"
 
 [[mods]]
 modId = "expandedstorage"
