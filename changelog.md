@@ -1,1 +1,3 @@
-- Fix version constrains...
+- Make mod code cc0.
+- Add commit id to changelog.
+- Minor buildscript changes.

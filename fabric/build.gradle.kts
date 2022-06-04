@@ -138,7 +138,7 @@ modrinth {
     uploadFile.set(tasks.getByName("minJar"))
     dependencies {
         required.project("P7dR8mSH") // fabric-api
-        required.project("TIhTvPdy") // ellemes-container-library
+        required.project("KV8SBboh") // ellemes-container-library
         optional.project("IEPAK5x6") // htm
         // optional.project("carrier") // carrier (not on modrinth)
         optional.project("bnesqDoc") // towelette
