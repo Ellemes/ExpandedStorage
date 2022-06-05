@@ -17,6 +17,9 @@
     "main": [
       "ellemes.expandedstorage.fabric.Main"
     ],
+    "client": [
+      "ellemes.expandedstorage.fabric.Client"
+    ],
     "fabric-datagen": [
       "ellemes.expandedstorage.thread.datagen.Main"
     ]
