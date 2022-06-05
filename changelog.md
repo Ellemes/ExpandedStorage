@@ -1,3 +1,1 @@
-- Make mod code cc0.
-- Add commit id to changelog.
-- Minor buildscript changes.
+- Fix issue where chest won't close when too far away.
