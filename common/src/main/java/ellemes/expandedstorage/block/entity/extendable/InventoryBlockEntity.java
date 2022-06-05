@@ -86,7 +86,7 @@ public abstract class InventoryBlockEntity extends OpenableBlockEntity {
 
         @Override
         public boolean stillValid(Player player) {
-            return true;
+            return InventoryBlockEntity.this.isValidAndPlayerInRange(player);
         }
 
         @Override

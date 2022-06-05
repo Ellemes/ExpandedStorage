@@ -10,6 +10,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -31,10 +32,11 @@ public abstract class OpenableBlockEntity extends BlockEntity implements Openabl
 
     @Override
     public boolean canBeUsedBy(ServerPlayer player) {
-        //noinspection ConstantConditions
-        return this.getLevel().getBlockEntity(this.getBlockPos()) == this &&
-                player.distanceToSqr(Vec3.atCenterOf(this.getBlockPos())) <= 64.0D &&
-                this.getLockable().canPlayerOpenLock(player);
+        return this.isValidAndPlayerInRange(player) && this.getLockable().canPlayerOpenLock(player);
+    }
+
+    protected final boolean isValidAndPlayerInRange(Player player) {
+        return this.getLevel().getBlockEntity(this.getBlockPos()) == this && player.distanceToSqr(Vec3.atCenterOf(this.getBlockPos())) <= 36.0D;
     }
 
     @Override
