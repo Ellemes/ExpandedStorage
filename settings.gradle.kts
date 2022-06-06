@@ -33,6 +33,6 @@ rootProject.name = "expandedstorage"
 
 include("common")
 include("fabric")
-//include("quilt")
+include("quilt")
 //include("forge")
 

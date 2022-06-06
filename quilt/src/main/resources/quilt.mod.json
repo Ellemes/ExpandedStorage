@@ -12,19 +12,19 @@
     "depends": [
       {
         "id": "org.quiltmc:quilt_loader",
-        "versions": ">=0.16.0-beta.12"
+        "versions": ">=0.17.0-beta.2"
       },
       {
         "id": "ellemes:ellemes_container_lib",
-        "versions": ">=2.0.0-beta.1"
+        "versions": ">=2.0.0-beta.3"
       },
       {
         "id": "minecraft",
-        "versions": "~1.19-beta.1"
+        "versions": "~1.19-rc.2"
       },
       {
         "id": "org.quiltmc:quilted_fabric_api",
-        "versions": ">=1.0.0-beta.9"
+        "versions": ">=CHANGEME"
       }
     ],
     "metadata": {

@@ -29,7 +29,6 @@ public class RecipeProvider extends FabricRecipeProvider {
         UpgradeRecipeBuilder.smithing(Ingredient.of(base), Ingredient.of(addition), output)
                             .unlocks(criterion, RecipeProvider.has(base))
                             .save(exporter, Registry.ITEM.getKey(output));
-
     }
 
     private static ShapedRecipeBuilder shapedRecipe(ItemLike output, int count, String criterion, TagKey<Item> tag) {

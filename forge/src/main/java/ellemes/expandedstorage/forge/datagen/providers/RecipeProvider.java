@@ -28,7 +28,6 @@ public final class RecipeProvider extends net.minecraft.data.recipes.RecipeProvi
         UpgradeRecipeBuilder.smithing(Ingredient.of(base), Ingredient.of(addition), output)
                             .unlocks(criterion, RecipeProvider.has(base))
                             .save(exporter, output.getRegistryName());
-
     }
 
     private static ShapedRecipeBuilder shapedRecipe(ItemLike output, int count, String criterion, TagKey<Item> tag) {

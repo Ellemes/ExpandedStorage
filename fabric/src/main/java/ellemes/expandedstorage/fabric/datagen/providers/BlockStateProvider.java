@@ -16,11 +16,6 @@ public class BlockStateProvider extends FabricModelProvider {
     public void generateBlockStateModels(BlockModelGenerators generator) {
     }
 
-    //private static ResourceLocation blockId(Block block) {
-    //    ResourceLocation id = Registry.BLOCK.getKey(block);
-    //    return new ResourceLocation(Utils.MOD_ID, "block/" + id.getPath());
-    //}
-
     @Override
     public void generateItemModels(ItemModelGenerators generator) {
         generator.generateFlatItem(ModItems.STORAGE_MUTATOR, ModelTemplates.FLAT_ITEM);
