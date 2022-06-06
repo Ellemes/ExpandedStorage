@@ -4,7 +4,14 @@
     "fabricloader": ">=0.13.2",
     "minecraft": "~1.18.2",
     "ellemes_container_lib": ">=1.4.0-beta.1",
-    "fabric": ">=0.47.8"
+    "fabric-api-base": ">=0.4.3",
+    "fabric-blockrenderlayer-v1": ">=1.1.11",
+    "fabric-data-generation-api-v1": ">=2.0.4",
+    "fabric-item-groups-v0": ">=0.3.8",
+    "fabric-lifecycle-events-v1": ">=2.0.1",
+    "fabric-rendering-v1": ">=1.10.6",
+    "fabric-textures-v0": ">=1.0.11",
+    "fabric-transfer-api-v1": ">=1.5.12"
   },
   "entrypoints": {
     "main": [

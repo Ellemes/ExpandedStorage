@@ -23,8 +23,44 @@
         "versions": "~1.18.2"
       },
       {
-        "id": "org.quiltmc:quilted_fabric_api",
-        "versions": ">=1.0.0-beta.9"
+        "id": "quilt_block_extensions",
+        "versions": ">=1.1.0-beta.5"
+      },
+      {
+        "id": "quilt_networking",
+        "versions": ">=1.1.0-beta.5"
+      },
+      {
+        "id": "quilt_registry",
+        "versions": ">=1.1.0-beta.5"
+      },
+      {
+        "id": "quilt_resource_loader",
+        "versions": ">=1.1.0-beta.5"
+      },
+      {
+        "id": "quilt_item_group",
+        "versions": ">=1.1.0-beta.5"
+      },
+      {
+        "id": "quilt_tooltip",
+        "versions": ">=1.1.0-beta.5"
+      },
+      {
+        "id": "quilted_fabric_api_base",
+        "versions": ">=1.0.0-beta.7"
+      },
+      {
+        "id": "quilted_fabric_rendering_v1",
+        "versions": ">=1.0.0-beta.7"
+      },
+      {
+        "id": "quilted_fabric_textures_v0",
+        "versions": ">=1.0.0-beta.7"
+      },
+      {
+        "id": "quilted_fabric_transfer_api_v1",
+        "versions": ">=1.0.0-beta.7"
       }
     ],
     "metadata": {
