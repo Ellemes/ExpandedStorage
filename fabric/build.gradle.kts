@@ -45,8 +45,6 @@ mod {
 
 dependencies {
     modImplementation("ellemes:${properties["container_library_artifact"]}-fabric:${properties["container_library_version"]}")
-    //modImplementation(group = "maven.modrinth", name = "ninjaphenix-container-library", version = "1.3.0+1.18-fabric", dependencyConfiguration = excludeFabric)
-    //modImplementation(group = "ninjaphenix", name = "container_library", version = "1.3.0+1.18", classifier = "fabric", dependencyConfiguration = excludeFabric)
 
     // For chest module
     modCompileOnly(group = "curse.maven", name = "statement-340604", version = "3423826", dependencyConfiguration = excludeFabric)
@@ -59,8 +57,6 @@ dependencies {
     //modRuntimeOnly("me.lucko:fabric-permissions-api:0.1-SNAPSHOT")
     modCompileOnly(group = "curse.maven", name = "htm-462534", version = "3539120", dependencyConfiguration = excludeFabric)
 
-    //modRuntimeOnly("maven.modrinth:modmenu:3.1.0")
-    //modRuntimeOnly(fabricApi.module("fabric-screen-api-v1", properties["fabric_api_version"] as String))
 }
 
 //
