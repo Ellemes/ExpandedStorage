@@ -35,9 +35,7 @@ mod {
             "fabric-rendering-v1",
             "fabric-textures-v0",
             "fabric-transfer-api-v1",
-            // Mod Menu
-            //"fabric-screen-api-v1",
-            // NCL
+            // ECL
             "fabric-screen-handler-api-v1",
             "fabric-key-binding-api-v1",
     )
@@ -54,8 +52,6 @@ mod {
 dependencies {
     modImplementation("ellemes:${properties["container_library_artifact"]}-quilt:${properties["container_library_version"]}", dependencyConfiguration = excludeFabric)
 
-    //modImplementation(group = "ninjaphenix", name = "container_library", version = "1.3.0+1.18", classifier = "fabric", dependencyConfiguration = excludeFabric)
-
     // For chest module
     modCompileOnly(group = "curse.maven", name = "statement-340604", version = "3423826", dependencyConfiguration = excludeFabric)
     modCompileOnly(group = "curse.maven", name = "towelette-309338", version = "3398761", dependencyConfiguration = excludeFabric)
@@ -66,8 +62,6 @@ dependencies {
 
     //modRuntimeOnly("me.lucko:fabric-permissions-api:0.1-SNAPSHOT")
     modCompileOnly(group = "curse.maven", name = "htm-462534", version = "3539120", dependencyConfiguration = excludeFabric)
-
-    //modRuntimeOnly("maven.modrinth:modmenu:3.1.0")
 }
 
 val releaseModTask = tasks.getByName("releaseMod")
