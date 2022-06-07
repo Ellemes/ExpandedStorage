@@ -19,12 +19,12 @@ public final class Main {
         final DataGenerator generator = event.getGenerator();
         final ExistingFileHelper fileHelper = event.getExistingFileHelper();
         final BlockTagsProvider blockTagsProvider = new TagProvider.Block(generator, fileHelper);
-        generator.addProvider(blockTagsProvider);
-        generator.addProvider(new TagProvider.Item(generator, blockTagsProvider, fileHelper));
-        generator.addProvider(new RecipeProvider(generator));
-        generator.addProvider(new LootTableProvider(generator));
-        //generator.addProvider(new LanguageProvider(generator));
-        generator.addProvider(new BlockStatesAndModels(generator, fileHelper));
-        generator.addProvider(new ItemModelProvider(generator, fileHelper));
+        generator.addProvider(true, blockTagsProvider);
+        generator.addProvider(true, new TagProvider.Item(generator, blockTagsProvider, fileHelper));
+        generator.addProvider(true, new RecipeProvider(generator));
+        generator.addProvider(true, new LootTableProvider(generator));
+        //generator.addProvider(true, new LanguageProvider(generator));
+        generator.addProvider(true, new BlockStatesAndModels(generator, fileHelper));
+        generator.addProvider(true, new ItemModelProvider(generator, fileHelper));
     }
 }

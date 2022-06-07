@@ -4,7 +4,7 @@ import ellemes.expandedstorage.Utils;
 import ellemes.expandedstorage.forge.datagen.content.ModBlocks;
 import ellemes.expandedstorage.forge.datagen.content.ModItems;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.item.CreativeModeTab;
 
 import java.util.Arrays;
@@ -136,7 +136,7 @@ public final class LanguageProvider extends net.minecraftforge.common.data.Langu
         this.add("tooltip.expandedstorage.stores_x_stacks", "Stores %s stacks");
 
         String itemGroupId = Arrays.stream(CreativeModeTab.TABS)
-                                   .map(it -> ((TranslatableComponent) it.getDisplayName()).getKey())
+                                   .map(it -> ((TranslatableContents) it.getDisplayName().getContents()).getKey())
                                    .filter(it -> it.toLowerCase(Locale.ROOT).contains(Utils.MOD_ID))
                                    .findFirst()
                                    .orElseThrow();

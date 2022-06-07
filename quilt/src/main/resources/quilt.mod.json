@@ -16,7 +16,7 @@
       },
       {
         "id": "ellemes:ellemes_container_lib",
-        "versions": ">=2.0.0-beta.3"
+        "versions": ">=2.0.0-beta.4"
       },
       {
         "id": "minecraft",

@@ -25,14 +25,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.stats.StatType;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoubleBlockCombiner;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -46,7 +44,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -55,7 +52,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegisterEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -63,7 +60,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("deprecation")
 @Mod("expandedstorage")
 public final class Main {
     private final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -142,39 +138,39 @@ public final class Main {
                                  List<NamedValue<BarrelBlock>> barrelBlocks, List<NamedValue<BlockItem>> barrelItems, NamedValue<BlockEntityType<BarrelBlockEntity>> barrelBlockEntityType,
                                  List<NamedValue<MiniChestBlock>> miniChestBlocks, List<NamedValue<BlockItem>> miniChestItems, NamedValue<BlockEntityType<MiniChestBlockEntity>> miniChestBlockEntityType
     ) {
-        modBus.addGenericListener(StatType.class, (RegistryEvent.Register<StatType<?>> event) -> {
-            stats.forEach(it -> Registry.register(Registry.CUSTOM_STAT, it, it));
-        });
-
-        modBus.addGenericListener(Block.class, (RegistryEvent.Register<Block> event) -> {
-            IForgeRegistry<Block> registry = event.getRegistry();
-            List<NamedValue<? extends OpenableBlock>> allBlocks = new ArrayList<>();
-            allBlocks.addAll(chestBlocks);
-            allBlocks.addAll(oldChestBlocks);
-            allBlocks.addAll(barrelBlocks);
-            allBlocks.addAll(miniChestBlocks);
-            Common.iterateNamedList(allBlocks, (name, value) -> {
-                registry.register(value.setRegistryName(name));
-                Common.registerTieredBlock(value);
+        modBus.addListener((RegisterEvent event) -> {
+            event.register(Registry.CUSTOM_STAT_REGISTRY, helper -> {
+                stats.forEach(it -> helper.register(it, it));
             });
-        });
 
-        modBus.addGenericListener(Item.class, (RegistryEvent.Register<Item> event) -> {
-            IForgeRegistry<Item> registry = event.getRegistry();
-            List<NamedValue<? extends Item>> allItems = new ArrayList<>();
-            allItems.addAll(baseItems);
-            allItems.addAll(chestItems);
-            allItems.addAll(oldChestItems);
-            allItems.addAll(barrelItems);
-            allItems.addAll(miniChestItems);
-            Common.iterateNamedList(allItems, (name, value) -> registry.register(value.setRegistryName(name)));
-        });
+            event.register(Registry.BLOCK_REGISTRY, helper -> {
+                List<NamedValue<? extends OpenableBlock>> allBlocks = new ArrayList<>();
+                allBlocks.addAll(chestBlocks);
+                allBlocks.addAll(oldChestBlocks);
+                allBlocks.addAll(barrelBlocks);
+                allBlocks.addAll(miniChestBlocks);
+                Common.iterateNamedList(allBlocks, (name, value) -> {
+                    helper.register(name, value);
+                    Common.registerTieredBlock(value);
+                });
+            });
 
-        modBus.addGenericListener(BlockEntityType.class, (RegistryEvent.Register<BlockEntityType<?>> event) -> {
-            event.getRegistry().register(chestBlockEntityType.getValue().setRegistryName(chestBlockEntityType.getName()));
-            event.getRegistry().register(oldChestBlockEntityType.getValue().setRegistryName(oldChestBlockEntityType.getName()));
-            event.getRegistry().register(barrelBlockEntityType.getValue().setRegistryName(barrelBlockEntityType.getName()));
-            event.getRegistry().register(miniChestBlockEntityType.getValue().setRegistryName(miniChestBlockEntityType.getName()));
+            event.register(Registry.ITEM_REGISTRY, helper -> {
+                List<NamedValue<? extends Item>> allItems = new ArrayList<>();
+                allItems.addAll(baseItems);
+                allItems.addAll(chestItems);
+                allItems.addAll(oldChestItems);
+                allItems.addAll(barrelItems);
+                allItems.addAll(miniChestItems);
+                Common.iterateNamedList(allItems, helper::register);
+            });
+
+            event.register(Registry.BLOCK_ENTITY_TYPE_REGISTRY, helper -> {
+                helper.register(chestBlockEntityType.getName(), chestBlockEntityType.getValue());
+                helper.register(oldChestBlockEntityType.getName(), oldChestBlockEntityType.getValue());
+                helper.register(barrelBlockEntityType.getName(), barrelBlockEntityType.getValue());
+                helper.register(miniChestBlockEntityType.getName(), miniChestBlockEntityType.getValue());
+            });
         });
 
         if (FMLLoader.getDist() == Dist.CLIENT) {

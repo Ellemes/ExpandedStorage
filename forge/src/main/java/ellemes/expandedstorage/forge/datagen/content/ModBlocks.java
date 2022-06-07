@@ -1,13 +1,13 @@
 package ellemes.expandedstorage.forge.datagen.content;
 
 import ellemes.expandedstorage.Utils;
+import ellemes.expandedstorage.block.AbstractChestBlock;
 import ellemes.expandedstorage.block.BarrelBlock;
 import ellemes.expandedstorage.block.ChestBlock;
 import ellemes.expandedstorage.block.MiniChestBlock;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
-import ninjaphenix.expandedstorage.block.AbstractChestBlock;
 
 public final class ModBlocks {
     public static final ChestBlock WOOD_CHEST = block(Utils.id("wood_chest"));

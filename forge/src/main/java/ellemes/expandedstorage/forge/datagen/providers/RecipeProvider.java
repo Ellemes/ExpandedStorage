@@ -15,6 +15,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Consumer;
 
@@ -27,7 +28,7 @@ public final class RecipeProvider extends net.minecraft.data.recipes.RecipeProvi
     private static void smithingRecipe(Item output, Item base, TagKey<Item> addition, String criterion, Consumer<FinishedRecipe> exporter) {
         UpgradeRecipeBuilder.smithing(Ingredient.of(base), Ingredient.of(addition), output)
                             .unlocks(criterion, RecipeProvider.has(base))
-                            .save(exporter, output.getRegistryName());
+                            .save(exporter, ForgeRegistries.ITEMS.getKey(output));
     }
 
     private static ShapedRecipeBuilder shapedRecipe(ItemLike output, int count, String criterion, TagKey<Item> tag) {
@@ -136,7 +137,7 @@ public final class RecipeProvider extends net.minecraft.data.recipes.RecipeProvi
         smithingRecipe(ModItems.DIAMOND_TO_NETHERITE_CONVERSION_KIT, ModItems.DIAMOND_TO_OBSIDIAN_CONVERSION_KIT, Tags.Items.INGOTS_NETHERITE, Criterions.HAS_PREVIOUS_KIT, exporter);
         UpgradeRecipeBuilder.smithing(Ingredient.of(Tags.Items.OBSIDIAN), Ingredient.of(Tags.Items.INGOTS_NETHERITE), ModItems.OBSIDIAN_TO_NETHERITE_CONVERSION_KIT)
                             .unlocks(Criterions.HAS_ITEM, RecipeProvider.has(Tags.Items.OBSIDIAN))
-                            .save(exporter, ModItems.OBSIDIAN_TO_NETHERITE_CONVERSION_KIT.getRegistryName());
+                            .save(exporter, ForgeRegistries.ITEMS.getKey(ModItems.OBSIDIAN_TO_NETHERITE_CONVERSION_KIT));
 
     }
 
@@ -387,7 +388,7 @@ public final class RecipeProvider extends net.minecraft.data.recipes.RecipeProvi
     }
 
     private String id(ItemLike item) {
-        return item.asItem().getRegistryName().toString();
+        return ForgeRegistries.ITEMS.getKey(item.asItem()).toString();
     }
 
     @Override

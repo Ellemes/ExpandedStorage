@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "depends": {
     "fabricloader": ">=0.14.6",
-    "minecraft": "~1.19-rc.2",
-    "ellemes_container_lib": ">=2.0.0-beta.3",
+    "minecraft": "~1.19",
+    "ellemes_container_lib": ">=2.0.0-beta.4",
     "fabric-api-base": ">=0.4.8",
     "fabric-blockrenderlayer-v1": ">=1.1.17",
     "fabric-data-generation-api-v1": ">=5.0.0",
