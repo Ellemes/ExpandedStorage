@@ -118,7 +118,7 @@ curseforge {
         })
         changelogType = "markdown"
         changelog = modChangelog
-        gameVersionStrings = listOf(project.name.capitalized(), "Java " + java.targetCompatibility.majorVersion) + mutableListOf("1.19-Snapshot") // todo: remove hack
+        gameVersionStrings = listOf(project.name.capitalized(), "Java " + java.targetCompatibility.majorVersion) + modTargetVersions
     })
 }
 
