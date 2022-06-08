@@ -1,1 +1,1 @@
-- Fix issue where chest won't close when too far away.
+- Port to 1.19
