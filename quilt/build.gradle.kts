@@ -38,6 +38,7 @@ mod {
             // ECL
             "fabric-screen-handler-api-v1",
             "fabric-key-binding-api-v1",
+            "fabric-transitive-access-wideners-v1",
     )
     qsl(
             "block/block_extensions",

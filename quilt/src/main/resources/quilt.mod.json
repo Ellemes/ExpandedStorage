@@ -48,19 +48,19 @@
       },
       {
         "id": "org.quiltmc.quilted-fabric-api:quilted_fabric_api_base",
-        "versions": ">=CHANGEME"
+        "versions": ">=2.0.0-beta.1"
       },
       {
         "id": "org.quiltmc.quilted-fabric-api:quilted_fabric_rendering_v1",
-        "versions": ">=CHANGEME"
+        "versions": ">=2.0.0-beta.1"
       },
       {
         "id": "org.quiltmc.quilted-fabric-api:quilted_fabric_textures_v0",
-        "versions": ">=CHANGEME"
+        "versions": ">=2.0.0-beta.1"
       },
       {
         "id": "org.quiltmc.quilted-fabric-api:quilted_fabric_transfer_api_v1",
-        "versions": ">=CHANGEME"
+        "versions": ">=2.0.0-beta.1"
       }
     ],
     "metadata": {
