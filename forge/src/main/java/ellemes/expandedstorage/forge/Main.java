@@ -139,11 +139,11 @@ public final class Main {
                                  List<NamedValue<MiniChestBlock>> miniChestBlocks, List<NamedValue<BlockItem>> miniChestItems, NamedValue<BlockEntityType<MiniChestBlockEntity>> miniChestBlockEntityType
     ) {
         modBus.addListener((RegisterEvent event) -> {
-            event.register(Registry.CUSTOM_STAT_REGISTRY, helper -> {
-                stats.forEach(it -> helper.register(it, it));
+            event.register(ForgeRegistries.Keys.STAT_TYPES, helper -> {
+                stats.forEach(it -> Registry.register(Registry.CUSTOM_STAT, it, it));
             });
 
-            event.register(Registry.BLOCK_REGISTRY, helper -> {
+            event.register(ForgeRegistries.Keys.BLOCKS, helper -> {
                 List<NamedValue<? extends OpenableBlock>> allBlocks = new ArrayList<>();
                 allBlocks.addAll(chestBlocks);
                 allBlocks.addAll(oldChestBlocks);
@@ -155,7 +155,7 @@ public final class Main {
                 });
             });
 
-            event.register(Registry.ITEM_REGISTRY, helper -> {
+            event.register(ForgeRegistries.Keys.ITEMS, helper -> {
                 List<NamedValue<? extends Item>> allItems = new ArrayList<>();
                 allItems.addAll(baseItems);
                 allItems.addAll(chestItems);
@@ -165,7 +165,7 @@ public final class Main {
                 Common.iterateNamedList(allItems, helper::register);
             });
 
-            event.register(Registry.BLOCK_ENTITY_TYPE_REGISTRY, helper -> {
+            event.register(ForgeRegistries.Keys.BLOCK_ENTITY_TYPES, helper -> {
                 helper.register(chestBlockEntityType.getName(), chestBlockEntityType.getValue());
                 helper.register(oldChestBlockEntityType.getName(), oldChestBlockEntityType.getValue());
                 helper.register(barrelBlockEntityType.getName(), barrelBlockEntityType.getValue());
