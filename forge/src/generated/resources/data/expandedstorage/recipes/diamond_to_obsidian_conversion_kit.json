@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": {
+      "tag": "forge:gems/diamond"
+    },
+    "O": {
+      "tag": "forge:obsidian"
+    }
+  },
+  "pattern": [
+    "OOO",
+    "ODO",
+    "OOO"
+  ],
+  "result": {
+    "item": "expandedstorage:diamond_to_obsidian_conversion_kit"
+  }
+}

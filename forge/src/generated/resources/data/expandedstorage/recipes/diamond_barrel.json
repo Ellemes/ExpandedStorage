@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "expandedstorage:gold_barrel"
+    },
+    "D": {
+      "tag": "forge:gems/diamond"
+    },
+    "G": {
+      "tag": "forge:glass"
+    }
+  },
+  "pattern": [
+    "GGG",
+    "DBD",
+    "GGG"
+  ],
+  "result": {
+    "item": "expandedstorage:diamond_barrel"
+  }
+}

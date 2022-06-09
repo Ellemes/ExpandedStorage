@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "addition": {
+    "tag": "c:netherite_ingots"
+  },
+  "base": {
+    "item": "minecraft:obsidian"
+  },
+  "result": {
+    "item": "expandedstorage:obsidian_to_netherite_conversion_kit"
+  }
+}

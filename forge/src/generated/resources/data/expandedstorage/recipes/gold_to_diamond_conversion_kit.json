@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": {
+      "tag": "forge:gems/diamond"
+    },
+    "G": {
+      "tag": "forge:glass"
+    },
+    "I": {
+      "tag": "forge:ingots/gold"
+    }
+  },
+  "pattern": [
+    "GGG",
+    "DID",
+    "GGG"
+  ],
+  "result": {
+    "item": "expandedstorage:gold_to_diamond_conversion_kit"
+  }
+}

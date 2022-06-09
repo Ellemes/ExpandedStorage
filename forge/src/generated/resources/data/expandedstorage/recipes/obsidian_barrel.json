@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "expandedstorage:diamond_barrel"
+    },
+    "O": {
+      "tag": "forge:obsidian"
+    }
+  },
+  "pattern": [
+    "OOO",
+    "OBO",
+    "OOO"
+  ],
+  "result": {
+    "item": "expandedstorage:obsidian_barrel"
+  }
+}

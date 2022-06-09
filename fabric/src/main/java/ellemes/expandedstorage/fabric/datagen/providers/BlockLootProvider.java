@@ -54,4 +54,9 @@ public final class BlockLootProvider extends FabricBlockLootTableProvider {
         this.add(ModBlocks.LAVENDER_MINI_PRESENT_WITH_SPARROW, BlockLoot::createNameableBlockEntityTable);
         this.add(ModBlocks.PINK_AMETHYST_MINI_PRESENT_WITH_SPARROW, BlockLoot::createNameableBlockEntityTable);
     }
+
+    @Override
+    public String getName() {
+        return "Expanded Storage - Loot Tables";
+    }
 }

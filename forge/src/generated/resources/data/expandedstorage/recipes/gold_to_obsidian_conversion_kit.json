@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "K": {
+      "item": "expandedstorage:gold_to_diamond_conversion_kit"
+    },
+    "O": {
+      "tag": "forge:obsidian"
+    }
+  },
+  "pattern": [
+    "OOO",
+    "OKO",
+    "OOO"
+  ],
+  "result": {
+    "item": "expandedstorage:gold_to_obsidian_conversion_kit"
+  }
+}

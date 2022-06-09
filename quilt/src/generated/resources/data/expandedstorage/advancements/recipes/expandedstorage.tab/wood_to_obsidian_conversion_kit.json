@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_previous_kit": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "expandedstorage:wood_to_diamond_conversion_kit"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "expandedstorage:wood_to_obsidian_conversion_kit"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_previous_kit",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "expandedstorage:wood_to_obsidian_conversion_kit"
+    ]
+  }
+}

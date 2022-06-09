@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "expandedstorage:obsidian_chest",
+  "key": {
+    "B": {
+      "item": "expandedstorage:diamond_chest"
+    },
+    "O": {
+      "tag": "forge:obsidian"
+    }
+  },
+  "pattern": [
+    "OOO",
+    "OBO",
+    "OOO"
+  ],
+  "result": {
+    "item": "expandedstorage:obsidian_chest"
+  }
+}

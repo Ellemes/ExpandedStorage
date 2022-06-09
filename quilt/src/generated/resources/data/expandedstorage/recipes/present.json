@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "expandedstorage:present",
+  "key": {
+    "B": {
+      "item": "minecraft:sweet_berries"
+    },
+    "C": {
+      "tag": "c:wooden_chests"
+    },
+    "R": {
+      "tag": "c:red_dyes"
+    },
+    "S": {
+      "item": "minecraft:spruce_sapling"
+    },
+    "W": {
+      "tag": "c:white_dyes"
+    }
+  },
+  "pattern": [
+    " B ",
+    "RCW",
+    " S "
+  ],
+  "result": {
+    "item": "expandedstorage:present"
+  }
+}

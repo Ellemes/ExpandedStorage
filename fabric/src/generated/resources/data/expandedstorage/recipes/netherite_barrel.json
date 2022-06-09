@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "addition": {
+    "tag": "c:netherite_ingots"
+  },
+  "base": {
+    "item": "expandedstorage:obsidian_barrel"
+  },
+  "result": {
+    "item": "expandedstorage:netherite_barrel"
+  }
+}

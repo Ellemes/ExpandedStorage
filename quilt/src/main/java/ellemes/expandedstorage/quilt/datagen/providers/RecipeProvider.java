@@ -397,4 +397,9 @@ public class RecipeProvider extends FabricRecipeProvider {
         private static final String HAS_PREVIOUS_KIT = "has_previous_kit";
         private static final String HAS_PREVIOUS_BLOCK = "has_previous_block";
     }
+
+    @Override
+    public String getName() {
+        return "Expanded Storage - Recipes";
+    }
 }

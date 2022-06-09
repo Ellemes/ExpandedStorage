@@ -161,6 +161,11 @@ public final class TagProvider {
                 .add(ModBlocks.LAVENDER_MINI_PRESENT_WITH_SPARROW)
                 .add(ModBlocks.PINK_AMETHYST_MINI_PRESENT_WITH_SPARROW);
         }
+
+        @Override
+        public String getName() {
+            return "Expanded Storage - Block Tags";
+        }
     }
 
     public static final class Item extends FabricTagProvider.ItemTagProvider {
@@ -220,6 +225,11 @@ public final class TagProvider {
                 .add(ModItems.GOLD_BARREL)
                 .add(ModItems.GOLD_CHEST)
                 .add(ModItems.OLD_GOLD_CHEST);
+        }
+
+        @Override
+        public String getName() {
+            return "Expanded Storage - Item Tags";
         }
     }
 }

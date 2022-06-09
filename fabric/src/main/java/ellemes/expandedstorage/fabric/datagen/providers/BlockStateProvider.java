@@ -35,4 +35,9 @@ public class BlockStateProvider extends FabricModelProvider {
         generator.generateFlatItem(ModItems.DIAMOND_TO_NETHERITE_CONVERSION_KIT, ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(ModItems.OBSIDIAN_TO_NETHERITE_CONVERSION_KIT, ModelTemplates.FLAT_ITEM);
     }
+
+    @Override
+    public String getName() {
+        return "Expanded Storage - BlockStates / Models";
+    }
 }

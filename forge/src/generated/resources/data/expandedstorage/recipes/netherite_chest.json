@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "addition": {
+    "tag": "forge:ingots/netherite"
+  },
+  "base": {
+    "item": "expandedstorage:obsidian_chest"
+  },
+  "result": {
+    "item": "expandedstorage:netherite_chest"
+  }
+}
