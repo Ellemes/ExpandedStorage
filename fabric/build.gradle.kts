@@ -30,8 +30,8 @@ val excludeFabric: (ModuleDependency) -> Unit = {
     it.exclude("net.fabricmc.fabric-api")
 }
 
-mod {
-    fabricApi(
+dependencies {
+    listOf(
             "fabric-api-base",
             "fabric-data-generation-api-v1",
             "fabric-blockrenderlayer-v1",
@@ -40,10 +40,10 @@ mod {
             "fabric-textures-v0",
             "fabric-lifecycle-events-v1",
             "fabric-transfer-api-v1"
-    )
-}
+    ).forEach {
+        modImplementation(mod.fabricApi().module(it))
+    }
 
-dependencies {
     modImplementation("ellemes:${properties["container_library_artifact"]}-fabric:${properties["container_library_version"]}")
 
     // For chest module

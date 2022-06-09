@@ -28,29 +28,34 @@ val excludeFabric: (ModuleDependency) -> Unit = {
     it.exclude("net.fabricmc.fabric-api")
 }
 
-mod {
-    fabricApi(
+dependencies {
+    val qsl = mod.qsl()
+    modImplementation(qsl.module("block", "block_extensions"))
+    modImplementation(qsl.module("core", "networking"))
+    modImplementation(qsl.module("core", "registry"))
+    modImplementation(qsl.module("core", "resource_loader"))
+    modImplementation(qsl.module("item", "item_group"))
+    modImplementation(qsl.module("gui", "tooltip"))
+
+    listOf(
             "fabric-api-base",
             "fabric-data-generation-api-v1",
             "fabric-rendering-v1",
             "fabric-textures-v0",
             "fabric-transfer-api-v1",
-            // ECL
+    ).forEach {
+        modImplementation(mod.fabricApi().module(it))
+    }
+
+    // Required by ECL
+    listOf(
             "fabric-screen-handler-api-v1",
             "fabric-key-binding-api-v1",
             "fabric-transitive-access-wideners-v1",
-    )
-    qsl(
-            "block/block_extensions",
-            "core/networking",
-            "core/registry",
-            "core/resource_loader",
-            "item/item_group",
-            "gui/tooltip",
-    )
-}
+    ).forEach {
+        modRuntimeOnly(mod.fabricApi().module(it))
+    }
 
-dependencies {
     modImplementation("ellemes:${properties["container_library_artifact"]}-quilt:${properties["container_library_version"]}", dependencyConfiguration = excludeFabric)
 
     // For chest module
