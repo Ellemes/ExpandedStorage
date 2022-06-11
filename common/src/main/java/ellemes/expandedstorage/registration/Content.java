@@ -9,6 +9,7 @@ import ellemes.expandedstorage.block.entity.BarrelBlockEntity;
 import ellemes.expandedstorage.block.entity.ChestBlockEntity;
 import ellemes.expandedstorage.block.entity.MiniChestBlockEntity;
 import ellemes.expandedstorage.block.entity.OldChestBlockEntity;
+import ellemes.expandedstorage.item.ChestMinecartItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -23,6 +24,7 @@ public class Content {
 
     private final List<NamedValue<ChestBlock>> chestBlocks;
     private final List<NamedValue<BlockItem>> chestItems;
+//    private final List<NamedValue<ChestMinecartItem>> chestMinecartItems;
     private final NamedValue<BlockEntityType<ChestBlockEntity>> chestBlockEntityType;
 
     private final List<NamedValue<AbstractChestBlock>> oldChestBlocks;
@@ -46,6 +48,7 @@ public class Content {
 
             List<NamedValue<ChestBlock>> chestBlocks,
             List<NamedValue<BlockItem>> chestItems,
+            List<NamedValue<ChestMinecartItem>> chestMinecartItems,
             NamedValue<BlockEntityType<ChestBlockEntity>> chestBlockEntityType,
 
             List<NamedValue<AbstractChestBlock>> oldChestBlocks,
@@ -65,6 +68,7 @@ public class Content {
 
         this.chestBlocks = chestBlocks;
         this.chestItems = chestItems;
+//        this.chestMinecartItems = chestMinecartItems;
         this.chestBlockEntityType = chestBlockEntityType;
 
         this.oldChestBlocks = oldChestBlocks;
@@ -88,6 +92,7 @@ public class Content {
         this.items = new ArrayList<>();
         items.addAll(baseItems);
         items.addAll(chestItems);
+        items.addAll(chestMinecartItems);
         items.addAll(oldChestItems);
         items.addAll(barrelItems);
         items.addAll(miniChestItems);
@@ -108,6 +113,10 @@ public class Content {
     public List<NamedValue<BlockItem>> getChestItems() {
         return chestItems;
     }
+
+//    public List<NamedValue<ChestMinecartItem>> getChestMinecartItems() {
+//        return chestMinecartItems;
+//    }
 
     public NamedValue<BlockEntityType<ChestBlockEntity>> getChestBlockEntityType() {
         return chestBlockEntityType;

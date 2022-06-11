@@ -16,6 +16,7 @@ import ellemes.expandedstorage.block.strategies.Lockable;
 import ellemes.expandedstorage.client.MiniChestScreen;
 import ellemes.expandedstorage.client.TextureCollection;
 import ellemes.expandedstorage.item.BlockUpgradeBehaviour;
+import ellemes.expandedstorage.item.ChestMinecartItem;
 import ellemes.expandedstorage.item.MutationMode;
 import ellemes.expandedstorage.item.MutatorBehaviour;
 import ellemes.expandedstorage.item.StorageConversionKit;
@@ -292,6 +293,7 @@ public final class Common {
 
         List<NamedValue<ChestBlock>> chestBlocks = new ArrayList<>(6 + 2);
         List<NamedValue<BlockItem>> chestItems = new ArrayList<>(6 + 2);
+        List<NamedValue<ChestMinecartItem>> chestMinecartItems = new ArrayList<>(6 + 2);
         /*Chest*/
         {
             final ResourceLocation woodStat = statMaker.apply("open_wood_chest");
@@ -313,8 +315,10 @@ public final class Common {
             ObjectConsumer chestMaker = (id, stat, tier, settings) -> {
                 NamedValue<ChestBlock> block = new NamedValue<>(id, () -> new ChestBlock(tier.getBlockSettings().apply(settings), id, tier.getId(), stat, tier.getSlotCount()));
                 NamedValue<BlockItem> item = new NamedValue<>(id, () -> chestItemMaker.apply(block.getValue(), tier.getItemSettings().apply(new Item.Properties().tab(group))));
+                NamedValue<ChestMinecartItem> minecartItem = new NamedValue<>(new ResourceLocation(id.getNamespace(), id.getPath() + "_minecart"), () -> new ChestMinecartItem(new Item.Properties().tab(group), id, stat));
                 chestBlocks.add(block);
                 chestItems.add(item);
+                chestMinecartItems.add(minecartItem);
             };
 
             chestMaker.apply(Utils.id("wood_chest"), woodStat, woodTier, woodSettings);
@@ -735,6 +739,7 @@ public final class Common {
 
                 chestBlocks,
                 chestItems,
+                chestMinecartItems,
                 chestBlockEntityType,
 
                 oldChestBlocks,
