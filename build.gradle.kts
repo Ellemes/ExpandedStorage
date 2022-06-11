@@ -1,3 +1,3 @@
 plugins {
-    id("ellemes.gradle.mod").version("0.1.0-beta.1")
+    id("ellemes.gradle.mod")
 }
