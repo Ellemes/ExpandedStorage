@@ -107,7 +107,7 @@ curseforge {
             artifact = tasks.getByName("minJar")
         })
         relations(closureOf<me.hypherionmc.cursegradle.CurseRelation> {
-            //requiredDependency("qsl")
+            requiredDependency("qsl")
             requiredDependency("ellemes-container-library")
             optionalDependency("htm")
             optionalDependency("carrier")
