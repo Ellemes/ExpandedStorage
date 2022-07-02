@@ -195,7 +195,7 @@ public final class Main {
 
     private static class Client {
         private static void registerEvents(IEventBus modBus, NamedValue<BlockEntityType<ChestBlockEntity>> type) {
-            modBus.addListener((EntityRenderersEvent.RegisterRenderers.RegisterRenderers event) -> {
+            modBus.addListener((EntityRenderersEvent.RegisterRenderers event) -> {
                 event.registerBlockEntityRenderer(type.getValue(), ChestBlockEntityRenderer::new);
             });
 
