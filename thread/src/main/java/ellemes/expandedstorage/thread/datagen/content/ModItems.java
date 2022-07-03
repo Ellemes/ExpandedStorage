@@ -1,4 +1,4 @@
-package ellemes.expandedstorage.quilt.datagen.content;
+package ellemes.expandedstorage.thread.datagen.content;
 
 import ellemes.expandedstorage.Utils;
 import net.minecraft.core.Registry;

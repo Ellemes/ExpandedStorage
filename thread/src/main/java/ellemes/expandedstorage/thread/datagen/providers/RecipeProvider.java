@@ -1,8 +1,8 @@
-package ellemes.expandedstorage.fabric.datagen.providers;
+package ellemes.expandedstorage.thread.datagen.providers;
 
 import ellemes.expandedstorage.Utils;
-import ellemes.expandedstorage.fabric.datagen.content.ModItems;
-import ellemes.expandedstorage.fabric.datagen.content.ModTags;
+import ellemes.expandedstorage.thread.datagen.content.ModItems;
+import ellemes.expandedstorage.thread.datagen.content.ModTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.Registry;

@@ -18,7 +18,7 @@
       "ellemes.expandedstorage.fabric.Main"
     ],
     "fabric-datagen": [
-      "ellemes.expandedstorage.fabric.datagen.Main"
+      "ellemes.expandedstorage.thread.datagen.Main"
     ]
   },
   "environment": "*",
