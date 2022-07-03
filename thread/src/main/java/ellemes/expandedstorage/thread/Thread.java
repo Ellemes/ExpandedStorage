@@ -1,14 +1,18 @@
 package ellemes.expandedstorage.thread;
 
 import ellemes.expandedstorage.Common;
+import ellemes.expandedstorage.TagReloadListener;
 import ellemes.expandedstorage.api.EsChestType;
 import ellemes.expandedstorage.block.AbstractChestBlock;
 import ellemes.expandedstorage.block.entity.ChestBlockEntity;
 import ellemes.expandedstorage.block.entity.OldChestBlockEntity;
 import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
+import ellemes.expandedstorage.block.misc.BasicLockable;
 import ellemes.expandedstorage.block.misc.DoubleItemAccess;
 import ellemes.expandedstorage.client.ChestBlockEntityRenderer;
+import ellemes.expandedstorage.registration.ContentConsumer;
 import ellemes.expandedstorage.registration.NamedValue;
+import ellemes.expandedstorage.thread.compat.htm.HTMLockable;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
@@ -19,8 +23,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DoubleBlockCombiner;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -65,6 +72,15 @@ public class Thread {
             return (Storage<ItemVariant>) entity.getItemAccess().get();
         }
         return null;
+    }
+
+    public static void constructContent(boolean htmPresent, CreativeModeTab group, boolean isClient, TagReloadListener tagReloadListener, ContentConsumer contentRegistrationConsumer) {
+        Common.constructContent(GenericItemAccess::new, htmPresent ? HTMLockable::new : BasicLockable::new, group, isClient, tagReloadListener, contentRegistrationConsumer,
+                /*Base*/ true,
+                /*Chest*/ TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "wooden_chests")), BlockItem::new, ChestItemAccess::new,
+                /*Old Chest*/
+                /*Barrel*/ TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "wooden_barrels")),
+                /*Mini Chest*/ BlockItem::new);
     }
 
     public static class Client {

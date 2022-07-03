@@ -29,7 +29,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class CarriableOldChest implements Carriable<Block> {
+class CarriableOldChest implements Carriable<Block> {
     private final ResourceLocation id;
     private final Block parent;
 

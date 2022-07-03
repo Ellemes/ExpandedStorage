@@ -12,19 +12,14 @@ import ellemes.expandedstorage.block.entity.BarrelBlockEntity;
 import ellemes.expandedstorage.block.entity.ChestBlockEntity;
 import ellemes.expandedstorage.block.entity.MiniChestBlockEntity;
 import ellemes.expandedstorage.block.entity.OldChestBlockEntity;
-import ellemes.expandedstorage.block.misc.BasicLockable;
-import ellemes.expandedstorage.thread.ChestItemAccess;
-import ellemes.expandedstorage.thread.GenericItemAccess;
 import ellemes.expandedstorage.thread.Thread;
 import ellemes.expandedstorage.thread.compat.carrier.CarrierCompat;
-import ellemes.expandedstorage.thread.compat.htm.HTMLockable;
 import ellemes.expandedstorage.registration.NamedValue;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -44,36 +39,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//@SuppressWarnings("deprecation")
 public final class Main implements ModInitializer {
     private boolean isCarrierCompatEnabled = false;
 
     @Override
     public void onInitialize(ModContainer mod) {
-        if (QuiltLoader.isModLoaded("quilt_loader")) {
-            isCarrierCompatEnabled = QuiltLoader.getModContainer("carrier").map(it -> {
-                Version carrierVersion = it.metadata().version();
-                if (carrierVersion.isSemantic()) {
-                    return carrierVersion.semantic().compareTo(Version.of("1.8.0").semantic()) > 0;
-                }
-                return false;
-            }).orElse(false);
-
-            CreativeModeTab group = QuiltItemGroup.builder(Utils.id("tab")).icon(() -> new ItemStack(Registry.ITEM.get(Utils.id("netherite_chest")))).build();
-            boolean isClient = MinecraftQuiltLoader.getEnvironmentType() == EnvType.CLIENT;
-            TagReloadListener tagReloadListener = new TagReloadListener();
-            Common.constructContent(GenericItemAccess::new, QuiltLoader.isModLoaded("htm") ? HTMLockable::new : BasicLockable::new, group, isClient, tagReloadListener, this::registerContent,
-                    /*Base*/ true,
-                    /*Chest*/ TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "wooden_chests")), BlockItem::new, ChestItemAccess::new,
-                    /*Old Chest*/
-                    /*Barrel*/ TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "wooden_barrels")),
-                    /*Mini Chest*/ BlockItem::new);
-
-            ResourceLoaderEvents.END_DATA_PACK_RELOAD.register(((server, resourceManager, error) -> tagReloadListener.postDataReload()));
-        } else {
+        if (!QuiltLoader.isModLoaded("quilt_loader")) {
             LoggerFactory.getLogger(Utils.MOD_ID).warn("Please use Expanded Storage for Fabric instead.");
             System.exit(0);
+            return;
         }
+        isCarrierCompatEnabled = QuiltLoader.getModContainer("carrier").map(it -> {
+            Version carrierVersion = it.metadata().version();
+            return carrierVersion.isSemantic() && carrierVersion.semantic().compareTo(Version.of("1.8.0").semantic()) > 0;
+        }).orElse(false);
+
+        CreativeModeTab group = QuiltItemGroup.builder(Utils.id("tab")).icon(() -> new ItemStack(Registry.ITEM.get(Utils.id("netherite_chest")))).build();
+        boolean isClient = MinecraftQuiltLoader.getEnvironmentType() == EnvType.CLIENT;
+        TagReloadListener tagReloadListener = new TagReloadListener();
+        Thread.constructContent(QuiltLoader.isModLoaded("htm"), group, isClient, tagReloadListener, this::registerContent);
+        ResourceLoaderEvents.END_DATA_PACK_RELOAD.register(((server, resourceManager, error) -> tagReloadListener.postDataReload()));
     }
 
     private void registerContent(List<ResourceLocation> stats, List<NamedValue<Item>> baseItems,
@@ -95,6 +80,7 @@ public final class Main implements ModInitializer {
             Common.registerTieredBlock(value);
         });
 
+        //noinspection UnstableApiUsage
         ItemStorage.SIDED.registerForBlocks(Thread::getItemAccess, allBlocks.stream().map(NamedValue::getValue).toArray(OpenableBlock[]::new));
 
         if (isCarrierCompatEnabled) {

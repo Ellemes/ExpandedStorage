@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 
-public final class CarriableChest extends CarriableOldChest {
+final class CarriableChest extends CarriableOldChest {
     public CarriableChest(ResourceLocation id, Block parent) {
         super(id, parent);
     }

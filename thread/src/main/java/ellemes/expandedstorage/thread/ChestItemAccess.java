@@ -8,7 +8,7 @@ import net.fabricmc.fabric.api.transfer.v1.storage.base.CombinedStorage;
 
 import java.util.List;
 
-public final class ChestItemAccess extends GenericItemAccess implements DoubleItemAccess {
+final class ChestItemAccess extends GenericItemAccess implements DoubleItemAccess {
     @SuppressWarnings("UnstableApiUsage")
     private Storage<ItemVariant> cache;
 

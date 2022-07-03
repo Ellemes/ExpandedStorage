@@ -9,7 +9,7 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-public class GenericItemAccess implements ItemAccess {
+class GenericItemAccess implements ItemAccess {
     private final OpenableBlockEntity entity;
     @SuppressWarnings("UnstableApiUsage")
     private InventoryStorage storage = null;
