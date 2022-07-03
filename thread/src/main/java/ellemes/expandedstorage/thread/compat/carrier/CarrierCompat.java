@@ -1,4 +1,4 @@
-package ellemes.expandedstorage.quilt.compat.carrier;
+package ellemes.expandedstorage.thread.compat.carrier;
 
 import ellemes.expandedstorage.block.AbstractChestBlock;
 import ellemes.expandedstorage.block.ChestBlock;

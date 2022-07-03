@@ -1,4 +1,4 @@
-package ellemes.expandedstorage.quilt.compat.htm;
+package ellemes.expandedstorage.thread.compat.htm;
 
 import com.github.fabricservertools.htm.HTMContainerLock;
 import com.github.fabricservertools.htm.api.LockableObject;

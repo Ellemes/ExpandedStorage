@@ -1,4 +1,4 @@
-package ellemes.expandedstorage.fabric.compat.carrier;
+package ellemes.expandedstorage.thread.compat.carrier;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;

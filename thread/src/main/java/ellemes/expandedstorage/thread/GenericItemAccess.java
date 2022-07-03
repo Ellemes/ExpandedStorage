@@ -1,4 +1,4 @@
-package ellemes.expandedstorage.quilt;
+package ellemes.expandedstorage.thread;
 
 import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
 import ellemes.expandedstorage.block.strategies.ItemAccess;

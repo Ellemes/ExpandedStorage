@@ -3,7 +3,7 @@ package ellemes.expandedstorage.mixin;
 import com.github.fabricservertools.htm.HTMContainerLock;
 import com.github.fabricservertools.htm.api.LockableChestBlock;
 import ellemes.expandedstorage.block.AbstractChestBlock;
-import ellemes.expandedstorage.quilt.compat.htm.HTMChestProperties;
+import ellemes.expandedstorage.thread.compat.htm.HTMChestProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
