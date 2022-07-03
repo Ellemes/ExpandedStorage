@@ -66,6 +66,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -727,7 +728,7 @@ public final class Common {
                 return InteractionResult.FAIL;
             });
         }
-
+        Consumer
         contentRegistrationConsumer.accept(stats, baseItems,
                 chestBlocks, chestItems, Common.chestBlockEntityType,
                 oldChestBlocks, oldChestItems, Common.oldChestBlockEntityType,

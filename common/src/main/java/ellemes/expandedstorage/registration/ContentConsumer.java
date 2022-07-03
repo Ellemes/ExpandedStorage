@@ -22,4 +22,14 @@ public interface ContentConsumer {
                 List<NamedValue<BarrelBlock>> barrelBlocks, List<NamedValue<BlockItem>> barrelItems, NamedValue<BlockEntityType<BarrelBlockEntity>> barrelBlockEntityType,
                 List<NamedValue<MiniChestBlock>> miniChestBlocks, List<NamedValue<BlockItem>> miniChestItems, NamedValue<BlockEntityType<MiniChestBlockEntity>> miniChestBlockEntityType
     );
+
+    default ContentConsumer andThen(ContentConsumer after) {
+        return (stats, baseContent, chestBlocks, chestItems, chestBlockEntityType, oldChestBlocks, oldChestItems, oldChestBlockEntityType, barrelBlocks, barrelItems, barrelBlockEntityType, miniChestBlocks, miniChestItems, miniChestBlockEntityType) -> {
+            accept(stats, baseContent, chestBlocks, chestItems, chestBlockEntityType, oldChestBlocks, oldChestItems, oldChestBlockEntityType, barrelBlocks, barrelItems, barrelBlockEntityType, miniChestBlocks, miniChestItems, miniChestBlockEntityType);
+            after.accept(stats, baseContent, chestBlocks, chestItems, chestBlockEntityType, oldChestBlocks, oldChestItems, oldChestBlockEntityType, barrelBlocks, barrelItems, barrelBlockEntityType, miniChestBlocks, miniChestItems, miniChestBlockEntityType);
+        };
+    }
+    default ContentConsumer andThenIf(boolean condition, ContentConsumer after) {
+        return condition ? andThen(after) : this;
+    }
 }

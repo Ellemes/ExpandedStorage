@@ -1,22 +1,19 @@
 package ellemes.expandedstorage.quilt;
 
-import ellemes.expandedstorage.Common;
 import ellemes.expandedstorage.TagReloadListener;
 import ellemes.expandedstorage.Utils;
 import ellemes.expandedstorage.block.AbstractChestBlock;
 import ellemes.expandedstorage.block.BarrelBlock;
 import ellemes.expandedstorage.block.ChestBlock;
 import ellemes.expandedstorage.block.MiniChestBlock;
-import ellemes.expandedstorage.block.OpenableBlock;
 import ellemes.expandedstorage.block.entity.BarrelBlockEntity;
 import ellemes.expandedstorage.block.entity.ChestBlockEntity;
 import ellemes.expandedstorage.block.entity.MiniChestBlockEntity;
 import ellemes.expandedstorage.block.entity.OldChestBlockEntity;
+import ellemes.expandedstorage.registration.ContentConsumer;
 import ellemes.expandedstorage.thread.Thread;
-import ellemes.expandedstorage.thread.compat.carrier.CarrierCompat;
 import ellemes.expandedstorage.registration.NamedValue;
 import net.fabricmc.api.EnvType;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -35,13 +32,9 @@ import org.quiltmc.qsl.item.group.api.QuiltItemGroup;
 import org.quiltmc.qsl.resource.loader.api.ResourceLoaderEvents;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public final class Main implements ModInitializer {
-    private boolean isCarrierCompatEnabled = false;
-
     @Override
     public void onInitialize(ModContainer mod) {
         if (!QuiltLoader.isModLoaded("quilt_loader")) {
@@ -49,7 +42,7 @@ public final class Main implements ModInitializer {
             System.exit(0);
             return;
         }
-        isCarrierCompatEnabled = QuiltLoader.getModContainer("carrier").map(it -> {
+        boolean isCarrierCompatEnabled = QuiltLoader.getModContainer("carrier").map(it -> {
             Version carrierVersion = it.metadata().version();
             return carrierVersion.isSemantic() && carrierVersion.semantic().compareTo(Version.of("1.8.0").semantic()) > 0;
         }).orElse(false);
@@ -57,61 +50,22 @@ public final class Main implements ModInitializer {
         CreativeModeTab group = QuiltItemGroup.builder(Utils.id("tab")).icon(() -> new ItemStack(Registry.ITEM.get(Utils.id("netherite_chest")))).build();
         boolean isClient = MinecraftQuiltLoader.getEnvironmentType() == EnvType.CLIENT;
         TagReloadListener tagReloadListener = new TagReloadListener();
-        Thread.constructContent(QuiltLoader.isModLoaded("htm"), group, isClient, tagReloadListener, this::registerContent);
+        Thread.constructContent(QuiltLoader.isModLoaded("htm"), group, isClient, tagReloadListener,
+                ((ContentConsumer) Thread::registerContent)
+                        .andThenIf(isCarrierCompatEnabled, Thread::registerCarrierCompat)
+                        .andThenIf(isClient, Thread::registerClientStuff)
+                        .andThenIf(isClient, this::registerBarrelRenderLayers)
+        );
         ResourceLoaderEvents.END_DATA_PACK_RELOAD.register(((server, resourceManager, error) -> tagReloadListener.postDataReload()));
     }
 
-    private void registerContent(List<ResourceLocation> stats, List<NamedValue<Item>> baseItems,
-                                 List<NamedValue<ChestBlock>> chestBlocks, List<NamedValue<BlockItem>> chestItems, NamedValue<BlockEntityType<ChestBlockEntity>> chestBlockEntityType,
-                                 List<NamedValue<AbstractChestBlock>> oldChestBlocks, List<NamedValue<BlockItem>> oldChestItems, NamedValue<BlockEntityType<OldChestBlockEntity>> oldChestBlockEntityType,
-                                 List<NamedValue<BarrelBlock>> barrelBlocks, List<NamedValue<BlockItem>> barrelItems, NamedValue<BlockEntityType<BarrelBlockEntity>> barrelBlockEntityType,
-                                 List<NamedValue<MiniChestBlock>> miniChestBlocks, List<NamedValue<BlockItem>> miniChestItems, NamedValue<BlockEntityType<MiniChestBlockEntity>> miniChestBlockEntityType) {
-        for (ResourceLocation stat : stats) {
-            Registry.register(Registry.CUSTOM_STAT, stat, stat);
-        }
-
-        List<NamedValue<? extends OpenableBlock>> allBlocks = new ArrayList<>();
-        allBlocks.addAll(chestBlocks);
-        allBlocks.addAll(oldChestBlocks);
-        allBlocks.addAll(barrelBlocks);
-        allBlocks.addAll(miniChestBlocks);
-        Common.iterateNamedList(allBlocks, (name, value) -> {
-            Registry.register(Registry.BLOCK, name, value);
-            Common.registerTieredBlock(value);
-        });
-
-        //noinspection UnstableApiUsage
-        ItemStorage.SIDED.registerForBlocks(Thread::getItemAccess, allBlocks.stream().map(NamedValue::getValue).toArray(OpenableBlock[]::new));
-
-        if (isCarrierCompatEnabled) {
-            for (NamedValue<ChestBlock> block : chestBlocks) {
-                CarrierCompat.registerChestBlock(block.getValue());
-            }
-
-            for (NamedValue<AbstractChestBlock> block : oldChestBlocks) {
-                CarrierCompat.registerOldChestBlock(block.getValue());
-            }
-        }
-
-        List<NamedValue<? extends Item>> allItems = new ArrayList<>();
-        allItems.addAll(baseItems);
-        allItems.addAll(chestItems);
-        allItems.addAll(oldChestItems);
-        allItems.addAll(barrelItems);
-        allItems.addAll(miniChestItems);
-        Common.iterateNamedList(allItems, (name, value) -> Registry.register(Registry.ITEM, name, value));
-
-        Registry.register(Registry.BLOCK_ENTITY_TYPE, chestBlockEntityType.getName(), chestBlockEntityType.getValue());
-        Registry.register(Registry.BLOCK_ENTITY_TYPE, oldChestBlockEntityType.getName(), oldChestBlockEntityType.getValue());
-        Registry.register(Registry.BLOCK_ENTITY_TYPE, barrelBlockEntityType.getName(), barrelBlockEntityType.getValue());
-        Registry.register(Registry.BLOCK_ENTITY_TYPE, miniChestBlockEntityType.getName(), miniChestBlockEntityType.getValue());
-
-        if (MinecraftQuiltLoader.getEnvironmentType() == EnvType.CLIENT) {
-            Thread.Client.registerChestTextures(chestBlocks.stream().map(NamedValue::getName).collect(Collectors.toList()));
-            Thread.Client.registerItemRenderers(chestItems);
-            for (NamedValue<BarrelBlock> block : barrelBlocks) {
-                BlockRenderLayerMap.put(RenderType.cutoutMipped(), block.getValue());
-            }
+    private void registerBarrelRenderLayers(List<ResourceLocation> stats, List<NamedValue<Item>> baseItems,
+                                            List<NamedValue<ChestBlock>> chestBlocks, List<NamedValue<BlockItem>> chestItems, NamedValue<BlockEntityType<ChestBlockEntity>> chestBlockEntityType,
+                                            List<NamedValue<AbstractChestBlock>> oldChestBlocks, List<NamedValue<BlockItem>> oldChestItems, NamedValue<BlockEntityType<OldChestBlockEntity>> oldChestBlockEntityType,
+                                            List<NamedValue<BarrelBlock>> barrelBlocks, List<NamedValue<BlockItem>> barrelItems, NamedValue<BlockEntityType<BarrelBlockEntity>> barrelBlockEntityType,
+                                            List<NamedValue<MiniChestBlock>> miniChestBlocks, List<NamedValue<BlockItem>> miniChestItems, NamedValue<BlockEntityType<MiniChestBlockEntity>> miniChestBlockEntityType) {
+        for (NamedValue<BarrelBlock> block : barrelBlocks) {
+            BlockRenderLayerMap.put(RenderType.cutoutMipped(), block.getValue());
         }
     }
 }
