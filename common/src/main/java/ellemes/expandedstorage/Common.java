@@ -728,7 +728,6 @@ public final class Common {
                 return InteractionResult.FAIL;
             });
         }
-        Consumer
         contentRegistrationConsumer.accept(stats, baseItems,
                 chestBlocks, chestItems, Common.chestBlockEntityType,
                 oldChestBlocks, oldChestItems, Common.oldChestBlockEntityType,
