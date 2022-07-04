@@ -315,10 +315,11 @@ public final class Common {
             ObjectConsumer chestMaker = (id, stat, tier, settings) -> {
                 NamedValue<ChestBlock> block = new NamedValue<>(id, () -> new ChestBlock(tier.getBlockSettings().apply(settings), id, tier.getId(), stat, tier.getSlotCount()));
                 NamedValue<BlockItem> item = new NamedValue<>(id, () -> chestItemMaker.apply(block.getValue(), tier.getItemSettings().apply(new Item.Properties().tab(group))));
-                NamedValue<ChestMinecartItem> minecartItem = new NamedValue<>(new ResourceLocation(id.getNamespace(), id.getPath() + "_minecart"), () -> new ChestMinecartItem(new Item.Properties().tab(group), id, stat));
+                ResourceLocation cartId = new ResourceLocation(id.getNamespace(), id.getPath() + "_minecart");
+                NamedValue<ChestMinecartItem> cartItem = new NamedValue<>(cartId, () -> new ChestMinecartItem(new Item.Properties().tab(group), cartId));
                 chestBlocks.add(block);
                 chestItems.add(item);
-                chestMinecartItems.add(minecartItem);
+                chestMinecartItems.add(cartItem);
             };
 
             chestMaker.apply(Utils.id("wood_chest"), woodStat, woodTier, woodSettings);
