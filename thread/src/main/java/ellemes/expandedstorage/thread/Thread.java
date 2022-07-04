@@ -4,18 +4,15 @@ import ellemes.expandedstorage.Common;
 import ellemes.expandedstorage.TagReloadListener;
 import ellemes.expandedstorage.api.EsChestType;
 import ellemes.expandedstorage.block.AbstractChestBlock;
-import ellemes.expandedstorage.block.BarrelBlock;
 import ellemes.expandedstorage.block.ChestBlock;
-import ellemes.expandedstorage.block.MiniChestBlock;
 import ellemes.expandedstorage.block.OpenableBlock;
-import ellemes.expandedstorage.block.entity.BarrelBlockEntity;
 import ellemes.expandedstorage.block.entity.ChestBlockEntity;
-import ellemes.expandedstorage.block.entity.MiniChestBlockEntity;
 import ellemes.expandedstorage.block.entity.OldChestBlockEntity;
 import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
 import ellemes.expandedstorage.block.misc.BasicLockable;
 import ellemes.expandedstorage.block.misc.DoubleItemAccess;
 import ellemes.expandedstorage.client.ChestBlockEntityRenderer;
+import ellemes.expandedstorage.registration.Content;
 import ellemes.expandedstorage.registration.ContentConsumer;
 import ellemes.expandedstorage.registration.NamedValue;
 import ellemes.expandedstorage.thread.compat.carrier.CarrierCompat;
@@ -36,7 +33,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DoubleBlockCombiner;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -45,7 +41,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -95,63 +90,44 @@ public class Thread {
                 /*Mini Chest*/ BlockItem::new);
     }
 
-    public static void registerContent(List<ResourceLocation> stats, List<NamedValue<Item>> baseItems,
-                                       List<NamedValue<ChestBlock>> chestBlocks, List<NamedValue<BlockItem>> chestItems, NamedValue<BlockEntityType<ChestBlockEntity>> chestBlockEntityType,
-                                       List<NamedValue<AbstractChestBlock>> oldChestBlocks, List<NamedValue<BlockItem>> oldChestItems, NamedValue<BlockEntityType<OldChestBlockEntity>> oldChestBlockEntityType,
-                                       List<NamedValue<BarrelBlock>> barrelBlocks, List<NamedValue<BlockItem>> barrelItems, NamedValue<BlockEntityType<BarrelBlockEntity>> barrelBlockEntityType,
-                                       List<NamedValue<MiniChestBlock>> miniChestBlocks, List<NamedValue<BlockItem>> miniChestItems, NamedValue<BlockEntityType<MiniChestBlockEntity>> miniChestBlockEntityType) {
-        for (ResourceLocation stat : stats) {
+    public static void registerContent(Content content) {
+        for (ResourceLocation stat : content.getStats()) {
             Registry.register(Registry.CUSTOM_STAT, stat, stat);
         }
 
-        List<NamedValue<? extends OpenableBlock>> allBlocks = new ArrayList<>();
-        allBlocks.addAll(chestBlocks);
-        allBlocks.addAll(oldChestBlocks);
-        allBlocks.addAll(barrelBlocks);
-        allBlocks.addAll(miniChestBlocks);
-        Common.iterateNamedList(allBlocks, (name, value) -> {
+        Common.iterateNamedList(content.getBlocks(), (name, value) -> {
             Registry.register(Registry.BLOCK, name, value);
             Common.registerTieredBlock(value);
         });
 
         //noinspection UnstableApiUsage
-        ItemStorage.SIDED.registerForBlocks(Thread::getItemAccess, allBlocks.stream().map(NamedValue::getValue).toArray(OpenableBlock[]::new));
+        ItemStorage.SIDED.registerForBlocks(Thread::getItemAccess, content.getBlocks().stream().map(NamedValue::getValue).toArray(OpenableBlock[]::new));
 
-        List<NamedValue<? extends Item>> allItems = new ArrayList<>();
-        allItems.addAll(baseItems);
-        allItems.addAll(chestItems);
-        allItems.addAll(oldChestItems);
-        allItems.addAll(barrelItems);
-        allItems.addAll(miniChestItems);
-        Common.iterateNamedList(allItems, (name, value) -> Registry.register(Registry.ITEM, name, value));
+        Common.iterateNamedList(content.getItems(), (name, value) -> Registry.register(Registry.ITEM, name, value));
 
-        Registry.register(Registry.BLOCK_ENTITY_TYPE, chestBlockEntityType.getName(), chestBlockEntityType.getValue());
-        Registry.register(Registry.BLOCK_ENTITY_TYPE, oldChestBlockEntityType.getName(), oldChestBlockEntityType.getValue());
-        Registry.register(Registry.BLOCK_ENTITY_TYPE, barrelBlockEntityType.getName(), barrelBlockEntityType.getValue());
-        Registry.register(Registry.BLOCK_ENTITY_TYPE, miniChestBlockEntityType.getName(), miniChestBlockEntityType.getValue());
+        Thread.registerBlockEntity(content.getChestBlockEntityType());
+        Thread.registerBlockEntity(content.getOldChestBlockEntityType());
+        Thread.registerBlockEntity(content.getBarrelBlockEntityType());
+        Thread.registerBlockEntity(content.getMiniChestBlockEntityType());
     }
 
-    public static void registerCarrierCompat(List<ResourceLocation> stats, List<NamedValue<Item>> baseItems,
-                                             List<NamedValue<ChestBlock>> chestBlocks, List<NamedValue<BlockItem>> chestItems, NamedValue<BlockEntityType<ChestBlockEntity>> chestBlockEntityType,
-                                             List<NamedValue<AbstractChestBlock>> oldChestBlocks, List<NamedValue<BlockItem>> oldChestItems, NamedValue<BlockEntityType<OldChestBlockEntity>> oldChestBlockEntityType,
-                                             List<NamedValue<BarrelBlock>> barrelBlocks, List<NamedValue<BlockItem>> barrelItems, NamedValue<BlockEntityType<BarrelBlockEntity>> barrelBlockEntityType,
-                                             List<NamedValue<MiniChestBlock>> miniChestBlocks, List<NamedValue<BlockItem>> miniChestItems, NamedValue<BlockEntityType<MiniChestBlockEntity>> miniChestBlockEntityType) {
-        for (NamedValue<ChestBlock> block : chestBlocks) {
+    private static <T extends BlockEntity> void registerBlockEntity(NamedValue<BlockEntityType<T>> blockEntityType) {
+        Registry.register(Registry.BLOCK_ENTITY_TYPE, blockEntityType.getName(), blockEntityType.getValue());
+    }
+
+    public static void registerCarrierCompat(Content content) {
+        for (NamedValue<ChestBlock> block : content.getChestBlocks()) {
             CarrierCompat.registerChestBlock(block.getValue());
         }
 
-        for (NamedValue<AbstractChestBlock> block : oldChestBlocks) {
+        for (NamedValue<AbstractChestBlock> block : content.getOldChestBlocks()) {
             CarrierCompat.registerOldChestBlock(block.getValue());
         }
     }
 
-    public static void registerClientStuff(List<ResourceLocation> stats, List<NamedValue<Item>> baseItems,
-                                           List<NamedValue<ChestBlock>> chestBlocks, List<NamedValue<BlockItem>> chestItems, NamedValue<BlockEntityType<ChestBlockEntity>> chestBlockEntityType,
-                                           List<NamedValue<AbstractChestBlock>> oldChestBlocks, List<NamedValue<BlockItem>> oldChestItems, NamedValue<BlockEntityType<OldChestBlockEntity>> oldChestBlockEntityType,
-                                           List<NamedValue<BarrelBlock>> barrelBlocks, List<NamedValue<BlockItem>> barrelItems, NamedValue<BlockEntityType<BarrelBlockEntity>> barrelBlockEntityType,
-                                           List<NamedValue<MiniChestBlock>> miniChestBlocks, List<NamedValue<BlockItem>> miniChestItems, NamedValue<BlockEntityType<MiniChestBlockEntity>> miniChestBlockEntityType) {
-        Thread.Client.registerChestTextures(chestBlocks.stream().map(NamedValue::getName).collect(Collectors.toList()));
-        Thread.Client.registerItemRenderers(chestItems);
+    public static void registerClientStuff(Content content) {
+        Thread.Client.registerChestTextures(content.getChestBlocks().stream().map(NamedValue::getName).collect(Collectors.toList()));
+        Thread.Client.registerItemRenderers(content.getChestItems());
     }
 
     public static class Client {

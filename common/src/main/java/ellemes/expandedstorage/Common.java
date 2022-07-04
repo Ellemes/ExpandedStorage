@@ -20,6 +20,7 @@ import ellemes.expandedstorage.item.MutationMode;
 import ellemes.expandedstorage.item.MutatorBehaviour;
 import ellemes.expandedstorage.item.StorageConversionKit;
 import ellemes.expandedstorage.item.StorageMutator;
+import ellemes.expandedstorage.registration.Content;
 import ellemes.expandedstorage.registration.ContentConsumer;
 import ellemes.expandedstorage.registration.NamedValue;
 import ellemes.expandedstorage.registration.ObjectConsumer;
@@ -66,7 +67,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -728,12 +728,27 @@ public final class Common {
                 return InteractionResult.FAIL;
             });
         }
-        contentRegistrationConsumer.accept(stats, baseItems,
-                chestBlocks, chestItems, Common.chestBlockEntityType,
-                oldChestBlocks, oldChestItems, Common.oldChestBlockEntityType,
-                barrelBlocks, barrelItems, Common.barrelBlockEntityType,
-                miniChestBlocks, miniChestItems, Common.miniChestBlockEntityType
-        );
+
+        contentRegistrationConsumer.accept(new Content(
+                stats,
+                baseItems,
+
+                chestBlocks,
+                chestItems,
+                chestBlockEntityType,
+
+                oldChestBlocks,
+                oldChestItems,
+                oldChestBlockEntityType,
+
+                barrelBlocks,
+                barrelItems,
+                barrelBlockEntityType,
+
+                miniChestBlocks,
+                miniChestItems,
+                miniChestBlockEntityType
+        ));
     }
 
     public static <T> void iterateNamedList(List<NamedValue<? extends T>> list, BiConsumer<ResourceLocation, T> consumer) {

@@ -6,17 +6,13 @@ import ellemes.expandedstorage.Utils;
 import ellemes.expandedstorage.api.EsChestType;
 import ellemes.expandedstorage.block.AbstractChestBlock;
 import ellemes.expandedstorage.block.BarrelBlock;
-import ellemes.expandedstorage.block.ChestBlock;
-import ellemes.expandedstorage.block.MiniChestBlock;
-import ellemes.expandedstorage.block.OpenableBlock;
-import ellemes.expandedstorage.block.entity.BarrelBlockEntity;
 import ellemes.expandedstorage.block.entity.ChestBlockEntity;
-import ellemes.expandedstorage.block.entity.MiniChestBlockEntity;
 import ellemes.expandedstorage.block.entity.OldChestBlockEntity;
 import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
 import ellemes.expandedstorage.block.misc.BasicLockable;
 import ellemes.expandedstorage.block.misc.DoubleItemAccess;
 import ellemes.expandedstorage.client.ChestBlockEntityRenderer;
+import ellemes.expandedstorage.registration.Content;
 import ellemes.expandedstorage.registration.NamedValue;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -26,9 +22,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DoubleBlockCombiner;
@@ -56,8 +50,6 @@ import net.minecraftforge.registries.RegisterEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Mod("expandedstorage")
@@ -132,44 +124,28 @@ public final class Main {
         });
     }
 
-    private void registerContent(List<ResourceLocation> stats, List<NamedValue<Item>> baseItems,
-                                 List<NamedValue<ChestBlock>> chestBlocks, List<NamedValue<BlockItem>> chestItems, NamedValue<BlockEntityType<ChestBlockEntity>> chestBlockEntityType,
-                                 List<NamedValue<AbstractChestBlock>> oldChestBlocks, List<NamedValue<BlockItem>> oldChestItems, NamedValue<BlockEntityType<OldChestBlockEntity>> oldChestBlockEntityType,
-                                 List<NamedValue<BarrelBlock>> barrelBlocks, List<NamedValue<BlockItem>> barrelItems, NamedValue<BlockEntityType<BarrelBlockEntity>> barrelBlockEntityType,
-                                 List<NamedValue<MiniChestBlock>> miniChestBlocks, List<NamedValue<BlockItem>> miniChestItems, NamedValue<BlockEntityType<MiniChestBlockEntity>> miniChestBlockEntityType
-    ) {
+    private void registerContent(Content content) {
         modBus.addListener((RegisterEvent event) -> {
             event.register(ForgeRegistries.Keys.STAT_TYPES, helper -> {
-                stats.forEach(it -> Registry.register(Registry.CUSTOM_STAT, it, it));
+                content.getStats().forEach(it -> Registry.register(Registry.CUSTOM_STAT, it, it));
             });
 
             event.register(ForgeRegistries.Keys.BLOCKS, helper -> {
-                List<NamedValue<? extends OpenableBlock>> allBlocks = new ArrayList<>();
-                allBlocks.addAll(chestBlocks);
-                allBlocks.addAll(oldChestBlocks);
-                allBlocks.addAll(barrelBlocks);
-                allBlocks.addAll(miniChestBlocks);
-                Common.iterateNamedList(allBlocks, (name, value) -> {
+                Common.iterateNamedList(content.getBlocks(), (name, value) -> {
                     helper.register(name, value);
                     Common.registerTieredBlock(value);
                 });
             });
 
             event.register(ForgeRegistries.Keys.ITEMS, helper -> {
-                List<NamedValue<? extends Item>> allItems = new ArrayList<>();
-                allItems.addAll(baseItems);
-                allItems.addAll(chestItems);
-                allItems.addAll(oldChestItems);
-                allItems.addAll(barrelItems);
-                allItems.addAll(miniChestItems);
-                Common.iterateNamedList(allItems, helper::register);
+                Common.iterateNamedList(content.getItems(), helper::register);
             });
 
             event.register(ForgeRegistries.Keys.BLOCK_ENTITY_TYPES, helper -> {
-                helper.register(chestBlockEntityType.getName(), chestBlockEntityType.getValue());
-                helper.register(oldChestBlockEntityType.getName(), oldChestBlockEntityType.getValue());
-                helper.register(barrelBlockEntityType.getName(), barrelBlockEntityType.getValue());
-                helper.register(miniChestBlockEntityType.getName(), miniChestBlockEntityType.getValue());
+                Main.registerBlockEntity(helper, content.getChestBlockEntityType());
+                Main.registerBlockEntity(helper, content.getOldChestBlockEntityType());
+                Main.registerBlockEntity(helper, content.getBarrelBlockEntityType());
+                Main.registerBlockEntity(helper, content.getMiniChestBlockEntityType());
             });
         });
 
@@ -178,19 +154,23 @@ public final class Main {
                 if (!event.getAtlas().location().equals(Sheets.CHEST_SHEET)) {
                     return;
                 }
-                for (ResourceLocation texture : Common.getChestTextures(chestBlocks.stream().map(NamedValue::getName).collect(Collectors.toList()))) {
+                for (ResourceLocation texture : Common.getChestTextures(content.getChestBlocks().stream().map(NamedValue::getName).collect(Collectors.toList()))) {
                     event.addSprite(texture);
                 }
             });
 
             modBus.addListener((FMLClientSetupEvent event) -> {
-                for (NamedValue<BarrelBlock> block : barrelBlocks) {
+                for (NamedValue<BarrelBlock> block : content.getBarrelBlocks()) {
                     ItemBlockRenderTypes.setRenderLayer(block.getValue(), RenderType.cutoutMipped());
                 }
             });
 
-            Client.registerEvents(modBus, chestBlockEntityType);
+            Client.registerEvents(modBus, content.getChestBlockEntityType());
         }
+    }
+
+    private static <T extends BlockEntity> void registerBlockEntity(RegisterEvent.RegisterHelper<BlockEntityType<?>> helper, NamedValue<BlockEntityType<T>> blockEntityType) {
+        helper.register(blockEntityType.getName(), blockEntityType.getValue());
     }
 
     private static class Client {
