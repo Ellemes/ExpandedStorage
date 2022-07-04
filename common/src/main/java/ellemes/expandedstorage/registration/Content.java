@@ -9,8 +9,11 @@ import ellemes.expandedstorage.block.entity.BarrelBlockEntity;
 import ellemes.expandedstorage.block.entity.ChestBlockEntity;
 import ellemes.expandedstorage.block.entity.MiniChestBlockEntity;
 import ellemes.expandedstorage.block.entity.OldChestBlockEntity;
+import ellemes.expandedstorage.entity.ChestMinecart;
 import ellemes.expandedstorage.item.ChestMinecartItem;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -24,23 +27,25 @@ public class Content {
 
     private final List<NamedValue<ChestBlock>> chestBlocks;
     private final List<NamedValue<BlockItem>> chestItems;
-//    private final List<NamedValue<ChestMinecartItem>> chestMinecartItems;
+    private final List<NamedValue<EntityType<ChestMinecart>>> chestMinecartEntityTypes;
+    //    private final List<NamedValue<ChestMinecartItem>> chestMinecartItems;
     private final NamedValue<BlockEntityType<ChestBlockEntity>> chestBlockEntityType;
 
     private final List<NamedValue<AbstractChestBlock>> oldChestBlocks;
-//    private final List<NamedValue<BlockItem>> oldChestItems;
+    //    private final List<NamedValue<BlockItem>> oldChestItems;
     private final NamedValue<BlockEntityType<OldChestBlockEntity>> oldChestBlockEntityType;
 
     private final List<NamedValue<BarrelBlock>> barrelBlocks;
-//    private final List<NamedValue<BlockItem>> barrelItems;
+    //    private final List<NamedValue<BlockItem>> barrelItems;
     private final NamedValue<BlockEntityType<BarrelBlockEntity>> barrelBlockEntityType;
 
-//    private final List<NamedValue<MiniChestBlock>> miniChestBlocks;
-//    private final List<NamedValue<BlockItem>> miniChestItems;
+    //    private final List<NamedValue<MiniChestBlock>> miniChestBlocks;
+    //    private final List<NamedValue<BlockItem>> miniChestItems;
     private final NamedValue<BlockEntityType<MiniChestBlockEntity>> miniChestBlockEntityType;
 
     private final List<NamedValue<? extends OpenableBlock>> blocks;
     private final List<NamedValue<? extends Item>> items;
+    private final List<NamedValue<? extends EntityType<? extends Entity>>> entityTypes;
 
     public Content(
             List<ResourceLocation> stats,
@@ -48,6 +53,7 @@ public class Content {
 
             List<NamedValue<ChestBlock>> chestBlocks,
             List<NamedValue<BlockItem>> chestItems,
+            List<NamedValue<EntityType<ChestMinecart>>> chestMinecartEntityTypes,
             List<NamedValue<ChestMinecartItem>> chestMinecartItems,
             NamedValue<BlockEntityType<ChestBlockEntity>> chestBlockEntityType,
 
@@ -68,6 +74,7 @@ public class Content {
 
         this.chestBlocks = chestBlocks;
         this.chestItems = chestItems;
+        this.chestMinecartEntityTypes = chestMinecartEntityTypes;
 //        this.chestMinecartItems = chestMinecartItems;
         this.chestBlockEntityType = chestBlockEntityType;
 
@@ -96,6 +103,9 @@ public class Content {
         items.addAll(oldChestItems);
         items.addAll(barrelItems);
         items.addAll(miniChestItems);
+
+        this.entityTypes = new ArrayList<>();
+        entityTypes.addAll(chestMinecartEntityTypes);
     }
 
     public List<ResourceLocation> getStats() {
@@ -114,7 +124,11 @@ public class Content {
         return chestItems;
     }
 
-//    public List<NamedValue<ChestMinecartItem>> getChestMinecartItems() {
+    public List<NamedValue<EntityType<ChestMinecart>>> getChestMinecartEntityTypes() {
+        return chestMinecartEntityTypes;
+    }
+
+    //    public List<NamedValue<ChestMinecartItem>> getChestMinecartItems() {
 //        return chestMinecartItems;
 //    }
 
@@ -164,5 +178,9 @@ public class Content {
 
     public List<NamedValue<? extends Item>> getItems() {
         return items;
+    }
+
+    public List<NamedValue<? extends EntityType<?>>> getEntityTypes() {
+        return this.entityTypes;
     }
 }

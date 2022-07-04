@@ -105,6 +105,8 @@ public class Thread {
 
         Common.iterateNamedList(content.getItems(), (name, value) -> Registry.register(Registry.ITEM, name, value));
 
+        Common.iterateNamedList(content.getEntityTypes(), (name, value) -> Registry.register(Registry.ENTITY_TYPE, name, value));
+
         Thread.registerBlockEntity(content.getChestBlockEntityType());
         Thread.registerBlockEntity(content.getOldChestBlockEntityType());
         Thread.registerBlockEntity(content.getBarrelBlockEntityType());

@@ -15,6 +15,7 @@ import ellemes.expandedstorage.block.strategies.ItemAccess;
 import ellemes.expandedstorage.block.strategies.Lockable;
 import ellemes.expandedstorage.client.MiniChestScreen;
 import ellemes.expandedstorage.client.TextureCollection;
+import ellemes.expandedstorage.entity.ChestMinecart;
 import ellemes.expandedstorage.item.BlockUpgradeBehaviour;
 import ellemes.expandedstorage.item.ChestMinecartItem;
 import ellemes.expandedstorage.item.MutationMode;
@@ -43,6 +44,8 @@ import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.LockCode;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -293,6 +296,7 @@ public final class Common {
 
         List<NamedValue<ChestBlock>> chestBlocks = new ArrayList<>(6 + 2);
         List<NamedValue<BlockItem>> chestItems = new ArrayList<>(6 + 2);
+        List<NamedValue<EntityType<ChestMinecart>>> chestMinecartEntityTypes = new ArrayList<>(6 + 2);
         List<NamedValue<ChestMinecartItem>> chestMinecartItems = new ArrayList<>(6 + 2);
         /*Chest*/
         {
@@ -317,8 +321,12 @@ public final class Common {
                 NamedValue<BlockItem> item = new NamedValue<>(id, () -> chestItemMaker.apply(block.getValue(), tier.getItemSettings().apply(new Item.Properties().tab(group))));
                 ResourceLocation cartId = new ResourceLocation(id.getNamespace(), id.getPath() + "_minecart");
                 NamedValue<ChestMinecartItem> cartItem = new NamedValue<>(cartId, () -> new ChestMinecartItem(new Item.Properties().tab(group), cartId));
+                NamedValue<EntityType<ChestMinecart>> cartEntityType = new NamedValue<>(cartId, () -> EntityType.Builder.<ChestMinecart>of((type, level) -> {
+                    return new ChestMinecart(type, level, cartItem.getValue());
+                }, MobCategory.MISC).sized(0.98F, 0.7F).clientTrackingRange(8).build(cartId.getPath()));
                 chestBlocks.add(block);
                 chestItems.add(item);
+                chestMinecartEntityTypes.add(cartEntityType);
                 chestMinecartItems.add(cartItem);
             };
 
@@ -740,6 +748,7 @@ public final class Common {
 
                 chestBlocks,
                 chestItems,
+                chestMinecartEntityTypes,
                 chestMinecartItems,
                 chestBlockEntityType,
 
