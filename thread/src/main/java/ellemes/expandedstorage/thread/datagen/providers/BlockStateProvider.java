@@ -34,6 +34,15 @@ public class BlockStateProvider extends FabricModelProvider {
         generator.generateFlatItem(ModItems.DIAMOND_TO_OBSIDIAN_CONVERSION_KIT, ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(ModItems.DIAMOND_TO_NETHERITE_CONVERSION_KIT, ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(ModItems.OBSIDIAN_TO_NETHERITE_CONVERSION_KIT, ModelTemplates.FLAT_ITEM);
+
+        generator.generateFlatItem(ModItems.WOOD_CHEST_MINECART, ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(ModItems.PUMPKIN_CHEST_MINECART, ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(ModItems.PRESENT_MINECART, ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(ModItems.IRON_CHEST_MINECART, ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(ModItems.GOLD_CHEST_MINECART, ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(ModItems.DIAMOND_CHEST_MINECART, ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(ModItems.OBSIDIAN_CHEST_MINECART, ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(ModItems.NETHERITE_CHEST_MINECART, ModelTemplates.FLAT_ITEM);
     }
 
     @Override

@@ -3,6 +3,7 @@ package ellemes.expandedstorage.forge.datagen.providers;
 import ellemes.expandedstorage.Utils;
 import ellemes.expandedstorage.forge.datagen.content.ModItems;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -31,6 +32,15 @@ public final class ItemModelProvider extends net.minecraftforge.client.model.gen
         this.simple(ModItems.DIAMOND_TO_OBSIDIAN_CONVERSION_KIT);
         this.simple(ModItems.DIAMOND_TO_NETHERITE_CONVERSION_KIT);
         this.simple(ModItems.OBSIDIAN_TO_NETHERITE_CONVERSION_KIT);
+
+        this.simple(ModItems.WOOD_CHEST_MINECART);
+        this.simple(ModItems.PUMPKIN_CHEST_MINECART);
+        this.simple(ModItems.PRESENT_MINECART);
+        this.simple(ModItems.IRON_CHEST_MINECART);
+        this.simple(ModItems.GOLD_CHEST_MINECART);
+        this.simple(ModItems.DIAMOND_CHEST_MINECART);
+        this.simple(ModItems.OBSIDIAN_CHEST_MINECART);
+        this.simple(ModItems.NETHERITE_CHEST_MINECART);
 
         //this.chest(ModItems.WOOD_CHEST);
         //this.chest(ModItems.PUMPKIN_CHEST);
