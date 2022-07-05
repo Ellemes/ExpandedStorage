@@ -35,6 +35,11 @@ public class ChestMinecart extends AbstractMinecart implements ExposedInventory 
     }
 
     @Override
+    public ItemStack getPickResult() {
+        return new ItemStack(dropItem);
+    }
+
+    @Override
     public BlockState getDisplayBlockState() {
         return renderBlockState;
     }
