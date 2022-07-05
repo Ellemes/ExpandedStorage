@@ -12,6 +12,7 @@ import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
 import ellemes.expandedstorage.block.misc.BasicLockable;
 import ellemes.expandedstorage.block.misc.DoubleItemAccess;
 import ellemes.expandedstorage.client.ChestBlockEntityRenderer;
+import ellemes.expandedstorage.entity.ChestMinecart;
 import ellemes.expandedstorage.registration.Content;
 import ellemes.expandedstorage.registration.ContentConsumer;
 import ellemes.expandedstorage.registration.NamedValue;
@@ -20,17 +21,21 @@ import ellemes.expandedstorage.thread.compat.htm.HTMLockable;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.entity.MinecartRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.Level;
@@ -130,6 +135,7 @@ public class Thread {
     public static void registerClientStuff(Content content) {
         Thread.Client.registerChestTextures(content.getChestBlocks().stream().map(NamedValue::getName).collect(Collectors.toList()));
         Thread.Client.registerItemRenderers(content.getChestItems());
+        Thread.Client.registerMinecartEntityRenderers(content.getChestMinecartEntityTypes());
     }
 
     public static class Client {
@@ -153,6 +159,12 @@ public class Thread {
             EntityModelLayerRegistry.registerModelLayer(ChestBlockEntityRenderer.BOTTOM_LAYER, ChestBlockEntityRenderer::createBottomBodyLayer);
             EntityModelLayerRegistry.registerModelLayer(ChestBlockEntityRenderer.FRONT_LAYER, ChestBlockEntityRenderer::createFrontBodyLayer);
             EntityModelLayerRegistry.registerModelLayer(ChestBlockEntityRenderer.BACK_LAYER, ChestBlockEntityRenderer::createBackBodyLayer);
+        }
+
+        public static void registerMinecartEntityRenderers(List<NamedValue<EntityType<ChestMinecart>>> chestMinecartEntityTypes) {
+            for (NamedValue<EntityType<ChestMinecart>> type : chestMinecartEntityTypes) {
+                EntityRendererRegistry.register(type.getValue(), context -> new MinecartRenderer(context, ModelLayers.CHEST_MINECART));
+            }
         }
     }
 }
