@@ -6,8 +6,10 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -47,6 +49,14 @@ public class ChestMinecart extends AbstractMinecart implements ExposedInventory 
     @Override
     public InteractionResult interact(Player player, InteractionHand interactionHand) {
         return super.interact(player, interactionHand);
+    }
+
+    @Override
+    public void remove(Entity.RemovalReason reason) {
+        if (!this.level.isClientSide() && reason.shouldDestroy()) {
+            Containers.dropContents(this.level, this, this);
+        }
+        super.remove(reason);
     }
 
     @Override
