@@ -1,12 +1,11 @@
 {
   "required": true,
-  "package": "ellemes.expandedstorage.mixin",
+  "package": "ellemes.expandedstorage.fabric.mixin",
   "plugin": "ellemes.expandedstorage.fabric.MixinPlugin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
     "HTMChestCompat",
     "HTMLockableBlockEntityCompat",
-    "MiniChestHeadEquipment",
     "ToweletteCompat"
   ],
   "client": [],

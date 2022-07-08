@@ -3,7 +3,7 @@
   "depends": {
     "fabricloader": ">=0.14.6",
     "minecraft": "~1.19",
-    "ellemes_container_lib": ">=2.0.0",
+    "ellemes_container_lib": ">=2.0.1",
     "fabric-api-base": ">=0.4.8",
     "fabric-blockrenderlayer-v1": ">=1.1.17",
     "fabric-data-generation-api-v1": ">=5.0.0",
@@ -25,6 +25,7 @@
   "authors": ["Ellemes"],
   "mixins": [
     "expandedstorage-common.mixin.json",
+    "expandedstorage-thread.mixin.json",
     "expandedstorage-fabric.mixin.json"
   ],
   "contact": {

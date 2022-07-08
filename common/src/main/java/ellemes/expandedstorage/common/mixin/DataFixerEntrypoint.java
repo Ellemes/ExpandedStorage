@@ -1,4 +1,4 @@
-package ellemes.expandedstorage.mixin;
+package ellemes.expandedstorage.common.mixin;
 
 import com.mojang.datafixers.DataFixerBuilder;
 import com.mojang.datafixers.schemas.Schema;

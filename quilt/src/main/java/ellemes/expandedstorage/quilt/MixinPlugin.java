@@ -10,9 +10,11 @@ import java.util.Set;
 
 @SuppressWarnings("unused")
 public final class MixinPlugin implements IMixinConfigPlugin {
+    private static final int MIXIN_PACKAGE_LENGTH = "ellemes.expandedstorage.quilt.mixin".length() + 1;
+
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        String className = mixinClassName.substring(30);
+        String className = mixinClassName.substring(MIXIN_PACKAGE_LENGTH);
         return switch (className) {
             case "HTMChestCompat", "HTMLockableBlockEntityCompat" -> QuiltLoader.isModLoaded("htm");
             case "ToweletteCompat" -> QuiltLoader.isModLoaded("towelette");

@@ -1,4 +1,4 @@
-package ellemes.expandedstorage.mixin;
+package ellemes.expandedstorage.common.mixin;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

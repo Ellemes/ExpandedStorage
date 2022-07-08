@@ -1,10 +1,9 @@
 {
   "required": true,
-  "package": "ellemes.expandedstorage.common.mixin",
+  "package": "ellemes.expandedstorage.thread.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-    "BlockEntityIdFix",
-    "DataFixerEntrypoint"
+    "MiniChestHeadEquipment"
   ],
   "injectors": {
     "defaultRequire": 1

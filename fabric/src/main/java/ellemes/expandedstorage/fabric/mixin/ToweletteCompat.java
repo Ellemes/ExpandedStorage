@@ -1,4 +1,4 @@
-package ellemes.expandedstorage.mixin;
+package ellemes.expandedstorage.fabric.mixin;
 
 import ellemes.expandedstorage.block.ChestBlock;
 import ellemes.expandedstorage.block.MiniChestBlock;

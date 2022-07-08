@@ -16,7 +16,7 @@
       },
       {
         "id": "ellemes:ellemes_container_lib",
-        "versions": ">=2.0.0"
+        "versions": ">=2.0.1"
       },
       {
         "id": "minecraft",
@@ -51,6 +51,7 @@
   },
   "mixin": [
     "expandedstorage-common.mixin.json",
+    "expandedstorage-thread.mixin.json",
     "expandedstorage-quilt.mixin.json"
   ]
 }
