@@ -3,7 +3,7 @@
   "depends": {
     "fabricloader": ">=0.14.6",
     "minecraft": "~1.19",
-    "ellemes_container_lib": ">=2.0.0-beta.4",
+    "ellemes_container_lib": ">=2.0.0",
     "fabric-api-base": ">=0.4.8",
     "fabric-blockrenderlayer-v1": ">=1.1.17",
     "fabric-data-generation-api-v1": ">=5.0.0",
@@ -28,8 +28,9 @@
     "expandedstorage-fabric.mixin.json"
   ],
   "contact": {
-    "homepage": "https://www.curseforge.com/minecraft/mc-mods/expanded-storage-fabric/",
-    "issues": "https://github.com/Ellemes/expanded-storage/issues/"
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/expanded-storage/",
+    "issues": "https://github.com/Ellemes/expanded-storage/issues/",
+    "sources": "https://github.com/Ellemes/ExpandedStorage/"
   },
   "icon": "icon.png",
   "id": "expandedstorage",

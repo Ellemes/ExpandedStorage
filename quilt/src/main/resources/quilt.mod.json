@@ -16,7 +16,7 @@
       },
       {
         "id": "ellemes:ellemes_container_lib",
-        "versions": ">=2.0.0-beta.4"
+        "versions": ">=2.0.0"
       },
       {
         "id": "minecraft",
@@ -40,9 +40,9 @@
         "Ellemes": "Owner"
       },
       "contact": {
-        "homepage": "https://modrinth.com/mod/expanded-storage",
-        "issues": "https://github.com/Ellemes/expanded-storage",
-        "sources": "https://github.com/Ellemes/ExpandedStorage"
+        "homepage": "https://www.curseforge.com/minecraft/mc-mods/expanded-storage/",
+        "issues": "https://github.com/Ellemes/expanded-storage/issues/",
+        "sources": "https://github.com/Ellemes/ExpandedStorage/"
       },
       "license": [
       ],

@@ -5,7 +5,6 @@ import ellemes.expandedstorage.TagReloadListener;
 import ellemes.expandedstorage.Utils;
 import ellemes.expandedstorage.api.EsChestType;
 import ellemes.expandedstorage.block.AbstractChestBlock;
-import ellemes.expandedstorage.block.BarrelBlock;
 import ellemes.expandedstorage.block.entity.ChestBlockEntity;
 import ellemes.expandedstorage.block.entity.OldChestBlockEntity;
 import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
@@ -14,8 +13,6 @@ import ellemes.expandedstorage.block.misc.DoubleItemAccess;
 import ellemes.expandedstorage.client.ChestBlockEntityRenderer;
 import ellemes.expandedstorage.registration.Content;
 import ellemes.expandedstorage.registration.NamedValue;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -41,7 +38,6 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -156,12 +152,6 @@ public final class Main {
                 }
                 for (ResourceLocation texture : Common.getChestTextures(content.getChestBlocks().stream().map(NamedValue::getName).collect(Collectors.toList()))) {
                     event.addSprite(texture);
-                }
-            });
-
-            modBus.addListener((FMLClientSetupEvent event) -> {
-                for (NamedValue<BarrelBlock> block : content.getBarrelBlocks()) {
-                    ItemBlockRenderTypes.setRenderLayer(block.getValue(), RenderType.cutoutMipped());
                 }
             });
 

@@ -79,13 +79,3 @@ u.configureCurseForge {
         optionalDependency("towelette")
     })
 }
-
-u.configureModrinth {
-    dependencies {
-        required.project("qsl") // qvIfYCYJ
-        required.project("ellemes-container-library") // KV8SBboh
-        optional.project("htm") // IEPAK5x6
-        // optional.project("carrier") // carrier (not on Modrinth)
-        optional.project("towelette") // bnesqDoc
-    }
-}

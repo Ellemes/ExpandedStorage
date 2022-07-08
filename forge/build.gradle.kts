@@ -46,9 +46,3 @@ u.configureCurseForge {
         requiredDependency("ellemes-container-library")
     })
 }
-
-u.configureModrinth {
-    dependencies {
-        required.project("ellemes-container-library") // KV8SBboh
-    }
-}
