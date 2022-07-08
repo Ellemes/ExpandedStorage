@@ -1,5 +1,7 @@
 package ellemes.expandedstorage.block;
 
+import ellemes.container_library.api.v3.OpenableInventory;
+import ellemes.container_library.api.v3.context.BlockContext;
 import ellemes.expandedstorage.Common;
 import ellemes.expandedstorage.block.entity.BarrelBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -77,5 +79,13 @@ public final class BarrelBlock extends OpenableBlock {
     @SuppressWarnings("deprecation")
     public BlockState mirror(BlockState state, Mirror mirror) {
         return state.rotate(mirror.getRotation(state.getValue(BlockStateProperties.FACING)));
+    }
+
+    @Override
+    public OpenableInventory getOpenableInventory(BlockContext context) {
+        if (context.getWorld().getBlockEntity(context.getBlockPos()) instanceof OpenableInventory inventory) {
+            return inventory;
+        }
+        return null;
     }
 }

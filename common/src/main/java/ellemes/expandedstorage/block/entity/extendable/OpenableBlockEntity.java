@@ -1,6 +1,6 @@
 package ellemes.expandedstorage.block.entity.extendable;
 
-import ellemes.container_library.api.v2.OpenableBlockEntityV2;
+import ellemes.container_library.api.v3.OpenableInventory;
 import ellemes.expandedstorage.block.strategies.ItemAccess;
 import ellemes.expandedstorage.block.strategies.Lockable;
 import net.minecraft.core.BlockPos;
@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class OpenableBlockEntity extends BlockEntity implements OpenableBlockEntityV2 {
+public abstract class OpenableBlockEntity extends BlockEntity implements OpenableInventory {
     private final ResourceLocation blockId;
     private final Component defaultName;
     private ItemAccess itemAccess;

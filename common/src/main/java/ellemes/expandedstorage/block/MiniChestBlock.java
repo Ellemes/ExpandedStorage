@@ -1,14 +1,12 @@
 package ellemes.expandedstorage.block;
 
+import ellemes.container_library.api.v3.OpenableInventory;
+import ellemes.container_library.api.v3.context.BlockContext;
 import ellemes.expandedstorage.Common;
 import ellemes.expandedstorage.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -24,7 +22,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
@@ -106,14 +103,15 @@ public final class MiniChestBlock extends OpenableBlock implements SimpleWaterlo
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if (world.isClientSide()) {
-            return this.ncl_cOpenInventoryNoScreenCheck(pos, hand, hit) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
-        } else {
-            if (player instanceof ServerPlayer serverPlayer) {
-                this.ncl_sOpenInventory(world, state, pos, serverPlayer, Utils.id("mini_chest"));
-            }
-            return InteractionResult.CONSUME;
+    public OpenableInventory getOpenableInventory(BlockContext context) {
+        if (context.getWorld().getBlockEntity(context.getBlockPos()) instanceof OpenableInventory inventory) {
+            return inventory;
         }
+        return null;
+    }
+
+    @Override
+    public ResourceLocation getForcedScreenType() {
+        return Utils.id("mini_chest");
     }
 }

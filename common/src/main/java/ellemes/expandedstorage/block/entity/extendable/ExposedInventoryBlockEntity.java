@@ -6,6 +6,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -39,5 +40,10 @@ public abstract class ExposedInventoryBlockEntity extends OpenableBlockEntity im
     @Override
     public NonNullList<ItemStack> getItems() {
         return items;
+    }
+
+    @Override
+    public Container getInventory() {
+        return this;
     }
 }

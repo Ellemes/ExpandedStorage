@@ -1,6 +1,8 @@
 package ellemes.expandedstorage.block;
 
-import ellemes.container_library.api.v2.OpenableBlockEntityProviderV2;
+import ellemes.container_library.api.v3.OpenableInventoryProvider;
+import ellemes.container_library.api.v3.client.ScreenOpeningApi;
+import ellemes.container_library.api.v3.context.BlockContext;
 import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -20,7 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class OpenableBlock extends Block implements OpenableBlockEntityProviderV2, EntityBlock {
+public abstract class OpenableBlock extends Block implements OpenableInventoryProvider<BlockContext>, EntityBlock {
     private final ResourceLocation blockId;
     private final ResourceLocation blockTier;
     private final ResourceLocation openingStat;
@@ -87,6 +89,10 @@ public abstract class OpenableBlock extends Block implements OpenableBlockEntity
     @Override
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        return this.ncl_onBlockUse(world, state, pos, player, hand, hit);
+        boolean isClient = world.isClientSide();
+        if (isClient) {
+            ScreenOpeningApi.openBlockInventory(pos);
+        }
+        return InteractionResult.sidedSuccess(isClient);
     }
 }

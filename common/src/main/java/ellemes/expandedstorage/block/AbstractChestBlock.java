@@ -1,7 +1,8 @@
 package ellemes.expandedstorage.block;
 
-import ellemes.container_library.api.v2.OpenableBlockEntityV2;
-import ellemes.container_library.api.v2.helpers.OpenableBlockEntitiesV2;
+import ellemes.container_library.api.v3.OpenableInventory;
+import ellemes.container_library.api.v3.context.BlockContext;
+import ellemes.container_library.api.v3.helpers.OpenableInventories;
 import ellemes.expandedstorage.Common;
 import ellemes.expandedstorage.Utils;
 import ellemes.expandedstorage.api.EsChestType;
@@ -238,16 +239,19 @@ public class AbstractChestBlock extends OpenableBlock implements WorldlyContaine
     }
 
     @Override
-    public OpenableBlockEntityV2 getOpenableBlockEntity(Level world, BlockState state, BlockPos pos) {
-        return AbstractChestBlock.createPropertyRetriever(this, state, world, pos, false).get(new Property<OldChestBlockEntity, OpenableBlockEntityV2>() {
+    public OpenableInventory getOpenableInventory(BlockContext context) {
+        Level world = context.getWorld();
+        BlockPos pos = context.getBlockPos();
+        BlockState state = world.getBlockState(pos);
+        return AbstractChestBlock.createPropertyRetriever(this, state, world, pos, false).get(new Property<OldChestBlockEntity, OpenableInventory>() {
             @Override
-            public OpenableBlockEntityV2 get(OldChestBlockEntity first, OldChestBlockEntity second) {
+            public OpenableInventory get(OldChestBlockEntity first, OldChestBlockEntity second) {
                 Component name = first.hasCustomName() ? first.getName() : second.hasCustomName() ? second.getName() : Utils.translation("container.expandedstorage.generic_double", first.getName());
-                return new OpenableBlockEntitiesV2(name, first, second);
+                return OpenableInventories.of(name, first, second);
             }
 
             @Override
-            public OpenableBlockEntityV2 get(OldChestBlockEntity single) {
+            public OpenableInventory get(OldChestBlockEntity single) {
                 return single;
             }
         }).orElse(null);
