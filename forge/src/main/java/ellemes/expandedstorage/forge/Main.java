@@ -32,6 +32,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.ForgeRenderTypes;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterNamedRenderTypesEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -174,8 +175,10 @@ public final class Main {
                 }
             });
 
+            // todo: remove this and replace barrel render type with "forge:cutout_mipped_block"
+            //  not implemented yet, wait for: https://github.com/MinecraftForge/MinecraftForge/pull/8845
             modBus.addListener((RegisterNamedRenderTypesEvent event) -> {
-                event.register("cutout_mipped", RenderType.cutoutMipped(), Sheets.cutoutBlockSheet(), Sheets.cutoutBlockSheet());
+                event.register("cutout_mipped", RenderType.cutoutMipped(), ForgeRenderTypes.ITEM_LAYERED_CUTOUT.get());
             });
 
             modBus.addListener((EntityRenderersEvent.RegisterRenderers event) -> {
