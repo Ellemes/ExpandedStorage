@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "expandedstorage:diamond_chest"
+    },
+    "M": {
+      "item": "minecraft:minecart"
+    }
+  },
+  "pattern": [
+    "C",
+    "M"
+  ],
+  "result": {
+    "item": "expandedstorage:diamond_chest_minecart"
+  }
+}

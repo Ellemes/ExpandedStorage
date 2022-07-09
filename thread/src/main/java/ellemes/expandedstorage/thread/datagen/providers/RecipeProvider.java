@@ -1,6 +1,7 @@
 package ellemes.expandedstorage.thread.datagen.providers;
 
 import ellemes.expandedstorage.Utils;
+import ellemes.expandedstorage.item.ChestMinecartItem;
 import ellemes.expandedstorage.thread.datagen.content.ModItems;
 import ellemes.expandedstorage.thread.datagen.content.ModTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -12,6 +13,7 @@ import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.UpgradeRecipeBuilder;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -52,6 +54,7 @@ public class RecipeProvider extends FabricRecipeProvider {
                 .save(exporter);
         this.offerConversionKitRecipes(exporter);
         this.offerChestRecipes(exporter);
+        this.offerChestMinecartRecipes(exporter);
         this.offerOldChestRecipes(exporter);
         this.offerChestToOldChestRecipes(exporter);
         this.offerOldChestToChestRecipes(exporter);
@@ -200,6 +203,26 @@ public class RecipeProvider extends FabricRecipeProvider {
                 .group(id(ModItems.OBSIDIAN_CHEST))
                 .save(exporter);
         smithingRecipe(ModItems.NETHERITE_CHEST, ModItems.OBSIDIAN_CHEST, ModTags.Items.NETHERITE_INGOTS, Criterions.HAS_PREVIOUS_BLOCK, exporter);
+    }
+
+    private void offerChestMinecartRecipes(Consumer<FinishedRecipe> exporter) {
+        cartRecipe(ModItems.WOOD_CHEST, ModItems.WOOD_CHEST_MINECART, exporter);
+        cartRecipe(ModItems.PUMPKIN_CHEST, ModItems.PUMPKIN_CHEST_MINECART, exporter);
+        cartRecipe(ModItems.PRESENT, ModItems.PRESENT_MINECART, exporter);
+        cartRecipe(ModItems.IRON_CHEST, ModItems.IRON_CHEST_MINECART, exporter);
+        cartRecipe(ModItems.GOLD_CHEST, ModItems.GOLD_CHEST_MINECART, exporter);
+        cartRecipe(ModItems.DIAMOND_CHEST, ModItems.DIAMOND_CHEST_MINECART, exporter);
+        cartRecipe(ModItems.OBSIDIAN_CHEST, ModItems.OBSIDIAN_CHEST_MINECART, exporter);
+        cartRecipe(ModItems.NETHERITE_CHEST, ModItems.NETHERITE_CHEST_MINECART, exporter);
+    }
+
+    private void cartRecipe(BlockItem chest, ChestMinecartItem cart, Consumer<FinishedRecipe> exporter) {
+        shapedRecipe(cart, 1, "has_chest", chest)
+                .pattern("C")
+                .pattern("M")
+                .define('C', chest)
+                .define('M', Items.MINECART)
+                .save(exporter);
     }
 
     private void offerOldChestRecipes(Consumer<FinishedRecipe> exporter) {
