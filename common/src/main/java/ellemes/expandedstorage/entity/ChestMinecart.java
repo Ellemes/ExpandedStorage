@@ -36,7 +36,7 @@ public class ChestMinecart extends AbstractMinecart implements ExposedInventory,
         super(entityType, level);
         this.dropItem = dropItem;
         this.renderBlockState = block.defaultBlockState();
-        this.title = block.getInventoryTitle();
+        this.title = dropItem.getDescription();
         inventory = NonNullList.withSize(block.getSlotCount(), ItemStack.EMPTY);
     }
 
@@ -126,6 +126,6 @@ public class ChestMinecart extends AbstractMinecart implements ExposedInventory,
 
     @Override
     public Component getInventoryTitle() {
-        return title;
+        return this.hasCustomName() ? this.getCustomName() : title;
     }
 }
