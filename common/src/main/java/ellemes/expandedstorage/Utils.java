@@ -2,7 +2,6 @@ package ellemes.expandedstorage;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 
 public final class Utils {
@@ -20,10 +19,5 @@ public final class Utils {
 
     public static ResourceLocation id(String path) {
         return new ResourceLocation(Utils.MOD_ID, path);
-    }
-
-    // todo: delete?
-    public static MutableComponent translation(String key, Object... params) {
-        return Component.translatable(key, params);
     }
 }

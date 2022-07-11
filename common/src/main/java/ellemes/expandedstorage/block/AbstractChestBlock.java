@@ -4,7 +4,6 @@ import ellemes.container_library.api.v3.OpenableInventory;
 import ellemes.container_library.api.v3.context.BlockContext;
 import ellemes.container_library.api.v3.helpers.OpenableInventories;
 import ellemes.expandedstorage.Common;
-import ellemes.expandedstorage.Utils;
 import ellemes.expandedstorage.api.EsChestType;
 import ellemes.expandedstorage.block.entity.OldChestBlockEntity;
 import ellemes.expandedstorage.block.misc.Property;
@@ -246,7 +245,7 @@ public class AbstractChestBlock extends OpenableBlock implements WorldlyContaine
         return AbstractChestBlock.createPropertyRetriever(this, state, world, pos, false).get(new Property<OldChestBlockEntity, OpenableInventory>() {
             @Override
             public OpenableInventory get(OldChestBlockEntity first, OldChestBlockEntity second) {
-                Component name = first.hasCustomName() ? first.getName() : second.hasCustomName() ? second.getName() : Utils.translation("container.expandedstorage.generic_double", first.getName());
+                Component name = first.hasCustomName() ? first.getName() : second.hasCustomName() ? second.getName() : Component.translatable("container.expandedstorage.generic_double", first.getName());
                 return OpenableInventories.of(name, first, second);
             }
 

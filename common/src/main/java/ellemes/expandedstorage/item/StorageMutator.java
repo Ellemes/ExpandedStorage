@@ -97,6 +97,6 @@ public final class StorageMutator extends Item {
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> list, TooltipFlag context) {
         MutationMode mode = StorageMutator.getMode(stack);
         list.add(Component.translatable("tooltip.expandedstorage.storage_mutator.tool_mode", Component.translatable("tooltip.expandedstorage.storage_mutator." + mode)).withStyle(ChatFormatting.GRAY));
-        list.add(Utils.translation("tooltip.expandedstorage.storage_mutator.description_" + mode, Utils.ALT_USE).withStyle(ChatFormatting.GRAY));
+        list.add(Component.translatable("tooltip.expandedstorage.storage_mutator.description_" + mode, Utils.ALT_USE).withStyle(ChatFormatting.GRAY));
     }
 }
