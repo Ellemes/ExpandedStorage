@@ -1,6 +1,7 @@
 package ellemes.expandedstorage.block.entity.extendable;
 
 import ellemes.expandedstorage.block.strategies.Observable;
+import ellemes.expandedstorage.misc.WrappedInventory;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -17,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.stream.IntStream;
 
-public abstract class InventoryBlockEntity extends OpenableBlockEntity {
+public abstract class InventoryBlockEntity extends OpenableBlockEntity implements WrappedInventory {
     private final NonNullList<ItemStack> items;
     private Observable observable = Observable.NOT;
     private final WorldlyContainer inventory = new WorldlyContainer() {
@@ -112,6 +113,7 @@ public abstract class InventoryBlockEntity extends OpenableBlockEntity {
         items = NonNullList.withSize(inventorySize, ItemStack.EMPTY);
     }
 
+    @Override
     public final WorldlyContainer getInventory() {
         return inventory;
     }
