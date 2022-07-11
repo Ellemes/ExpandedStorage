@@ -33,6 +33,7 @@ public final class TagProvider {
                 .add(ModBlocks.WOOD_CHEST)
                 .add(ModBlocks.PUMPKIN_CHEST)
                 .add(ModBlocks.PRESENT)
+                .add(ModBlocks.BAMBOO_CHEST)
                 .add(ModBlocks.OLD_WOOD_CHEST)
                 .add(ModBlocks.VANILLA_WOOD_MINI_CHEST)
                 .add(ModBlocks.WOOD_MINI_CHEST)
@@ -72,6 +73,7 @@ public final class TagProvider {
                 .add(ModBlocks.WOOD_CHEST)
                 .add(ModBlocks.PUMPKIN_CHEST)
                 .add(ModBlocks.PRESENT)
+                .add(ModBlocks.BAMBOO_CHEST)
                 .add(ModBlocks.IRON_CHEST)
                 .add(ModBlocks.GOLD_CHEST)
                 .add(ModBlocks.DIAMOND_CHEST)
@@ -122,7 +124,8 @@ public final class TagProvider {
             this.getOrCreateTagBuilder(ModTags.Blocks.CHEST_CYCLE)
                 .add(ModBlocks.WOOD_CHEST)
                 .add(ModBlocks.PUMPKIN_CHEST)
-                .add(ModBlocks.PRESENT);
+                .add(ModBlocks.PRESENT)
+                .add(ModBlocks.BAMBOO_CHEST);
             this.getOrCreateTagBuilder(ModTags.Blocks.MINI_CHEST_CYCLE)
                 .add(ModBlocks.VANILLA_WOOD_MINI_CHEST)
                 .add(ModBlocks.WOOD_MINI_CHEST)
@@ -182,7 +185,8 @@ public final class TagProvider {
             this.getOrCreateTagBuilder(ModTags.Items.ES_WOODEN_CHESTS)
                 .addTag(ModTags.Items.WOODEN_CHESTS)
                 .add(ModItems.PUMPKIN_CHEST)
-                .add(ModItems.PRESENT);
+                .add(ModItems.PRESENT)
+                .add(ModItems.BAMBOO_CHEST);
             this.getOrCreateTagBuilder(ModTags.Items.WOODEN_BARRELS)
                 .add(Items.BARREL);
             this.getOrCreateTagBuilder(ModTags.Items.GLASS_BLOCKS)

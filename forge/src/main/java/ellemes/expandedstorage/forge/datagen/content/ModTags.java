@@ -21,6 +21,7 @@ public final class ModTags {
 
     public static class Items {
         public static final TagKey<Item> ES_WOODEN_CHESTS = tag(Utils.id("wooden_chests"));
+        public static final TagKey<Item> BAMBOO = tag(new ResourceLocation("forge", "bamboo"));
 
         private static TagKey<Item> tag(ResourceLocation id) {
             return TagKey.create(Registry.ITEM_REGISTRY, id);

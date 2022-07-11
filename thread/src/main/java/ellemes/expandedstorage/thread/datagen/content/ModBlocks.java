@@ -13,6 +13,7 @@ public final class ModBlocks {
     public static final ChestBlock WOOD_CHEST = block(Utils.id("wood_chest"));
     public static final ChestBlock PUMPKIN_CHEST = block(Utils.id("pumpkin_chest"));
     public static final ChestBlock PRESENT = block(Utils.id("present"));
+    public static final ChestBlock BAMBOO_CHEST = block(Utils.id("bamboo_chest"));
     public static final ChestBlock IRON_CHEST = block(Utils.id("iron_chest"));
     public static final ChestBlock GOLD_CHEST = block(Utils.id("gold_chest"));
     public static final ChestBlock DIAMOND_CHEST = block(Utils.id("diamond_chest"));

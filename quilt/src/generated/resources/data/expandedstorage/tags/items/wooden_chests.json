@@ -3,6 +3,7 @@
   "values": [
     "#c:wooden_chests",
     "expandedstorage:pumpkin_chest",
-    "expandedstorage:present"
+    "expandedstorage:present",
+    "expandedstorage:bamboo_chest"
   ]
 }

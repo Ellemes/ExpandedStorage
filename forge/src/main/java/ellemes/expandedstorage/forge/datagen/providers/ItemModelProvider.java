@@ -36,6 +36,7 @@ public final class ItemModelProvider extends net.minecraftforge.client.model.gen
         this.simple(ModItems.WOOD_CHEST_MINECART);
         this.simple(ModItems.PUMPKIN_CHEST_MINECART);
         this.simple(ModItems.PRESENT_MINECART);
+        this.simple(ModItems.BAMBOO_CHEST_MINECART);
         this.simple(ModItems.IRON_CHEST_MINECART);
         this.simple(ModItems.GOLD_CHEST_MINECART);
         this.simple(ModItems.DIAMOND_CHEST_MINECART);

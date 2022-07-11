@@ -169,6 +169,14 @@ public class RecipeProvider extends FabricRecipeProvider {
                 .define('S', Items.SPRUCE_SAPLING)
                 .group(id(ModItems.PRESENT))
                 .save(exporter);
+        shapedRecipe(ModItems.BAMBOO_CHEST, 1, Criterions.HAS_PREVIOUS_BLOCK, ModTags.Items.WOODEN_CHESTS)
+                .pattern("BBB")
+                .pattern("BCB")
+                .pattern("BBB")
+                .define('B', Items.BAMBOO)
+                .define('C', ModTags.Items.WOODEN_CHESTS)
+                .group(id(ModItems.BAMBOO_CHEST))
+                .save(exporter);
         shapedRecipe(ModItems.IRON_CHEST, 1, Criterions.HAS_PREVIOUS_BLOCK, ModTags.Items.ES_WOODEN_CHESTS)
                 .pattern("III")
                 .pattern("IBI")
@@ -209,6 +217,7 @@ public class RecipeProvider extends FabricRecipeProvider {
         cartRecipe(ModItems.WOOD_CHEST, ModItems.WOOD_CHEST_MINECART, exporter);
         cartRecipe(ModItems.PUMPKIN_CHEST, ModItems.PUMPKIN_CHEST_MINECART, exporter);
         cartRecipe(ModItems.PRESENT, ModItems.PRESENT_MINECART, exporter);
+        cartRecipe(ModItems.BAMBOO_CHEST, ModItems.BAMBOO_CHEST_MINECART, exporter);
         cartRecipe(ModItems.IRON_CHEST, ModItems.IRON_CHEST_MINECART, exporter);
         cartRecipe(ModItems.GOLD_CHEST, ModItems.GOLD_CHEST_MINECART, exporter);
         cartRecipe(ModItems.DIAMOND_CHEST, ModItems.DIAMOND_CHEST_MINECART, exporter);

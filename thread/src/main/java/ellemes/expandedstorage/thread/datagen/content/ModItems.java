@@ -29,6 +29,7 @@ public final class ModItems {
     public static final BlockItem WOOD_CHEST = item(Utils.id("wood_chest"));
     public static final BlockItem PUMPKIN_CHEST = item(Utils.id("pumpkin_chest"));
     public static final BlockItem PRESENT = item(Utils.id("present"));
+    public static final BlockItem BAMBOO_CHEST = item(Utils.id("bamboo_chest"));
     public static final BlockItem IRON_CHEST = item(Utils.id("iron_chest"));
     public static final BlockItem GOLD_CHEST = item(Utils.id("gold_chest"));
     public static final BlockItem DIAMOND_CHEST = item(Utils.id("diamond_chest"));
@@ -38,6 +39,7 @@ public final class ModItems {
     public static final ChestMinecartItem WOOD_CHEST_MINECART = item(Utils.id("wood_chest_minecart"));
     public static final ChestMinecartItem PUMPKIN_CHEST_MINECART = item(Utils.id("pumpkin_chest_minecart"));
     public static final ChestMinecartItem PRESENT_MINECART = item(Utils.id("present_minecart"));
+    public static final ChestMinecartItem BAMBOO_CHEST_MINECART = item(Utils.id("bamboo_chest_minecart"));
     public static final ChestMinecartItem IRON_CHEST_MINECART = item(Utils.id("iron_chest_minecart"));
     public static final ChestMinecartItem GOLD_CHEST_MINECART = item(Utils.id("gold_chest_minecart"));
     public static final ChestMinecartItem DIAMOND_CHEST_MINECART = item(Utils.id("diamond_chest_minecart"));

@@ -1,4 +1,4 @@
-// 1.19	2022-07-09T17:01:50.773627	Expanded Storage - Loot Tables
+// 1.19	2022-07-11T21:10:17.8944862	Expanded Storage - Loot Tables
 a5d712f613b5280b2fcda438aece96031f0398a6 data\expandedstorage\loot_tables\blocks\old_diamond_chest.json
 98990c70b789b183e0812ce6b54d6e5115adf1a8 data\expandedstorage\loot_tables\blocks\old_obsidian_chest.json
 bc28347bc38338e059e099bbdc7b37f377825d82 data\expandedstorage\loot_tables\blocks\candy_cane_mini_present_with_sparrow.json
@@ -32,6 +32,7 @@ ace940f6c4f01aefdaf1884aafb63d71fe4000d2 data\expandedstorage\loot_tables\blocks
 fd9f7b2b2215fe12691e42fd2c6d75eb2fb4dc63 data\expandedstorage\loot_tables\blocks\diamond_chest.json
 49f57f44119a75a29901f84aab5d5379cb9c2e72 data\expandedstorage\loot_tables\blocks\green_mini_present_with_sparrow.json
 f82044fe7488d8f8c5c5410903647ffc5379d549 data\expandedstorage\loot_tables\blocks\netherite_chest.json
+c4176ed0f138099354412768e80336d3878de745 data\expandedstorage\loot_tables\blocks\bamboo_chest.json
 addc0f5ab9e39c354146d45f816219890a4b451a data\expandedstorage\loot_tables\blocks\pumpkin_mini_chest.json
 fb8bb1effdb395c56c5a759aba6094a626856c43 data\expandedstorage\loot_tables\blocks\old_netherite_chest.json
 5265df30636b7004bf4d508d0bead8ff22bc783d data\expandedstorage\loot_tables\blocks\old_iron_chest.json

@@ -14,6 +14,7 @@ public final class BlockLootProvider extends BlockLoot {
         this.add(ModBlocks.WOOD_CHEST, BlockLoot::createNameableBlockEntityTable);
         this.add(ModBlocks.PUMPKIN_CHEST, BlockLoot::createNameableBlockEntityTable);
         this.add(ModBlocks.PRESENT, BlockLoot::createNameableBlockEntityTable);
+        this.add(ModBlocks.BAMBOO_CHEST, BlockLoot::createNameableBlockEntityTable);
         this.add(ModBlocks.IRON_CHEST, BlockLoot::createNameableBlockEntityTable);
         this.add(ModBlocks.GOLD_CHEST, BlockLoot::createNameableBlockEntityTable);
         this.add(ModBlocks.DIAMOND_CHEST, BlockLoot::createNameableBlockEntityTable);

@@ -38,6 +38,7 @@ public class BlockStateProvider extends FabricModelProvider {
         generator.generateFlatItem(ModItems.WOOD_CHEST_MINECART, ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(ModItems.PUMPKIN_CHEST_MINECART, ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(ModItems.PRESENT_MINECART, ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(ModItems.BAMBOO_CHEST_MINECART, ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(ModItems.IRON_CHEST_MINECART, ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(ModItems.GOLD_CHEST_MINECART, ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(ModItems.DIAMOND_CHEST_MINECART, ModelTemplates.FLAT_ITEM);

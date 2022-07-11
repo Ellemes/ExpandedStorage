@@ -1,4 +1,4 @@
-// 1.19	2022-07-09T17:01:50.7666509	Expanded Storage - Item Tags
+// 1.19	2022-07-11T21:10:17.8815205	Expanded Storage - Item Tags
 b1030a3d32c63b98b5506740a13d3a545c5f9063 data\c\tags\items\gold_ingots.json
 ef347f6724a4e2743851d8ddf77b8424e340de90 data\c\tags\items\white_dyes.json
 3c51fa2acfb5400ab1b142008f974fb8e55669c4 data\c\tags\items\wooden_barrels.json
@@ -9,4 +9,4 @@ e21225b848494580aaf5fc6ce45b6e9c1f440be0 data\c\tags\items\iron_ingots.json
 627d5d50f067ef65eb6b787f778f574555ed7e4f data\c\tags\items\glass.json
 03d61905c2291410834b794b56d8bf4f2cd73312 data\c\tags\items\diamonds.json
 f9f96ca6d85efa74c5bfc0c7eec728c2772e7428 data\minecraft\tags\items\piglin_loved.json
-b5be661f03f0aa81179e14559ceee42a82ace940 data\expandedstorage\tags\items\wooden_chests.json
+1d06b449befd3d3955cc5e5ddc1813f6f2129546 data\expandedstorage\tags\items\wooden_chests.json

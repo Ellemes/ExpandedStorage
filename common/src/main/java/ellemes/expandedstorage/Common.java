@@ -52,6 +52,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BambooBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoubleBlockCombiner;
 import net.minecraft.world.level.block.Rotation;
@@ -274,7 +275,8 @@ public final class Common {
         final Tier obsidianTier = new Tier(Utils.id("obsidian"), 108, Properties::requiresCorrectToolForDrops, UnaryOperator.identity());
         final Tier netheriteTier = new Tier(Utils.id("netherite"), 135, Properties::requiresCorrectToolForDrops, Item.Properties::fireResistant);
         final Properties woodSettings = Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.5f).sound(SoundType.WOOD);
-        final Properties pumpkinSettings = Properties.of(Material.VEGETABLE, MaterialColor.COLOR_ORANGE).strength(1).sound(SoundType.WOOD);
+        final Properties pumpkinSettings = Properties.of(Material.BAMBOO, MaterialColor.PLANT).strength(1).sound(SoundType.BAMBOO);
+        final Properties bambooSettings = Properties.of(Material.VEGETABLE, MaterialColor.COLOR_ORANGE).strength(1).sound(SoundType.WOOD);
         final Properties ironSettings = Properties.of(Material.METAL, MaterialColor.METAL).strength(5, 6).sound(SoundType.METAL);
         final Properties goldSettings = Properties.of(Material.METAL, MaterialColor.GOLD).strength(3, 6).sound(SoundType.METAL);
         final Properties diamondSettings = Properties.of(Material.METAL, MaterialColor.DIAMOND).strength(5, 6).sound(SoundType.METAL);
@@ -294,15 +296,16 @@ public final class Common {
             Common.defineTierUpgradePath(baseItems, manuallyWrapTooltips, group, woodTier, ironTier, goldTier, diamondTier, obsidianTier, netheriteTier);
         }
 
-        List<NamedValue<ChestBlock>> chestBlocks = new ArrayList<>(6 + 2);
-        List<NamedValue<BlockItem>> chestItems = new ArrayList<>(6 + 2);
-        List<NamedValue<EntityType<ChestMinecart>>> chestMinecartEntityTypes = new ArrayList<>(6 + 2);
-        List<NamedValue<ChestMinecartItem>> chestMinecartItems = new ArrayList<>(6 + 2);
+        List<NamedValue<ChestBlock>> chestBlocks = new ArrayList<>(6 + 3);
+        List<NamedValue<BlockItem>> chestItems = new ArrayList<>(6 + 3);
+        List<NamedValue<EntityType<ChestMinecart>>> chestMinecartEntityTypes = new ArrayList<>(6 + 3);
+        List<NamedValue<ChestMinecartItem>> chestMinecartItems = new ArrayList<>(6 + 3);
         /*Chest*/
         {
             final ResourceLocation woodStat = statMaker.apply("open_wood_chest");
             final ResourceLocation pumpkinStat = statMaker.apply("open_pumpkin_chest");
             final ResourceLocation presentStat = statMaker.apply("open_present");
+            final ResourceLocation bambooStat = statMaker.apply("open_bamboo_chest");
             final ResourceLocation ironStat = statMaker.apply("open_iron_chest");
             final ResourceLocation goldStat = statMaker.apply("open_gold_chest");
             final ResourceLocation diamondStat = statMaker.apply("open_diamond_chest");
@@ -333,6 +336,7 @@ public final class Common {
             chestMaker.apply(Utils.id("wood_chest"), woodStat, woodTier, woodSettings);
             chestMaker.apply(Utils.id("pumpkin_chest"), pumpkinStat, woodTier, pumpkinSettings);
             chestMaker.apply(Utils.id("present"), presentStat, woodTier, presentSettings);
+            chestMaker.apply(Utils.id("bamboo_chest"), bambooStat, woodTier, bambooSettings);
             chestMaker.apply(Utils.id("iron_chest"), ironStat, ironTier, ironSettings);
             chestMaker.apply(Utils.id("gold_chest"), goldStat, goldTier, goldSettings);
             chestMaker.apply(Utils.id("diamond_chest"), diamondStat, diamondTier, diamondSettings);
