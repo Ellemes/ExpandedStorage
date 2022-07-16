@@ -3,31 +3,22 @@ package ellemes.expandedstorage.forge;
 import ellemes.expandedstorage.CommonMain;
 import ellemes.expandedstorage.misc.TagReloadListener;
 import ellemes.expandedstorage.Utils;
-import ellemes.expandedstorage.api.EsChestType;
-import ellemes.expandedstorage.block.AbstractChestBlock;
-import ellemes.expandedstorage.block.entity.OldChestBlockEntity;
 import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
 import ellemes.expandedstorage.block.misc.BasicLockable;
-import ellemes.expandedstorage.block.misc.DoubleItemAccess;
 import ellemes.expandedstorage.forge.block.misc.ChestItemAccess;
 import ellemes.expandedstorage.forge.block.misc.GenericItemAccess;
 import ellemes.expandedstorage.forge.item.ChestBlockItem;
 import ellemes.expandedstorage.forge.item.MiniChestBlockItem;
 import ellemes.expandedstorage.registration.Content;
 import ellemes.expandedstorage.registration.NamedValue;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.DoubleBlockCombiner;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -47,7 +38,6 @@ import org.jetbrains.annotations.Nullable;
 
 @Mod("expandedstorage")
 public final class ForgeMain {
-    private final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 
     public ForgeMain() {
         TagReloadListener tagReloadListener = new TagReloadListener();
@@ -76,38 +66,8 @@ public final class ForgeMain {
                     public <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction side) {
                         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
                             return LazyOptional.of(() -> {
-                                if (entity instanceof OldChestBlockEntity chestBlockEntity) {
-                                    BlockState state = chestBlockEntity.getBlockState();
-                                    DoubleItemAccess access = chestBlockEntity.getItemAccess();
-                                    EsChestType chestType = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
-                                    Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
-                                    if (access.hasCachedAccess() || chestType == EsChestType.SINGLE) {
-                                        //noinspection unchecked
-                                        return (T) access.get();
-                                    }
-                                    Level world = entity.getLevel();
-                                    BlockPos pos = entity.getBlockPos();
-                                    if (world.getBlockEntity(pos.relative(AbstractChestBlock.getDirectionToAttached(chestType, facing))) instanceof OldChestBlockEntity otherEntity) {
-                                        DoubleItemAccess otherAccess = otherEntity.getItemAccess();
-                                        if (otherAccess.hasCachedAccess()) {
-                                            //noinspection unchecked
-                                            return (T) otherAccess.get();
-                                        }
-                                        DoubleItemAccess first, second;
-                                        if (AbstractChestBlock.getBlockType(chestType) == DoubleBlockCombiner.BlockType.FIRST) {
-                                            first = access;
-                                            second = otherAccess;
-                                        } else {
-                                            first = otherAccess;
-                                            second = access;
-                                        }
-                                        first.setOther(second);
-                                        //noinspection unchecked
-                                        return (T) first.get();
-                                    }
-                                }
                                 //noinspection unchecked
-                                return (T) entity.getItemAccess().get();
+                                return (T) CommonMain.getItemAccess(entity.getLevel(), entity.getBlockPos(), entity.getBlockState(), entity).orElseThrow();
                             });
                         }
                         return LazyOptional.empty();
@@ -118,6 +78,7 @@ public final class ForgeMain {
     }
 
     private void registerContent(Content content) {
+        IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         modBus.addListener((RegisterEvent event) -> {
             event.register(ForgeRegistries.Keys.STAT_TYPES, helper -> {
                 content.getStats().forEach(it -> Registry.register(Registry.CUSTOM_STAT, it, it));

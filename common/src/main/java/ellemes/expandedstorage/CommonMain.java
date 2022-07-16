@@ -11,6 +11,7 @@ import ellemes.expandedstorage.block.entity.ChestBlockEntity;
 import ellemes.expandedstorage.block.entity.MiniChestBlockEntity;
 import ellemes.expandedstorage.block.entity.OldChestBlockEntity;
 import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
+import ellemes.expandedstorage.block.misc.DoubleItemAccess;
 import ellemes.expandedstorage.block.strategies.ItemAccess;
 import ellemes.expandedstorage.block.strategies.Lockable;
 import ellemes.expandedstorage.client.MiniChestScreen;
@@ -66,11 +67,13 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -773,5 +776,36 @@ public final class CommonMain {
 
     public static <T> void iterateNamedList(List<NamedValue<? extends T>> list, BiConsumer<ResourceLocation, T> consumer) {
         list.forEach(it -> consumer.accept(it.getName(), it.getValue()));
+    }
+
+    public static Optional<ItemAccess> getItemAccess(Level world, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity) {
+        if (blockEntity instanceof OldChestBlockEntity entity) {
+            DoubleItemAccess access = entity.getItemAccess();
+            EsChestType type = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
+            Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+            if (access.hasCachedAccess() || type == EsChestType.SINGLE) {
+                return Optional.of(access);
+            }
+            if (world.getBlockEntity(pos.relative(AbstractChestBlock.getDirectionToAttached(type, facing))) instanceof OldChestBlockEntity otherEntity) {
+                DoubleItemAccess otherAccess = otherEntity.getItemAccess();
+                if (otherAccess.hasCachedAccess()) {
+                    return Optional.of(otherAccess);
+                }
+                DoubleItemAccess first, second;
+                if (AbstractChestBlock.getBlockType(type) == DoubleBlockCombiner.BlockType.FIRST) {
+                    first = access;
+                    second = otherAccess;
+                } else {
+                    first = otherAccess;
+                    second = access;
+                }
+                first.setOther(second);
+                return Optional.of(first);
+            }
+
+        } else if (blockEntity instanceof OpenableBlockEntity entity) {
+            return Optional.of(entity.getItemAccess());
+        }
+        return Optional.empty();
     }
 }

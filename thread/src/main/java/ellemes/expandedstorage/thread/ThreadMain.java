@@ -2,15 +2,11 @@ package ellemes.expandedstorage.thread;
 
 import ellemes.expandedstorage.CommonMain;
 import ellemes.expandedstorage.misc.TagReloadListener;
-import ellemes.expandedstorage.api.EsChestType;
 import ellemes.expandedstorage.block.AbstractChestBlock;
 import ellemes.expandedstorage.block.ChestBlock;
 import ellemes.expandedstorage.block.OpenableBlock;
 import ellemes.expandedstorage.block.entity.ChestBlockEntity;
-import ellemes.expandedstorage.block.entity.OldChestBlockEntity;
-import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
 import ellemes.expandedstorage.block.misc.BasicLockable;
-import ellemes.expandedstorage.block.misc.DoubleItemAccess;
 import ellemes.expandedstorage.client.ChestBlockEntityRenderer;
 import ellemes.expandedstorage.entity.ChestMinecart;
 import ellemes.expandedstorage.registration.Content;
@@ -41,11 +37,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.DoubleBlockCombiner;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -54,38 +48,8 @@ import java.util.stream.Collectors;
 public class ThreadMain {
     @SuppressWarnings({"UnstableApiUsage"})
     public static Storage<ItemVariant> getItemAccess(Level world, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, @SuppressWarnings("unused") Direction context) {
-        if (blockEntity instanceof OldChestBlockEntity entity) {
-            DoubleItemAccess access = entity.getItemAccess();
-            EsChestType type = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
-            Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
-            if (access.hasCachedAccess() || type == EsChestType.SINGLE) {
-                //noinspection unchecked
-                return (Storage<ItemVariant>) access.get();
-            }
-            if (world.getBlockEntity(pos.relative(AbstractChestBlock.getDirectionToAttached(type, facing))) instanceof OldChestBlockEntity otherEntity) {
-                DoubleItemAccess otherAccess = otherEntity.getItemAccess();
-                if (otherAccess.hasCachedAccess()) {
-                    //noinspection unchecked
-                    return (Storage<ItemVariant>) otherAccess.get();
-                }
-                DoubleItemAccess first, second;
-                if (AbstractChestBlock.getBlockType(type) == DoubleBlockCombiner.BlockType.FIRST) {
-                    first = access;
-                    second = otherAccess;
-                } else {
-                    first = otherAccess;
-                    second = access;
-                }
-                first.setOther(second);
-                //noinspection unchecked
-                return (Storage<ItemVariant>) first.get();
-            }
-
-        } else if (blockEntity instanceof OpenableBlockEntity entity) {
-            //noinspection unchecked
-            return (Storage<ItemVariant>) entity.getItemAccess().get();
-        }
-        return null;
+        //noinspection unchecked
+        return (Storage<ItemVariant>) CommonMain.getItemAccess(world, pos, state, blockEntity).orElse(null);
     }
 
     public static void constructContent(boolean htmPresent, CreativeModeTab group, boolean isClient, TagReloadListener tagReloadListener, ContentConsumer contentRegistrationConsumer) {
