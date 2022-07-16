@@ -1,5 +1,6 @@
 package ellemes.expandedstorage.forge;
 
+import ellemes.container_library.api.v3.client.ScreenOpeningApi;
 import ellemes.container_library.client.gui.PickScreen;
 import ellemes.expandedstorage.Common;
 import ellemes.expandedstorage.client.ChestBlockEntityRenderer;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 public class ForgeClient {
     public static void initialize() {
         ModLoadingContext.get().getActiveContainer().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class,
-                () -> new ConfigScreenHandler.ConfigScreenFactory((client, screen) -> new PickScreen(() -> screen, null))
+                () -> new ConfigScreenHandler.ConfigScreenFactory((client, screen) -> ScreenOpeningApi.createTypeSelectScreen(() -> screen))
         );
     }
 

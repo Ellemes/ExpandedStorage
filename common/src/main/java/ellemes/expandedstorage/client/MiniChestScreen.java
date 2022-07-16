@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import ellemes.container_library.api.client.function.ScreenSize;
 import ellemes.container_library.api.client.gui.AbstractScreen;
 import ellemes.container_library.api.inventory.AbstractHandler;
-import ellemes.container_library.api.v2.client.NCL_ClientApiV2;
+import ellemes.container_library.api.v3.client.ScreenTypeApi;
 import ellemes.expandedstorage.Utils;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.Rect2i;
@@ -32,8 +32,8 @@ public final class MiniChestScreen extends AbstractScreen {
     }
 
     public static void registerScreenType() {
-        NCL_ClientApiV2.registerScreenType(Utils.id("mini_chest"), MiniChestScreen::new);
-        NCL_ClientApiV2.registerDefaultScreenSize(Utils.id("mini_chest"), MiniChestScreen::retrieveScreenSize);
+        ScreenTypeApi.registerScreenType(Utils.id("mini_chest"), MiniChestScreen::new);
+        ScreenTypeApi.registerDefaultScreenSize(Utils.id("mini_chest"), MiniChestScreen::retrieveScreenSize);
     }
 
     private void initializeSlots(Inventory playerInventory) {
