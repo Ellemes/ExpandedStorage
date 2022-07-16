@@ -23,7 +23,8 @@ public abstract class DataFixerEntrypoint {
             method = "addFixers(Lcom/mojang/datafixers/DataFixerBuilder;)V",
             at = @At(value = "INVOKE",
                     target = "Lcom/mojang/datafixers/DataFixerBuilder;addSchema(ILjava/util/function/BiFunction;)Lcom/mojang/datafixers/schemas/Schema;",
-                    ordinal = 131
+                    ordinal = 131,
+                    remap = false
             )
     )
     private static void expandedstorage_register1_17_1Schema(DataFixerBuilder builder, CallbackInfo ci) {
@@ -36,7 +37,8 @@ public abstract class DataFixerEntrypoint {
             at = @At(value = "INVOKE",
                     target = "Lcom/mojang/datafixers/DataFixerBuilder;addFixer(Lcom/mojang/datafixers/DataFix;)V",
                     ordinal = 216,
-                    shift = At.Shift.AFTER
+                    shift = At.Shift.AFTER,
+                    remap = false
             )
     )
     private static void expandedstorage_register1_18_0Schema(DataFixerBuilder builder, CallbackInfo ci) {
