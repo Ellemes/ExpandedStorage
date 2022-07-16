@@ -3,7 +3,7 @@ package ellemes.expandedstorage.block;
 import ellemes.container_library.api.v3.OpenableInventory;
 import ellemes.container_library.api.v3.context.BlockContext;
 import ellemes.container_library.api.v3.helpers.OpenableInventories;
-import ellemes.expandedstorage.Common;
+import ellemes.expandedstorage.CommonMain;
 import ellemes.expandedstorage.api.EsChestType;
 import ellemes.expandedstorage.block.entity.OldChestBlockEntity;
 import ellemes.expandedstorage.block.misc.Property;
@@ -124,12 +124,12 @@ public class AbstractChestBlock extends OpenableBlock implements WorldlyContaine
 
     protected <T extends OldChestBlockEntity> BlockEntityType<T> getBlockEntityType() {
         //noinspection unchecked
-        return (BlockEntityType<T>) Common.getOldChestBlockEntityType();
+        return (BlockEntityType<T>) CommonMain.getOldChestBlockEntityType();
     }
 
     @Override
     public ResourceLocation getBlockType() {
-        return Common.OLD_CHEST_BLOCK_TYPE;
+        return CommonMain.OLD_CHEST_BLOCK_TYPE;
     }
 
     @Override

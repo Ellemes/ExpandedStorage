@@ -1,4 +1,4 @@
-package ellemes.expandedstorage.thread;
+package ellemes.expandedstorage.thread.block.misc;
 
 import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
 import ellemes.expandedstorage.block.strategies.ItemAccess;
@@ -9,7 +9,7 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-class GenericItemAccess implements ItemAccess {
+public class GenericItemAccess implements ItemAccess {
     private final OpenableBlockEntity entity;
     @SuppressWarnings("UnstableApiUsage")
     private InventoryStorage storage = null;

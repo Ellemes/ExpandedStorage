@@ -1,8 +1,7 @@
 package ellemes.expandedstorage.forge;
 
 import ellemes.container_library.api.v3.client.ScreenOpeningApi;
-import ellemes.container_library.client.gui.PickScreen;
-import ellemes.expandedstorage.Common;
+import ellemes.expandedstorage.CommonMain;
 import ellemes.expandedstorage.client.ChestBlockEntityRenderer;
 import ellemes.expandedstorage.entity.ChestMinecart;
 import ellemes.expandedstorage.registration.Content;
@@ -32,7 +31,7 @@ public class ForgeClient {
             if (!event.getAtlas().location().equals(Sheets.CHEST_SHEET)) {
                 return;
             }
-            for (ResourceLocation texture : Common.getChestTextures(content.getChestBlocks().stream().map(NamedValue::getName).collect(Collectors.toList()))) {
+            for (ResourceLocation texture : CommonMain.getChestTextures(content.getChestBlocks().stream().map(NamedValue::getName).collect(Collectors.toList()))) {
                 event.addSprite(texture);
             }
         });

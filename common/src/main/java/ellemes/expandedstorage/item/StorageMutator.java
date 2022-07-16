@@ -1,6 +1,6 @@
 package ellemes.expandedstorage.item;
 
-import ellemes.expandedstorage.Common;
+import ellemes.expandedstorage.CommonMain;
 import ellemes.expandedstorage.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -42,7 +42,7 @@ public final class StorageMutator extends Item {
         Level world = context.getLevel();
         BlockPos pos = context.getClickedPos();
         BlockState state = world.getBlockState(pos);
-        MutatorBehaviour behaviour = Common.getMutatorBehaviour(state.getBlock(), StorageMutator.getMode(stack));
+        MutatorBehaviour behaviour = CommonMain.getMutatorBehaviour(state.getBlock(), StorageMutator.getMode(stack));
         if (behaviour != null) {
             InteractionResult returnValue = behaviour.attempt(context, world, state, pos, stack);
             if (returnValue.shouldSwing()) {

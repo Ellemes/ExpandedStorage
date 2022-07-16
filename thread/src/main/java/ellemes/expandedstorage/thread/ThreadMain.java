@@ -1,7 +1,7 @@
 package ellemes.expandedstorage.thread;
 
-import ellemes.expandedstorage.Common;
-import ellemes.expandedstorage.TagReloadListener;
+import ellemes.expandedstorage.CommonMain;
+import ellemes.expandedstorage.misc.TagReloadListener;
 import ellemes.expandedstorage.api.EsChestType;
 import ellemes.expandedstorage.block.AbstractChestBlock;
 import ellemes.expandedstorage.block.ChestBlock;
@@ -16,6 +16,8 @@ import ellemes.expandedstorage.entity.ChestMinecart;
 import ellemes.expandedstorage.registration.Content;
 import ellemes.expandedstorage.registration.ContentConsumer;
 import ellemes.expandedstorage.registration.NamedValue;
+import ellemes.expandedstorage.thread.block.misc.ChestItemAccess;
+import ellemes.expandedstorage.thread.block.misc.GenericItemAccess;
 import ellemes.expandedstorage.thread.compat.carrier.CarrierCompat;
 import ellemes.expandedstorage.thread.compat.htm.HTMLockable;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
@@ -49,7 +51,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Thread {
+public class ThreadMain {
     @SuppressWarnings({"UnstableApiUsage"})
     public static Storage<ItemVariant> getItemAccess(Level world, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, @SuppressWarnings("unused") Direction context) {
         if (blockEntity instanceof OldChestBlockEntity entity) {
@@ -87,7 +89,7 @@ public class Thread {
     }
 
     public static void constructContent(boolean htmPresent, CreativeModeTab group, boolean isClient, TagReloadListener tagReloadListener, ContentConsumer contentRegistrationConsumer) {
-        Common.constructContent(GenericItemAccess::new, htmPresent ? HTMLockable::new : BasicLockable::new, group, isClient, tagReloadListener, contentRegistrationConsumer,
+        CommonMain.constructContent(GenericItemAccess::new, htmPresent ? HTMLockable::new : BasicLockable::new, group, isClient, tagReloadListener, contentRegistrationConsumer,
                 /*Base*/ true,
                 /*Chest*/ TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "wooden_chests")), BlockItem::new, ChestItemAccess::new,
                 /*Old Chest*/
@@ -100,22 +102,22 @@ public class Thread {
             Registry.register(Registry.CUSTOM_STAT, stat, stat);
         }
 
-        Common.iterateNamedList(content.getBlocks(), (name, value) -> {
+        CommonMain.iterateNamedList(content.getBlocks(), (name, value) -> {
             Registry.register(Registry.BLOCK, name, value);
-            Common.registerTieredBlock(value);
+            CommonMain.registerTieredBlock(value);
         });
 
         //noinspection UnstableApiUsage
-        ItemStorage.SIDED.registerForBlocks(Thread::getItemAccess, content.getBlocks().stream().map(NamedValue::getValue).toArray(OpenableBlock[]::new));
+        ItemStorage.SIDED.registerForBlocks(ThreadMain::getItemAccess, content.getBlocks().stream().map(NamedValue::getValue).toArray(OpenableBlock[]::new));
 
-        Common.iterateNamedList(content.getItems(), (name, value) -> Registry.register(Registry.ITEM, name, value));
+        CommonMain.iterateNamedList(content.getItems(), (name, value) -> Registry.register(Registry.ITEM, name, value));
 
-        Common.iterateNamedList(content.getEntityTypes(), (name, value) -> Registry.register(Registry.ENTITY_TYPE, name, value));
+        CommonMain.iterateNamedList(content.getEntityTypes(), (name, value) -> Registry.register(Registry.ENTITY_TYPE, name, value));
 
-        Thread.registerBlockEntity(content.getChestBlockEntityType());
-        Thread.registerBlockEntity(content.getOldChestBlockEntityType());
-        Thread.registerBlockEntity(content.getBarrelBlockEntityType());
-        Thread.registerBlockEntity(content.getMiniChestBlockEntityType());
+        ThreadMain.registerBlockEntity(content.getChestBlockEntityType());
+        ThreadMain.registerBlockEntity(content.getOldChestBlockEntityType());
+        ThreadMain.registerBlockEntity(content.getBarrelBlockEntityType());
+        ThreadMain.registerBlockEntity(content.getMiniChestBlockEntityType());
     }
 
     private static <T extends BlockEntity> void registerBlockEntity(NamedValue<BlockEntityType<T>> blockEntityType) {
@@ -133,22 +135,22 @@ public class Thread {
     }
 
     public static void registerClientStuff(Content content) {
-        Thread.Client.registerChestTextures(content.getChestBlocks().stream().map(NamedValue::getName).collect(Collectors.toList()));
-        Thread.Client.registerItemRenderers(content.getChestItems());
-        Thread.Client.registerMinecartEntityRenderers(content.getChestMinecartEntityTypes());
+        ThreadMain.Client.registerChestTextures(content.getChestBlocks().stream().map(NamedValue::getName).collect(Collectors.toList()));
+        ThreadMain.Client.registerItemRenderers(content.getChestItems());
+        ThreadMain.Client.registerMinecartEntityRenderers(content.getChestMinecartEntityTypes());
     }
 
     public static class Client {
         public static void registerChestTextures(List<ResourceLocation> blocks) {
             ClientSpriteRegistryCallback.event(Sheets.CHEST_SHEET).register((atlasTexture, registry) -> {
-                for (ResourceLocation texture : Common.getChestTextures(blocks)) registry.register(texture);
+                for (ResourceLocation texture : CommonMain.getChestTextures(blocks)) registry.register(texture);
             });
-            BlockEntityRendererRegistry.register(Common.getChestBlockEntityType(), ChestBlockEntityRenderer::new);
+            BlockEntityRendererRegistry.register(CommonMain.getChestBlockEntityType(), ChestBlockEntityRenderer::new);
         }
 
         public static void registerItemRenderers(List<NamedValue<BlockItem>> items) {
             for (NamedValue<BlockItem> item : items) {
-                ChestBlockEntity renderEntity = Common.getChestBlockEntityType().create(BlockPos.ZERO, item.getValue().getBlock().defaultBlockState());
+                ChestBlockEntity renderEntity = CommonMain.getChestBlockEntityType().create(BlockPos.ZERO, item.getValue().getBlock().defaultBlockState());
                 BuiltinItemRendererRegistry.INSTANCE.register(item.getValue(), (itemStack, transform, stack, source, light, overlay) ->
                         Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(renderEntity, stack, source, light, overlay));
             }

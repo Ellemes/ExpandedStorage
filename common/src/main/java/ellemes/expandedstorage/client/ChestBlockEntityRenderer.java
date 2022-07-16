@@ -3,7 +3,7 @@ package ellemes.expandedstorage.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
-import ellemes.expandedstorage.Common;
+import ellemes.expandedstorage.CommonMain;
 import ellemes.expandedstorage.Utils;
 import ellemes.expandedstorage.api.EsChestType;
 import ellemes.expandedstorage.block.AbstractChestBlock;
@@ -207,7 +207,7 @@ public final class ChestBlockEntityRenderer implements BlockEntityRenderer<Chest
         } else {
             retriever = PropertyRetriever.createDirect(entity);
         }
-        VertexConsumer consumer = new Material(Sheets.CHEST_SHEET, Common.getChestTexture(blockId, chestType)).buffer(provider, RenderType::entityCutout);
+        VertexConsumer consumer = new Material(Sheets.CHEST_SHEET, CommonMain.getChestTexture(blockId, chestType)).buffer(provider, RenderType::entityCutout);
         float lidOpenness = ChestBlockEntityRenderer.getLidOpenness(retriever.get(ChestBlockEntityRenderer.LID_OPENNESS_FUNCTION_GETTER).orElse(f -> 0).get(delta));
         int brightness = retriever.get(ChestBlockEntityRenderer.BRIGHTNESS_PROPERTY).orElse(i -> i).applyAsInt(light);
         if (chestType == EsChestType.SINGLE) {

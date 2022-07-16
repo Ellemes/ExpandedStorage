@@ -1,4 +1,4 @@
-package ellemes.expandedstorage.thread;
+package ellemes.expandedstorage.thread.block.misc;
 
 import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
 import ellemes.expandedstorage.block.misc.DoubleItemAccess;
@@ -8,7 +8,7 @@ import net.fabricmc.fabric.api.transfer.v1.storage.base.CombinedStorage;
 
 import java.util.List;
 
-final class ChestItemAccess extends GenericItemAccess implements DoubleItemAccess {
+public final class ChestItemAccess extends GenericItemAccess implements DoubleItemAccess {
     @SuppressWarnings("UnstableApiUsage")
     private Storage<ItemVariant> cache;
 

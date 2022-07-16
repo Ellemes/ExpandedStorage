@@ -27,6 +27,6 @@ side = "BOTH"
 [[dependencies.expandedstorage]]
 modId = "ellemes_container_lib"
 mandatory = true
-versionRange = "[2.0.0,)"
+versionRange = "[2.1.0-alpha.9,)"
 ordering = "NONE"
 side = "BOTH"

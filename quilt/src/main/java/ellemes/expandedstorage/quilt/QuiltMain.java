@@ -1,12 +1,12 @@
 package ellemes.expandedstorage.quilt;
 
-import ellemes.expandedstorage.TagReloadListener;
+import ellemes.expandedstorage.misc.TagReloadListener;
 import ellemes.expandedstorage.Utils;
 import ellemes.expandedstorage.block.BarrelBlock;
 import ellemes.expandedstorage.registration.Content;
 import ellemes.expandedstorage.registration.ContentConsumer;
 import ellemes.expandedstorage.registration.NamedValue;
-import ellemes.expandedstorage.thread.Thread;
+import ellemes.expandedstorage.thread.ThreadMain;
 import net.fabricmc.api.EnvType;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Registry;
@@ -22,7 +22,7 @@ import org.quiltmc.qsl.item.group.api.QuiltItemGroup;
 import org.quiltmc.qsl.resource.loader.api.ResourceLoaderEvents;
 import org.slf4j.LoggerFactory;
 
-public final class Main implements ModInitializer {
+public final class QuiltMain implements ModInitializer {
     @Override
     public void onInitialize(ModContainer mod) {
         if (!QuiltLoader.isModLoaded("quilt_loader")) {
@@ -38,10 +38,10 @@ public final class Main implements ModInitializer {
         CreativeModeTab group = QuiltItemGroup.builder(Utils.id("tab")).icon(() -> new ItemStack(Registry.ITEM.get(Utils.id("netherite_chest")))).build();
         boolean isClient = MinecraftQuiltLoader.getEnvironmentType() == EnvType.CLIENT;
         TagReloadListener tagReloadListener = new TagReloadListener();
-        Thread.constructContent(QuiltLoader.isModLoaded("htm"), group, isClient, tagReloadListener,
-                ((ContentConsumer) Thread::registerContent)
-                        .andThenIf(isCarrierCompatEnabled, Thread::registerCarrierCompat)
-                        .andThenIf(isClient, Thread::registerClientStuff)
+        ThreadMain.constructContent(QuiltLoader.isModLoaded("htm"), group, isClient, tagReloadListener,
+                ((ContentConsumer) ThreadMain::registerContent)
+                        .andThenIf(isCarrierCompatEnabled, ThreadMain::registerCarrierCompat)
+                        .andThenIf(isClient, ThreadMain::registerClientStuff)
                         .andThenIf(isClient, this::registerBarrelRenderLayers)
         );
         ResourceLoaderEvents.END_DATA_PACK_RELOAD.register(((server, resourceManager, error) -> tagReloadListener.postDataReload()));

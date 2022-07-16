@@ -1,4 +1,4 @@
-package ellemes.expandedstorage.forge;
+package ellemes.expandedstorage.forge.block.misc;
 
 import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
 import ellemes.expandedstorage.block.strategies.ItemAccess;

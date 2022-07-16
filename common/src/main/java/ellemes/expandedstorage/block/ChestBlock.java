@@ -1,6 +1,6 @@
 package ellemes.expandedstorage.block;
 
-import ellemes.expandedstorage.Common;
+import ellemes.expandedstorage.CommonMain;
 import ellemes.expandedstorage.api.EsChestType;
 import ellemes.expandedstorage.block.entity.ChestBlockEntity;
 import ellemes.expandedstorage.block.entity.OldChestBlockEntity;
@@ -96,12 +96,12 @@ public final class ChestBlock extends AbstractChestBlock implements SimpleWaterl
     @Override
     protected <T extends OldChestBlockEntity> BlockEntityType<T> getBlockEntityType() {
         //noinspection unchecked
-        return (BlockEntityType<T>) Common.getChestBlockEntityType();
+        return (BlockEntityType<T>) CommonMain.getChestBlockEntityType();
     }
 
     @Override
     public ResourceLocation getBlockType() {
-        return Common.CHEST_BLOCK_TYPE;
+        return CommonMain.CHEST_BLOCK_TYPE;
     }
 
     @Nullable

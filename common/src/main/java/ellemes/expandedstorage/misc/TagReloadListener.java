@@ -1,5 +1,6 @@
-package ellemes.expandedstorage;
+package ellemes.expandedstorage.misc;
 
+import ellemes.expandedstorage.Utils;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.tags.TagKey;

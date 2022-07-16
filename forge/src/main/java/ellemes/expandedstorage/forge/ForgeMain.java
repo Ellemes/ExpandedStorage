@@ -1,7 +1,7 @@
 package ellemes.expandedstorage.forge;
 
-import ellemes.expandedstorage.Common;
-import ellemes.expandedstorage.TagReloadListener;
+import ellemes.expandedstorage.CommonMain;
+import ellemes.expandedstorage.misc.TagReloadListener;
 import ellemes.expandedstorage.Utils;
 import ellemes.expandedstorage.api.EsChestType;
 import ellemes.expandedstorage.block.AbstractChestBlock;
@@ -9,6 +9,10 @@ import ellemes.expandedstorage.block.entity.OldChestBlockEntity;
 import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
 import ellemes.expandedstorage.block.misc.BasicLockable;
 import ellemes.expandedstorage.block.misc.DoubleItemAccess;
+import ellemes.expandedstorage.forge.block.misc.ChestItemAccess;
+import ellemes.expandedstorage.forge.block.misc.GenericItemAccess;
+import ellemes.expandedstorage.forge.item.ChestBlockItem;
+import ellemes.expandedstorage.forge.item.MiniChestBlockItem;
 import ellemes.expandedstorage.registration.Content;
 import ellemes.expandedstorage.registration.NamedValue;
 import net.minecraft.core.BlockPos;
@@ -48,7 +52,7 @@ public final class ForgeMain {
     public ForgeMain() {
         TagReloadListener tagReloadListener = new TagReloadListener();
 
-        Common.constructContent(GenericItemAccess::new, BasicLockable::new,
+        CommonMain.constructContent(GenericItemAccess::new, BasicLockable::new,
                 new CreativeModeTab(Utils.MOD_ID + ".tab") {
                     @NotNull
                     @Override
@@ -120,14 +124,14 @@ public final class ForgeMain {
             });
 
             event.register(ForgeRegistries.Keys.BLOCKS, helper -> {
-                Common.iterateNamedList(content.getBlocks(), (name, value) -> {
+                CommonMain.iterateNamedList(content.getBlocks(), (name, value) -> {
                     helper.register(name, value);
-                    Common.registerTieredBlock(value);
+                    CommonMain.registerTieredBlock(value);
                 });
             });
 
             event.register(ForgeRegistries.Keys.ITEMS, helper -> {
-                Common.iterateNamedList(content.getItems(), helper::register);
+                CommonMain.iterateNamedList(content.getItems(), helper::register);
             });
 
             event.register(ForgeRegistries.Keys.BLOCK_ENTITY_TYPES, helper -> {
@@ -138,7 +142,7 @@ public final class ForgeMain {
             });
 
             event.register(ForgeRegistries.Keys.ENTITY_TYPES, helper -> {
-                Common.iterateNamedList(content.getEntityTypes(), helper::register);
+                CommonMain.iterateNamedList(content.getEntityTypes(), helper::register);
             });
         });
 

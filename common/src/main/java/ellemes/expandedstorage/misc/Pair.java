@@ -1,4 +1,4 @@
-package ellemes.expandedstorage;
+package ellemes.expandedstorage.misc;
 
 import java.util.Objects;
 
@@ -15,7 +15,7 @@ public final class Pair<F, S> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o instanceof Pair other)
+        if (o instanceof Pair<?, ?> other)
             return first.equals(other.first) && second.equals(other.second);
         return false;
     }

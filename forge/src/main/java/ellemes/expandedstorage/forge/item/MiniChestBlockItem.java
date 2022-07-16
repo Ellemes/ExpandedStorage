@@ -1,4 +1,4 @@
-package ellemes.expandedstorage.forge;
+package ellemes.expandedstorage.forge.item;
 
 import ellemes.expandedstorage.block.MiniChestBlock;
 import net.minecraft.world.entity.EquipmentSlot;

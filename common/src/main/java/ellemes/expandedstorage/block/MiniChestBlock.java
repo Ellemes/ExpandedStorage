@@ -2,7 +2,7 @@ package ellemes.expandedstorage.block;
 
 import ellemes.container_library.api.v3.OpenableInventory;
 import ellemes.container_library.api.v3.context.BlockContext;
-import ellemes.expandedstorage.Common;
+import ellemes.expandedstorage.CommonMain;
 import ellemes.expandedstorage.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -36,7 +36,7 @@ public final class MiniChestBlock extends OpenableBlock implements SimpleWaterlo
 
     @Override
     public ResourceLocation getBlockType() {
-        return Common.MINI_CHEST_BLOCK_TYPE;
+        return CommonMain.MINI_CHEST_BLOCK_TYPE;
     }
 
     @Override
@@ -75,7 +75,7 @@ public final class MiniChestBlock extends OpenableBlock implements SimpleWaterlo
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return Common.getMiniChestBlockEntityType().create(pos, state);
+        return CommonMain.getMiniChestBlockEntityType().create(pos, state);
     }
 
     @Override

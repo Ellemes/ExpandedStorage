@@ -1,6 +1,6 @@
 package ellemes.expandedstorage.item;
 
-import ellemes.expandedstorage.Common;
+import ellemes.expandedstorage.CommonMain;
 import ellemes.expandedstorage.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -43,7 +43,7 @@ public final class StorageConversionKit extends Item {
         if (player != null) {
             if (player.isShiftKeyDown()) {
                 Block block = world.getBlockState(context.getClickedPos()).getBlock();
-                BlockUpgradeBehaviour behaviour = Common.getBlockUpgradeBehaviour(block);
+                BlockUpgradeBehaviour behaviour = CommonMain.getBlockUpgradeBehaviour(block);
                 if (behaviour != null) {
                     if (world.isClientSide()) {
                         return InteractionResult.CONSUME;

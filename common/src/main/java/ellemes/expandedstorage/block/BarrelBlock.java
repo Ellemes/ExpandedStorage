@@ -2,7 +2,7 @@ package ellemes.expandedstorage.block;
 
 import ellemes.container_library.api.v3.OpenableInventory;
 import ellemes.container_library.api.v3.context.BlockContext;
-import ellemes.expandedstorage.Common;
+import ellemes.expandedstorage.CommonMain;
 import ellemes.expandedstorage.block.entity.BarrelBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,7 +29,7 @@ public final class BarrelBlock extends OpenableBlock {
 
     @Override
     public ResourceLocation getBlockType() {
-        return Common.BARREL_BLOCK_TYPE;
+        return CommonMain.BARREL_BLOCK_TYPE;
     }
 
     @Nullable
@@ -46,7 +46,7 @@ public final class BarrelBlock extends OpenableBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return Common.getBarrelBlockEntityType().create(pos, state);
+        return CommonMain.getBarrelBlockEntityType().create(pos, state);
     }
 
     @Override

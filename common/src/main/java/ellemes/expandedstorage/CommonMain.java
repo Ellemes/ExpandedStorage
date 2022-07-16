@@ -22,6 +22,8 @@ import ellemes.expandedstorage.item.MutationMode;
 import ellemes.expandedstorage.item.MutatorBehaviour;
 import ellemes.expandedstorage.item.StorageConversionKit;
 import ellemes.expandedstorage.item.StorageMutator;
+import ellemes.expandedstorage.misc.Pair;
+import ellemes.expandedstorage.misc.TagReloadListener;
 import ellemes.expandedstorage.registration.Content;
 import ellemes.expandedstorage.registration.ContentConsumer;
 import ellemes.expandedstorage.registration.NamedValue;
@@ -52,7 +54,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BambooBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoubleBlockCombiner;
 import net.minecraft.world.level.block.Rotation;
@@ -77,7 +78,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
-public final class Common {
+public final class CommonMain {
     public static final ResourceLocation BARREL_BLOCK_TYPE = Utils.id("barrel");
     public static final ResourceLocation CHEST_BLOCK_TYPE = Utils.id("chest");
     public static final ResourceLocation OLD_CHEST_BLOCK_TYPE = Utils.id("old_chest");
@@ -117,7 +118,7 @@ public final class Common {
         int index = 0;
         for (ResourceLocation blockId : blocks) {
             for (EsChestType type : EsChestType.values()) {
-                textures[index++] = Common.getChestTexture(blockId, type);
+                textures[index++] = CommonMain.getChestTexture(blockId, type);
             }
         }
         return textures;
@@ -126,7 +127,7 @@ public final class Common {
     private static boolean upgradeSingleBlockToChest(Level world, BlockState state, BlockPos pos, ResourceLocation from, ResourceLocation to) {
         Block block = state.getBlock();
         boolean isExpandedStorageChest = block instanceof ChestBlock;
-        int inventorySize = !isExpandedStorageChest ? Utils.WOOD_STACK_COUNT : Common.getTieredBlock(Common.CHEST_BLOCK_TYPE, ((OpenableBlock) block).getBlockTier()).getSlotCount();
+        int inventorySize = !isExpandedStorageChest ? Utils.WOOD_STACK_COUNT : CommonMain.getTieredBlock(CommonMain.CHEST_BLOCK_TYPE, ((OpenableBlock) block).getBlockTier()).getSlotCount();
         if (isExpandedStorageChest && ((OpenableBlock) block).getBlockTier() == from || !isExpandedStorageChest && from == Utils.WOOD_TIER_ID) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             //noinspection ConstantConditions
@@ -141,7 +142,7 @@ public final class Common {
                 }
             }
             if (verifiedSize) {
-                ChestBlock toBlock = (ChestBlock) Common.getTieredBlock(Common.CHEST_BLOCK_TYPE, to);
+                ChestBlock toBlock = (ChestBlock) CommonMain.getTieredBlock(CommonMain.CHEST_BLOCK_TYPE, to);
                 NonNullList<ItemStack> inventory = NonNullList.withSize(toBlock.getSlotCount(), ItemStack.EMPTY);
                 LockCode code = LockCode.fromTag(tag);
                 ContainerHelper.loadAllItems(tag, inventory);
@@ -174,7 +175,7 @@ public final class Common {
 
     private static boolean upgradeSingleBlockToOldChest(Level world, BlockState state, BlockPos pos, ResourceLocation from, ResourceLocation to) {
         if (((OpenableBlock) state.getBlock()).getBlockTier() == from) {
-            AbstractChestBlock toBlock = (AbstractChestBlock) Common.getTieredBlock(Common.OLD_CHEST_BLOCK_TYPE, to);
+            AbstractChestBlock toBlock = (AbstractChestBlock) CommonMain.getTieredBlock(CommonMain.OLD_CHEST_BLOCK_TYPE, to);
             NonNullList<ItemStack> inventory = NonNullList.withSize(toBlock.getSlotCount(), ItemStack.EMPTY);
             BlockEntity blockEntity = world.getBlockEntity(pos);
             //noinspection ConstantConditions
@@ -214,44 +215,44 @@ public final class Common {
     }
 
     public static BlockUpgradeBehaviour getBlockUpgradeBehaviour(Block block) {
-        for (Map.Entry<Predicate<Block>, BlockUpgradeBehaviour> entry : Common.BLOCK_UPGRADE_BEHAVIOURS.entrySet()) {
+        for (Map.Entry<Predicate<Block>, BlockUpgradeBehaviour> entry : CommonMain.BLOCK_UPGRADE_BEHAVIOURS.entrySet()) {
             if (entry.getKey().test(block)) return entry.getValue();
         }
         return null;
     }
 
     private static void defineBlockUpgradeBehaviour(Predicate<Block> target, BlockUpgradeBehaviour behaviour) {
-        Common.BLOCK_UPGRADE_BEHAVIOURS.put(target, behaviour);
+        CommonMain.BLOCK_UPGRADE_BEHAVIOURS.put(target, behaviour);
     }
 
     public static void registerTieredBlock(OpenableBlock block) {
-        Common.BLOCKS.putIfAbsent(new Pair<>(block.getBlockType(), block.getBlockTier()), block);
+        CommonMain.BLOCKS.putIfAbsent(new Pair<>(block.getBlockType(), block.getBlockTier()), block);
     }
 
     public static OpenableBlock getTieredBlock(ResourceLocation blockType, ResourceLocation tier) {
-        return Common.BLOCKS.get(new Pair<>(blockType, tier));
+        return CommonMain.BLOCKS.get(new Pair<>(blockType, tier));
     }
 
     public static void declareChestTextures(ResourceLocation block, ResourceLocation singleTexture, ResourceLocation leftTexture, ResourceLocation rightTexture, ResourceLocation topTexture, ResourceLocation bottomTexture, ResourceLocation frontTexture, ResourceLocation backTexture) {
-        if (!Common.CHEST_TEXTURES.containsKey(block)) {
+        if (!CommonMain.CHEST_TEXTURES.containsKey(block)) {
             TextureCollection collection = new TextureCollection(singleTexture, leftTexture, rightTexture, topTexture, bottomTexture, frontTexture, backTexture);
-            Common.CHEST_TEXTURES.put(block, collection);
+            CommonMain.CHEST_TEXTURES.put(block, collection);
         } else {
             throw new IllegalArgumentException("Tried registering chest textures for \"" + block + "\" which already has textures.");
         }
     }
 
     public static ResourceLocation getChestTexture(ResourceLocation block, EsChestType chestType) {
-        if (Common.CHEST_TEXTURES.containsKey(block)) return Common.CHEST_TEXTURES.get(block).getTexture(chestType);
+        if (CommonMain.CHEST_TEXTURES.containsKey(block)) return CommonMain.CHEST_TEXTURES.get(block).getTexture(chestType);
         return MissingTextureAtlasSprite.getLocation();
     }
 
     private static void registerMutationBehaviour(Predicate<Block> predicate, MutationMode mode, MutatorBehaviour behaviour) {
-        Common.MUTATOR_BEHAVIOURS.put(new Pair<>(predicate, mode), behaviour);
+        CommonMain.MUTATOR_BEHAVIOURS.put(new Pair<>(predicate, mode), behaviour);
     }
 
     public static MutatorBehaviour getMutatorBehaviour(Block block, MutationMode mode) {
-        for (Map.Entry<Pair<Predicate<Block>, MutationMode>, MutatorBehaviour> entry : Common.MUTATOR_BEHAVIOURS.entrySet()) {
+        for (Map.Entry<Pair<Predicate<Block>, MutationMode>, MutatorBehaviour> entry : CommonMain.MUTATOR_BEHAVIOURS.entrySet()) {
             Pair<Predicate<Block>, MutationMode> pair = entry.getKey();
             if (pair.getSecond() == mode && pair.getFirst().test(block)) return entry.getValue();
         }
@@ -265,8 +266,8 @@ public final class Common {
             /*Old Chest*/
             /*Barrel*/ TagKey<Block> barrelTag,
             /*Mini Chest*/ BiFunction<MiniChestBlock, Item.Properties, BlockItem> miniChestItemMaker) {
-        Common.itemAccess = itemAccess;
-        Common.lockable = lockable;
+        CommonMain.itemAccess = itemAccess;
+        CommonMain.lockable = lockable;
 
         final Tier woodTier = new Tier(Utils.WOOD_TIER_ID, Utils.WOOD_STACK_COUNT, UnaryOperator.identity(), UnaryOperator.identity());
         final Tier ironTier = new Tier(Utils.id("iron"), 54, Properties::requiresCorrectToolForDrops, UnaryOperator.identity());
@@ -293,7 +294,7 @@ public final class Common {
         /*Base*/
         {
             baseItems.add(new NamedValue<>(Utils.id("storage_mutator"), () -> new StorageMutator(new Item.Properties().stacksTo(1).tab(group))));
-            Common.defineTierUpgradePath(baseItems, manuallyWrapTooltips, group, woodTier, ironTier, goldTier, diamondTier, obsidianTier, netheriteTier);
+            CommonMain.defineTierUpgradePath(baseItems, manuallyWrapTooltips, group, woodTier, ironTier, goldTier, diamondTier, obsidianTier, netheriteTier);
         }
 
         List<NamedValue<ChestBlock>> chestBlocks = new ArrayList<>(6 + 3);
@@ -346,7 +347,7 @@ public final class Common {
             if (isClient) {
                 chestBlocks.forEach(block -> {
                     String blockId = block.getName().getPath();
-                    Common.declareChestTextures(block.getName(),
+                    CommonMain.declareChestTextures(block.getName(),
                             Utils.id("entity/" + blockId + "/single"),
                             Utils.id("entity/" + blockId + "/left"),
                             Utils.id("entity/" + blockId + "/right"),
@@ -358,10 +359,10 @@ public final class Common {
                 });
             }
 
-            Common.chestBlockEntityType = new NamedValue<>(Common.CHEST_BLOCK_TYPE, () -> BlockEntityType.Builder.of((pos, state) -> new ChestBlockEntity(Common.getChestBlockEntityType(), pos, state, ((OpenableBlock) state.getBlock()).getBlockId(), chestAccessMaker, Common.lockable), chestBlocks.stream().map(NamedValue::getValue).toArray(ChestBlock[]::new)).build(Util.fetchChoiceType(References.BLOCK_ENTITY, Common.CHEST_BLOCK_TYPE.toString())));
+            CommonMain.chestBlockEntityType = new NamedValue<>(CommonMain.CHEST_BLOCK_TYPE, () -> BlockEntityType.Builder.of((pos, state) -> new ChestBlockEntity(CommonMain.getChestBlockEntityType(), pos, state, ((OpenableBlock) state.getBlock()).getBlockId(), chestAccessMaker, CommonMain.lockable), chestBlocks.stream().map(NamedValue::getValue).toArray(ChestBlock[]::new)).build(Util.fetchChoiceType(References.BLOCK_ENTITY, CommonMain.CHEST_BLOCK_TYPE.toString())));
 
             Predicate<Block> isUpgradableChestBlock = (block) -> block instanceof ChestBlock || block instanceof net.minecraft.world.level.block.ChestBlock || block.defaultBlockState().is(chestTag);
-            Common.defineBlockUpgradeBehaviour(isUpgradableChestBlock, (context, from, to) -> {
+            CommonMain.defineBlockUpgradeBehaviour(isUpgradableChestBlock, (context, from, to) -> {
                 Level world = context.getLevel();
                 BlockPos pos = context.getClickedPos();
                 BlockState state = world.getBlockState(pos);
@@ -371,28 +372,28 @@ public final class Common {
                     EsChestType type = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
                     Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
                     if (AbstractChestBlock.getBlockType(type) == DoubleBlockCombiner.BlockType.SINGLE) {
-                        boolean upgradeSucceeded = Common.upgradeSingleBlockToChest(world, state, pos, from, to);
+                        boolean upgradeSucceeded = CommonMain.upgradeSingleBlockToChest(world, state, pos, from, to);
                         if (upgradeSucceeded) handStack.shrink(1);
                         return upgradeSucceeded;
                     } else if (handStack.getCount() > 1 || (player != null && player.isCreative())) {
                         BlockPos otherPos = pos.relative(AbstractChestBlock.getDirectionToAttached(type, facing));
                         BlockState otherState = world.getBlockState(otherPos);
-                        boolean firstSucceeded = Common.upgradeSingleBlockToChest(world, state, pos, from, to);
-                        boolean secondSucceeded = Common.upgradeSingleBlockToChest(world, otherState, otherPos, from, to);
+                        boolean firstSucceeded = CommonMain.upgradeSingleBlockToChest(world, state, pos, from, to);
+                        boolean secondSucceeded = CommonMain.upgradeSingleBlockToChest(world, otherState, otherPos, from, to);
                         if (firstSucceeded && secondSucceeded) handStack.shrink(2);
                         else if (firstSucceeded || secondSucceeded) handStack.shrink(1);
                         return firstSucceeded || secondSucceeded;
                     }
                 } else {
                     if (net.minecraft.world.level.block.ChestBlock.getBlockType(state) == DoubleBlockCombiner.BlockType.SINGLE) {
-                        boolean upgradeSucceeded = Common.upgradeSingleBlockToChest(world, state, pos, from, to);
+                        boolean upgradeSucceeded = CommonMain.upgradeSingleBlockToChest(world, state, pos, from, to);
                         if (upgradeSucceeded) handStack.shrink(1);
                         return upgradeSucceeded;
                     } else if (handStack.getCount() > 1 || (player != null && player.isCreative())) {
                         BlockPos otherPos = pos.relative(net.minecraft.world.level.block.ChestBlock.getConnectedDirection(state));
                         BlockState otherState = world.getBlockState(otherPos);
-                        boolean firstSucceeded = Common.upgradeSingleBlockToChest(world, state, pos, from, to);
-                        boolean secondSucceeded = Common.upgradeSingleBlockToChest(world, otherState, otherPos, from, to);
+                        boolean firstSucceeded = CommonMain.upgradeSingleBlockToChest(world, state, pos, from, to);
+                        boolean secondSucceeded = CommonMain.upgradeSingleBlockToChest(world, otherState, otherPos, from, to);
                         if (firstSucceeded && secondSucceeded) handStack.shrink(2);
                         else if (firstSucceeded || secondSucceeded) handStack.shrink(1);
                         return firstSucceeded || secondSucceeded;
@@ -402,7 +403,7 @@ public final class Common {
                 return false;
             });
 
-            Common.registerMutationBehaviour(b -> b instanceof ChestBlock, MutationMode.SWAP_THEME, (context, world, state, pos, stack) -> {
+            CommonMain.registerMutationBehaviour(b -> b instanceof ChestBlock, MutationMode.SWAP_THEME, (context, world, state, pos, stack) -> {
                 List<Block> blocks = tagReloadListener.getChestCycleBlocks();
                 int index = blocks.indexOf(state.getBlock());
                 if (index != -1) { // Cannot change style e.g. iron chest, ect.
@@ -450,24 +451,24 @@ public final class Common {
             chestMaker.apply(Utils.id("old_obsidian_chest"), obsidianStat, obsidianTier, obsidianSettings);
             chestMaker.apply(Utils.id("old_netherite_chest"), netheriteStat, netheriteTier, netheriteSettings);
 
-            Common.oldChestBlockEntityType = new NamedValue<>(Common.OLD_CHEST_BLOCK_TYPE, () -> BlockEntityType.Builder.of((pos, state) -> new OldChestBlockEntity(Common.getOldChestBlockEntityType(), pos, state, ((OpenableBlock) state.getBlock()).getBlockId(), chestAccessMaker, Common.lockable), oldChestBlocks.stream().map(NamedValue::getValue).toArray(AbstractChestBlock[]::new)).build(Util.fetchChoiceType(References.BLOCK_ENTITY, Common.OLD_CHEST_BLOCK_TYPE.toString())));
+            CommonMain.oldChestBlockEntityType = new NamedValue<>(CommonMain.OLD_CHEST_BLOCK_TYPE, () -> BlockEntityType.Builder.of((pos, state) -> new OldChestBlockEntity(CommonMain.getOldChestBlockEntityType(), pos, state, ((OpenableBlock) state.getBlock()).getBlockId(), chestAccessMaker, CommonMain.lockable), oldChestBlocks.stream().map(NamedValue::getValue).toArray(AbstractChestBlock[]::new)).build(Util.fetchChoiceType(References.BLOCK_ENTITY, CommonMain.OLD_CHEST_BLOCK_TYPE.toString())));
 
             Predicate<Block> isUpgradableOldChestBlock = (block) -> block.getClass() == AbstractChestBlock.class;
-            Common.defineBlockUpgradeBehaviour(isUpgradableOldChestBlock, (context, from, to) -> {
+            CommonMain.defineBlockUpgradeBehaviour(isUpgradableOldChestBlock, (context, from, to) -> {
                 Level world = context.getLevel();
                 BlockPos pos = context.getClickedPos();
                 BlockState state = world.getBlockState(pos);
                 Player player = context.getPlayer();
                 ItemStack handStack = context.getItemInHand();
                 if (AbstractChestBlock.getBlockType(state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE)) == DoubleBlockCombiner.BlockType.SINGLE) {
-                    boolean upgradeSucceeded = Common.upgradeSingleBlockToOldChest(world, state, pos, from, to);
+                    boolean upgradeSucceeded = CommonMain.upgradeSingleBlockToOldChest(world, state, pos, from, to);
                     if (upgradeSucceeded) handStack.shrink(1);
                     return upgradeSucceeded;
                 } else if (handStack.getCount() > 1 || (player != null && player.isCreative())) {
                     BlockPos otherPos = pos.relative(AbstractChestBlock.getDirectionToAttached(state));
                     BlockState otherState = world.getBlockState(otherPos);
-                    boolean firstSucceeded = Common.upgradeSingleBlockToOldChest(world, state, pos, from, to);
-                    boolean secondSucceeded = Common.upgradeSingleBlockToOldChest(world, otherState, otherPos, from, to);
+                    boolean firstSucceeded = CommonMain.upgradeSingleBlockToOldChest(world, state, pos, from, to);
+                    boolean secondSucceeded = CommonMain.upgradeSingleBlockToOldChest(world, otherState, otherPos, from, to);
                     if (firstSucceeded && secondSucceeded) handStack.shrink(2);
                     else if (firstSucceeded || secondSucceeded) handStack.shrink(1);
                     return firstSucceeded || secondSucceeded;
@@ -479,7 +480,7 @@ public final class Common {
         /*Both Chests*/
         {
             Predicate<Block> isChestBlock = b -> b instanceof AbstractChestBlock;
-            Common.registerMutationBehaviour(isChestBlock, MutationMode.MERGE, (context, world, state, pos, stack) -> {
+            CommonMain.registerMutationBehaviour(isChestBlock, MutationMode.MERGE, (context, world, state, pos, stack) -> {
                 Player player = context.getPlayer();
                 if (state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE) == EsChestType.SINGLE) {
                     CompoundTag tag = stack.getOrCreateTag();
@@ -527,7 +528,7 @@ public final class Common {
                 }
                 return InteractionResult.FAIL;
             });
-            Common.registerMutationBehaviour(isChestBlock, MutationMode.SPLIT, (context, world, state, pos, stack) -> {
+            CommonMain.registerMutationBehaviour(isChestBlock, MutationMode.SPLIT, (context, world, state, pos, stack) -> {
                 if (state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE) != EsChestType.SINGLE) {
                     if (!world.isClientSide()) {
                         world.setBlockAndUpdate(pos, state.setValue(AbstractChestBlock.CURSED_CHEST_TYPE, EsChestType.SINGLE));
@@ -537,7 +538,7 @@ public final class Common {
                 }
                 return InteractionResult.FAIL;
             });
-            Common.registerMutationBehaviour(isChestBlock, MutationMode.ROTATE, (context, world, state, pos, stack) -> {
+            CommonMain.registerMutationBehaviour(isChestBlock, MutationMode.ROTATE, (context, world, state, pos, stack) -> {
                 if (!world.isClientSide()) {
                     EsChestType chestType = state.getValue(AbstractChestBlock.CURSED_CHEST_TYPE);
                     if (chestType == EsChestType.SINGLE) {
@@ -556,7 +557,7 @@ public final class Common {
                 }
                 return InteractionResult.SUCCESS;
             });
-            Common.registerMutationBehaviour(b -> b instanceof ChestBlock, MutationMode.SWAP_THEME, (context, world, state, pos, stack) -> {
+            CommonMain.registerMutationBehaviour(b -> b instanceof ChestBlock, MutationMode.SWAP_THEME, (context, world, state, pos, stack) -> {
                 List<Block> blocks = tagReloadListener.getChestCycleBlocks();
                 int index = blocks.indexOf(state.getBlock());
                 if (index != -1) { // Cannot change style e.g. iron chest, ect.
@@ -609,16 +610,16 @@ public final class Common {
             barrelMaker.apply(Utils.id("obsidian_barrel"), obsidianStat, obsidianTier, obsidianBarrelSettings);
             barrelMaker.apply(Utils.id("netherite_barrel"), netheriteStat, netheriteTier, netheriteBarrelSettings);
 
-            Common.barrelBlockEntityType = new NamedValue<>(Common.BARREL_BLOCK_TYPE, () -> BlockEntityType.Builder.of((pos, state) -> new BarrelBlockEntity(Common.getBarrelBlockEntityType(), pos, state, ((OpenableBlock) state.getBlock()).getBlockId(), Common.itemAccess, Common.lockable), barrelBlocks.stream().map(NamedValue::getValue).toArray(BarrelBlock[]::new)).build(Util.fetchChoiceType(References.BLOCK_ENTITY, Common.BARREL_BLOCK_TYPE.toString())));
+            CommonMain.barrelBlockEntityType = new NamedValue<>(CommonMain.BARREL_BLOCK_TYPE, () -> BlockEntityType.Builder.of((pos, state) -> new BarrelBlockEntity(CommonMain.getBarrelBlockEntityType(), pos, state, ((OpenableBlock) state.getBlock()).getBlockId(), CommonMain.itemAccess, CommonMain.lockable), barrelBlocks.stream().map(NamedValue::getValue).toArray(BarrelBlock[]::new)).build(Util.fetchChoiceType(References.BLOCK_ENTITY, CommonMain.BARREL_BLOCK_TYPE.toString())));
 
             Predicate<Block> isUpgradableBarrelBlock = (block) -> block instanceof BarrelBlock || block instanceof net.minecraft.world.level.block.BarrelBlock || block.defaultBlockState().is(barrelTag);
-            Common.defineBlockUpgradeBehaviour(isUpgradableBarrelBlock, (context, from, to) -> {
+            CommonMain.defineBlockUpgradeBehaviour(isUpgradableBarrelBlock, (context, from, to) -> {
                 Level world = context.getLevel();
                 BlockPos pos = context.getClickedPos();
                 BlockState state = world.getBlockState(pos);
                 Block block = state.getBlock();
                 boolean isExpandedStorageBarrel = block instanceof BarrelBlock;
-                int inventorySize = !isExpandedStorageBarrel ? Utils.WOOD_STACK_COUNT : Common.getTieredBlock(Common.BARREL_BLOCK_TYPE, ((OpenableBlock) block).getBlockTier()).getSlotCount();
+                int inventorySize = !isExpandedStorageBarrel ? Utils.WOOD_STACK_COUNT : CommonMain.getTieredBlock(CommonMain.BARREL_BLOCK_TYPE, ((OpenableBlock) block).getBlockTier()).getSlotCount();
                 if (isExpandedStorageBarrel && ((OpenableBlock) block).getBlockTier() == from || !isExpandedStorageBarrel && from == Utils.WOOD_TIER_ID) {
                     BlockEntity blockEntity = world.getBlockEntity(pos);
                     //noinspection ConstantConditions
@@ -633,7 +634,7 @@ public final class Common {
                         }
                     }
                     if (verifiedSize) {
-                        OpenableBlock toBlock = Common.getTieredBlock(Common.BARREL_BLOCK_TYPE, to);
+                        OpenableBlock toBlock = CommonMain.getTieredBlock(CommonMain.BARREL_BLOCK_TYPE, to);
                         NonNullList<ItemStack> inventory = NonNullList.withSize(toBlock.getSlotCount(), ItemStack.EMPTY);
                         LockCode code = LockCode.fromTag(tag);
                         ContainerHelper.loadAllItems(tag, inventory);
@@ -656,7 +657,7 @@ public final class Common {
                 return false;
             });
 
-            Common.registerMutationBehaviour(isUpgradableBarrelBlock, MutationMode.ROTATE, (context, world, state, pos, stack) -> {
+            CommonMain.registerMutationBehaviour(isUpgradableBarrelBlock, MutationMode.ROTATE, (context, world, state, pos, stack) -> {
                 if (state.hasProperty(BlockStateProperties.FACING)) {
                     if (!world.isClientSide()) {
                         world.setBlockAndUpdate(pos, state.cycle(BlockStateProperties.FACING));
@@ -713,20 +714,20 @@ public final class Common {
             chestMaker.apply(Utils.id("lavender_mini_present_with_sparrow"), lavenderPresentStat, woodTier, lavenderPresentSettings);
             chestMaker.apply(Utils.id("pink_amethyst_mini_present_with_sparrow"), pinkAmethystPresentStat, woodTier, pinkAmethystPresentSettings);
 
-            Common.miniChestBlockEntityType = new NamedValue<>(Common.MINI_CHEST_BLOCK_TYPE, () -> BlockEntityType.Builder.of((pos, state) -> new MiniChestBlockEntity(Common.getMiniChestBlockEntityType(), pos, state, ((OpenableBlock) state.getBlock()).getBlockId(), Common.itemAccess, Common.lockable), miniChestBlocks.stream().map(NamedValue::getValue).toArray(MiniChestBlock[]::new)).build(Util.fetchChoiceType(References.BLOCK_ENTITY, Common.MINI_CHEST_BLOCK_TYPE.toString())));
+            CommonMain.miniChestBlockEntityType = new NamedValue<>(CommonMain.MINI_CHEST_BLOCK_TYPE, () -> BlockEntityType.Builder.of((pos, state) -> new MiniChestBlockEntity(CommonMain.getMiniChestBlockEntityType(), pos, state, ((OpenableBlock) state.getBlock()).getBlockId(), CommonMain.itemAccess, CommonMain.lockable), miniChestBlocks.stream().map(NamedValue::getValue).toArray(MiniChestBlock[]::new)).build(Util.fetchChoiceType(References.BLOCK_ENTITY, CommonMain.MINI_CHEST_BLOCK_TYPE.toString())));
 
             if (isClient) {
                 MiniChestScreen.registerScreenType();
             }
 
             Predicate<Block> isMiniChest = b -> b instanceof MiniChestBlock;
-            Common.registerMutationBehaviour(isMiniChest, MutationMode.ROTATE, (context, world, state, pos, stack) -> {
+            CommonMain.registerMutationBehaviour(isMiniChest, MutationMode.ROTATE, (context, world, state, pos, stack) -> {
                 if (!world.isClientSide()) {
                     world.setBlockAndUpdate(pos, state.rotate(Rotation.CLOCKWISE_90));
                 }
                 return InteractionResult.SUCCESS;
             });
-            Common.registerMutationBehaviour(isMiniChest, MutationMode.SWAP_THEME, (context, world, state, pos, stack) -> {
+            CommonMain.registerMutationBehaviour(isMiniChest, MutationMode.SWAP_THEME, (context, world, state, pos, stack) -> {
                 String itemName = stack.getHoverName().getString();
                 List<Block> blocks;
                 if (itemName.equals("Sunrise")) {

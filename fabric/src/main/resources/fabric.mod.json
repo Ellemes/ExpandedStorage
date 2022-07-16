@@ -3,7 +3,7 @@
   "depends": {
     "fabricloader": ">=0.14.6",
     "minecraft": "~1.19",
-    "ellemes_container_lib": ">=2.0.1",
+    "ellemes_container_lib": ">=2.1.0-alpha.9",
     "fabric-api-base": ">=0.4.8",
     "fabric-blockrenderlayer-v1": ">=1.1.17",
     "fabric-data-generation-api-v1": ">=5.0.0",
@@ -15,7 +15,7 @@
   },
   "entrypoints": {
     "main": [
-      "ellemes.expandedstorage.fabric.Main"
+      "ellemes.expandedstorage.fabric.FabricMain"
     ],
     "fabric-datagen": [
       "ellemes.expandedstorage.thread.datagen.Main"
