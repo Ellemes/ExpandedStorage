@@ -1,9 +1,10 @@
 package ellemes.expandedstorage.thread.datagen.providers;
 
 import ellemes.expandedstorage.Utils;
+import ellemes.expandedstorage.datagen.content.ModItems;
+import ellemes.expandedstorage.datagen.content.ModTags;
 import ellemes.expandedstorage.item.ChestMinecartItem;
-import ellemes.expandedstorage.thread.datagen.content.ModItems;
-import ellemes.expandedstorage.thread.datagen.content.ModTags;
+import ellemes.expandedstorage.thread.datagen.content.ThreadTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.Registry;
@@ -67,22 +68,22 @@ public class RecipeProvider extends FabricRecipeProvider {
                 .pattern("III")
                 .pattern("IPI")
                 .pattern("III")
-                .define('I', ModTags.Items.IRON_INGOTS)
+                .define('I', ThreadTags.Items.IRON_INGOTS)
                 .define('P', ItemTags.PLANKS)
                 .save(exporter);
         shapedRecipe(ModItems.WOOD_TO_GOLD_CONVERSION_KIT, 1, Criterions.HAS_PREVIOUS_KIT, ModItems.WOOD_TO_IRON_CONVERSION_KIT)
                 .pattern("GGG")
                 .pattern("GKG")
                 .pattern("GGG")
-                .define('G', ModTags.Items.GOLD_INGOTS)
+                .define('G', ThreadTags.Items.GOLD_INGOTS)
                 .define('K', ModItems.WOOD_TO_IRON_CONVERSION_KIT)
                 .save(exporter);
         shapedRecipe(ModItems.WOOD_TO_DIAMOND_CONVERSION_KIT, 1, Criterions.HAS_PREVIOUS_KIT, ModItems.WOOD_TO_GOLD_CONVERSION_KIT)
                 .pattern("GGG")
                 .pattern("DKD")
                 .pattern("GGG")
-                .define('G', ModTags.Items.GLASS_BLOCKS)
-                .define('D', ModTags.Items.DIAMONDS)
+                .define('G', ThreadTags.Items.GLASS_BLOCKS)
+                .define('D', ThreadTags.Items.DIAMONDS)
                 .define('K', ModItems.WOOD_TO_GOLD_CONVERSION_KIT)
                 .save(exporter);
         shapedRecipe(ModItems.WOOD_TO_OBSIDIAN_CONVERSION_KIT, 1, Criterions.HAS_PREVIOUS_KIT, ModItems.WOOD_TO_DIAMOND_CONVERSION_KIT)
@@ -92,20 +93,20 @@ public class RecipeProvider extends FabricRecipeProvider {
                 .define('O', Items.OBSIDIAN)
                 .define('K', ModItems.WOOD_TO_DIAMOND_CONVERSION_KIT)
                 .save(exporter);
-        smithingRecipe(ModItems.WOOD_TO_NETHERITE_CONVERSION_KIT, ModItems.WOOD_TO_OBSIDIAN_CONVERSION_KIT, ModTags.Items.NETHERITE_INGOTS, Criterions.HAS_PREVIOUS_KIT, exporter);
-        shapedRecipe(ModItems.IRON_TO_GOLD_CONVERSION_KIT, 1, Criterions.HAS_ITEM, ModTags.Items.IRON_INGOTS)
+        smithingRecipe(ModItems.WOOD_TO_NETHERITE_CONVERSION_KIT, ModItems.WOOD_TO_OBSIDIAN_CONVERSION_KIT, ThreadTags.Items.NETHERITE_INGOTS, Criterions.HAS_PREVIOUS_KIT, exporter);
+        shapedRecipe(ModItems.IRON_TO_GOLD_CONVERSION_KIT, 1, Criterions.HAS_ITEM, ThreadTags.Items.IRON_INGOTS)
                 .pattern("GGG")
                 .pattern("GIG")
                 .pattern("GGG")
-                .define('G', ModTags.Items.GOLD_INGOTS)
-                .define('I', ModTags.Items.IRON_INGOTS)
+                .define('G', ThreadTags.Items.GOLD_INGOTS)
+                .define('I', ThreadTags.Items.IRON_INGOTS)
                 .save(exporter);
         shapedRecipe(ModItems.IRON_TO_DIAMOND_CONVERSION_KIT, 1, Criterions.HAS_PREVIOUS_KIT, ModItems.IRON_TO_GOLD_CONVERSION_KIT)
                 .pattern("GGG")
                 .pattern("DKD")
                 .pattern("GGG")
-                .define('G', ModTags.Items.GLASS_BLOCKS)
-                .define('D', ModTags.Items.DIAMONDS)
+                .define('G', ThreadTags.Items.GLASS_BLOCKS)
+                .define('D', ThreadTags.Items.DIAMONDS)
                 .define('K', ModItems.IRON_TO_GOLD_CONVERSION_KIT)
                 .save(exporter);
         shapedRecipe(ModItems.IRON_TO_OBSIDIAN_CONVERSION_KIT, 1, Criterions.HAS_PREVIOUS_KIT, ModItems.IRON_TO_DIAMOND_CONVERSION_KIT)
@@ -115,14 +116,14 @@ public class RecipeProvider extends FabricRecipeProvider {
                 .define('O', Items.OBSIDIAN)
                 .define('K', ModItems.IRON_TO_DIAMOND_CONVERSION_KIT)
                 .save(exporter);
-        smithingRecipe(ModItems.IRON_TO_NETHERITE_CONVERSION_KIT, ModItems.IRON_TO_OBSIDIAN_CONVERSION_KIT, ModTags.Items.NETHERITE_INGOTS, Criterions.HAS_PREVIOUS_KIT, exporter);
-        shapedRecipe(ModItems.GOLD_TO_DIAMOND_CONVERSION_KIT, 1, Criterions.HAS_ITEM, ModTags.Items.GOLD_INGOTS)
+        smithingRecipe(ModItems.IRON_TO_NETHERITE_CONVERSION_KIT, ModItems.IRON_TO_OBSIDIAN_CONVERSION_KIT, ThreadTags.Items.NETHERITE_INGOTS, Criterions.HAS_PREVIOUS_KIT, exporter);
+        shapedRecipe(ModItems.GOLD_TO_DIAMOND_CONVERSION_KIT, 1, Criterions.HAS_ITEM, ThreadTags.Items.GOLD_INGOTS)
                 .pattern("GGG")
                 .pattern("DID")
                 .pattern("GGG")
-                .define('G', ModTags.Items.GLASS_BLOCKS)
-                .define('D', ModTags.Items.DIAMONDS)
-                .define('I', ModTags.Items.GOLD_INGOTS)
+                .define('G', ThreadTags.Items.GLASS_BLOCKS)
+                .define('D', ThreadTags.Items.DIAMONDS)
+                .define('I', ThreadTags.Items.GOLD_INGOTS)
                 .save(exporter);
         shapedRecipe(ModItems.GOLD_TO_OBSIDIAN_CONVERSION_KIT, 1, Criterions.HAS_PREVIOUS_KIT, ModItems.GOLD_TO_DIAMOND_CONVERSION_KIT)
                 .pattern("OOO")
@@ -131,16 +132,16 @@ public class RecipeProvider extends FabricRecipeProvider {
                 .define('O', Items.OBSIDIAN)
                 .define('K', ModItems.GOLD_TO_DIAMOND_CONVERSION_KIT)
                 .save(exporter);
-        smithingRecipe(ModItems.GOLD_TO_NETHERITE_CONVERSION_KIT, ModItems.GOLD_TO_OBSIDIAN_CONVERSION_KIT, ModTags.Items.NETHERITE_INGOTS, Criterions.HAS_PREVIOUS_KIT, exporter);
-        shapedRecipe(ModItems.DIAMOND_TO_OBSIDIAN_CONVERSION_KIT, 1, Criterions.HAS_ITEM, ModTags.Items.DIAMONDS)
+        smithingRecipe(ModItems.GOLD_TO_NETHERITE_CONVERSION_KIT, ModItems.GOLD_TO_OBSIDIAN_CONVERSION_KIT, ThreadTags.Items.NETHERITE_INGOTS, Criterions.HAS_PREVIOUS_KIT, exporter);
+        shapedRecipe(ModItems.DIAMOND_TO_OBSIDIAN_CONVERSION_KIT, 1, Criterions.HAS_ITEM, ThreadTags.Items.DIAMONDS)
                 .pattern("OOO")
                 .pattern("ODO")
                 .pattern("OOO")
                 .define('O', Items.OBSIDIAN)
-                .define('D', ModTags.Items.DIAMONDS)
+                .define('D', ThreadTags.Items.DIAMONDS)
                 .save(exporter);
-        smithingRecipe(ModItems.DIAMOND_TO_NETHERITE_CONVERSION_KIT, ModItems.DIAMOND_TO_OBSIDIAN_CONVERSION_KIT, ModTags.Items.NETHERITE_INGOTS, Criterions.HAS_PREVIOUS_KIT, exporter);
-        smithingRecipe(ModItems.OBSIDIAN_TO_NETHERITE_CONVERSION_KIT, Items.OBSIDIAN, ModTags.Items.NETHERITE_INGOTS, Criterions.HAS_ITEM, exporter);
+        smithingRecipe(ModItems.DIAMOND_TO_NETHERITE_CONVERSION_KIT, ModItems.DIAMOND_TO_OBSIDIAN_CONVERSION_KIT, ThreadTags.Items.NETHERITE_INGOTS, Criterions.HAS_PREVIOUS_KIT, exporter);
+        smithingRecipe(ModItems.OBSIDIAN_TO_NETHERITE_CONVERSION_KIT, Items.OBSIDIAN, ThreadTags.Items.NETHERITE_INGOTS, Criterions.HAS_ITEM, exporter);
 
     }
 
@@ -150,38 +151,38 @@ public class RecipeProvider extends FabricRecipeProvider {
                               .group(id(ModItems.WOOD_CHEST))
                               .unlockedBy(Criterions.HAS_PREVIOUS_BLOCK, RecipeProvider.has(Items.CHEST))
                               .save(exporter);
-        shapedRecipe(ModItems.PUMPKIN_CHEST, 1, Criterions.HAS_PREVIOUS_BLOCK, ModTags.Items.WOODEN_CHESTS)
+        shapedRecipe(ModItems.PUMPKIN_CHEST, 1, Criterions.HAS_PREVIOUS_BLOCK, ThreadTags.Items.WOODEN_CHESTS)
                 .pattern("SSS")
                 .pattern("SBS")
                 .pattern("SSS")
                 .define('S', Items.PUMPKIN_SEEDS)
-                .define('B', ModTags.Items.WOODEN_CHESTS)
+                .define('B', ThreadTags.Items.WOODEN_CHESTS)
                 .group(id(ModItems.PUMPKIN_CHEST))
                 .save(exporter);
-        shapedRecipe(ModItems.PRESENT, 1, Criterions.HAS_PREVIOUS_BLOCK, ModTags.Items.WOODEN_CHESTS)
+        shapedRecipe(ModItems.PRESENT, 1, Criterions.HAS_PREVIOUS_BLOCK, ThreadTags.Items.WOODEN_CHESTS)
                 .pattern(" B ")
                 .pattern("RCW")
                 .pattern(" S ")
                 .define('B', Items.SWEET_BERRIES)
-                .define('R', ModTags.Items.RED_DYES)
-                .define('C', ModTags.Items.WOODEN_CHESTS)
-                .define('W', ModTags.Items.WHITE_DYES)
+                .define('R', ThreadTags.Items.RED_DYES)
+                .define('C', ThreadTags.Items.WOODEN_CHESTS)
+                .define('W', ThreadTags.Items.WHITE_DYES)
                 .define('S', Items.SPRUCE_SAPLING)
                 .group(id(ModItems.PRESENT))
                 .save(exporter);
-        shapedRecipe(ModItems.BAMBOO_CHEST, 1, Criterions.HAS_PREVIOUS_BLOCK, ModTags.Items.WOODEN_CHESTS)
+        shapedRecipe(ModItems.BAMBOO_CHEST, 1, Criterions.HAS_PREVIOUS_BLOCK, ThreadTags.Items.WOODEN_CHESTS)
                 .pattern("BBB")
                 .pattern("BCB")
                 .pattern("BBB")
                 .define('B', Items.BAMBOO)
-                .define('C', ModTags.Items.WOODEN_CHESTS)
+                .define('C', ThreadTags.Items.WOODEN_CHESTS)
                 .group(id(ModItems.BAMBOO_CHEST))
                 .save(exporter);
         shapedRecipe(ModItems.IRON_CHEST, 1, Criterions.HAS_PREVIOUS_BLOCK, ModTags.Items.ES_WOODEN_CHESTS)
                 .pattern("III")
                 .pattern("IBI")
                 .pattern("III")
-                .define('I', ModTags.Items.IRON_INGOTS)
+                .define('I', ThreadTags.Items.IRON_INGOTS)
                 .define('B', ModTags.Items.ES_WOODEN_CHESTS)
                 .group(id(ModItems.IRON_CHEST))
                 .save(exporter);
@@ -189,7 +190,7 @@ public class RecipeProvider extends FabricRecipeProvider {
                 .pattern("GGG")
                 .pattern("GBG")
                 .pattern("GGG")
-                .define('G', ModTags.Items.GOLD_INGOTS)
+                .define('G', ThreadTags.Items.GOLD_INGOTS)
                 .define('B', ModItems.IRON_CHEST)
                 .group(id(ModItems.GOLD_CHEST))
                 .save(exporter);
@@ -197,8 +198,8 @@ public class RecipeProvider extends FabricRecipeProvider {
                 .pattern("GGG")
                 .pattern("DBD")
                 .pattern("GGG")
-                .define('G', ModTags.Items.GLASS_BLOCKS)
-                .define('D', ModTags.Items.DIAMONDS)
+                .define('G', ThreadTags.Items.GLASS_BLOCKS)
+                .define('D', ThreadTags.Items.DIAMONDS)
                 .define('B', ModItems.GOLD_CHEST)
                 .group(id(ModItems.DIAMOND_CHEST))
                 .save(exporter);
@@ -210,7 +211,7 @@ public class RecipeProvider extends FabricRecipeProvider {
                 .define('B', ModItems.DIAMOND_CHEST)
                 .group(id(ModItems.OBSIDIAN_CHEST))
                 .save(exporter);
-        smithingRecipe(ModItems.NETHERITE_CHEST, ModItems.OBSIDIAN_CHEST, ModTags.Items.NETHERITE_INGOTS, Criterions.HAS_PREVIOUS_BLOCK, exporter);
+        smithingRecipe(ModItems.NETHERITE_CHEST, ModItems.OBSIDIAN_CHEST, ThreadTags.Items.NETHERITE_INGOTS, Criterions.HAS_PREVIOUS_BLOCK, exporter);
     }
 
     private void offerChestMinecartRecipes(Consumer<FinishedRecipe> exporter) {
@@ -239,7 +240,7 @@ public class RecipeProvider extends FabricRecipeProvider {
                 .pattern("III")
                 .pattern("IBI")
                 .pattern("III")
-                .define('I', ModTags.Items.IRON_INGOTS)
+                .define('I', ThreadTags.Items.IRON_INGOTS)
                 .define('B', ModItems.OLD_WOOD_CHEST)
                 .group(id(ModItems.OLD_IRON_CHEST))
                 .save(exporter);
@@ -247,7 +248,7 @@ public class RecipeProvider extends FabricRecipeProvider {
                 .pattern("GGG")
                 .pattern("GBG")
                 .pattern("GGG")
-                .define('G', ModTags.Items.GOLD_INGOTS)
+                .define('G', ThreadTags.Items.GOLD_INGOTS)
                 .define('B', ModItems.OLD_IRON_CHEST)
                 .group(id(ModItems.OLD_GOLD_CHEST))
                 .save(exporter);
@@ -255,8 +256,8 @@ public class RecipeProvider extends FabricRecipeProvider {
                 .pattern("GGG")
                 .pattern("DBD")
                 .pattern("GGG")
-                .define('G', ModTags.Items.GLASS_BLOCKS)
-                .define('D', ModTags.Items.DIAMONDS)
+                .define('G', ThreadTags.Items.GLASS_BLOCKS)
+                .define('D', ThreadTags.Items.DIAMONDS)
                 .define('B', ModItems.OLD_GOLD_CHEST)
                 .group(id(ModItems.OLD_DIAMOND_CHEST))
                 .save(exporter);
@@ -268,7 +269,7 @@ public class RecipeProvider extends FabricRecipeProvider {
                 .define('B', ModItems.OLD_DIAMOND_CHEST)
                 .group(id(ModItems.OLD_OBSIDIAN_CHEST))
                 .save(exporter);
-        smithingRecipe(ModItems.OLD_NETHERITE_CHEST, ModItems.OLD_OBSIDIAN_CHEST, ModTags.Items.NETHERITE_INGOTS, Criterions.HAS_PREVIOUS_BLOCK, exporter);
+        smithingRecipe(ModItems.OLD_NETHERITE_CHEST, ModItems.OLD_OBSIDIAN_CHEST, ThreadTags.Items.NETHERITE_INGOTS, Criterions.HAS_PREVIOUS_BLOCK, exporter);
     }
 
     private void offerChestToOldChestRecipes(Consumer<FinishedRecipe> exporter) {
@@ -338,26 +339,26 @@ public class RecipeProvider extends FabricRecipeProvider {
     }
 
     private void offerBarrelRecipes(Consumer<FinishedRecipe> exporter) {
-        shapedRecipe(ModItems.IRON_BARREL, 1, Criterions.HAS_PREVIOUS_BLOCK, ModTags.Items.WOODEN_BARRELS)
+        shapedRecipe(ModItems.IRON_BARREL, 1, Criterions.HAS_PREVIOUS_BLOCK, ThreadTags.Items.WOODEN_BARRELS)
                 .pattern("III")
                 .pattern("IBI")
                 .pattern("III")
-                .define('I', ModTags.Items.IRON_INGOTS)
-                .define('B', ModTags.Items.WOODEN_BARRELS)
+                .define('I', ThreadTags.Items.IRON_INGOTS)
+                .define('B', ThreadTags.Items.WOODEN_BARRELS)
                 .save(exporter);
         shapedRecipe(ModItems.GOLD_BARREL, 1, Criterions.HAS_PREVIOUS_BLOCK, ModItems.IRON_BARREL)
                 .pattern("GGG")
                 .pattern("GBG")
                 .pattern("GGG")
-                .define('G', ModTags.Items.GOLD_INGOTS)
+                .define('G', ThreadTags.Items.GOLD_INGOTS)
                 .define('B', ModItems.IRON_BARREL)
                 .save(exporter);
         shapedRecipe(ModItems.DIAMOND_BARREL, 1, Criterions.HAS_PREVIOUS_BLOCK, ModItems.GOLD_BARREL)
                 .pattern("GGG")
                 .pattern("DBD")
                 .pattern("GGG")
-                .define('G', ModTags.Items.GLASS_BLOCKS)
-                .define('D', ModTags.Items.DIAMONDS)
+                .define('G', ThreadTags.Items.GLASS_BLOCKS)
+                .define('D', ThreadTags.Items.DIAMONDS)
                 .define('B', ModItems.GOLD_BARREL)
                 .save(exporter);
         shapedRecipe(ModItems.OBSIDIAN_BARREL, 1, Criterions.HAS_PREVIOUS_BLOCK, ModItems.DIAMOND_BARREL)
@@ -367,7 +368,7 @@ public class RecipeProvider extends FabricRecipeProvider {
                 .define('O', Items.OBSIDIAN)
                 .define('B', ModItems.DIAMOND_BARREL)
                 .save(exporter);
-        smithingRecipe(ModItems.NETHERITE_BARREL, ModItems.OBSIDIAN_BARREL, ModTags.Items.NETHERITE_INGOTS, Criterions.HAS_PREVIOUS_BLOCK, exporter);
+        smithingRecipe(ModItems.NETHERITE_BARREL, ModItems.OBSIDIAN_BARREL, ThreadTags.Items.NETHERITE_INGOTS, Criterions.HAS_PREVIOUS_BLOCK, exporter);
     }
 
     private void offerMiniChestRecipes(Consumer<FinishedRecipe> exporter) {

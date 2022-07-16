@@ -4,3 +4,4 @@ accessible field net/minecraft/world/level/block/entity/BlockEntityType validBlo
 accessible method net/minecraft/data/recipes/RecipeProvider has (Lnet/minecraft/tags/TagKey;)Lnet/minecraft/advancements/critereon/InventoryChangeTrigger$TriggerInstance;
 extendable method net/minecraft/data/tags/TagsProvider getName ()Ljava/lang/String;
 extendable method net/minecraft/world/entity/vehicle/AbstractMinecart getDropItem ()Lnet/minecraft/world/item/Item;
+accessible class net/minecraft/data/tags/TagsProvider$TagAppender

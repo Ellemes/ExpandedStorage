@@ -1,8 +1,9 @@
 package ellemes.expandedstorage.forge.datagen.providers;
 
 import ellemes.expandedstorage.Utils;
-import ellemes.expandedstorage.forge.datagen.content.ModItems;
-import ellemes.expandedstorage.forge.datagen.content.ModTags;
+import ellemes.expandedstorage.datagen.content.ModItems;
+import ellemes.expandedstorage.datagen.content.ModTags;
+import ellemes.expandedstorage.forge.datagen.content.ForgeTags;
 import ellemes.expandedstorage.item.ChestMinecartItem;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -173,7 +174,7 @@ public final class RecipeProvider extends net.minecraft.data.recipes.RecipeProvi
                 .pattern("BBB")
                 .pattern("BCB")
                 .pattern("BBB")
-                .define('B', ModTags.Items.BAMBOO)
+                .define('B', ForgeTags.Items.BAMBOO)
                 .define('C', Tags.Items.CHESTS_WOODEN)
                 .group(id(ModItems.BAMBOO_CHEST))
                 .save(exporter);

@@ -1,11 +1,11 @@
-package ellemes.expandedstorage.forge.datagen.content;
+package ellemes.expandedstorage.datagen.content;
 
 import ellemes.expandedstorage.Utils;
 import ellemes.expandedstorage.item.ChestMinecartItem;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public final class ModItems {
     public static final Item STORAGE_MUTATOR = item(Utils.id("storage_mutator"));
@@ -70,6 +70,6 @@ public final class ModItems {
 
     private static <T extends Item> T item(ResourceLocation id) {
         //noinspection unchecked
-        return (T) ForgeRegistries.ITEMS.getValue(id);
+        return (T) Registry.ITEM.get(id);
     }
 }

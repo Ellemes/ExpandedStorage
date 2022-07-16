@@ -1,4 +1,4 @@
-package ellemes.expandedstorage.thread.datagen.content;
+package ellemes.expandedstorage.datagen.content;
 
 import ellemes.expandedstorage.Utils;
 import ellemes.expandedstorage.block.AbstractChestBlock;

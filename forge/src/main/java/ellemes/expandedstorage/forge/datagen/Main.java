@@ -1,6 +1,5 @@
 package ellemes.expandedstorage.forge.datagen;
 
-import ellemes.expandedstorage.forge.datagen.providers.BlockStatesAndModels;
 import ellemes.expandedstorage.forge.datagen.providers.ItemModelProvider;
 import ellemes.expandedstorage.forge.datagen.providers.LootTableProvider;
 import ellemes.expandedstorage.forge.datagen.providers.RecipeProvider;
@@ -23,8 +22,8 @@ public final class Main {
         generator.addProvider(true, new TagProvider.Item(generator, blockTagsProvider, fileHelper));
         generator.addProvider(true, new RecipeProvider(generator));
         generator.addProvider(true, new LootTableProvider(generator));
-        //generator.addProvider(true, new LanguageProvider(generator));
-        generator.addProvider(true, new BlockStatesAndModels(generator, fileHelper));
+//        generator.addProvider(true, new LanguageProvider(generator));
+//        generator.addProvider(true, new BlockStatesAndModels(generator, fileHelper));
         generator.addProvider(true, new ItemModelProvider(generator, fileHelper));
     }
 }

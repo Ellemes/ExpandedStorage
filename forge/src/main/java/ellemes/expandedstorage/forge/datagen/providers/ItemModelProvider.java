@@ -1,9 +1,8 @@
 package ellemes.expandedstorage.forge.datagen.providers;
 
 import ellemes.expandedstorage.Utils;
-import ellemes.expandedstorage.forge.datagen.content.ModItems;
+import ellemes.expandedstorage.datagen.providers.ModelHelper;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -16,32 +15,7 @@ public final class ItemModelProvider extends net.minecraftforge.client.model.gen
 
     @Override
     protected void registerModels() {
-        this.simple(ModItems.STORAGE_MUTATOR);
-        this.simple(ModItems.WOOD_TO_IRON_CONVERSION_KIT);
-        this.simple(ModItems.WOOD_TO_GOLD_CONVERSION_KIT);
-        this.simple(ModItems.WOOD_TO_DIAMOND_CONVERSION_KIT);
-        this.simple(ModItems.WOOD_TO_OBSIDIAN_CONVERSION_KIT);
-        this.simple(ModItems.WOOD_TO_NETHERITE_CONVERSION_KIT);
-        this.simple(ModItems.IRON_TO_GOLD_CONVERSION_KIT);
-        this.simple(ModItems.IRON_TO_DIAMOND_CONVERSION_KIT);
-        this.simple(ModItems.IRON_TO_OBSIDIAN_CONVERSION_KIT);
-        this.simple(ModItems.IRON_TO_NETHERITE_CONVERSION_KIT);
-        this.simple(ModItems.GOLD_TO_DIAMOND_CONVERSION_KIT);
-        this.simple(ModItems.GOLD_TO_OBSIDIAN_CONVERSION_KIT);
-        this.simple(ModItems.GOLD_TO_NETHERITE_CONVERSION_KIT);
-        this.simple(ModItems.DIAMOND_TO_OBSIDIAN_CONVERSION_KIT);
-        this.simple(ModItems.DIAMOND_TO_NETHERITE_CONVERSION_KIT);
-        this.simple(ModItems.OBSIDIAN_TO_NETHERITE_CONVERSION_KIT);
-
-        this.simple(ModItems.WOOD_CHEST_MINECART);
-        this.simple(ModItems.PUMPKIN_CHEST_MINECART);
-        this.simple(ModItems.PRESENT_MINECART);
-        this.simple(ModItems.BAMBOO_CHEST_MINECART);
-        this.simple(ModItems.IRON_CHEST_MINECART);
-        this.simple(ModItems.GOLD_CHEST_MINECART);
-        this.simple(ModItems.DIAMOND_CHEST_MINECART);
-        this.simple(ModItems.OBSIDIAN_CHEST_MINECART);
-        this.simple(ModItems.NETHERITE_CHEST_MINECART);
+        ModelHelper.registerItemModels(this::simple);
 
         //this.chest(ModItems.WOOD_CHEST);
         //this.chest(ModItems.PUMPKIN_CHEST);
