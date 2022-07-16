@@ -17,7 +17,18 @@ repositories {
             includeGroup("net.devtech")
         }
     }
-
+    // For Mod Menu
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "TerraformersMC"
+                url = uri("https://maven.terraformersmc.com/")
+            }
+        }
+        filter {
+            includeGroup("com.terraformersmc")
+        }
+    }
     maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") }
 }
 
@@ -38,6 +49,10 @@ dependencies {
             "fabric-transfer-api-v1"
     ).forEach {
         modImplementation(mod.fabricApi().module(it))
+    }
+
+    modCompileOnly("com.terraformersmc:modmenu:${project.properties["modmenu_version"]}") {
+        excludeFabric(this)
     }
 
     modImplementation("ellemes:${properties["container_library_artifact"]}-fabric:${properties["container_library_version"]}")

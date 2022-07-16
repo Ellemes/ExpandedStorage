@@ -7,7 +7,8 @@
     "intermediate_mappings": "net.fabricmc:intermediary",
     "entrypoints": {
       "init": "ellemes.expandedstorage.quilt.Main",
-      "fabric-datagen": "ellemes.expandedstorage.thread.datagen.Main"
+      "fabric-datagen": "ellemes.expandedstorage.thread.datagen.Main",
+      "modmenu": "ellemes.expandedstorage.thread.client.ModMenuCompat"
     },
     "depends": [
       {

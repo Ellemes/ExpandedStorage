@@ -60,5 +60,5 @@
     "bottom": "minecraft:block/barrel_bottom",
     "side": "minecraft:block/barrel_side"
   },
-  "render_type": "expandedstorage:cutout_mipped"
+  "render_type": "cutout_mipped"
 }

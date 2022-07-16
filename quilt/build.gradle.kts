@@ -17,6 +17,18 @@ repositories {
             includeGroup("net.devtech")
         }
     }
+    // For Mod Menu
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "TerraformersMC"
+                url = uri("https://maven.terraformersmc.com/")
+            }
+        }
+        filter {
+            includeGroup("com.terraformersmc")
+        }
+    }
     maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") }
     mavenLocal()
 }
@@ -55,6 +67,10 @@ dependencies {
     }
 
     modImplementation("ellemes:${properties["container_library_artifact"]}-quilt:${properties["container_library_version"]}", dependencyConfiguration = excludeFabric)
+
+    modCompileOnly("com.terraformersmc:modmenu:${project.properties["modmenu_version"]}") {
+        excludeFabric(this)
+    }
 
     // For chest module
     modCompileOnly(group = "curse.maven", name = "statement-340604", version = "3423826", dependencyConfiguration = excludeFabric)

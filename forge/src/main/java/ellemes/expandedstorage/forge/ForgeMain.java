@@ -9,20 +9,13 @@ import ellemes.expandedstorage.block.entity.OldChestBlockEntity;
 import ellemes.expandedstorage.block.entity.extendable.OpenableBlockEntity;
 import ellemes.expandedstorage.block.misc.BasicLockable;
 import ellemes.expandedstorage.block.misc.DoubleItemAccess;
-import ellemes.expandedstorage.client.ChestBlockEntityRenderer;
-import ellemes.expandedstorage.entity.ChestMinecart;
 import ellemes.expandedstorage.registration.Content;
 import ellemes.expandedstorage.registration.NamedValue;
-import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.entity.MinecartRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -32,10 +25,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.ForgeRenderTypes;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.RegisterNamedRenderTypesEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -52,13 +41,11 @@ import net.minecraftforge.registries.RegisterEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.stream.Collectors;
-
 @Mod("expandedstorage")
-public final class Main {
+public final class ForgeMain {
     private final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-    public Main() {
+    public ForgeMain() {
         TagReloadListener tagReloadListener = new TagReloadListener();
 
         Common.constructContent(GenericItemAccess::new, BasicLockable::new,
@@ -144,10 +131,10 @@ public final class Main {
             });
 
             event.register(ForgeRegistries.Keys.BLOCK_ENTITY_TYPES, helper -> {
-                Main.registerBlockEntity(helper, content.getChestBlockEntityType());
-                Main.registerBlockEntity(helper, content.getOldChestBlockEntityType());
-                Main.registerBlockEntity(helper, content.getBarrelBlockEntityType());
-                Main.registerBlockEntity(helper, content.getMiniChestBlockEntityType());
+                ForgeMain.registerBlockEntity(helper, content.getChestBlockEntityType());
+                ForgeMain.registerBlockEntity(helper, content.getOldChestBlockEntityType());
+                ForgeMain.registerBlockEntity(helper, content.getBarrelBlockEntityType());
+                ForgeMain.registerBlockEntity(helper, content.getMiniChestBlockEntityType());
             });
 
             event.register(ForgeRegistries.Keys.ENTITY_TYPES, helper -> {
@@ -156,50 +143,12 @@ public final class Main {
         });
 
         if (FMLLoader.getDist() == Dist.CLIENT) {
-            Client.registerListeners(modBus, content);
+            ForgeClient.initialize();
+            ForgeClient.registerListeners(modBus, content);
         }
     }
 
     private static <T extends BlockEntity> void registerBlockEntity(RegisterEvent.RegisterHelper<BlockEntityType<?>> helper, NamedValue<BlockEntityType<T>> blockEntityType) {
         helper.register(blockEntityType.getName(), blockEntityType.getValue());
-    }
-
-    private static class Client {
-        public static void registerListeners(IEventBus modBus, Content content) {
-            modBus.addListener((TextureStitchEvent.Pre event) -> {
-                if (!event.getAtlas().location().equals(Sheets.CHEST_SHEET)) {
-                    return;
-                }
-                for (ResourceLocation texture : Common.getChestTextures(content.getChestBlocks().stream().map(NamedValue::getName).collect(Collectors.toList()))) {
-                    event.addSprite(texture);
-                }
-            });
-
-            // todo: remove this and replace barrel render type with "forge:cutout_mipped_block"
-            //  not implemented yet, wait for: https://github.com/MinecraftForge/MinecraftForge/pull/8845
-            modBus.addListener((RegisterNamedRenderTypesEvent event) -> {
-                event.register("cutout_mipped", RenderType.cutoutMipped(), ForgeRenderTypes.ITEM_LAYERED_CUTOUT.get());
-            });
-
-            modBus.addListener((EntityRenderersEvent.RegisterRenderers event) -> {
-                event.registerBlockEntityRenderer(content.getChestBlockEntityType().getValue(), ChestBlockEntityRenderer::new);
-            });
-
-            modBus.addListener((EntityRenderersEvent.RegisterLayerDefinitions event) -> {
-                event.registerLayerDefinition(ChestBlockEntityRenderer.SINGLE_LAYER, ChestBlockEntityRenderer::createSingleBodyLayer);
-                event.registerLayerDefinition(ChestBlockEntityRenderer.LEFT_LAYER, ChestBlockEntityRenderer::createLeftBodyLayer);
-                event.registerLayerDefinition(ChestBlockEntityRenderer.RIGHT_LAYER, ChestBlockEntityRenderer::createRightBodyLayer);
-                event.registerLayerDefinition(ChestBlockEntityRenderer.TOP_LAYER, ChestBlockEntityRenderer::createTopBodyLayer);
-                event.registerLayerDefinition(ChestBlockEntityRenderer.BOTTOM_LAYER, ChestBlockEntityRenderer::createBottomBodyLayer);
-                event.registerLayerDefinition(ChestBlockEntityRenderer.FRONT_LAYER, ChestBlockEntityRenderer::createFrontBodyLayer);
-                event.registerLayerDefinition(ChestBlockEntityRenderer.BACK_LAYER, ChestBlockEntityRenderer::createBackBodyLayer);
-            });
-
-            modBus.addListener((EntityRenderersEvent.RegisterRenderers event) -> {
-                for (NamedValue<EntityType<ChestMinecart>> type : content.getChestMinecartEntityTypes()) {
-                    event.registerEntityRenderer(type.getValue(), context -> new MinecartRenderer<>(context, ModelLayers.CHEST_MINECART));
-                }
-            });
-        }
     }
 }

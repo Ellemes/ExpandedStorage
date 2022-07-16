@@ -19,6 +19,9 @@
     ],
     "fabric-datagen": [
       "ellemes.expandedstorage.thread.datagen.Main"
+    ],
+    "modmenu": [
+      "ellemes.expandedstorage.thread.client.ModMenuCompat"
     ]
   },
   "environment": "*",
