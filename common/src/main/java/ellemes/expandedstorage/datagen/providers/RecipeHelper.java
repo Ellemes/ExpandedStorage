@@ -233,15 +233,15 @@ public class RecipeHelper {
     }
 
     private void offerChestMinecartRecipes(Consumer<FinishedRecipe> exporter) {
-        cartRecipe(ModItems.WOOD_CHEST, ModItems.WOOD_CHEST_MINECART, exporter);
-        cartRecipe(ModItems.PUMPKIN_CHEST, ModItems.PUMPKIN_CHEST_MINECART, exporter);
-        cartRecipe(ModItems.PRESENT, ModItems.PRESENT_MINECART, exporter);
-        cartRecipe(ModItems.BAMBOO_CHEST, ModItems.BAMBOO_CHEST_MINECART, exporter);
-        cartRecipe(ModItems.IRON_CHEST, ModItems.IRON_CHEST_MINECART, exporter);
-        cartRecipe(ModItems.GOLD_CHEST, ModItems.GOLD_CHEST_MINECART, exporter);
-        cartRecipe(ModItems.DIAMOND_CHEST, ModItems.DIAMOND_CHEST_MINECART, exporter);
-        cartRecipe(ModItems.OBSIDIAN_CHEST, ModItems.OBSIDIAN_CHEST_MINECART, exporter);
-        cartRecipe(ModItems.NETHERITE_CHEST, ModItems.NETHERITE_CHEST_MINECART, exporter);
+//        cartRecipe(ModItems.WOOD_CHEST, ModItems.WOOD_CHEST_MINECART, exporter);
+//        cartRecipe(ModItems.PUMPKIN_CHEST, ModItems.PUMPKIN_CHEST_MINECART, exporter);
+//        cartRecipe(ModItems.PRESENT, ModItems.PRESENT_MINECART, exporter);
+//        cartRecipe(ModItems.BAMBOO_CHEST, ModItems.BAMBOO_CHEST_MINECART, exporter);
+//        cartRecipe(ModItems.IRON_CHEST, ModItems.IRON_CHEST_MINECART, exporter);
+//        cartRecipe(ModItems.GOLD_CHEST, ModItems.GOLD_CHEST_MINECART, exporter);
+//        cartRecipe(ModItems.DIAMOND_CHEST, ModItems.DIAMOND_CHEST_MINECART, exporter);
+//        cartRecipe(ModItems.OBSIDIAN_CHEST, ModItems.OBSIDIAN_CHEST_MINECART, exporter);
+//        cartRecipe(ModItems.NETHERITE_CHEST, ModItems.NETHERITE_CHEST_MINECART, exporter);
     }
 
     private void cartRecipe(BlockItem chest, ChestMinecartItem cart, Consumer<FinishedRecipe> exporter) {

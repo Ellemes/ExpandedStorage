@@ -326,15 +326,15 @@ public final class CommonMain {
             ObjectConsumer chestMaker = (id, stat, tier, settings) -> {
                 NamedValue<ChestBlock> block = new NamedValue<>(id, () -> new ChestBlock(tier.getBlockSettings().apply(settings), id, tier.getId(), stat, tier.getSlotCount()));
                 NamedValue<BlockItem> item = new NamedValue<>(id, () -> chestItemMaker.apply(block.getValue(), tier.getItemSettings().apply(new Item.Properties().tab(group))));
-                ResourceLocation cartId = new ResourceLocation(id.getNamespace(), id.getPath() + "_minecart");
-                NamedValue<ChestMinecartItem> cartItem = new NamedValue<>(cartId, () -> new ChestMinecartItem(new Item.Properties().tab(group), cartId));
-                NamedValue<EntityType<ChestMinecart>> cartEntityType = new NamedValue<>(cartId, () -> EntityType.Builder.<ChestMinecart>of((type, level) -> {
-                    return new ChestMinecart(type, level, cartItem.getValue(), block.getValue());
-                }, MobCategory.MISC).sized(0.98F, 0.7F).clientTrackingRange(8).build(cartId.getPath()));
+//                ResourceLocation cartId = new ResourceLocation(id.getNamespace(), id.getPath() + "_minecart");
+//                NamedValue<ChestMinecartItem> cartItem = new NamedValue<>(cartId, () -> new ChestMinecartItem(new Item.Properties().tab(group), cartId));
+//                NamedValue<EntityType<ChestMinecart>> cartEntityType = new NamedValue<>(cartId, () -> EntityType.Builder.<ChestMinecart>of((type, level) -> {
+//                    return new ChestMinecart(type, level, cartItem.getValue(), block.getValue());
+//                }, MobCategory.MISC).sized(0.98F, 0.7F).clientTrackingRange(8).build(cartId.getPath()));
                 chestBlocks.add(block);
                 chestItems.add(item);
-                chestMinecartEntityTypes.add(cartEntityType);
-                chestMinecartItems.add(cartItem);
+//                chestMinecartEntityTypes.add(cartEntityType);
+//                chestMinecartItems.add(cartItem);
             };
 
             chestMaker.apply(Utils.id("wood_chest"), woodStat, woodTier, woodSettings);

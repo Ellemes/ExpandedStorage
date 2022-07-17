@@ -36,15 +36,15 @@ public final class ModItems {
     public static final BlockItem OBSIDIAN_CHEST = item(Utils.id("obsidian_chest"));
     public static final BlockItem NETHERITE_CHEST = item(Utils.id("netherite_chest"));
 
-    public static final ChestMinecartItem WOOD_CHEST_MINECART = item(Utils.id("wood_chest_minecart"));
-    public static final ChestMinecartItem PUMPKIN_CHEST_MINECART = item(Utils.id("pumpkin_chest_minecart"));
-    public static final ChestMinecartItem PRESENT_MINECART = item(Utils.id("present_minecart"));
-    public static final ChestMinecartItem BAMBOO_CHEST_MINECART = item(Utils.id("bamboo_chest_minecart"));
-    public static final ChestMinecartItem IRON_CHEST_MINECART = item(Utils.id("iron_chest_minecart"));
-    public static final ChestMinecartItem GOLD_CHEST_MINECART = item(Utils.id("gold_chest_minecart"));
-    public static final ChestMinecartItem DIAMOND_CHEST_MINECART = item(Utils.id("diamond_chest_minecart"));
-    public static final ChestMinecartItem OBSIDIAN_CHEST_MINECART = item(Utils.id("obsidian_chest_minecart"));
-    public static final ChestMinecartItem NETHERITE_CHEST_MINECART = item(Utils.id("netherite_chest_minecart"));
+//    public static final ChestMinecartItem WOOD_CHEST_MINECART = item(Utils.id("wood_chest_minecart"));
+//    public static final ChestMinecartItem PUMPKIN_CHEST_MINECART = item(Utils.id("pumpkin_chest_minecart"));
+//    public static final ChestMinecartItem PRESENT_MINECART = item(Utils.id("present_minecart"));
+//    public static final ChestMinecartItem BAMBOO_CHEST_MINECART = item(Utils.id("bamboo_chest_minecart"));
+//    public static final ChestMinecartItem IRON_CHEST_MINECART = item(Utils.id("iron_chest_minecart"));
+//    public static final ChestMinecartItem GOLD_CHEST_MINECART = item(Utils.id("gold_chest_minecart"));
+//    public static final ChestMinecartItem DIAMOND_CHEST_MINECART = item(Utils.id("diamond_chest_minecart"));
+//    public static final ChestMinecartItem OBSIDIAN_CHEST_MINECART = item(Utils.id("obsidian_chest_minecart"));
+//    public static final ChestMinecartItem NETHERITE_CHEST_MINECART = item(Utils.id("netherite_chest_minecart"));
 
     public static final BlockItem OLD_WOOD_CHEST = item(Utils.id("old_wood_chest"));
     public static final BlockItem OLD_IRON_CHEST = item(Utils.id("old_iron_chest"));

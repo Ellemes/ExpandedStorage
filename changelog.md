@@ -1,1 +1,3 @@
-- Fix mixin issues in fabric and quilt projects.
+- Add bamboo chest
+- Update to container library v3 incubating api.
+- Expose chest inventories which should fix issues with computer craft, Tom's simple storage mod and ledger.
