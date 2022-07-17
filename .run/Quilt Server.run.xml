@@ -1,8 +1,5 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Quilt Server" type="GradleRunConfiguration" factoryName="Gradle" folderName="Runs">
-    <selectedOptions>
-      <option name="environmentVariables" visible="false" />
-    </selectedOptions>
     <ExternalSystemSettings>
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$" />

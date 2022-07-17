@@ -1,18 +1,17 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Forge Server" type="GradleRunConfiguration" factoryName="Gradle" folderName="Runs">
-    <selectedOptions>
-      <option name="environmentVariables" visible="false" />
-    </selectedOptions>
     <ExternalSystemSettings>
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$" />
       <option name="externalSystemIdString" value="GRADLE" />
-      <option name="scriptParameters" value=":forge:runServer" />
+      <option name="scriptParameters" value="" />
       <option name="taskDescriptions">
         <list />
       </option>
       <option name="taskNames">
-        <list />
+        <list>
+          <option value=":forge:runServer" />
+        </list>
       </option>
       <option name="vmOptions" />
     </ExternalSystemSettings>

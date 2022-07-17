@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Forge Client" type="GradleRunConfiguration" factoryName="Gradle" folderName="Runs">
+  <configuration default="false" name="Fabric Datagen" type="GradleRunConfiguration" factoryName="Gradle" folderName="Runs">
     <ExternalSystemSettings>
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -10,7 +10,7 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value=":forge:runClient" />
+          <option value=":fabric:runDatagen" />
         </list>
       </option>
       <option name="vmOptions" />
