@@ -3,7 +3,7 @@
   "group": "expandedstorage:bamboo_chest",
   "key": {
     "B": {
-      "item": "minecraft:bamboo"
+      "tag": "c:bamboo"
     },
     "C": {
       "tag": "c:wooden_chests"

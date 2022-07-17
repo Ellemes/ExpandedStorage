@@ -4,7 +4,7 @@
     "tag": "c:netherite_ingots"
   },
   "base": {
-    "item": "minecraft:obsidian"
+    "tag": "c:obsidian"
   },
   "result": {
     "item": "expandedstorage:obsidian_to_netherite_conversion_kit"

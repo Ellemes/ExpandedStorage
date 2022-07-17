@@ -5,7 +5,7 @@
       "tag": "c:diamonds"
     },
     "O": {
-      "item": "minecraft:obsidian"
+      "tag": "c:obsidian"
     }
   },
   "pattern": [

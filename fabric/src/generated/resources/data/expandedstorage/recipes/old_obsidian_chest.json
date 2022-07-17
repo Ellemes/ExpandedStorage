@@ -6,7 +6,7 @@
       "item": "expandedstorage:old_diamond_chest"
     },
     "O": {
-      "item": "minecraft:obsidian"
+      "tag": "c:obsidian"
     }
   },
   "pattern": [

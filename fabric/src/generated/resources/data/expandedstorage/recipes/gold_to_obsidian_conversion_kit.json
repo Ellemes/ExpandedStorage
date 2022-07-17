@@ -5,7 +5,7 @@
       "item": "expandedstorage:gold_to_diamond_conversion_kit"
     },
     "O": {
-      "item": "minecraft:obsidian"
+      "tag": "c:obsidian"
     }
   },
   "pattern": [
