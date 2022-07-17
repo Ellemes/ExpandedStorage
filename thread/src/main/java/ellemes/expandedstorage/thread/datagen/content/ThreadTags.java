@@ -1,6 +1,5 @@
 package ellemes.expandedstorage.thread.datagen.content;
 
-import ellemes.expandedstorage.Utils;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -22,6 +21,8 @@ public final class ThreadTags {
         public static final TagKey<Item> NETHERITE_INGOTS = tag(commonId("netherite_ingots"));
         public static final TagKey<Item> RED_DYES = tag(commonId("red_dyes"));
         public static final TagKey<Item> WHITE_DYES = tag(commonId("white_dyes"));
+        public static final TagKey<Item> OBSIDIAN = tag(commonId("obsidian"));
+        public static final TagKey<Item> BAMBOO = tag(commonId("bamboo"));
 
         private static TagKey<Item> tag(ResourceLocation id) {
             return TagKey.create(Registry.ITEM_REGISTRY, id);

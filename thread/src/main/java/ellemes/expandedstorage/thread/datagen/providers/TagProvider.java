@@ -80,6 +80,10 @@ public final class TagProvider {
                 .add(Items.RED_DYE);
             this.getOrCreateTagBuilder(ThreadTags.Items.WHITE_DYES)
                 .add(Items.WHITE_DYE);
+            this.getOrCreateTagBuilder(ThreadTags.Items.OBSIDIAN)
+                .add(Items.OBSIDIAN);
+            this.getOrCreateTagBuilder(ThreadTags.Items.BAMBOO)
+                .add(Items.BAMBOO);
         }
 
         @Override

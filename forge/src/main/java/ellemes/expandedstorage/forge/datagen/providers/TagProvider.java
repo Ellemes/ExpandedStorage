@@ -5,9 +5,11 @@ import ellemes.expandedstorage.datagen.content.ModBlocks;
 import ellemes.expandedstorage.datagen.content.ModItems;
 import ellemes.expandedstorage.datagen.content.ModTags;
 import ellemes.expandedstorage.datagen.providers.TagHelper;
+import ellemes.expandedstorage.forge.datagen.content.ForgeTags;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
@@ -40,6 +42,8 @@ public final class TagProvider {
             this.tag(Tags.Items.CHESTS_WOODEN).add(ModItems.WOOD_CHEST);
             this.tag(ModTags.Items.ES_WOODEN_CHESTS)
                 .addTag(Tags.Items.CHESTS_WOODEN);
+            this.tag(ForgeTags.Items.BAMBOO)
+                .add(Items.BAMBOO);
         }
 
         @Override
