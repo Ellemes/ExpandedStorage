@@ -29,6 +29,17 @@ repositories {
             includeGroup("com.terraformersmc")
         }
     }
+    exclusiveContent {
+        forRepository {
+            flatDir {
+                name = "Local Dependencies"
+                dir((project.projectDir.resolve("dependencies")))
+            }
+        }
+        filter {
+            includeGroup("local")
+        }
+    }
     maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") }
     mavenLocal()
 }
@@ -46,6 +57,7 @@ dependencies {
     modImplementation(qsl.module("core", "resource_loader"))
     modImplementation(qsl.module("item", "item_group"))
     modImplementation(qsl.module("gui", "tooltip"))
+    modImplementation("local:datafixerupper:3.0.0-beta.3+1.19.1")
 
     listOf(
             "fabric-api-base",

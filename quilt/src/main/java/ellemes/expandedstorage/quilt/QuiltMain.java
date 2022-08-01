@@ -1,5 +1,6 @@
 package ellemes.expandedstorage.quilt;
 
+import ellemes.expandedstorage.fixer.DataFixerUtils;
 import ellemes.expandedstorage.misc.TagReloadListener;
 import ellemes.expandedstorage.Utils;
 import ellemes.expandedstorage.block.BarrelBlock;
@@ -8,6 +9,7 @@ import ellemes.expandedstorage.registration.ContentConsumer;
 import ellemes.expandedstorage.registration.NamedValue;
 import ellemes.expandedstorage.thread.ThreadMain;
 import net.fabricmc.api.EnvType;
+import net.minecraft.Util;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Registry;
 import net.minecraft.world.item.CreativeModeTab;
@@ -18,6 +20,8 @@ import org.quiltmc.loader.api.Version;
 import org.quiltmc.loader.api.minecraft.MinecraftQuiltLoader;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 import org.quiltmc.qsl.block.extensions.api.client.BlockRenderLayerMap;
+import org.quiltmc.qsl.datafixerupper.api.QuiltDataFixerBuilder;
+import org.quiltmc.qsl.datafixerupper.api.QuiltDataFixes;
 import org.quiltmc.qsl.item.group.api.QuiltItemGroup;
 import org.quiltmc.qsl.resource.loader.api.ResourceLoaderEvents;
 import org.slf4j.LoggerFactory;
@@ -30,6 +34,15 @@ public final class QuiltMain implements ModInitializer {
             System.exit(0);
             return;
         }
+
+        {
+            int currentSchemaVersion = 2;
+            QuiltDataFixerBuilder builder = new QuiltDataFixerBuilder(currentSchemaVersion);
+            DataFixerUtils.register1_17DataFixer(builder, 1, 0);
+            DataFixerUtils.register1_18DataFixer(builder, 2, 0);
+            QuiltDataFixes.registerFixer(mod, currentSchemaVersion, builder.build(Util::bootstrapExecutor));
+        }
+
         boolean isCarrierCompatEnabled = QuiltLoader.getModContainer("carrier").map(it -> {
             Version carrierVersion = it.metadata().version();
             return carrierVersion.isSemantic() && carrierVersion.semantic().compareTo(Version.of("1.8.0").semantic()) > 0;
