@@ -1,9 +1,9 @@
 {
   "required": true,
-  "package": "ellemes.expandedstorage.common.mixin",
+  "package": "ellemes.expandedstorage.quiltnt.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-    "BlockEntityIdFix"
+    "DataFixerEntrypoint"
   ],
   "injectors": {
     "defaultRequire": 1

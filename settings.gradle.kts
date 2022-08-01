@@ -34,6 +34,7 @@ rootProject.name = "expandedstorage"
 
 include(
         "common",
+        "quiltnt", // todo: needs better name
         "thread",
             "fabric",
             "quilt",
