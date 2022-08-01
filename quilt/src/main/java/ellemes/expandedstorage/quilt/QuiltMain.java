@@ -38,6 +38,7 @@ public final class QuiltMain implements ModInitializer {
         {
             int currentSchemaVersion = 2;
             QuiltDataFixerBuilder builder = new QuiltDataFixerBuilder(currentSchemaVersion);
+            builder.addSchema(0, QuiltDataFixes.BASE_SCHEMA);
             DataFixerUtils.register1_17DataFixer(builder, 1, 0);
             DataFixerUtils.register1_18DataFixer(builder, 2, 0);
             QuiltDataFixes.registerFixer(mod, currentSchemaVersion, builder.build(Util::bootstrapExecutor));
